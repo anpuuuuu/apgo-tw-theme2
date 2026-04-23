@@ -1,0 +1,3870 @@
+{% comment %}
+  購物車頁-綜合優惠區塊
+  檔案位置: sections/cart-combined-offer.liquid
+  主要功能: 條件式優惠 + 推薦加購商品
+{% endcomment %}
+
+<!-- 內聯關鍵樣式防止閃爍 -->
+<style>
+  /* 防止白色閃爍 */
+  .shopify-section,
+  .combined-offer-wrapper {
+    position: relative;
+    background: transparent !important;
+  }
+
+  .combined-offer-section {
+    position: relative;
+    background-color: {{ section.settings.loading_bg_color }} !important;
+    min-height: 120px;
+  }
+</style>
+
+<style>
+            /* ========================================
+               購物車綜合優惠區塊 - 精簡版
+               ======================================== */
+
+            :root {
+              --co-accent: {% if section.settings.use_accent_gradient %}
+                linear-gradient(135deg, {{ section.settings.accent_color_start }}, {{ section.settings.accent_color_end }})
+              {% else %}
+                {{ section.settings.accent_color_start }}
+              {% endif %};
+              --co-accent-color: {{ section.settings.accent_color_start }};
+              --co-text: {{ section.settings.text_color }};
+              --co-text-secondary: {{ section.settings.text_secondary_color }};
+              --co-bg: linear-gradient(145deg, #2d2d2d, #1a1a1a);
+              --co-border: #404040;
+            }
+
+            /* 通用樣式 */
+            .section-title,
+            .tiers-title,
+            .progress-title,
+            .upsell-title {
+              font-weight: 600;
+              color: var(--co-text) !important;
+              margin: 0 0 12px 0;
+              position: relative;
+              padding-left: 12px;
+            }
+
+            .section-title::before,
+            .upsell-title::before {
+              content: '';
+              position: absolute;
+              left: 0;
+              top: 50%;
+              transform: translateY(-50%);
+              width: 3px;
+              height: 20px;
+              background: var(--co-accent) !important;
+              border-radius: 2px;
+            }
+
+            .section-title {
+              font-size: 18px;
+              margin: 24px 0 16px 0;
+            }
+
+            .combined-offer-wrapper {
+              max-width: 1200px;
+              width: 100%;
+              margin: 20px auto 0;
+              padding: 0;
+            }
+
+            .combined-offer-section {
+              background: var(--co-bg) !important;
+              border: 1px solid var(--co-border) !important;
+              border-radius: 12px;
+              padding: 20px;
+              position: relative;
+              overflow: hidden;
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .combined-offer-section:hover {
+              border-color: var(--co-accent-color) !important;
+              transform: translateY(-2px);
+              box-shadow: 0 8px 25px rgba(255, 107, 53, 0.2);
+            }
+
+            .combined-offer-section::before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              height: 3px;
+              background: var(--co-accent) !important;
+            }
+
+            /* 條件優惠區域 */
+            .conditional-offer-area {
+              margin-bottom: 24px;
+              padding-bottom: 20px;
+              border-bottom: 1px solid #333333;
+            }
+
+            .offer-tiers-container {
+              margin-bottom: 20px;
+            }
+
+            .tiers-title {
+              font-size: 14px;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+            }
+
+            .tiers-title::before {
+              content: '🏆';
+              font-size: 16px;
+            }
+
+            /* 滾動容器通用樣式 */
+            .offer-tiers-scroll,
+            .upsell-slider {
+              overflow-x: auto;
+              scroll-behavior: smooth;
+              -webkit-overflow-scrolling: touch;
+              scrollbar-width: thin;
+              scrollbar-color: var(--co-accent-color) #333333;
+            }
+
+            .offer-tiers-scroll::-webkit-scrollbar,
+            .upsell-slider::-webkit-scrollbar {
+              height: 4px;
+            }
+
+            .offer-tiers-scroll::-webkit-scrollbar-track,
+            .upsell-slider::-webkit-scrollbar-track {
+              background: #333333 !important;
+              border-radius: 2px;
+            }
+
+            .offer-tiers-scroll::-webkit-scrollbar-thumb,
+            .upsell-slider::-webkit-scrollbar-thumb {
+              background: var(--co-accent) !important;
+              border-radius: 2px;
+            }
+
+            .offer-tiers {
+              display: flex;
+              gap: 12px;
+              padding: 4px 0;
+              min-width: max-content;
+            }
+
+            /* 優惠階層卡片 */
+            .offer-tier {
+              background: var(--co-bg) !important;
+              border: 1px solid var(--co-border) !important;
+              border-radius: 8px;
+              padding: 12px;
+              position: relative;
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              overflow: hidden;
+              flex: 0 0 200px;
+            }
+
+            .offer-tier::before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 4px;
+              height: 100%;
+              background: var(--co-accent) !important;
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            /* 階層狀態樣式 */
+            .offer-tier.current {
+              border-color: var(--co-accent-color) !important;
+              transform: translateX(4px);
+            }
+
+            .offer-tier.achieved {
+              border-color: #4caf50 !important;
+            }
+
+            .offer-tier.achieved::before {
+              background: linear-gradient(180deg, #4caf50, #45a049) !important;
+              box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+            }
+
+            .offer-tier.next {
+              border-color: #ff9800 !important;
+            }
+
+            .offer-tier.next::before {
+              background: linear-gradient(180deg, #ff9800, #f57c00) !important;
+              box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+            }
+
+            .tier-content {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-left: 8px;
+            }
+
+            .tier-amount {
+              font-size: 13px;
+              font-weight: 600;
+              color: var(--co-text) !important;
+              margin: 0 0 4px 0;
+            }
+
+            .tier-benefit {
+              font-size: 11px;
+              color: var(--co-text-secondary) !important;
+              margin: 0;
+            }
+
+            .tier-description {
+              font-size: 10px;
+              color: var(--co-text-secondary) !important;
+              margin: 2px 0 0 0;
+              opacity: 0.8;
+              font-style: italic;
+            }
+
+            .tier-status {
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              font-size: 12px;
+              font-weight: 500;
+            }
+
+            .tier-status.achieved { color: #4caf50 !important; }
+            .tier-status.current { color: var(--co-accent-color) !important; }
+            .tier-status.next { color: #ff9800 !important; }
+
+            .tier-status-icon {
+              font-size: 14px;
+            }
+
+            /* 進度條通用樣式 */
+            .tier-progress,
+            .progress-bar-bg {
+              background: #333333 !important;
+              border-radius: 4px;
+              overflow: hidden;
+              position: relative;
+            }
+
+            .tier-progress {
+              width: 60px;
+              height: 4px;
+            }
+
+            .progress-bar-bg {
+              width: 100%;
+              height: 8px;
+            }
+
+            .tier-progress-fill,
+            .progress-bar-fill {
+              height: 100%;
+              background: var(--co-accent) !important;
+              border-radius: inherit;
+              transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .tier-progress-fill.achieved,
+            .progress-bar-fill.achieved {
+              background: linear-gradient(90deg, #4caf50, #45a049) !important;
+            }
+
+            .tier-progress-fill.current {
+              background: linear-gradient(90deg, var(--co-accent-color), #f7931e) !important;
+            }
+
+            .tier-progress-fill.next {
+              background: linear-gradient(90deg, #ff9800, #f57c00) !important;
+            }
+
+            /* 進度條動畫 */
+            .progress-bar-fill {
+              position: relative;
+              overflow: hidden;
+            }
+
+            .progress-bar-fill::after {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: -100%;
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+              animation: shimmer 2s infinite;
+            }
+
+            @keyframes shimmer {
+              to { left: 100%; }
+            }
+
+            .progress-container {
+              margin-bottom: 16px;
+            }
+
+            .progress-title {
+              font-size: 14px;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+            }
+
+            .progress-title::before {
+              content: '🎯';
+              font-size: 16px;
+            }
+
+            .progress-text {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-top: 8px;
+              font-size: 12px;
+              color: var(--co-text-secondary) !important;
+            }
+
+            .current-amount {
+              font-weight: 600;
+              color: var(--co-accent-color) !important;
+            }
+
+            .target-amount {
+              font-weight: 500;
+            }
+
+            /* 優惠訊息 */
+            .offer-message-container {
+              margin-top: 16px;
+            }
+
+            .offer-message {
+              font-size: 13px;
+              line-height: 1.4;
+              color: var(--co-text) !important;
+              margin: 0;
+              padding: 12px;
+              border-radius: 8px;
+              background: rgba(255, 107, 53, 0.1) !important;
+              border: 1px solid rgba(255, 107, 53, 0.2) !important;
+              position: relative;
+              overflow: hidden;
+            }
+
+            .offer-message::before {
+              content: '💡';
+              position: absolute;
+              left: 12px;
+              top: 50%;
+              transform: translateY(-50%);
+              font-size: 16px;
+            }
+
+            .offer-message .message-text {
+              margin-left: 32px;
+            }
+
+            .offer-message.achieved {
+              background: rgba(76, 175, 80, 0.1) !important;
+              border-color: rgba(76, 175, 80, 0.3) !important;
+            }
+
+            .offer-message.achieved::before {
+              content: '🎉';
+            }
+
+            .offer-amount {
+              font-weight: 700;
+              color: var(--co-accent-color) !important;
+              text-shadow: 0 0 8px rgba(255, 107, 53, 0.3);
+            }
+
+            /* 推薦商品區域 */
+            .upsell-area {
+              margin-top: 20px;
+            }
+
+            .upsell-title {
+              font-size: 16px;
+            }
+
+            .upsell-title::before {
+              height: 18px;
+            }
+
+            .upsell-slider-container {
+              position: relative;
+              overflow: hidden;
+              margin: 0 -8px;
+              padding: 0 8px;
+            }
+
+            .upsell-slider {
+              display: flex;
+              gap: 10px;
+              padding: 8px 0;
+            }
+
+            /* 商品卡片 */
+            .upsell-product-card {
+              flex: 0 0 var(--card-width-desktop, 280px);
+              background: var(--co-bg) !important;
+              border: 1px solid var(--co-border) !important;
+              border-radius: 8px;
+              padding: 12px 8px;
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              position: relative;
+              overflow: hidden;
+              text-decoration: none;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+            }
+
+            .upsell-product-card:hover {
+              border-color: var(--co-accent-color) !important;
+              transform: translateY(-2px);
+              box-shadow: 0 8px 20px rgba(255, 107, 53, 0.2);
+            }
+
+            .upsell-product-image {
+              width: 50px;
+              height: 60px;
+              border-radius: 6px;
+              overflow: hidden;
+              position: relative;
+              flex-shrink: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+
+            .upsell-product-image img,
+            .upsell-product-image .placeholder-svg {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+            }
+
+            .upsell-product-image img {
+              object-fit: contain;
+              transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .upsell-product-image .placeholder-svg {
+              opacity: 0.3;
+              filter: invert(1);
+            }
+
+            .upsell-product-link {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              flex: 1;
+              text-decoration: none;
+              color: inherit;
+            }
+
+            .upsell-product-card:hover .upsell-product-title {
+              color: var(--co-accent-color) !important;
+            }
+
+            .upsell-product-info {
+              flex: 1;
+              min-width: 0;
+              display: flex;
+              flex-direction: column;
+              gap: 3px;
+            }
+
+            .upsell-product-title {
+              font-size: 12px;
+              font-weight: 500;
+              color: var(--co-text) !important;
+              margin: 0;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 1;
+              -webkit-box-orient: vertical;
+              line-height: 1.3;
+            }
+
+            .upsell-product-price {
+              font-size: 13px;
+              font-weight: 700;
+              color: var(--co-accent-color) !important;
+              margin: 0;
+              text-shadow: 0 0 8px rgba(255, 107, 53, 0.3);
+            }
+
+            /* 加入購物車按鈕 */
+            .upsell-add-to-cart {
+              width: 32px;
+              height: 32px;
+              background: transparent !important;
+              border: 2px solid var(--co-accent-color) !important;
+              border-radius: 6px;
+              color: var(--co-accent-color) !important;
+              font-size: 16px;
+              font-weight: 600;
+              cursor: pointer;
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              overflow: hidden;
+              flex-shrink: 0;
+              outline: none !important;
+              -webkit-tap-highlight-color: transparent;
+            }
+
+            .upsell-add-to-cart:focus {
+              outline: none !important;
+              box-shadow: none !important;
+            }
+
+            .upsell-add-to-cart:active {
+              transform: scale(0.95);
+            }
+
+            .upsell-add-to-cart * {
+              pointer-events: none;
+            }
+
+            .upsell-add-to-cart::before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: -100%;
+              width: 100%;
+              height: 100%;
+              background: var(--co-accent) !important;
+              transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              z-index: 0;
+            }
+
+            .upsell-add-to-cart:hover::before {
+              left: 0;
+            }
+
+            .upsell-add-to-cart span {
+              position: relative;
+              z-index: 1;
+              transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .upsell-add-to-cart:hover {
+              border-color: var(--co-accent-color) !important;
+              color: #ffffff !important;
+            }
+
+            .upsell-add-to-cart:hover span {
+              color: #ffffff !important;
+            }
+
+            .upsell-add-to-cart.loading {
+              pointer-events: none;
+              opacity: 0.7;
+            }
+
+            .upsell-add-to-cart.added {
+              border-color: var(--co-accent-color) !important;
+              color: var(--co-accent-color) !important;
+            }
+
+            .upsell-add-to-cart.added span {
+              color: var(--co-accent-color) !important;
+            }
+
+            /* 載入狀態 */
+            .combined-offer-section.loading {
+              min-height: 150px;
+              position: relative;
+            }
+
+            .combined-offer-section.loading::after {
+              content: '';
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width: 40px;
+              height: 40px;
+              border: 3px solid #333333 !important;
+              border-top-color: var(--co-accent-color) !important;
+              border-radius: 50%;
+              animation: spin 0.8s linear infinite;
+            }
+
+            @keyframes spin {
+              to { transform: translate(-50%, -50%) rotate(360deg); }
+            }
+
+            /* 響應式設計 */
+            @media (max-width: 768px) {
+              .section-title {
+                font-size: 16px;
+                margin: 20px 0 12px 0;
+              }
+
+              .combined-offer-wrapper {
+                padding: 0 16px;
+                margin: 16px auto 0;
+              }
+
+              .combined-offer-section {
+                padding: 16px;
+                border-radius: 10px;
+              }
+
+              .conditional-offer-area {
+                margin-bottom: 20px;
+                padding-bottom: 16px;
+              }
+
+              .offer-tier {
+                flex: 0 0 220px;
+              }
+
+              .upsell-product-card {
+                flex: 0 0 240px;
+                padding: 10px 6px;
+              }
+
+              .upsell-product-image {
+                width: 45px;
+                height: 55px;
+              }
+
+              .upsell-add-to-cart {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+              }
+            }
+
+            @media (max-width: 480px) {
+              .section-title {
+                font-size: 15px;
+                margin: 16px 0 10px 0;
+              }
+
+              .offer-tier {
+                flex: 0 0 280px;
+                padding: 10px;
+              }
+
+              .tier-progress {
+                width: 50px;
+                height: 3px;
+              }
+
+              .upsell-product-card {
+                flex: 0 0 200px;
+              }
+
+              .upsell-product-image {
+                width: 40px;
+                height: 50px;
+              }
+
+              .upsell-add-to-cart {
+                width: 26px;
+                height: 26px;
+                font-size: 12px;
+              }
+            }
+
+            /* 隱藏選項 */
+            .combined-offer-wrapper[data-hide-progress="true"] .progress-container,
+            .combined-offer-wrapper[data-hide-conditional="true"] .conditional-offer-area,
+            .combined-offer-wrapper[data-hide-upsell="true"] .upsell-area {
+              display: none;
+            }
+
+            /* ========================================
+             推薦商品標題區域佈局
+             ======================================== */
+          .upsell-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+          }
+
+          .upsell-title {
+            margin: 0 !important; /* 移除原有的底部邊距 */
+          }
+
+          /* 查看全部按鈕 */
+          .view-all-products-btn {
+            background: linear-gradient(135deg, var(--co-accent-color), #f7931e);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+          }
+
+          .view-all-products-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 107, 53, 0.3);
+          }
+
+          .view-all-products-btn:active {
+            transform: scale(0.98);
+          }
+
+          .btn-text {
+            font-size: 12px;
+          }
+
+          .btn-count {
+            padding: 1px 5px;
+            border-radius: 10px;
+            font-size: 12px;
+          }
+
+          .btn-arrow {
+            font-size: 13px;
+            transition: transform 0.3s ease;
+          }
+
+          .view-all-products-btn:hover .btn-arrow {
+            transform: translateX(3px);
+          }
+
+          /* ========================================
+             彈窗樣式
+             ======================================== */
+        /* 彈窗遮罩 - 使用 fixed 但確保 z-index 正確 */
+        .recommend-popup-overlay {
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
+          background: rgba(0, 0, 0, 0.8);
+          display: none;
+          z-index: 16 !important; /* 提高 z-index */
+          animation: fadeIn 0.3s ease;
+          pointer-events: none; /* 預設不接收事件 */
+        }
+          .recommend-popup-overlay.active {
+            display: block;
+            pointer-events: auto; /* 啟用時接收事件 */
+          }
+
+          .recommend-popup-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--co-bg);
+            border-radius: 20px 20px 0 0;
+            max-height: 90vh;
+            min-height: 90vh;
+            display: none;
+            flex-direction: column;
+            z-index: 17;
+            animation: slideUp 0.3s ease;
+            transform: translateZ(0); /* 創建新的層疊上下文 */
+            will-change: transform; /* 優化動畫性能 */
+          }
+
+          .recommend-popup-container.active {
+            display: flex;
+          }
+
+          /* 彈窗頭部 */
+          .popup-header {
+            padding: 15px 15px 10px;
+            border-bottom: 1px solid var(--co-border);
+            position: relative;
+            flex-shrink: 0;
+          }
+
+          .popup-handle {
+            width: 40px;
+            height: 4px;
+            background: #666;
+            border-radius: 2px;
+            margin: 0 auto 10px;
+            cursor: grab;
+          }
+
+          .popup-title {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            color: var(--co-text);
+          }
+
+          .popup-close-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid var(--co-accent-color);
+            border-radius: 50%;
+            color: var(--co-accent-color);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+          }
+
+          .popup-close-btn:hover {
+            background: var(--co-accent-color);
+            color: #fff;
+            transform: translateY(-50%) rotate(90deg);
+          }
+
+          /* 免運提醒 */
+          .shipping-reminder {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--co-border);
+            flex-shrink: 0;
+          }
+
+          .shipping-reminder-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--co-text);
+          }
+
+          .shipping-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 107, 53, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+          }
+
+          .shipping-amount {
+            color: var(--co-accent-color);
+            font-weight: bold;
+            font-size: 16px;
+          }
+
+          /* 分類標籤 */
+            .category-tabs {
+                display: flex;
+                gap: 12px;
+                padding: 10px 20px 10px;
+                background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(45, 45, 45, 0.95) 100%);
+                overflow-x: auto;
+                flex-shrink: 0;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+                scrollbar-color: var(--co-accent-color) rgba(255, 255, 255, 0.1);
+                border-bottom: 2px solid rgba(255, 107, 53, 0.2);
+                position: relative;
+                backdrop-filter: blur(10px);
+            }
+
+          .category-tabs::-webkit-scrollbar {
+      height: 6px;
+    }
+    .category-tabs::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+    }
+    .category-tabs::-webkit-scrollbar-thumb {
+      background: var(--co-accent-color);
+      border-radius: 3px;
+    }
+    .category-tabs::before,
+            .category-tabs::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 25px;
+                pointer-events: none;
+                z-index: 2;
+            }
+    .category-tabs::before {
+      left: 0;
+      background: linear-gradient(to right, var(--co-bg), transparent);
+    }
+
+    .category-tabs::after {
+      right: 0;
+      background: linear-gradient(to left, var(--co-bg), transparent);
+    }
+
+    /* 确保第一个标签默认激活 */
+    .category-tab:first-child {
+      margin-left: 0;
+    }
+
+          .category-tab {
+                background: linear-gradient(135deg, rgba(45, 45, 45, 0.6) 0%, rgba(35, 35, 35, 0.7) 100%);
+                color: #aaaaaa;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 18px;
+                padding: 6px 12px;
+                font-size: 12px;
+                font-weight: 500;
+                white-space: nowrap;
+                cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                flex-shrink: 0;
+                position: relative;
+                overflow: hidden;
+                backdrop-filter: blur(3px);
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+            }
+
+            .category-tab::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(247, 147, 30, 0.15) 100%);
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 0;
+            }
+
+            .category-tab:hover::before {
+                left: 0;
+            }
+
+            .category-tab:hover {
+                color: #e0e0e0;
+                border-color: rgba(255, 107, 53, 0.25);
+                transform: translateY(-1px);
+                box-shadow: 0 3px 12px rgba(255, 107, 53, 0.2);
+            }
+
+          .category-tab.active {
+                background: linear-gradient(135deg, rgba(255, 107, 53, 0.8) 0%, rgba(247, 147, 30, 0.8) 100%);
+                color: #ffffff;
+                border-color: rgba(255, 107, 53, 0.6);
+                transform: translateY(-0.5px);
+                box-shadow: 0 4px 15px rgba(255, 107, 53, 0.25), 0 0 10px rgba(255, 107, 53, 0.1);
+            }
+
+            .category-tab.active::before {
+                left: 0;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+            }
+
+            .category-tab span {
+                position: relative;
+                z-index: 1;
+            }
+
+          .category-count {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1px 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            margin-left: 4px;
+          }
+
+          /* 彈窗內容區 */
+          .popup-content {
+            flex: 1;
+            -ms-overflow-style: none;  /* IE 和 Edge */
+            scrollbar-width: none;     /* Firefox */
+            overflow-y: auto;
+            padding: 20px 15px;
+            -webkit-overflow-scrolling: touch;
+          }
+
+          /* 推薦商品網格 */
+          .recommend-products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+          }
+
+          .recommend-product-card {
+            display: flex;
+            flex-direction: column;
+            transition: opacity 0.3s ease;
+          }
+          .recommend-product-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+          }
+          .recommend-product-card:hover .recommend-product-name {
+            color: var(--co-accent-color);
+          }
+          .hot-tag {
+            background: linear-gradient(135deg, #ff4444, #cc0000) !important;
+          }
+
+          .new-tag {
+            background: linear-gradient(135deg, #4CAF50, #45a049) !important;
+          }
+
+          .discount-tag {
+            background: linear-gradient(135deg, #ff9800, #f57c00) !important;
+          }
+          .product-placeholder {
+            font-size: 48px;
+            color: #666;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          /* 售罄按鈕樣式 */
+          .recommend-add-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #666 !important;
+          }
+
+          /* 無商品提示 */
+          .no-products-message,
+          .no-products-in-category {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            color: #999;
+          }
+
+          .recommend-product-image {
+            width: 100%;
+            aspect-ratio: 1;
+            background: #333;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            position: relative;
+            overflow: hidden;
+          }
+
+          .recommend-product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          .recommend-product-tag {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: var(--co-accent);
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: bold;
+          }
+
+          .recommend-product-name {
+            font-size: 12px;
+            color: var(--co-text);
+            margin-bottom: 6px;
+            line-height: 1.4;
+            height: 32px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+          }
+
+          .recommend-product-price {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+          }
+
+          .recommend-current-price {
+            color: var(--co-accent-color);
+            font-size: 14px;
+            font-weight: bold;
+          }
+
+          .recommend-original-price {
+            color: #666;
+            font-size: 11px;
+            text-decoration: line-through;
+          }
+
+          .recommend-add-btn {
+            width: 100%;
+            background: var(--co-accent);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: auto;
+          }
+
+          .recommend-add-btn:hover {
+            transform: scale(1.05);
+          }
+
+          .recommend-add-btn:active {
+            transform: scale(0.95);
+          }
+
+          .recommend-add-btn.added {
+            background: #4caf50;
+          }
+
+          /* 動畫 */
+          @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+
+          @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+          }
+
+          /* ========================================
+             手機版響應式
+             ======================================== */
+          @media (max-width: 768px) {
+            .upsell-header {
+              gap: 10px;
+            }
+
+            .view-all-products-btn {
+              padding: 5px 10px;
+              font-size: 11px;
+            }
+
+            .btn-text {
+              font-size: 10px; /* 手機版只顯示數量 */
+            }
+
+            .btn-count {
+              display:none;
+              font-size: 10px;
+            }
+
+            /* 彈窗商品網格 - 手機版兩列 */
+            .recommend-products-grid {
+              grid-template-columns: repeat(2, 1fr);
+              gap: 10px;
+            }
+          }
+
+          @media (max-width: 480px) {
+            .view-all-products-btn {
+              padding: 4px 8px;
+            }
+          }
+
+          /* ========================================
+             桌面版優化
+             ======================================== */
+          @media (min-width: 1024px) {
+            /* 桌面版商品網格 - 四列 */
+            .recommend-products-grid {
+              grid-template-columns: repeat(4, 1fr);
+              gap: 16px;
+            }
+
+            /* 桌面版彈窗最大寬度 */
+            .recommend-popup-container {
+              left: 50%;
+              transform: translateX(-50%);
+              max-width: 1200px;
+              border-radius: 20px;
+              bottom: 20px;
+              max-height: 80vh;
+              min-height: 80vh;;
+            }
+
+            .recommend-popup-container.active {
+              animation: slideUpDesktop 0.3s ease;
+            }
+
+            @keyframes slideUpDesktop {
+              from {
+                transform: translateX(-50%) translateY(100%);
+              }
+              to {
+                transform: translateX(-50%) translateY(0);
+              }
+            }
+          }
+          .shipping-progress-mini {
+                  flex: 1;
+                  max-width: 100px;
+                  height: 4px;
+                  background: #333;
+                  border-radius: 2px;
+                  overflow: hidden;
+                  margin: 0 10px;
+              }
+
+              .shipping-progress-fill-mini {
+                  height: 100%;
+                  background: linear-gradient(90deg, #ff6b35 0%, #ff8c42 100%);
+                  width: 60%;
+                  transition: width 0.3s ease;
+              }
+              /* 弹窗中的条件优惠区域样式调整 */
+      .popup-conditional-offer {
+        padding: 15px 20px;
+        border-bottom: 1px solid var(--co-border);
+        background: rgba(0, 0, 0, 0.2);
+        /* 确保不会超出弹窗宽度 */
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+
+      .popup-conditional-offer .conditional-offer-area {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+        /* 限制最大宽度 */
+        max-width: 100%;
+        overflow: hidden;
+      }
+
+      .popup-conditional-offer .progress-container {
+        margin-bottom: 12px;
+      }
+
+      .popup-conditional-offer .offer-message-container {
+        margin-top: 12px;
+      }
+
+      /* 弹窗内的优惠阶层滚动容器调整 */
+      .popup-conditional-offer .offer-tiers-scroll {
+        max-width: 100%;
+        overflow-x: auto;
+        /* 添加内边距，让滚动内容不贴边 */
+        margin: 0 -10px;
+        padding: 0 10px;
+      }
+
+      .popup-conditional-offer .offer-tiers {
+        /* 确保不会撑开容器 */
+        width: max-content;
+        max-width: none;
+      }
+
+      /* 弹窗内的优惠阶层卡片尺寸调整 */
+      .popup-conditional-offer .offer-tier {
+        /* 稍微缩小卡片宽度 */
+        flex: 0 0 200px;
+        padding: 10px;
+      }
+
+      /* 弹窗内的进度条调整 */
+      .popup-conditional-offer .progress-bar-bg {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      /* 弹窗内的优惠消息调整 */
+      .popup-conditional-offer .offer-message {
+        padding: 10px;
+        font-size: 12px;
+        /* 确保文字换行 */
+        word-wrap: break-word;
+        word-break: break-word;
+      }
+
+      .popup-conditional-offer .offer-message .message-text {
+        margin-left: 28px;
+      }
+
+      /* 弹窗内的标题字体调整 */
+      .popup-conditional-offer .progress-title {
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+
+      /* 弹窗内的金额文字调整 */
+      .popup-conditional-offer .progress-text {
+        font-size: 11px;
+      }
+
+      /* 手机端弹窗内的条件优惠进一步调整 */
+      @media (max-width: 768px) {
+        .popup-conditional-offer {
+          padding: 12px 15px;
+        }
+
+        .popup-conditional-offer .offer-tier {
+          flex: 0 0 200px;
+          padding: 8px;
+        }
+
+        .popup-conditional-offer .tier-amount {
+          font-size: 12px;
+        }
+
+        .popup-conditional-offer .tier-benefit {
+          font-size: 10px;
+        }
+
+        .popup-conditional-offer .offer-message {
+          padding: 8px;
+          font-size: 11px;
+        }
+
+        .popup-conditional-offer .offer-message::before {
+          font-size: 14px;
+        }
+      }
+
+      /* 确保弹窗容器本身不会被撑开 */
+      .recommend-popup-container {
+        /* 添加 overflow-x: hidden 防止横向溢出 */
+        overflow-x: hidden;
+      }
+
+      /* 修正弹窗整体布局 */
+      .recommend-popup-container.active {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .popup-conditional-offer {
+        /* 确保是弹性项目，不会超出父容器 */
+        flex-shrink: 0;
+        min-width: 0; /* 允许收缩到比内容更小 */
+      }
+
+
+
+      /* 产品变体弹窗样式 */
+  .apgo-variant-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .apgo-variant-modal.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .apgo-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+  }
+
+  .apgo-modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1a1a1a;
+    border-radius: 16px;
+    border: 1px solid rgba(240, 132, 24, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    max-width: 450px;
+    width: 90%;
+    overflow: hidden;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .apgo-modal-header {
+    padding: 20px 20px 15px;
+    border-bottom: 1px solid rgba(240, 132, 24, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .apgo-modal-header h3 {
+    color: var(--co-accent-color, #ff6b35);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .apgo-modal-close {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+
+  .apgo-modal-close:hover {
+    background: rgba(240, 132, 24, 0.1);
+    color: var(--co-accent-color, #ff6b35);
+  }
+
+  .apgo-modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .apgo-variant-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .apgo-variant-choice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background: rgba(240, 132, 24, 0.05);
+    border: 2px solid rgba(240, 132, 24, 0.2);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .apgo-variant-choice:hover {
+    background: rgba(240, 132, 24, 0.1);
+    border-color: rgba(240, 132, 24, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .apgo-variant-choice.loading {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .apgo-choice-info h4 {
+    color: var(--co-accent-color, #ff6b35);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .apgo-choice-info p {
+    color: #b0b0b0;
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .apgo-choice-price {
+    color: var(--text-white);
+    font-size: 1.1rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, var(--co-accent-color, #ff6b35), #f7931e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .loading-placeholder,
+  .error-message,
+  .no-variants-message {
+    text-align: center;
+    padding: 20px;
+    color: #b0b0b0;
+  }
+
+  .apgo-notification {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    max-width: 350px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(0, 0, 0, 0.4);
+    z-index: 99999;
+    transform: translateX(120%);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border: 1px solid rgba(240, 132, 24, 0.3);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    opacity: 0;
+  }
+
+  .apgo-notification.show {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .apgo-notification-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .apgo-notification-message {
+    color: var(--text-white);
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .apgo-notification-link {
+    background: linear-gradient(45deg, var(--co-accent-color, #ff6b35), #f7931e);
+    color: var(--text-white);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .apgo-notification-link:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(240, 132, 24, 0.3);
+  }
+
+  .apgo-notification-close {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .apgo-notification-close:hover {
+    opacity: 1;
+  }
+
+  /* 移动端适配 */
+  @media (max-width: 768px) {
+    .apgo-modal-content {
+      width: 95%;
+      max-width: none;
+    }
+
+    .apgo-modal-header {
+      padding: 15px;
+    }
+
+    .apgo-modal-body {
+      padding: 15px;
+    }
+
+    .apgo-variant-choice {
+      padding: 10px;
+    }
+
+    .apgo-notification {
+      top: 70px;
+      right: 15px;
+      left: 15px;
+      max-width: calc(100vw - 30px);
+      padding: 14px 16px;
+      gap: 10px;
+    }
+
+    .apgo-notification-message {
+      font-size: 0.85rem;
+    }
+
+    .apgo-notification-link {
+      padding: 10px 16px;
+      font-size: 0.82rem;
+      justify-content: center;
+    }
+
+    .apgo-notification-close {
+      width: 22px;
+      height: 22px;
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<div
+  class="combined-offer-wrapper"
+  data-hide-progress="{{ section.settings.hide_progress }}"
+  data-hide-conditional="{{ section.settings.hide_conditional }}"
+  data-hide-upsell="{{ section.settings.hide_upsell }}"
+>
+  <!-- 專屬優惠券標題 -->
+  {% unless section.settings.hide_conditional %}
+    <h4 class="section-title">{{ 'cart.exclusive_coupon' | t }}</h4>
+  {% endunless %}
+
+  <div class="combined-offer-section" id="combined-offer-{{ section.id }}">
+    <!-- 條件優惠區域 -->
+    {% unless section.settings.hide_conditional %}
+      <div class="conditional-offer-area">
+        <!-- 進度條區域 -->
+        {% unless section.settings.hide_progress %}
+          <div class="progress-container">
+            <h4 class="progress-title" id="progress-title-{{ section.id }}">{{ 'cart.progress_title' | t }}</h4>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="progress-fill-{{ section.id }}" style="width: 0%"></div>
+            </div>
+            <div class="progress-text">
+              <span class="current-amount" id="current-amount-{{ section.id }}">NT$ 0</span>
+              <span class="target-amount" id="target-amount-{{ section.id }}">NT$ 0</span>
+            </div>
+          </div>
+        {% endunless %}
+
+        <!-- 優惠階層區域 -->
+        <div class="offer-tiers-container">
+          <div class="offer-tiers-scroll" id="offer-tiers-scroll-{{ section.id }}">
+            <div class="offer-tiers" id="offer-tiers-{{ section.id }}">
+              <!-- 優惠階層將由 JavaScript 動態生成 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 優惠訊息區域 -->
+        <div class="offer-message-container">
+          <div class="offer-message" id="offer-message-{{ section.id }}">
+            <div class="message-text">
+              <span id="offer-text-{{ section.id }}">{{ section.settings.initial_message }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endunless %}
+
+    <!-- 推薦商品區域 -->
+    {% unless section.settings.hide_upsell %}
+      <div class="upsell-area">
+        <!-- 按鈕部分 -->
+        <div class="upsell-header">
+          <h4 class="upsell-title">{{ section.settings.upsell_title }}</h4>
+          <button class="view-all-products-btn" onclick="openRecommendPopup()">
+            <span class="btn-text">{{ 'cart.view_all_recommend' | t }}</span>
+            {% for product in section.settings.product_list %}
+              {% if forloop.first %}
+                {% if forloop.length > 0 %}
+                  {% if forloop.length <= 10 %}
+                    <span class="btn-count">({{ forloop.length }})</span>
+                  {% else %}
+                    {% assign display_base = forloop.length | minus: 1 | divided_by: 10 | times: 10 %}
+                    <span class="btn-count">({{ display_base }}+)</span>
+                  {% endif %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            <span class="btn-arrow">→</span>
+          </button>
+        </div>
+        <div class="upsell-slider-container">
+          <div class="upsell-slider" id="upsell-slider-{{ section.id }}">
+            {% assign slider_products = section.settings.slider_product_list %}
+            {% if slider_products == blank %}
+              {% assign slider_products = section.settings.product_list | slice: 0, section.settings.max_products %}
+            {% endif %}
+            {% if slider_products != blank %}
+              {% for product in slider_products limit: section.settings.max_products %}
+                <div class="upsell-product-card" data-product-handle="{{ product.handle }}">
+                  <a href="{{ product.url }}" class="upsell-product-link">
+                    <div class="upsell-product-image">
+                      {% if product.featured_image %}
+                        <img
+                          src="{{ product.featured_image | image_url: width: 200 }}"
+                          alt="{{ product.title | escape }}"
+                          width="200"
+                          height="240"
+                          loading="lazy"
+                        >
+                      {% else %}
+                        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {% endif %}
+                    </div>
+                    <div class="upsell-product-info">
+                      <h5 class="upsell-product-title">{{ product.title }}</h5>
+                      {% if section.settings.show_prices %}
+                        {% if product.variants.size > 1 %}
+                          {% assign min_price = product.variants | map: 'price' | sort | first %}
+                          {% assign max_price = product.variants | map: 'price' | sort | last %}
+                          {% if min_price == max_price %}
+                            <p class="upsell-product-price">{{ min_price | money }}</p>
+                          {% else %}
+                            <p class="upsell-product-price">{{ min_price | money }} ~ {{ max_price | money }}</p>
+                          {% endif %}
+                        {% else %}
+                          <p class="upsell-product-price">{{ product.price | money }}</p>
+                        {% endif %}
+                      {% endif %}
+                    </div>
+                  </a>
+                  {% if section.settings.enable_quick_add %}
+                    <button
+                      type="button"
+                      class="upsell-add-to-cart"
+                      data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                      data-product-id="{{ product.id }}"
+                      data-product-handle="{{ product.handle }}"
+                      onclick="event.preventDefault(); event.stopPropagation(); showProductVariantsModal('{{ product.handle }}', '{{ product.title | escape }}');"
+                    >
+                      <span>+</span>
+                    </button>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            {% else %}
+              <!-- 預設商品顯示（編輯器預覽用） -->
+              {% for i in (1..4) %}
+                <div class="upsell-product-card">
+                  <div class="upsell-product-image">
+                    {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                  <div class="upsell-product-info">
+                    <h5 class="upsell-product-title">範例商品 {{ i }}</h5>
+                    {% if section.settings.show_prices %}
+                      <p class="upsell-product-price">NT$ {{ i | times: 580 }}</p>
+                    {% endif %}
+                  </div>
+                  {% if section.settings.enable_quick_add %}
+                    <button type="button" class="upsell-add-to-cart" disabled>
+                      <span>+</span>
+                    </button>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endunless %}
+  </div>
+</div>
+<!-- 推薦商品彈窗 -->
+<div class="recommend-popup-overlay" id="popup-overlay-{{ section.id }}" onclick="closeRecommendPopup()"></div>
+
+<div class="recommend-popup-container" id="popup-container-{{ section.id }}">
+  <div class="popup-header">
+    <div class="popup-handle"></div>
+    <div class="popup-title">{{ 'cart.all_recommend_products' | t }}</div>
+    <button class="popup-close-btn" onclick="closeRecommendPopup()">×</button>
+  </div>
+
+  <!-- 免運費提醒 -->
+  <div class="popup-conditional-offer">
+    <div class="conditional-offer-area">
+      <!-- 進度條區域 -->
+      {% unless section.settings.hide_progress %}
+        <div class="progress-container">
+          <h4 class="progress-title" id="popup-progress-title-{{ section.id }}">{{ 'cart.progress_title' | t }}</h4>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="popup-progress-fill-{{ section.id }}" style="width: 0%"></div>
+          </div>
+          <div class="progress-text">
+            <span class="current-amount" id="popup-current-amount-{{ section.id }}">NT$ 0</span>
+            <span class="target-amount" id="popup-target-amount-{{ section.id }}">NT$ 0</span>
+          </div>
+        </div>
+      {% endunless %}
+
+      <!-- 優惠階層區域 -->
+      <div class="offer-tiers-container">
+        <div class="offer-tiers-scroll" id="popup-offer-tiers-scroll-{{ section.id }}">
+          <div class="offer-tiers" id="popup-offer-tiers-{{ section.id }}">
+            <!-- 優惠階層將由 JavaScript 動態生成 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 優惠訊息區域 -->
+      <div class="offer-message-container">
+        <div class="offer-message" id="popup-offer-message-{{ section.id }}">
+          <div class="message-text">
+            <span id="popup-offer-text-{{ section.id }}">{{ section.settings.initial_message }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分類標籤 -->
+  {% comment %} 计算各分类商品数量 {% endcomment %}
+  {% assign discount_ids = section.settings.discount_products | map: 'id' %}
+  {% assign cleaning_ids = section.settings.cleaning_products | map: 'id' %}
+  {% assign coating_ids = section.settings.coating_products | map: 'id' %}
+  {% assign car_tools_ids = section.settings.car_tools_products | map: 'id' %}
+  {% assign repair_ids = section.settings.repair_products | map: 'id' %}
+  {% assign home_ids = section.settings.home_products | map: 'id' %}
+
+  {% comment %} 计算各分类数量 {% endcomment %}
+  {% assign discount_count = discount_ids.size %}
+  {% assign cleaning_count = cleaning_ids.size %}
+  {% assign coating_count = coating_ids.size %}
+  {% assign car_tools_count = car_tools_ids.size %}
+  {% assign repair_count = repair_ids.size %}
+  {% assign home_count = home_ids.size %}
+
+  <div class="category-tabs" id="category-tabs-{{ section.id }}">
+    {% if section.settings.enable_smart_category %}
+      <div
+        class="category-tab active"
+        data-category="smart"
+        onclick="switchCategory('smart', this)"
+        id="smart-tab-{{ section.id }}"
+      >
+        {{ section.settings.tab_smart_text | default: '再買一件即達標' }}
+        <span class="category-count" id="smart-count-{{ section.id }}">0</span>
+      </div>
+    {% endif %}
+
+    {% if discount_count > 0 %}
+      <div
+        class="category-tab{% unless section.settings.enable_smart_category %} active{% endunless %}"
+        data-category="discount"
+        onclick="switchCategory('discount', this)"
+      >
+        {{ section.settings.tab_discount_text | default: '限時優惠' }}
+        <span class="category-count">{{ discount_count }}</span>
+      </div>
+    {% endif %}
+
+    {% if cleaning_count > 0 %}
+      <div class="category-tab" data-category="cleaning" onclick="switchCategory('cleaning', this)">
+        {{ section.settings.tab_cleaning_text | default: '清潔類' }}
+        <span class="category-count">{{ cleaning_count }}</span>
+      </div>
+    {% endif %}
+
+    {% if coating_count > 0 %}
+      <div class="category-tab" data-category="coating" onclick="switchCategory('coating', this)">
+        {{ section.settings.tab_coating_text | default: '鍍膜類' }}
+        <span class="category-count">{{ coating_count }}</span>
+      </div>
+    {% endif %}
+
+    {% if car_tools_count > 0 %}
+      <div class="category-tab" data-category="car_tools" onclick="switchCategory('car_tools', this)">
+        {{ section.settings.tab_car_tools_text | default: '車用工具' }}
+        <span class="category-count">{{ car_tools_count }}</span>
+      </div>
+    {% endif %}
+
+    {% if repair_count > 0 %}
+      <div class="category-tab" data-category="repair" onclick="switchCategory('repair', this)">
+        {{ section.settings.tab_repair_text | default: '修復類' }}
+        <span class="category-count">{{ repair_count }}</span>
+      </div>
+    {% endif %}
+
+    {% if home_count > 0 %}
+      <div class="category-tab" data-category="home" onclick="switchCategory('home', this)">
+        {{ section.settings.tab_home_text | default: '居家產品' }}
+        <span class="category-count">{{ home_count }}</span>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="popup-content">
+    <div class="recommend-products-grid" id="recommendProductsGrid-{{ section.id }}">
+      {% comment %} 限時優惠商品 {% endcomment %}
+      {% if section.settings.discount_products != blank %}
+        {% for product in section.settings.discount_products %}
+          {% assign product_price = product.price | divided_by: 100.0 %}
+          <div
+            class="recommend-product-card"
+            data-category="discount"
+            data-product-id="{{ product.id }}"
+            data-price="{{ product_price }}"
+          >
+            <a href="{{ product.url }}" class="recommend-product-link" target="_blank">
+              <div class="recommend-product-image">
+                {% if product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 300 }}"
+                    alt="{{ product.title | escape }}"
+                    loading="lazy"
+                  >
+                {% else %}
+                  <div class="product-placeholder">🛍️</div>
+                {% endif %}
+              </div>
+            </a>
+            <div class="recommend-product-name">{{ product.title }}</div>
+            <div class="recommend-product-price">
+              {% if product.variants.size > 1 %}
+                {% assign min_price = product.variants | map: 'price' | sort | first %}
+                {% assign max_price = product.variants | map: 'price' | sort | last %}
+                {% if min_price == max_price %}
+                  <span class="recommend-current-price">{{ min_price | money }}</span>
+                {% else %}
+                  <span class="recommend-current-price">{{ min_price | money }} ~ {{ max_price | money }}</span>
+                {% endif %}
+              {% else %}
+                <span class="recommend-current-price">{{ product.price | money }}</span>
+              {% endif %}
+              {% if product.compare_at_price > product.price %}
+                <span class="recommend-original-price">{{ product.compare_at_price | money }}</span>
+              {% endif %}
+            </div>
+            {% if product.available %}
+              <button
+                class="recommend-add-btn"
+                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                onclick="event.preventDefault(); event.stopPropagation(); showProductVariantsModal('{{ product.handle }}', '{{ product.title | escape }}');"
+              >
+                {{ 'cart.add_on' | t }}
+              </button>
+            {% else %}
+              <button class="recommend-add-btn" disabled>{{ 'cart.sold_out' | t }}</button>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% comment %} 清潔類商品 {% endcomment %}
+      {% if section.settings.cleaning_products != blank %}
+        {% for product in section.settings.cleaning_products %}
+          {% assign product_price = product.price | divided_by: 100.0 %}
+          <div
+            class="recommend-product-card"
+            data-category="cleaning"
+            data-product-id="{{ product.id }}"
+            data-price="{{ product_price }}"
+          >
+            <a href="{{ product.url }}" class="recommend-product-link" target="_blank">
+              <div class="recommend-product-image">
+                {% if product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 300 }}"
+                    alt="{{ product.title | escape }}"
+                    loading="lazy"
+                  >
+                {% else %}
+                  <div class="product-placeholder">🧽</div>
+                {% endif %}
+              </div>
+            </a>
+            <div class="recommend-product-name">{{ product.title }}</div>
+            <div class="recommend-product-price">
+              {% if product.variants.size > 1 %}
+                {% assign min_price = product.variants | map: 'price' | sort | first %}
+                {% assign max_price = product.variants | map: 'price' | sort | last %}
+                {% if min_price == max_price %}
+                  <span class="recommend-current-price">{{ min_price | money }}</span>
+                {% else %}
+                  <span class="recommend-current-price">{{ min_price | money }} ~ {{ max_price | money }}</span>
+                {% endif %}
+              {% else %}
+                <span class="recommend-current-price">{{ product.price | money }}</span>
+              {% endif %}
+              {% if product.compare_at_price > product.price %}
+                <span class="recommend-original-price">{{ product.compare_at_price | money }}</span>
+              {% endif %}
+            </div>
+            {% if product.available %}
+              <button
+                class="recommend-add-btn"
+                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                onclick="event.preventDefault(); event.stopPropagation(); showProductVariantsModal('{{ product.handle }}', '{{ product.title | escape }}');"
+              >
+                {{ 'cart.add_on' | t }}
+              </button>
+            {% else %}
+              <button class="recommend-add-btn" disabled>{{ 'cart.sold_out' | t }}</button>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% comment %} 鍍膜類商品 {% endcomment %}
+      {% if section.settings.coating_products != blank %}
+        {% for product in section.settings.coating_products %}
+          {% assign product_price = product.price | divided_by: 100.0 %}
+          <div
+            class="recommend-product-card"
+            data-category="coating"
+            data-product-id="{{ product.id }}"
+            data-price="{{ product_price }}"
+          >
+            <a href="{{ product.url }}" class="recommend-product-link" target="_blank">
+              <div class="recommend-product-image">
+                {% if product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 300 }}"
+                    alt="{{ product.title | escape }}"
+                    loading="lazy"
+                  >
+                {% else %}
+                  <div class="product-placeholder">✨</div>
+                {% endif %}
+              </div>
+            </a>
+            <div class="recommend-product-name">{{ product.title }}</div>
+            <div class="recommend-product-price">
+              {% if product.variants.size > 1 %}
+                {% assign min_price = product.variants | map: 'price' | sort | first %}
+                {% assign max_price = product.variants | map: 'price' | sort | last %}
+                {% if min_price == max_price %}
+                  <span class="recommend-current-price">{{ min_price | money }}</span>
+                {% else %}
+                  <span class="recommend-current-price">{{ min_price | money }} ~ {{ max_price | money }}</span>
+                {% endif %}
+              {% else %}
+                <span class="recommend-current-price">{{ product.price | money }}</span>
+              {% endif %}
+              {% if product.compare_at_price > product.price %}
+                <span class="recommend-original-price">{{ product.compare_at_price | money }}</span>
+              {% endif %}
+            </div>
+            {% if product.available %}
+              <button
+                class="recommend-add-btn"
+                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                onclick="event.preventDefault(); event.stopPropagation(); showProductVariantsModal('{{ product.handle }}', '{{ product.title | escape }}');"
+              >
+                {{ 'cart.add_on' | t }}
+              </button>
+            {% else %}
+              <button class="recommend-add-btn" disabled>{{ 'cart.sold_out' | t }}</button>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% comment %} 車用工具商品 {% endcomment %}
+      {% if section.settings.car_tools_products != blank %}
+        {% for product in section.settings.car_tools_products %}
+          {% assign product_price = product.price | divided_by: 100.0 %}
+          <div
+            class="recommend-product-card"
+            data-category="car_tools"
+            data-product-id="{{ product.id }}"
+            data-price="{{ product_price }}"
+          >
+            <a href="{{ product.url }}" class="recommend-product-link" target="_blank">
+              <div class="recommend-product-image">
+                {% if product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 300 }}"
+                    alt="{{ product.title | escape }}"
+                    loading="lazy"
+                  >
+                {% else %}
+                  <div class="product-placeholder">🔧</div>
+                {% endif %}
+              </div>
+            </a>
+            <div class="recommend-product-name">{{ product.title }}</div>
+            <div class="recommend-product-price">
+              {% if product.variants.size > 1 %}
+                {% assign min_price = product.variants | map: 'price' | sort | first %}
+                {% assign max_price = product.variants | map: 'price' | sort | last %}
+                {% if min_price == max_price %}
+                  <span class="recommend-current-price">{{ min_price | money }}</span>
+                {% else %}
+                  <span class="recommend-current-price">{{ min_price | money }} ~ {{ max_price | money }}</span>
+                {% endif %}
+              {% else %}
+                <span class="recommend-current-price">{{ product.price | money }}</span>
+              {% endif %}
+              {% if product.compare_at_price > product.price %}
+                <span class="recommend-original-price">{{ product.compare_at_price | money }}</span>
+              {% endif %}
+            </div>
+            {% if product.available %}
+              <button
+                class="recommend-add-btn"
+                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                onclick="event.preventDefault(); event.stopPropagation(); showProductVariantsModal('{{ product.handle }}', '{{ product.title | escape }}');"
+              >
+                {{ 'cart.add_on' | t }}
+              </button>
+            {% else %}
+              <button class="recommend-add-btn" disabled>{{ 'cart.sold_out' | t }}</button>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% comment %} 修復類商品 {% endcomment %}
+      {% if section.settings.repair_products != blank %}
+        {% for product in section.settings.repair_products %}
+          {% assign product_price = product.price | divided_by: 100.0 %}
+          <div
+            class="recommend-product-card"
+            data-category="repair"
+            data-product-id="{{ product.id }}"
+            data-price="{{ product_price }}"
+          >
+            <a href="{{ product.url }}" class="recommend-product-link" target="_blank">
+              <div class="recommend-product-image">
+                {% if product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 300 }}"
+                    alt="{{ product.title | escape }}"
+                    loading="lazy"
+                  >
+                {% else %}
+                  <div class="product-placeholder">🛠️</div>
+                {% endif %}
+              </div>
+            </a>
+            <div class="recommend-product-name">{{ product.title }}</div>
+            <div class="recommend-product-price">
+              {% if product.variants.size > 1 %}
+                {% assign min_price = product.variants | map: 'price' | sort | first %}
+                {% assign max_price = product.variants | map: 'price' | sort | last %}
+                {% if min_price == max_price %}
+                  <span class="recommend-current-price">{{ min_price | money }}</span>
+                {% else %}
+                  <span class="recommend-current-price">{{ min_price | money }} ~ {{ max_price | money }}</span>
+                {% endif %}
+              {% else %}
+                <span class="recommend-current-price">{{ product.price | money }}</span>
+              {% endif %}
+              {% if product.compare_at_price > product.price %}
+                <span class="recommend-original-price">{{ product.compare_at_price | money }}</span>
+              {% endif %}
+            </div>
+            {% if product.available %}
+              <button
+                class="recommend-add-btn"
+                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                onclick="event.preventDefault(); event.stopPropagation(); showProductVariantsModal('{{ product.handle }}', '{{ product.title | escape }}');"
+              >
+                {{ 'cart.add_on' | t }}
+              </button>
+            {% else %}
+              <button class="recommend-add-btn" disabled>{{ 'cart.sold_out' | t }}</button>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% comment %} 居家產品 {% endcomment %}
+      {% if section.settings.home_products != blank %}
+        {% for product in section.settings.home_products %}
+          {% assign product_price = product.price | divided_by: 100.0 %}
+          <div
+            class="recommend-product-card"
+            data-category="home"
+            data-product-id="{{ product.id }}"
+            data-price="{{ product_price }}"
+          >
+            <a href="{{ product.url }}" class="recommend-product-link" target="_blank">
+              <div class="recommend-product-image">
+                {% if product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 300 }}"
+                    alt="{{ product.title | escape }}"
+                    loading="lazy"
+                  >
+                {% else %}
+                  <div class="product-placeholder">🏠</div>
+                {% endif %}
+              </div>
+            </a>
+            <div class="recommend-product-name">{{ product.title }}</div>
+            <div class="recommend-product-price">
+              {% if product.variants.size > 1 %}
+                {% assign min_price = product.variants | map: 'price' | sort | first %}
+                {% assign max_price = product.variants | map: 'price' | sort | last %}
+                {% if min_price == max_price %}
+                  <span class="recommend-current-price">{{ min_price | money }}</span>
+                {% else %}
+                  <span class="recommend-current-price">{{ min_price | money }} ~ {{ max_price | money }}</span>
+                {% endif %}
+              {% else %}
+                <span class="recommend-current-price">{{ product.price | money }}</span>
+              {% endif %}
+              {% if product.compare_at_price > product.price %}
+                <span class="recommend-original-price">{{ product.compare_at_price | money }}</span>
+              {% endif %}
+            </div>
+            {% if product.available %}
+              <button
+                class="recommend-add-btn"
+                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                onclick="event.preventDefault(); event.stopPropagation(); showProductVariantsModal('{{ product.handle }}', '{{ product.title | escape }}');"
+              >
+                {{ 'cart.add_on' | t }}
+              </button>
+            {% else %}
+              <button class="recommend-add-btn" disabled>{{ 'cart.sold_out' | t }}</button>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+<!-- 产品变体选择弹窗 -->
+<div class="apgo-variant-modal" id="product-variants-modal-{{ section.id }}">
+  <div class="apgo-modal-overlay" onclick="closeProductVariantsModal()"></div>
+  <div class="apgo-modal-content">
+    <div class="apgo-modal-header">
+      <h3 id="product-variants-title-{{ section.id }}"></h3>
+      <button class="apgo-modal-close" onclick="closeProductVariantsModal()">&times;</button>
+    </div>
+    <div class="apgo-modal-body">
+      <div class="apgo-variant-options" id="product-variants-options-{{ section.id }}">
+        <!-- 变体选项将通过JavaScript动态加载 -->
+        <div class="loading-placeholder">{{ "cart.loading" | t }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // 綜合優惠功能
+  class CombinedOffer {
+    constructor(sectionId, settings) {
+      this.sectionId = sectionId;
+      this.settings = settings;
+      this.currentAmount = 0;
+      this.amountForTierCalculation = 0;
+      this.targetAmount = 0;
+      this.tiers = this.parseTiers(settings.tiers);
+      console.log(JSON.stringify(this.tiers) + '--------------');
+      this.maxTierAmount = this.tiers.length > 0 ? this.tiers[this.tiers.length - 1].amount : 0;
+      this.appliedDiscounts = new Set(); // 追踪已应用的折扣
+      this.highestAchievedTiersByType = {}; // 追踪各类别的最高达成阶层
+      this.init();
+    }
+    
+parseTiers(blocks) {
+  if (!blocks || !Array.isArray(blocks)) return [];
+  
+  return blocks.map(block => ({
+    id: block.id,
+    amount: parseFloat(block.amount) || 0,
+    benefit: block.benefit || '',
+    description: block.description || '',
+    type: block.type || '',
+    highlight_on_achieve: block.highlight_on_achieve  // ✅ 添加这一行
+  })).sort((a, b) => a.amount - b.amount);
+}
+    
+    init() {
+      this.updateCartAmount();
+      this.setupEventListeners();
+      this.interceptRequests();
+
+      setTimeout(() => {
+        this.updateSmartCategory();
+      }, 500);
+    }
+    
+    interceptRequests() {
+      if (window.__coFetchPatched) return;
+      window.__coFetchPatched = true;
+
+      const originalFetch = window.fetch;
+      window.fetch = async (...args) => {
+        const resp = await originalFetch(...args);
+        try {
+          const url = (args[0] && (args[0].url || args[0])) || '';
+          if (typeof url === 'string' && (/\/cart\/(add|change|update|clear)/.test(url))) {
+            setTimeout(() => this.updateCartAmount(), 200);
+          }
+        } catch(_) {}
+        return resp;
+      };
+
+      if (!window.__coXhrPatched) {
+        window.__coXhrPatched = true;
+        const origOpen = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function(method, url, ...rest) {
+          this.addEventListener('loadend', () => {
+            try {
+              if (typeof url === 'string' && (/\/cart\/(add|change|update|clear)/.test(url))) {
+                setTimeout(() => document.dispatchEvent(new Event('cart:update')), 200);
+              }
+            } catch(_) {}
+          });
+          return origOpen.call(this, method, url, ...rest);
+        };
+      }
+    }
+
+    async updateSmartCategory() {
+      let allTiersAchieved = this.tiers.every(tier => this.currentAmount >= tier.amount);  
+      if (this.highestAchievedTier && this.highestAchievedTier.amount == this.maxTierAmount){
+        allTiersAchieved = this.tiers.every(tier => this.maxTierAmount >= tier.amount);
+      }
+      const smartTab = document.getElementById(`smart-tab-${this.sectionId}`);
+      if (smartTab) {
+        if (allTiersAchieved) {
+          smartTab.style.display = 'none';
+          const grid = document.getElementById(`recommendProductsGrid-${this.sectionId}`);
+          if (grid) {
+            const existingSmartCards = grid.querySelectorAll('.recommend-product-card[data-smart-generated="true"]');
+            existingSmartCards.forEach(card => card.remove());
+          }
+          if (smartTab.classList.contains('active')) {
+            const nextVisibleTab = smartTab.nextElementSibling;
+            if (nextVisibleTab) {
+              switchCategory(nextVisibleTab.dataset.category, nextVisibleTab);
+            }
+          }
+          return;
+        } else {
+          smartTab.style.display = 'flex';
+        }
+      }
+      
+      const nextTier = this.getNextTier();
+      if (!nextTier) return;
+      
+      const threshold = nextTier.amount;
+      const remaining = threshold - this.currentAmount;
+      
+      
+      try {
+        let allProducts = [];
+        let page = 1;
+        let hasMore = true;
+        let priceRange = null;
+                const formatter = new Intl.NumberFormat('zh-TW', {
+          style: 'currency',
+          currency: 'TWD',
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0
+        });
+        
+        while (hasMore && page <= 20) {
+          const response = await fetch(`/products.json?page=${page}&limit=250`);
+          const data = await response.json();
+          
+          if (data.products && data.products.length > 0) {
+            allProducts = allProducts.concat(data.products);
+            page++;
+            hasMore = data.products.length === 250;
+          } else {
+            hasMore = false;
+          }
+        }
+        
+        
+        const smartProducts = [];
+        
+        allProducts.forEach(product => {
+          let productMatches = false;
+          let lowestPrice = Infinity;
+          let selectedVariant = null;
+          
+          let productImage = null;
+          if (product.images && product.images.length > 0) {
+            productImage = product.images[0];
+          } else if (product.image && product.image.src) {
+            productImage = product.image.src;
+          } else if (product.featured_image) {
+            productImage = product.featured_image;
+          }
+          
+          if (product.variants && product.variants.length > 0) {
+            // 计算价格范围
+    const prices = product.variants.map(v => {
+      if (typeof v.price === 'string') {
+        return parseFloat(v.price);
+      } else if (typeof v.price === 'number') {
+        return v.price / 100;
+      }
+      return 0;
+    });
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    
+    if (minPrice === maxPrice) {
+      priceRange = formatter.format(minPrice);
+    } else {
+      priceRange = `${formatter.format(minPrice)} ~ ${formatter.format(maxPrice)}`;
+    };
+            product.variants.forEach(variant => {
+              let variantPrice = 0;
+              if (typeof variant.price === 'string') {
+                variantPrice = parseFloat(variant.price);
+              } else if (typeof variant.price === 'number') {
+                variantPrice = variant.price / 100;
+              }
+              
+              if (variantPrice >= remaining && remaining > 0 && variantPrice < lowestPrice) {
+                productMatches = true;
+                lowestPrice = variantPrice;
+                selectedVariant = variant;
+              }
+            });
+          } else {
+            let price = 0;
+            if (typeof product.price === 'string') {
+              price = parseFloat(product.price);
+            } else if (typeof product.price === 'number') {
+              price = product.price / 100;
+            }
+            
+            if (price >= remaining && remaining > 0) {
+              productMatches = true;
+              lowestPrice = price;
+            }
+          }
+          
+          if (productMatches) {
+            smartProducts.push({
+              id: product.id,
+              title: product.title,
+              handle: product.handle,
+              image: productImage,
+              price: lowestPrice,
+              priceRange: priceRange,
+              variantId: selectedVariant ? selectedVariant.id : (product.variants?.[0]?.id || product.id),
+              available: product.available !== false,
+              compareAtPrice: product.compare_at_price || product.compare_at_price_max
+              // 所有变体中的最高价格
+            });
+          }
+        });
+        
+        
+        const grid = document.getElementById(`recommendProductsGrid-${this.sectionId}`);
+        if (!grid) return;
+        
+        const existingSmartCards = grid.querySelectorAll('.recommend-product-card[data-smart-generated="true"]');
+        existingSmartCards.forEach(card => card.remove());
+        
+        const firstNonSmartCard = grid.querySelector('.recommend-product-card:not([data-smart-generated="true"])');
+        
+        const maxSmartProducts = 100;
+
+        
+        smartProducts.slice(0, maxSmartProducts).forEach(product => {
+          const card = document.createElement('div');
+          card.className = 'recommend-product-card';
+          card.dataset.category = 'smart';
+          card.dataset.productId = product.id;
+          card.dataset.price = product.price.toFixed(2);
+          card.dataset.smartGenerated = 'true';
+          
+          let imageHtml = '<div class="product-placeholder">🎯</div>';
+          if (product.image) {
+            let imageUrl = product.image;
+            if (typeof imageUrl === 'object' && imageUrl.src) {
+              imageUrl = imageUrl.src;
+            }
+            
+            if (typeof imageUrl === 'string') {
+              if (!imageUrl.startsWith('http')) {
+                imageUrl = 'https:' + imageUrl;
+              }
+              if (!imageUrl.includes('width=') && !imageUrl.includes('_300x')) {
+                if (imageUrl.includes('?')) {
+                  imageUrl += '&width=300';
+                } else {
+                  imageUrl += '?width=300';
+                }
+              }
+              imageHtml = `<img src="${imageUrl}" alt="${product.title}" loading="lazy">`;
+            }
+          }
+          card.innerHTML = `
+            <a href="/products/${product.handle}" class="recommend-product-link" target="_blank">
+              <div class="recommend-product-image">
+                ${imageHtml}
+              </div>
+            </a>
+            <div class="recommend-product-name">${product.title}</div>
+            <div class="recommend-product-price">
+                ${product.priceRange ? 
+            `<span class="recommend-current-price">${product.priceRange}</span>` :
+            `<span class="recommend-current-price">${formatter.format(product.price)}</span>`
+          }
+          ${product.compareAtPrice && product.compareAtPrice > product.price ? 
+            `<span class="recommend-original-price">${formatter.format(product.compareAtPrice / 100)}</span>` : 
+            ''
+          }
+            </div>
+            ${product.available ? 
+              `<button class="recommend-add-btn" 
+                       data-variant-id="${product.variantId}"
+                       onclick="event.preventDefault(); showProductVariantsModal('${product.handle}', '${product.title.replace(/'/g, "\\'")}');">
+                加購
+              </button>` :
+              `<button class="recommend-add-btn" disabled>售罄</button>`
+            }
+          `;
+          
+          if (firstNonSmartCard) {
+            grid.insertBefore(card, firstNonSmartCard);
+          } else {
+            grid.appendChild(card);
+          }
+        });
+        
+        const smartCountEl = document.getElementById(`smart-count-${this.sectionId}`);
+        if (smartCountEl) {
+          smartCountEl.textContent = Math.min(smartProducts.length, maxSmartProducts);
+        }
+        
+        const activeTab = document.querySelector('.category-tab.active');
+        if (activeTab && activeTab.dataset.category === 'smart') {
+          switchCategory('smart', activeTab);
+        }
+        
+      } catch (error) {
+        console.error('获取商品列表失败:', error);
+        
+        if (smartTab) {
+          smartTab.style.display = 'none';
+        }
+      }
+    }
+
+    updateCartAmount() {
+      fetch(`/cart.js?_=${Date.now()}`, { cache: 'no-store' })
+        .then(response => response.json())
+        .then(cart => {
+          this.currentAmount = cart.total_price / 100;
+          this.amountForTierCalculation = (cart.original_total_price && cart.original_total_price > cart.total_price)
+            ? cart.original_total_price / 100
+            : this.currentAmount;
+          
+          this.appliedDiscounts.clear();
+          this.highestAchievedTiersByType = {};
+
+          const achievedTiers = this.tiers.filter(tier => {
+              const amountToUse = tier.type === 'free_shipping' ? this.currentAmount : this.amountForTierCalculation;
+              return amountToUse >= tier.amount;
+          });
+
+          // Group tiers by type and find the highest achieved tier within each type.
+          achievedTiers.forEach(tier => {
+            const type = tier.type || 'general';
+            if (!this.highestAchievedTiersByType[type] || tier.amount > this.highestAchievedTiersByType[type].amount) {
+              this.highestAchievedTiersByType[type] = tier;
+            }
+          });
+
+          // Keep track of which Shopify discounts are active.
+          if (cart.cart_level_discount_applications && cart.cart_level_discount_applications.length > 0) {
+            cart.cart_level_discount_applications.forEach(discount => {
+              const discountKey = `${discount.title}_${discount.target_selection}`;
+              this.appliedDiscounts.add(discountKey);
+            });
+          }
+          
+          this.updateDisplay();
+          this.updateSmartCategory();
+        })
+        .catch(error => {
+          console.error('無法取得購物車資料:', error);
+        });
+    }
+
+    getTierByAmount(amount) {
+      for (let i = this.tiers.length - 1; i >= 0; i--) {
+        if (amount >= this.tiers[i].amount) {
+          return this.tiers[i];
+        }
+      }
+      return null;
+    }
+    
+    updateDisplay() {
+      const updateArea = (prefix = '') => {
+        const progressFill = document.getElementById(`${prefix}progress-fill-${this.sectionId}`);
+        const currentAmountEl = document.getElementById(`${prefix}current-amount-${this.sectionId}`);
+        const progressTitleEl = document.getElementById(`${prefix}progress-title-${this.sectionId}`);
+        const targetAmountEl = document.getElementById(`${prefix}target-amount-${this.sectionId}`);
+        const offerMessage = document.getElementById(`${prefix}offer-message-${this.sectionId}`);
+        const offerText = document.getElementById(`${prefix}offer-text-${this.sectionId}`);
+        
+        const fmt = new Intl.NumberFormat('zh-TW', { 
+          style: 'currency', 
+          currency: '{{ cart.currency.iso_code | default: "TWD" }}', 
+          minimumFractionDigits: 0 
+        });
+        
+        const currentTier = this.getCurrentTier();
+        const nextTier = this.getNextTier();
+
+        // Update progress bar and related display
+        if (nextTier) {
+          const amountForProgress = nextTier.type === 'free_shipping' ? this.currentAmount : this.amountForTierCalculation;
+
+          this.targetAmount = nextTier.amount;
+
+          if (progressTitleEl) {
+            progressTitleEl.textContent = `{{ 'cart.progress_to_benefit' | t }}${nextTier.benefit}{{ 'cart.progress_left' | t }}`;
+          }
+          
+          const progressBase = currentTier ? currentTier.amount : 0;
+          const progressRange = nextTier.amount - progressBase;
+          const currentProgress = amountForProgress - progressBase;
+          const progressPercent = Math.max(0, Math.min((currentProgress / progressRange) * 100, 100));
+          
+          if (progressFill) {
+            progressFill.style.width = `${progressPercent}%`;
+            progressFill.className = 'progress-bar-fill current';
+          }
+          
+          if (targetAmountEl) {
+            targetAmountEl.textContent = fmt.format(nextTier.amount);
+          }
+        } else { // All tiers achieved
+          if (progressTitleEl) {
+            progressTitleEl.textContent = `{{ 'cart.all_goal_achieved' | t }}`;
+          }
+          if (progressFill) {
+            progressFill.style.width = '0%'; // Reset to 0%
+            progressFill.className = 'progress-bar-fill';
+          }
+          if (targetAmountEl) {
+            targetAmountEl.textContent = fmt.format(0); // Reset to 0
+          }
+        }
+        
+        // Update current amount display
+        if (currentAmountEl) {
+          if (!nextTier) { // If all tiers are achieved, display 0
+             currentAmountEl.textContent = fmt.format(0);
+          } else { // Otherwise, display the final, post-discount price
+             currentAmountEl.textContent = fmt.format(this.currentAmount);
+          }
+        }
+        
+        // Update offer message
+        if (offerMessage && offerText) {
+          const allBenefits = this.getAllAchievedBenefits();
+          if (nextTier) {
+            offerMessage.classList.remove('achieved');
+            const amountForMessage = nextTier.type === 'free_shipping' ? this.currentAmount : this.amountForTierCalculation;
+            const remainingAmount = nextTier.amount - amountForMessage;
+            let message;
+            if (allBenefits) {
+              message = `{{ 'cart.congrats_have' | t }} ${allBenefits}，{{ 'cart.add_more' | t }} <span class="offer-amount">${fmt.format(remainingAmount)}</span> {{ 'cart.get_benefit' | t }} <span class="offer-amount">${nextTier.benefit}</span>！`;
+            } else {
+              const firstTier = this.tiers[0];
+              message = `{{ 'cart.add_more' | t }} <span class="offer-amount">${fmt.format(remainingAmount)}</span> {{ 'cart.get_benefit' | t }} <span class="offer-amount">${firstTier.benefit}</span>！`;
+            }
+            offerText.innerHTML = message;
+          } else { // All tiers achieved
+            offerMessage.classList.add('achieved');
+            offerText.innerHTML = `{{ 'cart.congrats_all' | t }}${allBenefits}！`;
+          }
+        }
+      };
+      
+      updateArea();
+      updateArea('popup-');
+      
+      this.updateTiers();
+      this.updateTiers('popup-');
+      
+      this.scrollToNextTarget();
+      this.scrollToNextTarget('popup-');
+    }
+    
+    getHighlightedAchievedTiers() {
+        const mainSwitchIsOn = this.settings.cumulative_tiers === 'true';
+
+        return this.tiers.filter(tier => {
+            const tierType = tier.type || 'general';
+            const amountToUseForAchievement = tierType === 'free_shipping' ? this.currentAmount : this.amountForTierCalculation;
+            const isAchieved = amountToUseForAchievement >= tier.amount;
+
+            if (!isAchieved) {
+                return false;
+            }
+
+            if (mainSwitchIsOn) {
+                // Cumulative highlighting: highlight if its own switch is on.
+                return tier.highlight_on_achieve === true;
+            } else {
+                // Non-cumulative: highlight only if it's the highest for its type.
+                const highestTierForThisType = this.highestAchievedTiersByType[tierType];
+                return highestTierForThisType && tier.id === highestTierForThisType.id;
+            }
+        });
+    }
+    
+    getAllAchievedBenefits() {
+      const highlightedTiers = this.getHighlightedAchievedTiers();
+      if (highlightedTiers.length === 0) return '';
+      
+      const benefits = highlightedTiers.map(tier => `<span class="offer-amount">${tier.benefit}</span>`);
+      
+      if (benefits.length === 1) {
+        return benefits[0];
+      } else if (benefits.length === 2) {
+        return `${benefits[0]} 和 ${benefits[1]}`;
+      } else {
+        const lastBenefit = benefits.pop();
+        return `${benefits.join('、')} 和 ${lastBenefit}`;
+      }
+    }
+    
+    scrollToNextTarget(prefix = '') {
+      const scrollContainer = document.getElementById(`${prefix}offer-tiers-scroll-${this.sectionId}`);
+      const nextTier = this.getNextTier();
+      
+      if (scrollContainer && nextTier) {
+        const nextTierElement = scrollContainer.querySelector(`[data-tier-id="${nextTier.id}"]`);
+        if (nextTierElement) {
+          const containerRect = scrollContainer.getBoundingClientRect();
+          const elementRect = nextTierElement.getBoundingClientRect();
+          const scrollLeft = scrollContainer.scrollLeft;
+          
+          const targetScrollLeft = scrollLeft + elementRect.left - containerRect.left - (containerRect.width / 2) + (elementRect.width / 2);
+          
+          scrollContainer.scrollTo({
+            left: targetScrollLeft,
+            behavior: 'smooth'
+          });
+        }
+      }
+    }
+    
+    getCurrentTier() {
+      // This function now needs to respect the progress bar logic (Free shipping first)
+      // It should find the highest *achieved* tier that the progress bar is based on.
+      const nextTier = this.getNextTier(); // Find the next goal first.
+      if (!nextTier) { // If no next goal, all goals are achieved. Return the max tier.
+          return this.tiers.length > 0 ? this.tiers[this.tiers.length - 1] : null;
+      }
+
+      // The "current" tier is the one right before the "next" tier.
+      const nextTierIndex = this.tiers.findIndex(t => t.id === nextTier.id);
+      if (nextTierIndex > 0) {
+          return this.tiers[nextTierIndex - 1];
+      }
+      
+      return null; // No tier before the next one, so no "current" achieved tier for progress bar.
+    }
+    
+    getNextTier() {
+      // Priority 1: Find the next unachieved 'free_shipping' tier.
+      const nextFreeShippingTier = this.tiers.find(tier => 
+          tier.type === 'free_shipping' && this.currentAmount < tier.amount
+      );
+      if (nextFreeShippingTier) {
+          return nextFreeShippingTier;
+      }
+
+      // Priority 2: If all free shipping tiers are met, find the next unachieved tier of any other type.
+      const nextOtherTier = this.tiers.find(tier => 
+          tier.type !== 'free_shipping' && this.amountForTierCalculation < tier.amount
+      );
+      if (nextOtherTier) {
+          return nextOtherTier;
+      }
+
+      return null; // All tiers of all types are achieved.
+    }
+    
+    updateTiers(prefix = '') {
+      const tiersContainer = document.getElementById(`${prefix}offer-tiers-${this.sectionId}`);
+      if (!tiersContainer || this.tiers.length === 0) return;
+      
+      tiersContainer.innerHTML = '';
+      
+      this.tiers.forEach((tier, index) => {
+        const tierElement = this.createTierElement(tier, index);
+        tiersContainer.appendChild(tierElement);
+      });
+    }
+    
+    createTierElement(tier, index) {
+      const tierDiv = document.createElement('div');
+      tierDiv.className = 'offer-tier';
+      tierDiv.setAttribute('data-tier-id', tier.id);
+      
+            // --- New Logic Implementation ---
+      
+            const mainSwitchIsOn = this.settings.cumulative_tiers === 'true';
+      
+            const tierSwitchIsOn = tier.highlight_on_achieve === true;
+      
+            const tierType = tier.type || 'general';
+      
+      
+      
+            const amountToUseForAchievement = tierType === 'free_shipping' ? this.currentAmount : this.amountForTierCalculation;
+      const isAchieved = amountToUseForAchievement >= tier.amount;
+      
+            let shouldHighlightAsAchieved = false;
+      
+      
+      
+            if (isAchieved) {
+      
+              if (mainSwitchIsOn) {
+      
+                // Cumulative highlighting: highlight if its own switch is on.
+      
+                if (tierSwitchIsOn) {
+      
+                  shouldHighlightAsAchieved = true;
+      
+                }
+      
+              } else {
+      
+                // Non-cumulative: highlight only if it's the highest for its type.
+      
+                const highestTierForThisType = this.highestAchievedTiersByType[tierType];
+      
+                if (highestTierForThisType && tier.id === highestTierForThisType.id) {
+      
+                  shouldHighlightAsAchieved = true;
+      
+                }
+      
+              }
+      
+            }
+      
+      
+      
+            // Determine the visual state of the tier (current, next, achieved)
+      
+            const nextTierOverall = this.getNextTier();
+      
+            const isCurrent = nextTierOverall ? tier.id === nextTierOverall.id : false;
+      
+            const isNext = nextTierOverall ? tier.amount > nextTierOverall.amount : false;
+      
+      
+      
+            // Determine status text
+      
+            let statusText;
+      
+            if (shouldHighlightAsAchieved) {
+      
+              statusText = `{{ 'cart.tier_achieved' | t }}`;
+      
+            } else if (isAchieved) {
+      
+              statusText = '已享更優'; // Achieved but not highlighted
+      
+            } else if (isCurrent) {
+      
+              statusText = `{{ 'cart.tier_in_progress' | t }}`;
+      
+            } else {
+      
+              statusText = `{{ 'cart.tier_pending' | t }}`;
+      
+            }
+      
+      
+      
+                  // Apply classes for styling
+      
+      
+      
+                  if (shouldHighlightAsAchieved) {
+      
+      
+      
+                    tierDiv.classList.add('achieved');
+      
+      
+      
+                  } else if (isCurrent) {
+      
+      
+      
+                    tierDiv.classList.add('current');
+      
+      
+      
+                  } else if (isNext) {
+      
+      
+      
+                    tierDiv.classList.add('next');
+      
+      
+      
+                  }
+      
+      
+      
+                  // --- End of New Logic ---
+
+      const progress = Math.min((amountToUseForAchievement / tier.amount) * 100, 100);
+      const fmt = new Intl.NumberFormat('zh-TW', { 
+        style: 'currency', 
+        currency: '{{ cart.currency.iso_code | default: "TWD" }}', 
+        minimumFractionDigits: 0 
+      });
+      
+      tierDiv.innerHTML = `
+        <div class="tier-content">
+          <div class="tier-info">
+            <div class="tier-amount">${fmt.format(tier.amount)}</div>
+            <div class="tier-benefit">${tier.benefit}</div>
+            ${tier.description ? `<div class="tier-description">${tier.description}</div>` : ''}
+          </div>
+          <div class="tier-status ${shouldHighlightAsAchieved ? 'achieved' : isCurrent ? 'current' : 'next'}">
+            <span class="tier-status-icon">
+              ${isAchieved ? '✅' : isCurrent ? '🎯' : '⏳'}
+            </span>
+            <span>${statusText}</span>
+            <div class="tier-progress">
+              <div class="tier-progress-fill ${shouldHighlightAsAchieved ? 'achieved' : isCurrent ? 'current' : 'next'}" 
+                   style="width: ${isAchieved ? 100 : progress}%"></div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      return tierDiv;
+    }
+    
+    setupEventListeners() {
+      const debounce = (fn, wait = 250) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn.apply(this, a), wait); }; };
+      const debouncedUpdate = debounce(() => this.updateCartAmount(), 250);
+
+      const EVENT_NAMES = [
+        'cart:refresh','cart:updated','cart:update','cart:change',
+        'product:added','ajaxProduct:added','cart:request:complete',
+        'theme:cart:update','CartUpdateEvent'
+      ];
+      const targets = [document, document.documentElement, window];
+
+      window.__coCombListeners = window.__coCombListeners || {};
+      const key = this.sectionId;
+      if (window.__coCombListeners[key]) {
+        const { targets: oldTargets, names, handler } = window.__coCombListeners[key];
+        oldTargets.forEach(t => {
+          names.forEach(n => t.removeEventListener(n, handler));
+          t.removeEventListener('CartUpdateEvent', handler);
+        });
+      }
+
+      targets.forEach(t => {
+        EVENT_NAMES.forEach(n => t.addEventListener(n, debouncedUpdate, { passive: true }));
+        t.addEventListener('CartUpdateEvent', debouncedUpdate, { passive: true });
+      });
+      window.__coCombListeners[key] = { targets, names: EVENT_NAMES, handler: debouncedUpdate };
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) this.updateCartAmount();
+      });
+    }
+
+    getShippingInfo() {
+      // 用 type 判斷
+      const freeShippingTier = this.tiers.find(tier => tier.type === 'free_shipping');
+      
+      if (freeShippingTier) {
+        const remaining = Math.max(0, freeShippingTier.amount - this.currentAmount);
+        const progress = Math.min((this.currentAmount / freeShippingTier.amount) * 100, 100);
+        return {
+          remaining: remaining,
+          progress: progress,
+          achieved: this.currentAmount >= freeShippingTier.amount,
+          target: freeShippingTier.amount
+        };
+      }
+      
+      if (this.tiers.length > 0) {
+        const firstTier = this.tiers[0];
+        const remaining = Math.max(0, firstTier.amount - this.currentAmount);
+        const progress = Math.min((this.currentAmount / firstTier.amount) * 100, 100);
+        return {
+          remaining: remaining,
+          progress: progress,
+          achieved: this.currentAmount >= firstTier.amount,
+          target: firstTier.amount,
+          benefit: firstTier.benefit
+        };
+      }
+      
+      return {
+        remaining: 0,
+        progress: 0,
+        achieved: false,
+        target: 0
+      };
+    }
+  }
+  
+  // 統一的加入購物車函數
+  function addToCartUnified(variantId, button, isFromPopup = false) {
+    if (!variantId) {
+      variantId = button.dataset.variantId;
+    }
+    if (!variantId) return;
+    
+    button.classList.add('loading');
+    
+    if (isFromPopup) {
+      button.textContent = '...';
+    } else {
+      button.innerHTML = '<span>...</span>';
+    }
+    
+    const root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) ? window.Shopify.routes.root : '/';
+    fetch(root + 'cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        items: [{
+          id: parseInt(variantId),
+          quantity: 1
+        }]
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      button.classList.remove('loading');
+
+      if (isFromPopup) {
+        button.innerHTML = '✓ {{ "cart.added" | t }}';
+      } else {
+        button.innerHTML = '<span>✓</span>';
+      }
+      
+      const sectionElement = button.closest('.combined-offer-section') || 
+                            document.querySelector('.combined-offer-section');
+      const sectionId = sectionElement ? sectionElement.id.replace('combined-offer-', '') : '{{ section.id }}';
+            const combinedOffer = window.combinedOffers && window.combinedOffers[sectionId];
+      
+      if (combinedOffer) {
+        setTimeout(() => {
+          combinedOffer.updateCartAmount();
+        }, 100);
+      }
+      
+      
+      import('@theme/events').then(({ CartUpdateEvent }) => {
+        const cartDrawer = document.querySelector('cart-drawer-component');
+        
+        fetch(`/cart.js?_=${Date.now()}`, { cache: 'no-store' })
+          .then(res => res.json())
+          .then(cart => {
+            
+            document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart } }));
+            
+            const event = new CartUpdateEvent(cart, 'manual-trigger', {
+              itemCount: cart.item_count,
+              source: 'combined-offer-block',
+              sections: {}
+            });
+            document.dispatchEvent(event);
+            
+            setTimeout(() => {
+              if (combinedOffer) {
+                combinedOffer.updateCartAmount();
+              }
+            }, 300);
+            
+            if (!isFromPopup && cartDrawer) {
+              if (cartDrawer.hasAttribute('auto-open')) {
+                cartDrawer.open();
+              } else {
+                if (typeof cartDrawer.open === 'function') {
+                  cartDrawer.open();
+                } else if (typeof cartDrawer.toggle === 'function') {
+                  cartDrawer.toggle(true);
+                }
+              }
+            }
+            
+            const cartItemsComponent = document.querySelector('cart-items-component');
+            if (cartItemsComponent && typeof cartItemsComponent.refresh === 'function') {
+              cartItemsComponent.refresh();
+            }
+          });
+      }).catch((error) => {
+        console.error('❌ 無法載入 @theme/events:', error);
+        
+        const cartDrawer = document.querySelector('cart-drawer-component, cart-drawer, .cart-drawer');
+        
+        fetch(`/cart.js?_=${Date.now()}`, { cache: 'no-store' })
+          .then(res => res.json())
+          .then(cart => {
+            document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart } }));
+            
+            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+              bubbles: true,
+              detail: { cart: cart }
+            }));
+            
+            setTimeout(() => {
+              if (combinedOffer) {
+                combinedOffer.updateCartAmount();
+              }
+            }, 300);
+            
+            if (!isFromPopup) {
+              if (cartDrawer && typeof cartDrawer.open === 'function') {
+                cartDrawer.open();
+              } else {
+                const cartButton = document.querySelector('[data-cart-drawer-toggle], [data-cart-toggle], .cart-toggle');
+                if (cartButton) cartButton.click();
+              }
+            }
+            
+            if (window.location.pathname.includes('/cart')) {
+              const cartTable = document.querySelector('.cart-items__table');
+              if (cartTable) {
+                fetch(window.location.href)
+                  .then(res => res.text())
+                  .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newCartTable = doc.querySelector('.cart-items__table');
+                    if (newCartTable && cartTable.parentNode) {
+                      cartTable.parentNode.replaceChild(newCartTable, cartTable);
+                    }
+                  });
+              }
+            }
+          });
+      });
+      
+      setTimeout(() => {
+        button.classList.remove('added');
+        if (isFromPopup) {
+          button.textContent = '{{ "cart.add_on" | t }}';
+        } else {
+          button.innerHTML = '<span>+</span>';
+        }
+      }, 3000);
+    })
+    .catch(error => {
+      console.error('加入購物車失敗:', error);
+      button.classList.remove('loading');
+      
+      if (isFromPopup) {
+        button.textContent = '{{ "cart.failed" | t }}';
+      } else {
+        button.innerHTML = '<span>✗</span>';
+      }
+
+      setTimeout(() => {
+        if (isFromPopup) {
+          button.textContent = '{{ "cart.add_on" | t }}';
+        } else {
+          button.innerHTML = '<span>+</span>';
+        }
+      }, 2000);
+    });
+  }
+
+  // 初始化綜合優惠
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.getElementById('combined-offer-{{ section.id }}');
+    if (section) {
+      if (!window.combinedOffers) {
+        window.combinedOffers = {};
+      }
+      
+      window.combinedOffers['{{ section.id }}'] = new CombinedOffer('{{ section.id }}', {
+        initial_message: `{{ section.settings.initial_message | escape }}`,
+        cumulative_tiers: `{{ section.settings.cumulative_tiers }}`,
+        tiers: [
+          {% for block in section.blocks %}
+            
+            {% comment %} === 情況 1: 一般優惠 (所有人可見) === {% endcomment %}
+            {% if block.type == 'tier' %}
+              {
+                id: '{{ block.id }}',
+                amount: {{ block.settings.amount | default: 0 }},
+                benefit: '{{ block.settings.benefit | escape }}',
+                description: '{{ block.settings.description | escape }}',
+                highlight_on_achieve: {{ block.settings.highlight_on_achieve | json }},
+                type: '{{ block.settings.tier_type | escape }}'
+              }
+              {% unless forloop.last %},{% endunless %}
+
+            {% comment %} === 情況 2: 新客註冊禮 (動態判斷) === {% endcomment %}
+            {% elsif block.type == 'new_member_tier' %}
+              
+              {% comment %} 液態邏輯：只有 (已登入 + 0訂單 + 無標籤) 才會輸出這段 JSON {% endcomment %}
+              {% if customer and customer.orders_count == 0 %}
+                {% unless customer.tags contains 'Gift_Sent' %}
+                  {
+                    id: '{{ block.id }}',
+                    amount: {{ block.settings.amount | default: 1000 }}, 
+                    benefit: '{{ block.settings.benefit | escape }}',
+                    description: '{{ block.settings.description | escape }}',
+                    highlight_on_achieve: true, 
+                    type: 'discount'
+                  }
+                  {% unless forloop.last %},{% endunless %}
+                {% endunless %}
+              {% endif %}
+
+            {% endif %}
+          {% endfor %}
+        ]
+      });
+    }
+    setTimeout(() => {
+      const firstVisibleTab = document.querySelector('.category-tab:not([style*="display: none"])');
+      if (firstVisibleTab) {
+        switchCategory(firstVisibleTab.dataset.category, firstVisibleTab);
+      }
+    }, 100);
+  });
+
+  function openRecommendPopup() {
+    const overlay = document.getElementById('popup-overlay-{{ section.id }}');
+    const container = document.getElementById('popup-container-{{ section.id }}');
+    
+    if (overlay && container) {
+      overlay.classList.add('active');
+      container.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      
+      const combinedOffer = window.combinedOffers && window.combinedOffers['{{ section.id }}'];
+      if (combinedOffer) {
+        combinedOffer.updateSmartCategory();
+      }
+      
+      const firstVisibleTab = document.querySelector('.category-tab:not([style*="display: none"])');
+      if (firstVisibleTab) {
+        switchCategory(firstVisibleTab.dataset.category, firstVisibleTab);
+      }
+    }
+  }
+
+  function closeRecommendPopup() {
+    const overlay = document.getElementById('popup-overlay-{{ section.id }}');
+    const container = document.getElementById('popup-container-{{ section.id }}');
+    
+    if (overlay && container) {
+      overlay.classList.remove('active');
+      container.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  function switchCategory(category, element) {
+    document.querySelectorAll('.category-tab').forEach(tab => {
+      tab.classList.remove('active');
+    });
+    element.classList.add('active');
+    
+    const allCards = document.querySelectorAll('.recommend-product-card');
+    let visibleCount = 0;
+    
+    allCards.forEach(card => {
+      const categories = card.dataset.category.split(' ');
+      if (categories.includes(category)) {
+        card.style.display = 'flex';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    
+    const grid = document.getElementById('recommendProductsGrid-{{ section.id }}');
+    let noProductsMsg = grid.querySelector('.no-products-in-category');
+    
+    if (visibleCount === 0) {
+      if (!noProductsMsg) {
+        allCards.forEach(card => card.style.display = 'none');
+        
+        noProductsMsg = document.createElement('div');
+        noProductsMsg.className = 'no-products-in-category';
+        noProductsMsg.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">{{ "cart.no_products_in_category" | t }}</p>';
+        grid.appendChild(noProductsMsg);
+      } else {
+        noProductsMsg.style.display = 'block';
+      }
+    } else if (noProductsMsg) {
+      noProductsMsg.remove();
+    }
+  }
+
+  function updateShippingProgress() {
+    const combinedOffer = window.combinedOffers && window.combinedOffers['{{ section.id }}'];
+    if (combinedOffer) {
+      combinedOffer.updateCartAmount();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const popup = document.querySelector('.recommend-popup-container');
+    const handle = document.querySelector('.popup-handle');
+    
+    if (handle && popup) {
+      let startY = 0;
+      
+      handle.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+      });
+      
+      handle.addEventListener('touchmove', (e) => {
+        const currentY = e.touches[0].clientY;
+        const translateY = Math.max(0, currentY - startY);
+        if (translateY > 0) {
+          popup.style.transform = `translateY(${translateY}px)`;
+        }
+      });
+      
+      handle.addEventListener('touchend', (e) => {
+        const currentY = e.changedTouches[0].clientY;
+        const translateY = currentY - startY;
+        if (translateY > 100) {
+          closeRecommendPopup();
+        }
+        popup.style.transform = '';
+      });
+    }
+  });
+  // 产品变体弹窗相关函数
+function showProductVariantsModal(productHandle, productTitle) {
+  const modal = document.getElementById('product-variants-modal-{{ section.id }}');
+  const titleElement = document.getElementById('product-variants-title-{{ section.id }}');
+  const optionsContainer = document.getElementById('product-variants-options-{{ section.id }}');
+  
+  // 设置弹窗标题
+  titleElement.textContent = productTitle;
+  
+  // 显示加载状态
+  optionsContainer.innerHTML = '<div class="loading-placeholder">{{ "cart.loading" | t }}</div>';
+  
+  // 显示弹窗
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  
+  // 获取产品变体信息
+  fetch(`/products/${productHandle}.js`)
+    .then(response => response.json())
+    .then(productData => {
+      // 渲染变体选项
+      renderProductVariants(productData);
+    })
+    .catch(error => {
+      console.error('获取产品变体信息失败:', error);
+      optionsContainer.innerHTML = '<div class="error-message">{{ "cart.load_failed" | t }}</div>';
+    });
+}
+function closeProductVariantsModal() {
+  const modal = document.getElementById('product-variants-modal-{{ section.id }}');
+  modal.classList.remove('show');
+  document.body.style.overflow = 'auto';
+}
+
+function renderProductVariants(productData) {
+  const optionsContainer = document.getElementById('product-variants-options-{{ section.id }}');
+  
+  if (!productData.variants || productData.variants.length === 0) {
+    optionsContainer.innerHTML = '<div class="no-variants-message">{{ "cart.no_variants" | t }}</div>';
+    return;
+  }
+  
+  let variantsHTML = '';
+  
+  productData.variants.forEach(variant => {
+    if (variant.available) {
+      // 获取变体图片，如果没有则使用产品主图
+      let variantImage = '';
+      if (variant.featured_image) {
+        variantImage = `<img src="${variant.featured_image.src}" alt="${variant.title}" style="width: 65px; height: 60px; object-fit: cover; border-radius: 4px; margin-right: 10px;">`;
+      } else if (productData.images && productData.images.length > 0) {
+        variantImage = `<img src="${productData.images[0]}" alt="${variant.title}" style="width: 65px; height: 60px; object-fit: cover; border-radius: 4px; margin-right: 10px;">`;
+      }
+      
+      variantsHTML += `
+        <div class="apgo-variant-choice" onclick="addToCartFromVariantModal(${variant.id}, 1, '${(productData.title || '').replace(/'/g, "\\'")}')">
+          <div class="apgo-choice-info" style="display: flex; align-items: center;">
+            ${variantImage}
+            <div>
+              <h4>${productData.title}</h4>
+              ${variant.public_title ? `<h4 style="font-size: 16px;">${variant.public_title}</h4>` : ''}
+            </div>
+          </div>
+          <div class="apgo-choice-price">${(window.Shopify && window.Shopify.formatMoney) ? Shopify.formatMoney(variant.price) : 'NT$' + (variant.price/100).toFixed(0)}</div>
+        </div>
+      `;
+    }
+  });
+  
+  if (variantsHTML === '') {
+    optionsContainer.innerHTML = '<div class="no-variants-message">{{ "cart.no_variants" | t }}</div>';
+  } else {
+    optionsContainer.innerHTML = variantsHTML;
+  }
+}
+
+async function addToCartFromVariantModal(variantId, quantity, productName) {
+  const clickedChoice = event.currentTarget;
+  const originalContent = clickedChoice.innerHTML;
+  
+  if (clickedChoice.classList.contains('loading')) {
+    return;
+  }
+  
+  // 创建一个临时按钮元素以兼容 addToCartUnified
+  const tempButton = document.createElement('button');
+  tempButton.style.display = 'none';
+  tempButton.dataset.variantId = variantId;
+  document.body.appendChild(tempButton);
+  
+  clickedChoice.classList.add('loading');
+  clickedChoice.style.opacity = '0.7';
+  clickedChoice.style.cursor = 'not-allowed';
+  clickedChoice.innerHTML = '<div>{{ "cart.adding_to_cart" | t }}</div>';
+  
+  try {
+    // 使用 addToCartUnified 方法确保购物车界面和标签正确更新
+    await new Promise(resolve => {
+      addToCartUnified(variantId, tempButton, false);
+      // 监听按钮状态变化来判断何时完成
+      const checkComplete = setInterval(() => {
+        if (!tempButton.classList.contains('loading')) {
+          clearInterval(checkComplete);
+          resolve();
+        }
+      }, 100);
+    });
+    
+    // 关闭弹窗
+    closeProductVariantsModal();
+    
+    // 更新综合优惠区域
+    const sectionElement = document.querySelector('.combined-offer-section') || 
+                          document.querySelector('.combined-offer-section');
+    const sectionId = sectionElement ? sectionElement.id.replace('combined-offer-', '') : '{{ section.id }}';
+    const combinedOffer = window.combinedOffers && window.combinedOffers[sectionId];
+    
+    if (combinedOffer) {
+      setTimeout(() => {
+        combinedOffer.updateCartAmount();
+      }, 100);
+    }
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Add to cart error:', error);
+    return { success: false, error: error.message };
+  } finally {
+    // 清理临时按钮
+    if (tempButton.parentNode) {
+      tempButton.parentNode.removeChild(tempButton);
+    }
+    
+    clickedChoice.classList.remove('loading');
+    clickedChoice.style.opacity = '1';
+    clickedChoice.style.cursor = 'pointer';
+    clickedChoice.innerHTML = originalContent;
+  }
+}
+
+
+// 关闭弹窗的键盘事件
+document.addEventListener('keydown', function(e) {
+  const modal = document.getElementById('product-variants-modal-{{ section.id }}');
+  if (e.key === 'Escape' && modal && modal.classList.contains('show')) {
+    closeProductVariantsModal();
+  }
+});
+
+// 点击弹窗外部关闭弹窗
+document.addEventListener('click', function(e) {
+  const modal = document.getElementById('product-variants-modal-{{ section.id }}');
+  if (modal && modal.classList.contains('show') && e.target.classList.contains('apgo-modal-overlay')) {
+    closeProductVariantsModal();
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "購物車頁-綜合優惠區塊",
+  "class": "section-cart-combined",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "條件優惠設定"
+    },
+    {
+      "type": "text",
+      "id": "progress_title",
+      "label": "進度條標題",
+      "default": "距離免運費還差"
+    },
+    {
+      "type": "textarea",
+      "id": "initial_message",
+      "label": "初始訊息",
+      "default": "開始購物即可享受優惠！",
+      "info": "當沒有優惠階層時顯示的訊息"
+    },
+    {
+      "type": "header",
+      "content": "推薦商品設定"
+    },
+    {
+      "type": "text",
+      "id": "upsell_title",
+      "label": "推薦商品標題",
+      "default": "推薦加購商品"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "選擇推薦商品"
+    },
+    {
+      "type": "product_list",
+      "id": "slider_product_list",
+      "label": "滑块展示商品",
+      "info": "选择在非弹窗区域展示的推荐商品"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "最多顯示商品數",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "default": 6,
+      "info": "在主要區域顯示的商品數量"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_prices",
+      "label": "顯示價格",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "label": "啟用快速加入購物車",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "分類設定"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_smart_category",
+      "label": "啟用智能分類",
+      "default": true,
+      "info": "顯示「再買一件即達標」分類"
+    },
+    {
+      "type": "product_list",
+      "id": "discount_products",
+      "label": "限時優惠商品"
+    },
+    {
+      "type": "product_list",
+      "id": "cleaning_products",
+      "label": "清潔類商品"
+    },
+    {
+      "type": "product_list",
+      "id": "coating_products",
+      "label": "鍍膜類商品"
+    },
+    {
+      "type": "product_list",
+      "id": "car_tools_products",
+      "label": "車用工具商品"
+    },
+    {
+      "type": "product_list",
+      "id": "repair_products",
+      "label": "修復類商品"
+    },
+    {
+      "type": "product_list",
+      "id": "home_products",
+      "label": "居家產品"
+    },
+    {
+      "type": "text",
+      "id": "tab_smart_text",
+      "label": "智能分類標籤文字",
+      "default": "再買一件即達標"
+    },
+    {
+      "type": "text",
+      "id": "tab_cleaning_text",
+      "label": "清潔類標籤文字",
+      "default": "清潔類"
+    },
+    {
+      "type": "text",
+      "id": "tab_coating_text",
+      "label": "鍍膜類標籤文字",
+      "default": "鍍膜類"
+    },
+    {
+      "type": "text",
+      "id": "tab_car_tools_text",
+      "label": "車用工具標籤文字",
+      "default": "車用工具"
+    },
+    {
+      "type": "text",
+      "id": "tab_repair_text",
+      "label": "修復類標籤文字",
+      "default": "修復類"
+    },
+    {
+      "type": "text",
+      "id": "tab_home_text",
+      "label": "居家產品標籤文字",
+      "default": "居家產品"
+    },
+    {
+      "type": "header",
+      "content": "顯示設定"
+    },
+    {
+      "type": "checkbox",
+      "id": "cumulative_tiers",
+      "label": "是否纍計高亮",
+      "default": true,
+      "info": "開啟後，多個達成的優惠可同時高亮（需卡片獨立開關也配合開啟）。關閉後，只有最高的優惠會高亮。"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_discount_percentage",
+      "label": "顯示折扣百分比",
+      "default": true,
+      "info": "優惠商品顯示折扣百分比，否則只顯示標籤文字"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_progress",
+      "label": "隱藏進度條",
+      "default": false,
+      "info": "只顯示優惠訊息，不顯示進度條"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_conditional",
+      "label": "隱藏條件優惠區域",
+      "default": false,
+      "info": "完全隱藏條件式優惠功能"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_upsell",
+      "label": "隱藏推薦商品區域",
+      "default": false,
+      "info": "完全隱藏推薦商品功能"
+    },
+    {
+      "type": "header",
+      "content": "顏色設定"
+    },
+    {
+      "type": "color",
+      "id": "loading_bg_color",
+      "label": "載入背景色",
+      "default": "#1a1a1a",
+      "info": "防止載入時白色閃爍的預設背景色"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_accent_gradient",
+      "label": "使用強調色漸變",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "accent_color_start",
+      "label": "強調色（起始）",
+      "default": "#ff6b35"
+    },
+    {
+      "type": "color",
+      "id": "accent_color_end",
+      "label": "強調色（結束）",
+      "default": "#f7931e"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "主要文字顏色",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_secondary_color",
+      "label": "次要文字顏色",
+      "default": "#cccccc"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tier",
+      "name": "優惠階層 (一般)",
+      "settings": [
+        {
+          "type": "number",
+          "id": "amount",
+          "label": "目標金額",
+          "default": 1000,
+          "info": "達到此金額即可享受優惠"
+        },
+        {
+          "type": "text",
+          "id": "benefit",
+          "label": "優惠內容",
+          "default": "免運費",
+          "info": "例如：免運費、NT$ 100 折扣等"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "詳細說明",
+          "info": "可選的詳細說明文字"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight_on_achieve",
+          "label": "達成時高亮",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "tier_type",
+          "label": "優惠類型標記",
+          "default": "free_shipping",
+          "info": "free_shipping 或 discount"
+        }
+      ]
+    },
+    {
+      "type": "new_member_tier",
+      "name": "🎁 新客註冊禮 (自動判斷)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "自動顯示條件：僅限已登入且無訂單的新客"
+        },
+        {
+          "type": "number",
+          "id": "amount",
+          "label": "低消門檻 (需與後台折扣一致)",
+          "default": 1000,
+          "info": "達到此金額才會顯示達成"
+        },
+        {
+          "type": "text",
+          "id": "benefit",
+          "label": "優惠顯示文字",
+          "default": "註冊禮 $100"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "下方小字說明",
+          "default": "新會員首購專屬優惠"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "購物車綜合優惠",
+      "category": "銷售功能",
+      "blocks": [
+        {
+          "type": "tier",
+          "settings": {
+            "amount": 1000,
+            "benefit": "免運費"
+          }
+        },
+        {
+          "type": "tier",
+          "settings": {
+            "amount": 1500,
+            "benefit": "NT$ 100 折扣"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

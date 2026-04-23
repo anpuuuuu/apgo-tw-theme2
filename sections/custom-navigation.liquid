@@ -1,0 +1,332 @@
+{% comment %} sections/custom-navigation.liquid {% endcomment %}
+
+<nav class="custom-navigation" id="customNav">
+  <div class="nav-container">
+    <div class="nav-items">
+      {% for block in section.blocks %}
+        {% if block.type == 'nav_item' %}
+          <a 
+            href="#{{ block.settings.nav_section_id }}" 
+            class="nav-item {% if forloop.first %}nav-item-active{% endif %}" 
+            data-section="{{ block.settings.nav_section_id }}"
+            data-label="{{ block.settings.nav_label }}"
+          >
+            <span class="nav-text">{{ block.settings.nav_label }}</span>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</nav>
+
+<style>
+  .custom-navigation {
+    width: 100%;
+    height: 76px;
+    padding: 0 144px;
+    background: black;
+    border-bottom: 1px solid #3f3f46;
+    position: relative;
+    z-index: 100;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: position 0.3s ease;
+  }
+
+  .custom-navigation.is-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0 144px;
+  }
+
+  .nav-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .nav-items {
+    flex: 1 1 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 52px;
+    height: 100%;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-items::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-item {
+    align-self: stretch;
+    padding: 16px 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .nav-item-active {
+    border-bottom: 2px solid #ff651d;
+    border-radius: 0;
+  }
+
+  .nav-item-active .nav-text {
+    color: #ff651d;
+    background: linear-gradient(90deg, #ff651d 0%, #ff9d00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .nav-text {
+    color: white;
+    font-size: 24px;
+    font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 24px;
+    word-wrap: break-word;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .nav-item:hover:not(.nav-item-active) .nav-text {
+    background: linear-gradient(90deg, #ff9d00 0%, #ffb84d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+
+  /* 手機響應式 */
+  @media (max-width: 450px) {
+    .custom-navigation {
+      padding: 5px 0px 0px 0px;
+      height: 60px;
+    }
+
+    .custom-navigation.is-fixed {
+      padding: 5px 12px 0px 12px;
+      width: 100%;
+    }
+
+    .nav-items {
+      gap: 8px;
+      padding: 0;
+      justify-content: flex-start;
+    }
+
+    .nav-item {
+      padding: 0px 8px 0px 8px;
+      white-space: normal;
+    }
+
+    .nav-text {
+      font-size: 15px;
+      line-height: 20px;
+      padding-bottom: 5px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const navBar = document.getElementById('customNav');
+    const navItems = document.querySelectorAll('.nav-item');
+    const navItemsContainer = document.querySelector('.nav-items');
+    let navOffsetTop = navBar.offsetTop;
+
+    // 更新文字顯示（根據螢幕寬度判斷是否轉換）
+    function updateNavTextDisplay() {
+      const isMobile = window.innerWidth <= 450;
+      
+      navItems.forEach(item => {
+        const label = item.getAttribute('data-label');
+        const navText = item.querySelector('.nav-text');
+        
+        if (isMobile) {
+          // 手機端：轉換 · 為換行
+          const parts = label.split('·');
+          navText.innerHTML = parts.join('<br>');
+        } else {
+          // 電腦端：不轉換，直接顯示
+          navText.textContent = label;
+        }
+      });
+    }
+
+    // 計算導航欄的原始位置
+    function updateNavOffset() {
+      if (!navBar.classList.contains('is-fixed')) {
+        navOffsetTop = navBar.offsetTop;
+      }
+    }
+
+    // ✅ 新增：滾動導航欄到 active 項目
+    function scrollNavToActive(activeItem) {
+      if (!activeItem || !navItemsContainer) return;
+
+      const containerWidth = navItemsContainer.clientWidth;
+      const itemLeft = activeItem.offsetLeft;
+      const itemWidth = activeItem.clientWidth;
+      const currentScroll = navItemsContainer.scrollLeft;
+
+      // 計算 active 項的中心位置
+      const itemCenter = itemLeft + itemWidth / 2;
+      const containerCenter = containerWidth / 2;
+
+      // 計算需要滾動的距離
+      const scrollTo = itemCenter - containerCenter;
+
+      // 平滑滾動導航欄
+      navItemsContainer.scrollTo({
+        left: scrollTo,
+        behavior: 'smooth'
+      });
+    }
+    
+    // 點擊導航項
+    navItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // 移除所有 active 類
+        navItems.forEach(nav => nav.classList.remove('nav-item-active'));
+        
+        // 添加 active 類到當前項
+        this.classList.add('nav-item-active');
+
+        // ✅ 新增：滾動導航欄到此項目
+        scrollNavToActive(this);
+        
+        // 獲取目標 section ID
+        const sectionId = this.getAttribute('data-section');
+        const targetSection = document.getElementById(sectionId);
+        
+        if (targetSection) {
+          // 計算導航欄高度
+          const navHeight = navBar.clientHeight;
+          const targetTop = targetSection.offsetTop - navHeight;
+          
+          // 平滑滾動到目標 section
+          window.scrollTo({
+            top: targetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // 頁面滾動時更新導航
+    window.addEventListener('scroll', function() {
+      const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+      
+      // 如果滾動位置超過導航欄原始位置，就固定它
+      if (scrollPosition >= navOffsetTop) {
+        navBar.classList.add('is-fixed');
+      } else {
+        navBar.classList.remove('is-fixed');
+      }
+
+      const navHeight = navBar.clientHeight;
+      let current = '';
+      let activeItem = null;
+
+      navItems.forEach(item => {
+        const sectionId = item.getAttribute('data-section');
+        const targetSection = document.getElementById(sectionId);
+        
+        if (targetSection) {
+          const sectionTop = targetSection.offsetTop;
+          const sectionHeight = targetSection.clientHeight;
+          
+          if (scrollPosition >= sectionTop - navHeight - 50) {
+            current = sectionId;
+            activeItem = item;
+          }
+        }
+      });
+
+      navItems.forEach(item => {
+        item.classList.remove('nav-item-active');
+        if (item.getAttribute('data-section') === current) {
+          item.classList.add('nav-item-active');
+        }
+      });
+
+      // ✅ 新增：自動滾動導航欄到 active 項目
+      if (activeItem) {
+        scrollNavToActive(activeItem);
+      }
+    });
+
+    // 視窗大小改變時重新計算和更新文字
+    window.addEventListener('resize', function() {
+      updateNavOffset();
+      updateNavTextDisplay();
+    });
+
+    // 初始化
+    updateNavOffset();
+    updateNavTextDisplay();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "自定義導航欄",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "nav_item",
+      "name": "導航項目",
+      "settings": [
+        {
+          "type": "text",
+          "id": "nav_label",
+          "label": "導航標籤文字",
+          "info": "使用 · 符號分隔（手機端會自動換行，電腦端不轉換）",
+          "default": "第一項"
+        },
+        {
+          "type": "text",
+          "id": "nav_section_id",
+          "label": "目標 Section ID",
+          "info": "填入要導航到的 section 的 HTML ID（不包括 # 符號）",
+          "placeholder": "例如: section-hero, section-products",
+          "default": "section-1"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "活動模板 - 自定義導航欄"
+    }
+  ]
+}
+{% endschema %}

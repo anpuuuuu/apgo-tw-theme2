@@ -1,0 +1,347 @@
+{% comment %} sections/double-eleven-flash-discount.liquid {% endcomment %}
+
+<section class="double-eleven-flash-top" id="{{ section.settings.section_id }}"
+  data-section-id="{{ section.settings.section_id }}">
+  <div class="flash-top-container">
+    <div class="flash-sale-section">
+      <div class="flash-discount-content">
+        <div class="flash-discount-wrapper">
+          <div class="flash-discount-title-box">
+            {% if section.settings.flash_discount_title_image_desktop %}
+              <img
+                src="{{ section.settings.flash_discount_title_image_desktop | img_url }}"
+                srcset="{{ section.settings.flash_discount_title_image_desktop | img_url: '1536x' }} 1x,
+                        {{ section.settings.flash_discount_title_image_desktop | img_url: '3072x' }} 2x"
+                alt="Flash Discount Title"
+                class="flash-discount-title-image flash-discount-title-image-desktop"
+                loading="lazy"
+              >
+            {% endif %}
+
+            {% if section.settings.flash_discount_title_image_mobile %}
+              <img
+                src="{{ section.settings.flash_discount_title_image_mobile | img_url }}"
+                srcset="{{ section.settings.flash_discount_title_image_mobile | img_url: '750x' }} 1x,
+                        {{ section.settings.flash_discount_title_image_mobile | img_url: '1500x' }} 2x"
+                alt="Flash Discount Title"
+                class="flash-discount-title-image flash-discount-title-image-mobile"
+                loading="lazy"
+              >
+            {% endif %}
+          </div>
+
+          <div class="flash-discount-items">
+            {% for block in section.blocks %}
+              {% if block.type == 'flash_discount_item' %}
+                <div class="flash-discount-item">
+                  <svg
+                    class="flash-discount-bg"
+                    width="372"
+                    height="188"
+                    viewBox="0 0 372 188"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M196.437 188C196.164 193.567 191.362 198 185.478 198C179.593 198 174.792 193.567 174.52 188H196.437ZM174.52 0C174.792 5.56671 179.593 9.99988 185.478 10C191.362 10 196.164 5.5668 196.437 0H372V188H196.437C196.445 187.834 196.449 187.668 196.449 187.5C196.449 181.701 191.537 177 185.478 177C179.418 177 174.506 181.701 174.506 187.5C174.506 187.668 174.511 187.834 174.52 188H0V0H174.52ZM185.478 -11C191.537 -11 196.449 -6.29899 196.449 -0.5C196.449 -0.332372 196.445 -0.165707 196.437 0H174.52C174.511 -0.165714 174.506 -0.332363 174.506 -0.5C174.506 -6.29892 179.418 -10.9999 185.478 -11Z" fill="url(#paint0_discount)"/>
+                    <defs>
+                      <linearGradient id="paint0_discount" x1="-7.27686e-07" y1="7.5" x2="372.481" y2="197.055" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#561300"/>
+                        <stop offset="1" stop-color="#22120F"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div class="flash-discount-item-content">
+                    <div class="discount-item-title">{{ block.settings.discount_title }}</div>
+                    <div class="discount-item-limit">{{ block.settings.discount_limit }}</div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ===== 第六块 全站滿額折扣優惠 ===== */
+  .double-eleven-flash-top {
+    width: 100%;
+    position: relative;
+    background-color: black;
+    overflow: hidden;
+    padding: 40px 0;
+  }
+
+  .flash-top-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0 auto;
+  }
+
+  .flash-sale-section {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .flash-discount-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 160px;
+  }
+
+  .flash-discount-wrapper {
+    width: 1600px;
+    padding: 0 32px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .flash-discount-title-box {
+    align-self: stretch;
+    height: 240px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    padding: 64px;
+  }
+
+  .flash-discount-title-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .flash-discount-title-image-desktop {
+    display: block;
+  }
+
+  .flash-discount-title-image-mobile {
+    display: none;
+  }
+
+  .flash-discount-title {
+    text-align: center;
+    color: white;
+    font-size: 44px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 62px;
+    word-wrap: break-word;
+    position: relative;
+    z-index: 1;
+  }
+
+  .flash-discount-items {
+    align-self: stretch;
+    height: 188px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .flash-discount-item {
+    flex: 1 1 0;
+    min-width: 240px;
+    height: 177px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .flash-discount-bg {
+    position: absolute;
+    top: -11px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 0;
+  }
+
+  .flash-discount-item-content {
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .discount-item-title {
+    text-align: center;
+    color: #ffc05b;
+    font-size: 32px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 44px;
+    word-wrap: break-word;
+  }
+
+  .discount-item-limit {
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 24px;
+    word-wrap: break-word;
+  }
+
+  /* ===== 手机响应式 ===== */
+  @media (max-width: 450px) {
+    .double-eleven-flash-top {
+      padding: 20px 0;
+    }
+
+    .flash-discount-content {
+      padding: 20px 0;
+    }
+
+    .flash-discount-wrapper {
+      width: 100%;
+      padding: 0;
+      gap: 10px;
+    }
+
+    .flash-discount-title-image-desktop {
+      display: none;
+    }
+
+    .flash-discount-title-image-mobile {
+      display: block;
+    }
+
+    .flash-discount-title-box {
+      padding: 0;
+      height: auto;
+      min-height: 162px;
+      border-radius: 0px;
+    }
+
+    .flash-discount-title {
+      font-size: 20px;
+      line-height: 28px;
+      padding: 0 16px;
+    }
+
+    .flash-discount-items {
+      height: auto;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+      padding: 0 8px;
+    }
+
+    .flash-discount-item {
+      min-width: 167px;
+      height: 78px;
+      padding: 12px;
+      border-radius: 12px;
+    }
+
+    .discount-item-title {
+      font-size: 14px;
+      line-height: 18px;
+    }
+
+    .discount-item-limit {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "全站滿額折扣優惠",
+  "settings": [
+    {
+      "type": "header",
+      "content": "⚡ 全站滿額折扣優惠"
+    },
+    {
+      "type": "image_picker",
+      "id": "flash_discount_title_image_desktop",
+      "label": "折扣標題 背景圖 - 電腦端"
+    },
+    {
+      "type": "image_picker",
+      "id": "flash_discount_title_image_mobile",
+      "label": "折扣標題 背景圖 - 手機端"
+    },
+    {
+      "type": "text",
+      "id": "flash_sale_promo_title",
+      "label": "促销标题",
+      "default": "全站滿額折扣優惠"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "info": "用於導航欄，不能有空格或特殊字符",
+      "default": "flash-discount",
+      "placeholder": "例如: section-hero"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "flash_discount_item",
+      "name": "折扣项目",
+      "settings": [
+        {
+          "type": "text",
+          "id": "discount_title",
+          "label": "折扣标题",
+          "default": "滿$111折$11"
+        },
+        {
+          "type": "text",
+          "id": "discount_limit",
+          "label": "限量标签",
+          "default": "限量100位"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "活動模板 - 全站滿額折扣優惠"
+    }
+  ]
+}
+{% endschema %}

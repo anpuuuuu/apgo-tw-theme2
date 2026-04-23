@@ -1,0 +1,1108 @@
+{% comment %}
+  30秒快速挑選合適的鍍膜 Section
+  可在後台自定義選項和推薦內容
+{% endcomment %}
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-orange: {{ section.settings.primary_color | default: '#f08418' }};
+    --secondary-orange: {{ section.settings.secondary_color | default: '#ff9a3c' }};
+    --text-white: {{ section.settings.text_color | default: '#ffffff' }};
+    --text-gray: #cccccc;
+    --text-light-gray: #b0b0b0;
+    --dark-bg: {{ section.settings.background_color | default: '#000000' }};
+    --card-bg: rgba(255, 255, 255, 0.03);
+}
+
+body {
+    font-family: 'Arial', 'Microsoft JhengHei', sans-serif;
+    background: var(--dark-bg);
+    color: var(--text-white);
+    overflow-x: hidden;
+}
+
+/* === 統一字體規範 === */
+/* H2 - 區塊主標題 */
+h2, .h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-white);
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* H4 - 選項卡片標題 */
+h4, .h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-white);
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* 副文字說明 */
+.text-secondary {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+/* 小文字/標籤 */
+.text-small {
+    font-size: 0.8rem;
+    color: var(--text-light-gray);
+    line-height: 1.4;
+    font-weight: 400;
+}
+
+/* 極小文字 */
+.text-tiny {
+    font-size: 0.75rem;
+    color: var(--text-light-gray);
+    line-height: 1.3;
+    font-weight: 400;
+}
+
+/* 按鈕文字 */
+.button-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-white);
+}
+
+/* === 快速導購區塊 === */
+.quick-guide-section {
+    background: var(--dark-bg);
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 背景動態效果 */
+.quick-guide-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 150%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(240, 132, 24, 0.06) 0%, transparent 60%);
+    animation: guide-float-glow 12s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes guide-float-glow {
+    0%, 100% { 
+        transform: scale(1) rotate(0deg);
+        opacity: 0.5;
+    }
+    50% { 
+        transform: scale(1.05) rotate(3deg);
+        opacity: 0.8;
+    }
+}
+
+.guide-container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: left;
+    position: relative;
+    z-index: 1;
+}
+
+/* 標題區域 */
+.guide-header {
+    margin-bottom: 25px;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: guide-fadeInUp 0.6s ease forwards;
+}
+
+@keyframes guide-fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.guide-title {
+    /* 使用統一的 H2 樣式 */
+    margin-bottom: 8px;
+    color: var(--primary-orange);
+}
+
+.guide-subtitle {
+    /* 使用統一的副文字樣式 */
+    margin-bottom: 25px;
+}
+
+/* 橫向滾動選項容器 */
+.guide-options {
+    display: flex;
+    gap: {{ section.settings.option_gap }}px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 12px 0 18px 0;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-orange) rgba(255, 255, 255, 0.1);
+}
+
+/* 滾動條樣式 */
+.guide-options::-webkit-scrollbar {
+    height: 4px;
+}
+
+.guide-options::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.guide-options::-webkit-scrollbar-thumb {
+    background: var(--primary-orange);
+    border-radius: 2px;
+    transition: background 0.3s ease;
+}
+
+.guide-options::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-orange);
+}
+
+/* 選項卡片 */
+.guide-option {
+    flex: 0 0 auto;
+    min-width: {{ section.settings.option_min_width }}px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    padding: 18px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: guide-slideUp 0.5s ease forwards;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: {{ section.settings.option_height }}px;
+}
+
+.guide-option:nth-child(1) { animation-delay: 0.1s; }
+.guide-option:nth-child(2) { animation-delay: 0.15s; }
+.guide-option:nth-child(3) { animation-delay: 0.2s; }
+.guide-option:nth-child(4) { animation-delay: 0.25s; }
+
+@keyframes guide-slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 懸停效果 */
+.guide-option:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary-orange);
+    background: rgba(240, 132, 24, 0.12);
+    box-shadow: 
+        0 8px 20px rgba(240, 132, 24, 0.25),
+        0 0 0 1px rgba(240, 132, 24, 0.3);
+}
+
+.guide-option:hover::before {
+    opacity: 1;
+}
+
+/* 光效背景 */
+.guide-option::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(240, 132, 24, 0.1) 0%, 
+        rgba(255, 154, 60, 0.05) 50%, 
+        transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 12px;
+}
+
+/* 圖標樣式 */
+.guide-icon {
+    /* 使用統一的極小文字樣式 */
+    font-weight: bold;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+    position: relative;
+    z-index: 2;
+    color: var(--primary-orange);
+    background: rgba(240, 132, 24, 0.1);
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(240, 132, 24, 0.2);
+    letter-spacing: 0.5px;
+}
+
+.guide-option:hover .guide-icon {
+    transform: scale(1.05);
+    opacity: 1;
+    background: rgba(240, 132, 24, 0.2);
+    border-color: var(--primary-orange);
+    box-shadow: 0 2px 8px rgba(240, 132, 24, 0.3);
+}
+
+/* 選項標題 */
+.guide-option-title {
+    /* 使用統一的 H4 樣式 */
+    margin-bottom: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.guide-option:hover .guide-option-title {
+    color: var(--primary-orange);
+    text-shadow: 0 1px 4px rgba(240, 132, 24, 0.3);
+}
+
+/* 描述文字 */
+.guide-option-description {
+    /* 使用統一的小文字樣式 */
+    line-height: 1.3;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.guide-option:hover .guide-option-description {
+    color: #e0e0e0;
+}
+
+/* === 推薦結果彈窗 === */
+.guide-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.guide-modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 20px;
+    padding: 40px 30px;
+    max-width: 450px;
+    width: 90%;
+    border: 1px solid rgba(240, 132, 24, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.guide-modal.show .modal-content {
+    transform: scale(1);
+}
+
+/* 關閉按鈕 */
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--text-gray);
+    font-size: 1.5rem;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-modal:hover {
+    background: var(--primary-orange);
+    color: white;
+    transform: rotate(90deg);
+}
+
+/* 推薦內容 */
+.recommendation-header {
+    margin-bottom: 25px;
+}
+
+.recommendation-title {
+    /* 使用統一的 H2 樣式，但尺寸稍小 */
+    font-size: 1.5rem;
+    color: var(--primary-orange);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.recommendation-subtitle {
+    /* 使用統一的副文字樣式 */
+}
+
+.recommended-product {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(240, 132, 24, 0.2);
+}
+
+.product-name {
+    /* 使用統一的 H4 樣式 */
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.product-highlight {
+    color: var(--primary-orange);
+    /* 使用統一的小文字樣式 */
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.product-reason {
+    /* 使用統一的副文字樣式 */
+    line-height: 1.5;
+}
+
+.view-product-btn {
+    background: linear-gradient(45deg, var(--primary-orange), var(--secondary-orange));
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    /* 使用統一的按鈕文字樣式 */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(240, 132, 24, 0.3);
+}
+
+.view-product-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(240, 132, 24, 0.4);
+}
+
+/* === 響應式設計 === */
+@media (max-width: 1024px) {
+    .guide-options {
+        gap: 12px;
+    }
+    
+    .guide-option {
+        min-width: 160px;
+        padding: 16px 12px;
+        height: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* H2 手機版調整 */
+    h2, .h2 {
+        font-size: 1.6rem;
+    }
+
+    /* H4 手機版調整 */
+    h4, .h4 {
+        font-size: 1.1rem;
+    }
+
+    /* 其他文字手機版調整 */
+    .text-secondary {
+        font-size: 0.85rem;
+    }
+
+    .text-small {
+        font-size: 0.75rem;
+    }
+
+    .text-tiny {
+        font-size: 0.7rem;
+    }
+
+    .button-text {
+        font-size: 0.9rem;
+    }
+
+    /* 區塊間距調整 */
+    .quick-guide-section {
+        padding: 30px 0 25px 0;
+    }
+
+    .guide-container {
+        padding: 0 16px;
+    }
+
+    .guide-header {
+        margin-bottom: 20px;
+    }
+
+    .guide-subtitle {
+        margin-bottom: 20px;
+    }
+
+    .guide-options {
+        gap: 10px;
+        padding: 10px 0 15px 0;
+    }
+
+    .guide-option {
+        min-width: 140px;
+        padding: 14px 10px;
+        height: 90px;
+    }
+
+    .modal-content {
+        padding: 25px 18px;
+        margin: 0 12px;
+    }
+
+    .recommendation-title {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* 極小螢幕調整 */
+    h2, .h2 {
+        font-size: 1.4rem;
+    }
+
+    h4, .h4 {
+        font-size: 1rem;
+    }
+
+    .text-secondary {
+        font-size: 0.8rem;
+    }
+
+    .text-small {
+        font-size: 0.7rem;
+    }
+
+    .text-tiny {
+        font-size: 0.65rem;
+    }
+
+    .button-text {
+        font-size: 0.85rem;
+    }
+
+    .guide-options {
+        gap: 8px;
+    }
+
+    .guide-option {
+        min-width: 130px;
+        padding: 12px 8px;
+        height: 85px;
+    }
+}
+
+/* === 無障礙設計 === */
+.guide-option:focus {
+    outline: 2px solid var(--primary-orange);
+    outline-offset: 2px;
+}
+
+/* 高對比模式支援 */
+@media (prefers-contrast: high) {
+    .guide-option {
+        border: 1px solid var(--text-gray);
+    }
+    
+    .guide-option:hover {
+        border-color: var(--primary-orange);
+        background: rgba(240, 132, 24, 0.2);
+    }
+}
+
+/* 減少動畫模式支援 */
+@media (prefers-reduced-motion: reduce) {
+    .guide-option,
+    .guide-option-title,
+    .guide-option-description,
+    .guide-icon {
+        transition: none;
+        animation: none;
+    }
+    
+    .guide-option:hover {
+        transform: none;
+    }
+    
+    .quick-guide-section::before {
+        animation: none;
+    }
+}
+
+/* === 結構化資料支援 === */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+</style>
+
+<!-- 快速導購區塊 -->
+<section class="quick-guide-section" role="region" aria-labelledby="guide-title" id="quick-selection-guide">
+    <div class="guide-container">
+        <header class="guide-header">
+            <h2 id="guide-title" class="guide-title">{{ section.settings.title }}</h2>
+            <p class="guide-subtitle text-secondary">{{ section.settings.subtitle }}</p>
+        </header>
+        
+        <div class="guide-options" role="group" aria-label="鍍膜需求選項">
+            {% for block in section.blocks %}
+            <button class="guide-option" 
+                    data-type="{{ block.settings.option_key }}" 
+                    role="button" 
+                    aria-label="選擇{{ block.settings.option_title }}方案"
+                    tabindex="0">
+                <div class="guide-icon text-tiny">{{ block.settings.icon_text }}</div>
+                <h4 class="guide-option-title">{{ block.settings.option_title }}</h4>
+                <p class="guide-option-description text-small">{{ block.settings.option_description }}</p>
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- 推薦結果彈窗 -->
+<div class="guide-modal" id="guideModal" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeRecommendation()" aria-label="關閉推薦視窗">×</button>
+        
+        <header class="recommendation-header">
+            <h3 id="modal-title" class="recommendation-title">{{ section.settings.modal_title }}</h3>
+            <p class="recommendation-subtitle text-secondary">{{ section.settings.modal_subtitle }}</p>
+        </header>
+        
+        <div id="recommendedProduct" class="recommended-product">
+            <!-- 動態內容將在這裡填入 -->
+        </div>
+        
+        <button class="view-product-btn button-text" onclick="scrollToProducts()">{{ section.settings.view_button_text }}</button>
+    </div>
+</div>
+
+<script>
+    // 推薦產品數據
+    const recommendations = {
+        {% for block in section.blocks %}
+        '{{ block.settings.option_key }}': {
+            name: {{ block.settings.recommend_name | json }},
+            reason: {{ block.settings.recommend_reason | json }},
+            highlight: {{ block.settings.recommend_highlight | json }}
+        }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+    };
+
+    // 初始化導購選項
+    function initGuideOptions() {
+        const options = document.querySelectorAll('.guide-option');
+        
+        options.forEach(option => {
+            // 點擊事件
+            option.addEventListener('click', function() {
+                handleOptionSelection(this);
+            });
+
+            // 鍵盤事件
+            option.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleOptionSelection(this);
+                }
+            });
+        });
+    }
+
+    // 處理選項選擇
+    function handleOptionSelection(element) {
+        const type = element.dataset.type;
+        
+        // 添加視覺回饋
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            element.style.transform = 'translateY(-6px) scale(0.98)';
+            setTimeout(() => {
+                element.style.transform = '';
+            }, 200);
+        }
+        
+        // 顯示推薦結果
+        showRecommendation(type);
+        
+        // 發送分析事件 (如果有 GA)
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'guide_option_click', {
+                'option_type': type,
+                'event_category': 'user_interaction'
+            });
+        }
+    }
+
+    // 顯示推薦結果
+    function showRecommendation(type) {
+        const modal = document.getElementById('guideModal');
+        const productDiv = document.getElementById('recommendedProduct');
+        const recommendation = recommendations[type];
+        
+        if (!recommendation) {
+            console.error('找不到對應的推薦產品');
+            return;
+        }
+        
+        productDiv.innerHTML = `
+            <div class="product-name">${recommendation.name}</div>
+            <div class="product-highlight text-small">
+                ${recommendation.highlight}
+            </div>
+            <div class="product-reason text-secondary">${recommendation.reason}</div>
+        `;
+        
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+        
+        // 防止背景滾動
+        document.body.style.overflow = 'hidden';
+        
+        // 焦點管理
+        const firstFocusable = modal.querySelector('.close-modal');
+        if (firstFocusable) {
+            firstFocusable.focus();
+        }
+    }
+
+    // 關閉推薦彈窗
+    function closeRecommendation() {
+        const modal = document.getElementById('guideModal');
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = 'auto';
+        
+        // 返回焦點到觸發元素
+        const lastClickedOption = document.querySelector('.guide-option:focus');
+        if (lastClickedOption) {
+            lastClickedOption.focus();
+        }
+    }
+
+    // 滾動到產品區域
+    function scrollToProducts() {
+        closeRecommendation();
+        
+        // 尋找產品區域的多種可能選擇器
+        const productSelectors = [
+            '.apgo-products-container',
+            '.coating-showcase',
+            '[class*="product"]',
+            '#products',
+            '.products-section'
+        ];
+        
+        let productsSection = null;
+        for (const selector of productSelectors) {
+            productsSection = document.querySelector(selector);
+            if (productsSection) break;
+        }
+        
+        if (productsSection) {
+            // 計算滾動位置，考慮導航欄高度
+            const navHeight = document.querySelector('.quick-navigation-section')?.offsetHeight || 0;
+            const targetPosition = productsSection.offsetTop - navHeight - 20;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        } else {
+            // 如果找不到產品區域，滾動到頁面適當位置
+            window.scrollTo({
+                top: window.innerHeight,
+                behavior: 'smooth'
+            });
+        }
+        
+        // 發送分析事件
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'view_products_click', {
+                'event_category': 'navigation'
+            });
+        }
+    }
+
+    // 事件監聽器
+    function setupEventListeners() {
+        // 點擊彈窗外部關閉
+        document.getElementById('guideModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeRecommendation();
+            }
+        });
+
+        // ESC 鍵關閉彈窗
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('guideModal');
+                if (modal.classList.contains('show')) {
+                    closeRecommendation();
+                }
+            }
+        });
+
+        // 鍵盤導航支援
+        document.addEventListener('keydown', function(e) {
+            const options = document.querySelectorAll('.guide-option');
+            const currentFocus = document.activeElement;
+            const currentIndex = Array.from(options).indexOf(currentFocus);
+
+            if (currentIndex !== -1) {
+                if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                    e.preventDefault();
+                    options[currentIndex - 1].focus();
+                } else if (e.key === 'ArrowRight' && currentIndex < options.length - 1) {
+                    e.preventDefault();
+                    options[currentIndex + 1].focus();
+                }
+            }
+        });
+    }
+
+    // DOM 載入完成後執行
+    document.addEventListener('DOMContentLoaded', function() {
+        initGuideOptions();
+        setupEventListeners();
+    });
+
+    // 觸控滑動支援（移動設備）
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isScrolling = false;
+
+    const optionsContainer = document.querySelector('.guide-options');
+    if (optionsContainer) {
+        optionsContainer.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            isScrolling = false;
+        }, { passive: true });
+
+        optionsContainer.addEventListener('touchmove', function(e) {
+            if (!touchStartX || !touchStartY) return;
+
+            const touchEndX = e.touches[0].clientX;
+            const touchEndY = e.touches[0].clientY;
+            const diffX = Math.abs(touchStartX - touchEndX);
+            const diffY = Math.abs(touchStartY - touchEndY);
+
+            // 水平滾動優先
+            if (!isScrolling && diffX > diffY) {
+                isScrolling = true;
+                e.preventDefault();
+            }
+        }, { passive: false });
+    }
+</script>
+
+{% schema %}
+{
+  "name": "30秒快速選購指南",
+  "settings": [
+    {
+      "type": "header",
+      "content": "基本設置"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "主標題",
+      "default": "30秒快速挑選合適的鍍膜"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "副標題",
+      "default": "告訴我們您的需求，為您推薦最適合的鍍膜產品"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "最大寬度",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "default": 1200,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "間距設置"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "上方間距",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "下方間距",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "default": 35,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "選項卡片設置"
+    },
+    {
+      "type": "range",
+      "id": "option_min_width",
+      "label": "選項最小寬度",
+      "min": 140,
+      "max": 220,
+      "step": 10,
+      "default": 180,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "option_height",
+      "label": "選項高度",
+      "min": 80,
+      "max": 150,
+      "step": 5,
+      "default": 110,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "option_gap",
+      "label": "選項間距",
+      "min": 10,
+      "max": 30,
+      "step": 5,
+      "default": 15,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "彈窗設置"
+    },
+    {
+      "type": "text",
+      "id": "modal_title",
+      "label": "彈窗標題",
+      "default": "為您推薦"
+    },
+    {
+      "type": "text",
+      "id": "modal_subtitle",
+      "label": "彈窗副標題",
+      "default": "根據您的需求，我們推薦以下產品"
+    },
+    {
+      "type": "text",
+      "id": "view_button_text",
+      "label": "查看按鈕文字",
+      "default": "查看產品詳情"
+    },
+    {
+      "type": "header",
+      "content": "顏色設置"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "主要顏色",
+      "default": "#f08418"
+    },
+    {
+      "type": "color",
+      "id": "secondary_color",
+      "label": "次要顏色",
+      "default": "#ff9a3c"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "文字顏色",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "背景顏色",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "guide_option",
+      "name": "導購選項",
+      "settings": [
+        {
+          "type": "header",
+          "content": "選項設置"
+        },
+        {
+          "type": "text",
+          "id": "option_key",
+          "label": "選項鍵值",
+          "info": "用於識別選項的唯一鍵值（如：new, old, diy, pro）",
+          "default": "new"
+        },
+        {
+          "type": "text",
+          "id": "icon_text",
+          "label": "圖標文字",
+          "default": "NEW"
+        },
+        {
+          "type": "text",
+          "id": "option_title",
+          "label": "選項標題",
+          "default": "新車保護"
+        },
+        {
+          "type": "text",
+          "id": "option_description",
+          "label": "選項描述",
+          "default": "剛購買的新車，想要最佳保護"
+        },
+        {
+          "type": "header",
+          "content": "推薦設置"
+        },
+        {
+          "type": "text",
+          "id": "recommend_name",
+          "label": "推薦產品名稱",
+          "default": "鈦晶鍍膜"
+        },
+        {
+          "type": "text",
+          "id": "recommend_highlight",
+          "label": "產品亮點",
+          "default": "頂級保護 · 180天持久"
+        },
+        {
+          "type": "textarea",
+          "id": "recommend_reason",
+          "label": "推薦理由",
+          "default": "新車需要最高等級的保護，鈦晶鍍膜提供180天持久保護，硬度和疏水性都是頂級水準，是新車的最佳選擇。"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO 30秒快速選購指南",
+      "blocks": [
+        {
+          "type": "guide_option",
+          "settings": {
+            "option_key": "new",
+            "icon_text": "NEW",
+            "option_title": "新車保護",
+            "option_description": "剛購買的新車，想要最佳保護",
+            "recommend_name": "鈦晶鍍膜",
+            "recommend_highlight": "頂級保護 · 180天持久",
+            "recommend_reason": "新車需要最高等級的保護，鈦晶鍍膜提供180天持久保護，硬度和疏水性都是頂級水準，是新車的最佳選擇。"
+          }
+        },
+        {
+          "type": "guide_option",
+          "settings": {
+            "option_key": "old",
+            "icon_text": "SHINE",
+            "option_title": "舊車翻新",
+            "option_description": "使用一段時間，想要恢復光澤",
+            "recommend_name": "原子極光鍍膜",
+            "recommend_highlight": "光澤復原 · 150天效果",
+            "recommend_reason": "極光鍍膜專為恢復光澤設計，能有效改善舊車漆面，重現車輛原有的亮麗光澤，讓愛車煥然一新。"
+          }
+        },
+        {
+          "type": "guide_option",
+          "settings": {
+            "option_key": "diy",
+            "icon_text": "DIY",
+            "option_title": "DIY新手",
+            "option_description": "第一次自己施工，需要簡單易用",
+            "recommend_name": "原子鍍膜",
+            "recommend_highlight": "簡單易用 · 新手友善",
+            "recommend_reason": "操作簡單、價格親民，是DIY新手的理想選擇。即使沒有經驗也能輕鬆上手，享受自己動手的樂趣。"
+          }
+        },
+        {
+          "type": "guide_option",
+          "settings": {
+            "option_key": "pro",
+            "icon_text": "PRO",
+            "option_title": "專業需求",
+            "option_description": "追求最高等級的保護效果",
+            "recommend_name": "鈦晶鍍膜 或 原子極光鍍膜",
+            "recommend_highlight": "專業首選 · 頂級效果",
+            "recommend_reason": "專業需求建議選擇鈦晶鍍膜的極致保護，或原子極光鍍膜的卓越光澤效果，兩款都能滿足專業級要求。"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

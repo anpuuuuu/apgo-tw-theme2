@@ -1,0 +1,338 @@
+{%- liquid
+  assign source_products = blank
+  if section.settings.source_mode == 'collection' and section.settings.source_collection != blank
+    assign source_products = section.settings.source_collection.products
+  elsif section.settings.source_products != blank
+    assign source_products = section.settings.source_products
+  endif
+-%}
+
+<section
+  id="CartUpsellRecommendations-{{ section.id }}"
+  class="cart-upsell-recommendations"
+  data-section-id="{{ section.id }}"
+>
+  <div class="cart-upsell-recommendations__inner">
+    <div class="cart-upsell-recommendations__head">
+      <div>
+        <span class="cart-upsell-recommendations__eyebrow">{{ section.settings.title | escape }}</span>
+      </div>
+      <button type="button" class="cart-upsell-recommendations__open" data-open-upsell-popup>
+        {{ section.settings.popup_label | escape }}
+      </button>
+    </div>
+
+    <div class="cart-upsell-recommendations__list">
+      {%- if source_products != blank -%}
+        {%- for product in source_products limit: section.settings.max_products -%}
+          {%- liquid
+            assign badge_label = product.type
+            if section.settings.source_mode == 'collection' and section.settings.source_collection != blank
+              assign badge_label = section.settings.source_collection.title
+            endif
+            assign current_variant = product.selected_or_first_available_variant
+          -%}
+          <article class="cart-upsell-recommendations__card">
+            <a href="{{ product.url }}" class="cart-upsell-recommendations__image">
+              {%- if product.featured_image != blank -%}
+                {{
+                  product.featured_image
+                  | image_url: width: 320
+                  | image_tag: loading: 'lazy', alt: product.title, class: 'cart-upsell-recommendations__image-tag'
+                }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'cart-upsell-recommendations__placeholder' }}
+              {%- endif -%}
+            </a>
+
+            <div class="cart-upsell-recommendations__content">
+              <a href="{{ product.url }}" class="cart-upsell-recommendations__title">{{ product.title }}</a>
+              {%- if section.settings.show_collection_badge and badge_label != blank -%}
+                <span class="cart-upsell-recommendations__badge">{{ badge_label }}</span>
+              {%- endif -%}
+              <div class="cart-upsell-recommendations__price">
+                {{ current_variant.price | money }}
+              </div>
+              <button
+                type="button"
+                class="cart-upsell-recommendations__add"
+                data-variant-id="{{ current_variant.id }}"
+              >
+                ADD
+              </button>
+            </div>
+          </article>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for index in (1..3) -%}
+          <article class="cart-upsell-recommendations__card">
+            <div class="cart-upsell-recommendations__image">
+              {{ 'product-' | append: index | placeholder_svg_tag: 'cart-upsell-recommendations__placeholder' }}
+            </div>
+            <div class="cart-upsell-recommendations__content">
+              <div class="cart-upsell-recommendations__title">範例加購商品 {{ index }}</div>
+              <span class="cart-upsell-recommendations__badge">分類標籤</span>
+              <div class="cart-upsell-recommendations__price">NT$ {{ index | times: 120 }}</div>
+              <button type="button" class="cart-upsell-recommendations__add" disabled>ADD</button>
+            </div>
+          </article>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cart-upsell-recommendations {
+    margin: 16px auto 0;
+    max-width: 1360px;
+    padding: 0 16px;
+  }
+
+  .cart-upsell-recommendations__inner {
+    border: 1px solid #333333;
+    border-radius: 12px;
+    background: #121212;
+    padding: 20px;
+  }
+
+  .cart-upsell-recommendations__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .cart-upsell-recommendations__eyebrow {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #f08418;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .cart-upsell-recommendations__open {
+    border: 0;
+    background: transparent;
+    color: #f08418;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .cart-upsell-recommendations__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .cart-upsell-recommendations__card {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 10px;
+  }
+
+  .cart-upsell-recommendations__image {
+    width: 100%;
+    aspect-ratio: 1;
+    display: block;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #0c0c0c;
+  }
+
+  .cart-upsell-recommendations__image-tag,
+  .cart-upsell-recommendations__placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .cart-upsell-recommendations__content {
+    margin-top: 8px;
+  }
+
+  .cart-upsell-recommendations__title {
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .cart-upsell-recommendations__badge {
+    margin-top: 6px;
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 0 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #0d0d0d;
+    color: #cfcfcf;
+    font-size: 11px;
+  }
+
+  .cart-upsell-recommendations__price {
+    margin-top: 8px;
+    color: #f08418;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: 800;
+  }
+
+  .cart-upsell-recommendations__add {
+    margin-top: 8px;
+    width: 100%;
+    min-height: 38px;
+    border-radius: 6px;
+    border: 1px solid #f08418;
+    background: transparent;
+    color: #f08418;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .cart-upsell-recommendations__add.is-loading,
+  .cart-upsell-recommendations__add:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .cart-upsell-recommendations {
+      padding: 0 24px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .cart-upsell-recommendations__list {
+      display: flex;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .cart-upsell-recommendations__card {
+      min-width: 148px;
+      flex: 0 0 148px;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    if (!window.apgoCartAddUpsell) {
+      window.apgoCartAddUpsell = function(variantId, button) {
+        if (!variantId) return;
+        if (button) button.classList.add('is-loading');
+
+        fetch(window.Shopify.routes.root + 'cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify({
+            items: [{ id: Number(variantId), quantity: 1 }]
+          })
+        })
+          .then(function(response) {
+            if (!response.ok) throw new Error('add failed');
+            return fetch(window.Shopify.routes.root + 'cart.js');
+          })
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(cart) {
+            document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: cart } }));
+            document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: cart } }));
+          })
+          .catch(function() {})
+          .finally(function() {
+            if (!button) return;
+            button.classList.remove('is-loading');
+          });
+      };
+    }
+
+    const section = document.getElementById('CartUpsellRecommendations-{{ section.id }}');
+    if (!section) return;
+
+    section.addEventListener('click', function(event) {
+      const addButton = event.target.closest('[data-variant-id]');
+      if (addButton) {
+        event.preventDefault();
+        window.apgoCartAddUpsell(addButton.dataset.variantId, addButton);
+        return;
+      }
+
+      if (event.target.closest('[data-open-upsell-popup]')) {
+        document.dispatchEvent(new CustomEvent('cart-upsell-popup:open'));
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Cart Upsell",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "推薦加購"
+    },
+    {
+      "type": "text",
+      "id": "popup_label",
+      "label": "Popup label",
+      "default": "VIEW ALL +"
+    },
+    {
+      "type": "select",
+      "id": "source_mode",
+      "label": "Source mode",
+      "options": [
+        { "value": "collection", "label": "Collection" },
+        { "value": "product_list", "label": "Product list" }
+      ],
+      "default": "collection"
+    },
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Source collection"
+    },
+    {
+      "type": "product_list",
+      "id": "source_products",
+      "label": "Source products",
+      "limit": 12
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Max products",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_badge",
+      "label": "Show collection badge",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart Upsell"
+    }
+  ]
+}
+{% endschema %}

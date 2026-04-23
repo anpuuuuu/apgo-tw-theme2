@@ -1,0 +1,756 @@
+{% comment %}
+  Hero Section - APGO 專業鍍膜專家
+  放置位置：/sections/hero-section.liquid
+{% endcomment %}
+
+<section class="hero-section">
+  <!-- 背景圖片 -->
+  <div class="hero-background">
+    {% if section.settings.hero_image != blank %}
+      <img src="{{ section.settings.hero_image | image_url: width: 1920 }}" alt="APGO Hero" class="hero-image">
+    {% else %}
+      <img
+        src="https://cdn.shopify.com/s/files/1/0760/8002/1755/files/fa6f8da217907f3de717e871bebef875.png?v=1750353188"
+        alt="APGO Hero Default"
+        class="hero-image"
+      >
+    {% endif %}
+  </div>
+
+  <!-- 漸層遮罩 -->
+  <div class="hero-overlay"></div>
+
+  <!-- 動態光點效果 -->
+  <div class="floating-particles">
+    {% for i in (1..20) %}
+      <div class="particle"></div>
+    {% endfor %}
+  </div>
+
+  <!-- Hero Content -->
+  <div class="hero-content">
+    <div class="content-wrapper">
+      {% if section.settings.logo != blank %}
+        <div class="brand-logo">
+          <img src="{{ section.settings.logo | image_url: width: 300 }}" alt="APGO Logo">
+        </div>
+      {% else %}
+        <div class="brand-logo">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0760/8002/1755/files/logo.png?v=1749123901"
+            alt="APGO Logo Default"
+          >
+        </div>
+      {% endif %}
+
+      <h1 class="hero-title">
+        {{ section.settings.main_title | default: "我們專注於 <span class='title-highlight'>鍍膜</span>" }}
+      </h1>
+
+      <p class="hero-subtitle">
+        {{
+          section.settings.subtitle
+          | default: "因為它比打蠟<span class='subtitle-highlight'>更輕鬆</span>、<span class='subtitle-highlight'>更持久</span>、<span class='subtitle-highlight'>更閃亮</span>"
+        }}
+      </p>
+
+      <div class="cta-container">
+        <a href="{{ section.settings.cta_link | default: '/pages/buy_atomic_coating' }}" class="cta-button">
+          <span>{{ section.settings.cta_text | default: '立即挑選適合您的鍍膜' }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  {% if section.settings.show_scroll_indicator %}
+    <div class="scroll-indicator">
+      <div class="scroll-text">{{ section.settings.scroll_text | default: '探索更多' }}</div>
+      <div class="scroll-arrow"></div>
+    </div>
+  {% endif %}
+</section>
+
+{% style %}
+  * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+          }
+
+          :root {
+              --primary-orange: #f08418;
+              --text-white: #ffffff;
+              --text-gray: #cccccc;
+              --text-light-gray: #b0b0b0;
+          }
+
+          body {
+              font-family: 'Arial', 'Microsoft JhengHei', sans-serif;
+              background: #000000;
+              color: var(--text-white);
+              overflow-x: hidden;
+          }
+
+          /* 主視覺區塊 */
+          .hero-section {
+              position: relative;
+              width: 100%;
+              height: 100vh;
+              min-height: 600px;
+              overflow: hidden;
+              display: flex;
+              align-items: center;
+              background: #000000;
+          }
+
+          /* 背景圖片容器 */
+          .hero-background {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              z-index: 1;
+          }
+
+          .hero-image {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              object-position: center right;
+              filter: brightness(0.85) contrast(1.1);
+              transform: scale(1.05);
+              animation: slowZoom 20s ease-in-out infinite alternate;
+          }
+
+          @keyframes slowZoom {
+              0% { transform: scale(1.05); }
+              100% { transform: scale(1.1); }
+          }
+
+          /* 漸層遮罩 - 確保文字區域清晰 */
+          .hero-overlay {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(
+                  90deg,
+                  rgba(0, 0, 0, 0.85) 0%,
+                  rgba(0, 0, 0, 0.4) 40%,
+                  rgba(0, 0, 0, 0.1) 70%,
+                  transparent 100%
+              );
+              z-index: 2;
+          }
+
+          /* 動態光點效果 */
+          .floating-particles {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              z-index: 3;
+              pointer-events: none;
+          }
+
+          .particle {
+              position: absolute;
+              width: 3px;
+              height: 3px;
+              background: var(--primary-orange);
+              border-radius: 50%;
+              opacity: 0.8;
+              box-shadow: 0 0 6px var(--primary-orange);
+              animation: float 12s infinite linear;
+          }
+
+          .particle:nth-child(1) { left: 5%; animation-delay: 0s; }
+          .particle:nth-child(2) { left: 15%; animation-delay: 2s; }
+          .particle:nth-child(3) { left: 25%; animation-delay: 4s; }
+          .particle:nth-child(4) { left: 8%; animation-delay: 6s; }
+          .particle:nth-child(5) { left: 18%; animation-delay: 8s; }
+          .particle:nth-child(6) { left: 12%; animation-delay: 1s; }
+          .particle:nth-child(7) { left: 22%; animation-delay: 3s; }
+          .particle:nth-child(8) { left: 6%; animation-delay: 5s; }
+          .particle:nth-child(9) { left: 28%; animation-delay: 7s; }
+          .particle:nth-child(10) { left: 14%; animation-delay: 9s; }
+          .particle:nth-child(11) { left: 10%; animation-delay: 1.5s; }
+          .particle:nth-child(12) { left: 20%; animation-delay: 3.5s; }
+          .particle:nth-child(13) { left: 30%; animation-delay: 5.5s; }
+          .particle:nth-child(14) { left: 4%; animation-delay: 7.5s; }
+          .particle:nth-child(15) { left: 16%; animation-delay: 9.5s; }
+          .particle:nth-child(16) { left: 26%; animation-delay: 0.5s; }
+          .particle:nth-child(17) { left: 9%; animation-delay: 2.5s; }
+          .particle:nth-child(18) { left: 19%; animation-delay: 4.5s; }
+          .particle:nth-child(19) { left: 13%; animation-delay: 6.5s; }
+          .particle:nth-child(20) { left: 23%; animation-delay: 8.5s; }
+
+          @keyframes float {
+              0% {
+                  transform: translateY(100vh) scale(0);
+                  opacity: 0;
+              }
+              10% {
+                  opacity: 0.6;
+                  transform: scale(1);
+              }
+              90% {
+                  opacity: 0.6;
+                  transform: scale(1);
+              }
+              100% {
+                  transform: translateY(-10vh) scale(0);
+                  opacity: 0;
+              }
+          }
+
+          /* 主要內容容器 */
+          .hero-content {
+              position: relative;
+              z-index: 4;
+              max-width: 1200px;
+              margin: 0 auto;
+              padding: 0 40px;
+              width: 100%;
+              height: 100%;
+              display: flex;
+              align-items: center;
+          }
+
+          /* 文字內容區域 */
+          .content-wrapper {
+              max-width: 600px;
+              opacity: 0;
+              transform: translateX(-50px);
+              animation: slideInLeft 1.2s ease 0.5s forwards;
+          }
+
+          @keyframes slideInLeft {
+              to {
+                  opacity: 1;
+                  transform: translateX(0);
+              }
+          }
+
+          /* 品牌 LOGO */
+          .brand-logo {
+              margin-bottom: 20px;
+              opacity: 0;
+              transform: translateY(20px);
+              animation: fadeInUp 0.8s ease 0.8s forwards;
+          }
+
+          .brand-logo img {
+              height: 60px;
+              width: auto;
+              max-width: 200px;
+              object-fit: contain;
+              filter: brightness(1.1) contrast(1.1);
+              transition: all 0.3s ease;
+          }
+
+          .brand-logo img:hover {
+              filter: brightness(1.2) contrast(1.2);
+              transform: scale(1.05);
+          }
+
+          /* 主標題 */
+          .hero-title {
+              font-size: 3.5rem;
+              font-weight: bold;
+              line-height: 1.2;
+              margin-bottom: 30px;
+              color: var(--text-white);
+              opacity: 0;
+              transform: translateY(30px);
+              animation: fadeInUp 0.8s ease 1s forwards;
+          }
+
+          .title-highlight {
+              color: var(--primary-orange);
+              position: relative;
+              display: inline-block;
+          }
+
+          .title-highlight::after {
+              content: '';
+              position: absolute;
+              bottom: -5px;
+              left: 0;
+              width: 0;
+              height: 3px;
+              background: linear-gradient(90deg, var(--primary-orange), #ff9a3c);
+              animation: underlineExpand 1s ease 1.5s forwards;
+          }
+
+          @keyframes underlineExpand {
+              to { width: 100%; }
+          }
+
+          /* 副標題 */
+          .hero-subtitle {
+              font-size: 1.3rem;
+              color: var(--text-gray);
+              line-height: 1.6;
+              margin-bottom: 40px;
+              opacity: 0;
+              transform: translateY(20px);
+              animation: fadeInUp 0.8s ease 1.2s forwards;
+          }
+
+          .subtitle-highlight {
+              color: var(--primary-orange);
+              font-weight: 600;
+          }
+
+          @keyframes fadeInUp {
+              to {
+                  opacity: 1;
+                  transform: translateY(0);
+              }
+          }
+
+          /* CTA 按鈕 */
+          .cta-container {
+              opacity: 0;
+              transform: translateY(20px);
+              animation: fadeInUp 0.8s ease 1.4s forwards;
+          }
+
+          .cta-button {
+              display: inline-block;
+              background: linear-gradient(45deg, var(--primary-orange), #ff9a3c);
+              color: var(--text-white);
+              text-decoration: none;
+              padding: 18px 40px;
+              border-radius: 50px;
+              font-size: 1.2rem;
+              font-weight: bold;
+              letter-spacing: 1px;
+              transition: all 0.3s ease;
+              position: relative;
+              overflow: hidden;
+              box-shadow: 0 8px 25px rgba(240, 132, 24, 0.3);
+              border: 2px solid transparent;
+          }
+
+          .cta-button::before {
+              content: '';
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              width: 0;
+              height: 0;
+              background: rgba(255, 255, 255, 0.2);
+              border-radius: 50%;
+              transform: translate(-50%, -50%);
+              transition: width 0.6s ease, height 0.6s ease;
+          }
+
+          .cta-button:hover {
+              transform: translateY(-3px);
+              box-shadow: 0 12px 35px rgba(240, 132, 24, 0.4);
+              border-color: rgba(255, 255, 255, 0.3);
+          }
+
+          .cta-button:hover::before {
+              width: 300px;
+              height: 300px;
+          }
+
+          .cta-button span {
+              position: relative;
+              z-index: 1;
+          }
+
+          /* 滾動提示 */
+          .scroll-indicator {
+              position: absolute !important;
+              bottom: 30px !important;
+              left: 50% !important;
+              transform: translateX(-50%) !important;
+              display: flex !important;
+              flex-direction: column !important;
+              align-items: center !important;
+              justify-content: center !important;
+              color: var(--text-gray) !important;
+              font-size: 0.9rem !important;
+              z-index: 4 !important;
+              opacity: 0 !important;
+              animation: fadeIn 1s ease 2s forwards !important;
+              width: 120px !important;
+              transition: all 0.5s ease !important;
+              cursor: pointer;
+          }
+
+          /* 探索更多區域的動態光點 */
+          .scroll-indicator::before {
+              content: '';
+              position: absolute;
+              top: -40px;
+              left: -60px;
+              width: 240px;
+              height: 120px;
+              background:
+                  radial-gradient(2px 2px at 20px 30px, var(--primary-orange), transparent),
+                  radial-gradient(2px 2px at 40px 70px, rgba(255, 154, 60, 0.8), transparent),
+                  radial-gradient(1px 1px at 90px 40px, var(--primary-orange), transparent),
+                  radial-gradient(1px 1px at 130px 80px, rgba(255, 154, 60, 0.6), transparent),
+                  radial-gradient(2px 2px at 160px 20px, var(--primary-orange), transparent),
+                  radial-gradient(1px 1px at 190px 60px, rgba(255, 154, 60, 0.8), transparent),
+                  radial-gradient(1px 1px at 60px 10px, var(--primary-orange), transparent),
+                  radial-gradient(2px 2px at 180px 90px, rgba(255, 154, 60, 0.7), transparent);
+              background-repeat: no-repeat;
+              animation: scrollGlow 4s ease-in-out infinite;
+              pointer-events: none;
+              z-index: -1;
+          }
+
+          @keyframes scrollGlow {
+              0%, 100% {
+                  opacity: 0.3;
+                  transform: scale(1);
+              }
+              50% {
+                  opacity: 0.8;
+                  transform: scale(1.1);
+              }
+          }
+
+          .scroll-indicator.hide {
+              opacity: 0 !important;
+              transform: translateX(-50%) translateY(-30px) !important;
+              visibility: hidden !important;
+          }
+
+          @keyframes fadeIn {
+              to {
+                  opacity: 1 !important;
+                  transform: translateX(-50%) !important;
+              }
+          }
+
+          .scroll-text {
+              margin-bottom: 8px;
+              text-align: center;
+              width: 100%;
+              display: block;
+              color: var(--text-gray) !important;
+          }
+
+          .scroll-arrow {
+              width: 2px;
+              height: 30px;
+              background: var(--primary-orange);
+              position: relative;
+              animation: bounce 2s infinite;
+              margin: 0 auto;
+              left: 0;
+              right: 0;
+          }
+
+          .scroll-arrow::after {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 0;
+              height: 0;
+              border-left: 5px solid transparent;
+              border-right: 5px solid transparent;
+              border-top: 8px solid var(--primary-orange);
+          }
+
+          @keyframes bounce {
+              0%, 20%, 50%, 80%, 100% {
+                  transform: translateY(0);
+              }
+              40% {
+                  transform: translateY(-10px);
+              }
+              60% {
+                  transform: translateY(-5px);
+              }
+          }
+
+          /* 響應式設計 */
+          @media (max-width: 1024px) {
+              .hero-content {
+                  padding: 0 30px;
+              }
+
+              .brand-logo img {
+                  height: 50px;
+                  max-width: 180px;
+              }
+
+              .hero-title {
+                  font-size: 2.8rem;
+              }
+
+              .hero-subtitle {
+                  font-size: 1.1rem;
+              }
+          }
+
+          @media (max-width: 768px) {
+              .hero-section {
+                  min-height: 500px;
+                  height: 80vh;
+              }
+
+              .hero-content {
+                  padding: 0 20px;
+              }
+
+              .content-wrapper {
+                  max-width: 100%;
+              }
+
+              .brand-logo {
+                  margin-bottom: 20px;
+              }
+
+              .brand-logo img {
+                  height: 45px;
+                  max-width: 150px;
+              }
+
+              .hero-title {
+                  font-size: 2.1rem;
+                  margin-bottom: 18px;
+                  line-height: 1.1;
+              }
+
+              .hero-subtitle {
+                  font-size: 1rem;
+                  margin-bottom: 30px;
+                  line-height: 1.4;
+              }
+
+              .cta-button {
+                  padding: 15px 32px;
+                  font-size: 1rem;
+              }
+
+              /* 手機版光點效果調整 */
+              .particle {
+                  width: 2px;
+                  height: 2px;
+                  opacity: 0.9;
+                  box-shadow: 0 0 4px var(--primary-orange);
+              }
+
+              /* 調整圖片位置以確保車輛可見 */
+              .hero-image {
+                  object-position: center center;
+              }
+
+              .hero-overlay {
+                  background: linear-gradient(
+                      180deg,
+                      rgba(0, 0, 0, 0.7) 0%,
+                      rgba(0, 0, 0, 0.3) 50%,
+                      rgba(0, 0, 0, 0.8) 100%
+                  );
+              }
+
+              .scroll-indicator {
+                  bottom: 20px !important;
+                  font-size: 0.75rem !important;
+                  width: 100px !important;
+                  color: var(--text-gray) !important;
+                  transition: all 0.5s ease !important;
+                  transform: translateX(-50%) !important;
+              }
+
+              .scroll-indicator.hide {
+                  opacity: 0 !important;
+                  transform: translateX(-50%) translateY(-30px) !important;
+                  visibility: hidden !important;
+              }
+
+              .scroll-text {
+                  margin-bottom: 8px !important;
+                  color: var(--text-gray) !important;
+              }
+
+              .scroll-arrow {
+                  height: 28px;
+              }
+          }
+
+          @media (max-width: 480px) {
+              .hero-section {
+                  min-height: 450px;
+                  height: 75vh;
+              }
+
+              .brand-logo {
+                  margin-bottom: 18px;
+              }
+
+              .brand-logo img {
+                  height: 40px;
+                  max-width: 130px;
+              }
+
+              .hero-title {
+                  font-size: 1.9rem;
+                  margin-bottom: 15px;
+              }
+
+              .hero-subtitle {
+                  font-size: 0.9rem;
+                  margin-bottom: 25px;
+              }
+
+              .cta-button {
+                  padding: 13px 28px;
+                  font-size: 0.9rem;
+              }
+
+              .scroll-indicator {
+                  bottom: 18px !important;
+                  font-size: 0.7rem !important;
+                  width: 80px !important;
+                  color: var(--text-gray) !important;
+                  transition: all 0.5s ease !important;
+                  transform: translateX(-50%) !important;
+              }
+
+              .scroll-indicator.hide {
+                  opacity: 0 !important;
+                  transform: translateX(-50%) translateY(-25px) !important;
+                  visibility: hidden !important;
+              }
+
+              .scroll-text {
+                  margin-bottom: 6px !important;
+                  color: var(--text-gray) !important;
+              }
+
+              .scroll-arrow {
+                  height: 24px;
+              }
+          }
+
+          /* 高解析度顯示器優化 */
+          @media (min-width: 1920px) {
+              .hero-content {
+                  max-width: 1400px;
+              }
+
+              .brand-logo img {
+                  height: 70px;
+                  max-width: 220px;
+              }
+
+              .hero-title {
+                  font-size: 4rem;
+              }
+
+              .hero-subtitle {
+                  font-size: 1.5rem;
+              }
+          }
+{% endstyle %}
+
+{% javascript %}
+  // JS 行為：滾動指示器、視差效果、鍵盤支援
+  document.addEventListener('DOMContentLoaded', function () {
+    const indicator = document.querySelector('.scroll-indicator');
+    if (indicator) {
+      indicator.addEventListener('click', function () {
+        window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+      });
+    }
+
+    window.addEventListener('scroll', function () {
+      const scrolled = window.pageYOffset;
+      const heroImage = document.querySelector('.hero-image');
+      const scrollIndicator = document.querySelector('.scroll-indicator');
+      const parallaxSpeed = 0.5;
+      if (heroImage && scrolled < window.innerHeight) {
+        heroImage.style.transform = `scale(1.05) translateY(${scrolled * parallaxSpeed}px)`;
+      }
+      if (scrollIndicator) {
+        if (scrolled > 100) {
+          scrollIndicator.classList.add('hide');
+        } else {
+          scrollIndicator.classList.remove('hide');
+        }
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === ' ') {
+        e.preventDefault();
+        window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+      }
+    });
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Hero 區塊",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "背景圖片"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "品牌 Logo"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "label": "主標題",
+      "default": "我們專注於 <span class='title-highlight'>鍍膜</span>"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "副標題",
+      "default": "因為它比打蠟<span class='subtitle-highlight'>更輕鬆</span>、<span class='subtitle-highlight'>更持久</span>、<span class='subtitle-highlight'>更閃亮</span>"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "按鈕文字",
+      "default": "立即挑選適合您的鍍膜"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "按鈕連結",
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_indicator",
+      "label": "顯示探索更多提示",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "scroll_text",
+      "label": "探索更多文字",
+      "default": "探索更多"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero 區塊"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,464 @@
+{%- comment -%} Cart Totals (standalone section) {%- endcomment -%}
+<div
+  id="CartTotals-{{ section.id }}"
+  class="cart-totals cart-totals--standalone color-{{ section.settings.color_scheme }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="cart-totals"
+  data-content-id="CartTotalsContent-{{ section.id }}"
+  data-init-flag="__cartTotalsInit_{{ section.id }}"
+>
+  <!-- 👉 只替換這個內容區，外層 wrapper 不動 -->
+  <div id="CartTotalsContent-{{ section.id }}">
+    {%- liquid
+      if settings.currency_code_enabled_cart_total
+        assign total_price_formatted = cart.total_price | money_with_currency
+      else
+        assign total_price_formatted = cart.total_price | money
+      endif
+    -%}
+
+    <div class="cart-totals__panel">
+      <div class="cart-totals__header">
+        <h3 class="cart-totals__title">{{ section.settings.title | escape }}</h3>
+      </div>
+
+      {%- if section.settings.show_note_or_code -%}
+        {%- if settings.show_cart_note or settings.show_add_discount_code -%}
+          <div class="cart-totals__actions">
+            {%- if settings.show_cart_note -%}
+              {% render 'cart-note' %}
+            {%- endif -%}
+            {%- if settings.show_add_discount_code -%}
+              {% render 'cart-discount', section_id: section.id %}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+
+    <div class="cart__total-container cart-totals__breakdown">
+      <!-- 小計 -->
+      <div class="cart__summary-item cart__original-total">
+        <span class="cart__label">{{ 'content.cart_subtotal' | t }}</span>
+        <span class="cart__value">{{ cart.original_total_price | money }}</span>
+      </div>
+
+      <!-- 折扣清單 -->
+      {%- if section.settings.show_order_discount_row and cart.cart_level_discount_applications.size > 0 -%}
+        {%- for discount in cart.cart_level_discount_applications -%}
+          <div class="cart__summary-item cart__discount">
+            <span class="cart__label">
+              {{- 'icon-discount.svg' | inline_asset_content -}}
+              {{ discount.title | escape }}
+            </span>
+            <span class="cart__value">-{{ discount.total_allocated_amount | money }}</span>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- if section.settings.show_shipping_row -%}
+        <div class="cart__summary-item cart__shipping">
+          <span class="cart__label">{{ section.settings.shipping_label | escape }}</span>
+          <span class="cart__value">
+            {%- if cart.requires_shipping -%}
+              結帳時計算
+            {%- else -%}
+              免運商品
+            {%- endif -%}
+          </span>
+        </div>
+      {%- endif -%}
+
+      <!-- 總計 -->
+      <div class="cart__summary-item cart__total" role="status">
+        <span class="cart__label">{{ section.settings.total_label | escape }}</span>
+        <text-component
+          ref="cartTotalStandalone"
+          value="{{ total_price_formatted | strip_html }}"
+          class="cart__value cart__value--highlight"
+          data-cart-subtotal
+        >
+          {{ total_price_formatted }}
+        </text-component>
+      </div>
+
+      <!-- 分期付款 -->
+      {%- if section.settings.show_installments and settings.show_installments -%}
+        <div class="cart__summary-item cart__installments">
+          {% form 'cart', cart %}{{ form | payment_terms }}{% endform %}
+        </div>
+      {%- endif -%}
+
+      <!-- 稅務資訊 -->
+      <div class="cart__summary-item cart__tax">
+        {% render 'tax-info', has_discounts_enabled: settings.show_add_discount_code %}
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+  
+  {% stylesheet %}
+  /* ========================================
+     購物車總計區塊樣式設計 - 僅針對獨立區塊
+     ======================================== */
+  
+  /* 主容器樣式 - 使用特定類別避免衝突 */
+  .cart-totals--standalone { 
+    display: flex; 
+    flex-direction: column; 
+    gap: var(--gap-md); 
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 20px auto !important;
+    max-width: 480px !important;
+    width: 100% !important;
+    position: relative !important;
+    z-index: 1 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif !important;
+    color: #ffffff !important;
+  }
+
+  .cart-totals--standalone .cart-totals__panel {
+    border: 1px solid #333333 !important;
+    border-radius: 12px !important;
+    background: #121212 !important;
+    padding: 20px !important;
+  }
+
+  .cart-totals--standalone .cart-totals__header {
+    margin-bottom: 12px !important;
+  }
+
+  .cart-totals--standalone .cart-totals__title {
+    margin: 0 !important;
+    font-size: 12px !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    color: #999999 !important;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
+  }
+  
+  /* 移除橘色頂部線條 */
+  .cart-totals--standalone::before {
+    display: none !important;
+  }
+  
+  /* 每一條就是左右兩側 */
+  .cart-totals--standalone .cart__summary-item {
+    display: flex !important;
+    justify-content: space-between !important; /* 左右兩端對齊 */
+    align-items: flex-start !important;
+    padding: 8px 0 !important;
+    font-size: 14px !important;
+    border: none !important; /* 預設不要底線 */
+  }
+
+  .cart-totals--standalone .cart__label {
+    color: #a0a0a0 !important;
+  }
+
+  .cart-totals--standalone .cart__value {
+    text-align: right !important;
+    color: #ffffff !important;
+    font-family: ui-monospace, Menlo, monospace !important;
+  }
+
+  /* 小計 */
+  .cart-totals--standalone .cart__original-total .cart__label {
+    color: #ccc !important;
+  }
+  .cart-totals--standalone .cart__original-total .cart__value {
+    color: #fff !important;
+    font-weight: 600 !important;
+  }
+
+  /* 折扣 */
+  .cart-totals--standalone .cart__discount .cart__label {
+    display: flex !important;               /* 讓 icon 與文字在同一行 */
+    align-items: center !important;
+    gap: 4px !important;                    /* icon 與文字的距離 */
+    color: #ff6b35 !important;
+    font-weight: 500 !important;
+  }
+  .cart-totals--standalone .cart__discount .cart__value {
+    color: #ff6b35 !important;
+    font-weight: 500 !important;
+  }
+
+  .cart-totals--standalone .cart__shipping .cart__value {
+    color: #f08418 !important;
+  }
+  
+  /* 操作區塊 */
+  .cart-totals--standalone .cart-totals__actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: var(--gap-2xs) !important;
+    padding: 0 0 14px 0 !important;
+    margin: 0 0 14px 0 !important;
+  }
+  
+  /* 總計容器 */
+  .cart-totals--standalone .cart__total-container {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    overflow: visible !important;
+    margin: 0 !important;
+  }
+  
+  .cart-totals--standalone .cart__total-container::before {
+    display: none !important;
+  }
+  
+  /* 總計 */
+  .cart-totals--standalone .cart__total {
+    margin-top: 8px !important;
+    padding-top: 12px !important;
+    border-top: 1px solid rgba(255,255,255,0.08) !important;
+  }
+  .cart-totals--standalone .cart__total .cart__label {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+  }
+  .cart-totals--standalone .cart__value--highlight {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    color: #ffffff !important;
+  }
+
+  /* 分期付款、稅務資訊 */
+  .cart-totals--standalone .cart__installments,
+  .cart-totals--standalone .cart__tax {
+    font-size: 12px !important;
+    color: #aaa !important;
+    padding-top: 6px !important;
+  }
+  
+  /* 響應式設計 */
+  @media (max-width: 768px) {
+    .cart-totals--standalone {
+      margin: 20px auto !important;
+      border-radius: 0 !important;
+      padding: 0 !important;
+      width: calc(100% - 32px) !important;
+      max-width: calc(100% - 24px) !important;
+    }
+    
+    .cart-totals--standalone .cart__original-total-label {
+      font-size: 15px !important;
+    }
+    
+    .cart-totals--standalone .cart__original-total-value {
+      font-size: 16px !important;
+    }
+    
+    .cart-totals--standalone .cart__total-label {
+      font-size: 16px !important;
+    }
+    
+    .cart-totals--standalone .cart__total-value {
+      font-size: 18px !important;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .cart-totals--standalone {
+      padding: 0 !important;
+      margin-top: 30px !important;
+      margin-bottom: 10px !important;
+    }
+    
+    .cart-totals--standalone .cart__original-total-label {
+      font-size: 14px !important;
+    }
+    
+    .cart-totals--standalone .cart__original-total-value {
+      font-size: 15px !important;
+    }
+    
+    .cart-totals--standalone .cart__total-label {
+      font-size: 15px !important;
+    }
+    
+    .cart-totals--standalone .cart__total-value {
+      font-size: 17px !important;
+    }
+  }
+  
+  /* 動畫效果 */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .cart-totals--standalone {
+    animation: fadeInUp 0.6s ease-out !important;
+    animation-delay: 0.1s !important;
+    animation-fill-mode: both !important;
+  }
+  
+  /* 移除發光效果 */
+  .cart-totals--standalone:hover {
+    box-shadow: none !important;
+  }
+  {% endstylesheet %}
+  
+  {% javascript %}
+  (function() {
+    const wrapper = document.querySelector('[data-section-type="cart-totals"]');
+    if (!wrapper) return;
+
+    // 防止重複初始化
+    const FLAG = wrapper.dataset.initFlag;
+    if (window[FLAG]) return;
+    window[FLAG] = true;
+
+    const sid = wrapper.dataset.sectionId;
+    const contentId = wrapper.dataset.contentId;
+
+    // 小工具：每次都取最新的 content 容器
+    const getContentEl = () => document.getElementById(contentId);
+
+    // 去抖：把頻繁的事件合併
+    let tmr;
+    const debounce = (fn, delay = 180) => {
+      clearTimeout(tmr);
+      tmr = setTimeout(fn, delay);
+    };
+
+    // 用 routes.root 支援多語系/子路徑
+    const root = (window.Shopify && Shopify.routes && Shopify.routes.root) ? Shopify.routes.root : '/';
+
+    function htmlToNode(html) {
+      const dom = new DOMParser().parseFromString(html, 'text/html');
+      return dom.getElementById(contentId);
+    }
+
+    function refreshTotals() {
+      // 先試新版 ?sections=
+      const u1 = new URL(window.location.href);
+      u1.pathname = root.replace(/\/$/, '') + u1.pathname.replace(root.replace(/\/$/, ''), '');
+      u1.searchParams.set('sections', sid);
+
+      fetch(u1.toString(), { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(json => {
+          const html = json && json[sid];
+          if (!html) throw new Error('Sections JSON missing');
+          const freshContent = htmlToNode(html);
+          const contentEl = getContentEl();
+          if (freshContent && contentEl) {
+            contentEl.replaceWith(freshContent);
+          }
+        })
+        .catch(() => {
+          // 舊法 fallback: ?section_id=
+          const u2 = new URL(window.location.href);
+          u2.pathname = root.replace(/\/$/, '') + u2.pathname.replace(root.replace(/\/$/, ''), '');
+          u2.searchParams.set('section_id', sid);
+
+          fetch(u2.toString(), { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(r => r.text())
+            .then(html => {
+              const freshContent = htmlToNode(html);
+              const contentEl = getContentEl();
+              if (freshContent && contentEl) {
+                contentEl.replaceWith(freshContent);
+              }
+            })
+            .catch(() => {
+              console.error('Failed to refresh totals');
+            });
+        });
+    }
+
+    // —— A: 主題/外掛可能丟的事件 —— //
+    [
+      'cart:updated','cart:change','cart:refresh','quantity:change',
+      'product:added','cart:item:added','cart:item:updated','cart:item:removed'
+    ].forEach(evt => document.addEventListener(evt, () => debounce(() => refreshTotals(), 240)));
+
+    // —— B: 攔截 cart 相關的 fetch / XHR —— //
+    const _fetch = window.fetch;
+    window.fetch = function(...args){
+      return _fetch.apply(this, args).then(res => {
+        try {
+          const u = String(args[0]||'');
+          if (u.includes('/cart') || u.includes('/add') || u.includes('cart/add')) {
+            debounce(() => refreshTotals(), 260);
+          }
+        } catch(e){}
+        return res;
+      });
+    };
+
+    const _open = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function(m, u, ...rest) {
+      this.addEventListener('load', function(){
+        try {
+          const s = String(u||'');
+          if (s.includes('/cart') || s.includes('/add') || s.includes('cart/add')) {
+            debounce(() => refreshTotals(), 260);
+          }
+        } catch(e){}
+      });
+      return _open.apply(this, [m, u, ...rest]);
+    };
+
+    // —— C: 鏡像原生 summary（你是隱藏不是移除） —— //
+    const nativeTotal = document.querySelector(
+      '.cart-page__summary [data-cart-subtotal], .cart-page__summary .cart__total .cart__total-value'
+    );
+    if (nativeTotal) {
+      const sync = () => {
+        const mine = document.querySelector('#' + contentId + ' [data-cart-subtotal]');
+        if (!mine) return;
+        const t = (nativeTotal.textContent||'').trim();
+        if (t && t !== (mine.textContent||'').trim()) {
+          mine.textContent = t;
+          mine.setAttribute('value', t);
+        }
+      };
+      const mo = new MutationObserver(sync);
+      mo.observe(nativeTotal, { characterData:true, childList:true, subtree:true });
+      sync();
+    }
+
+    // 初始化先跑一次（給首次進頁或快取）
+    document.addEventListener('DOMContentLoaded', () => refreshTotals());
+  })();
+  {% endjavascript %}
+  
+  {% schema %}
+  {
+    "name": "Cart Totals (Standalone)",
+    "settings": [
+      { "type": "text", "id": "title", "label": "Title", "default": "訂單明細" },
+      { "type": "checkbox", "id": "show_note_or_code", "label": "Show cart note / discount code (uses theme settings)", "default": true },
+      { "type": "checkbox", "id": "show_order_discount_row", "label": "Show order discount rows", "default": true },
+      { "type": "checkbox", "id": "show_shipping_row", "label": "Show shipping row", "default": true },
+      { "type": "text", "id": "shipping_label", "label": "Shipping label", "default": "運費" },
+      { "type": "text", "id": "total_label", "label": "Total label", "default": "小計" },
+      { "type": "checkbox", "id": "show_installments", "label": "Show installments (uses theme settings)", "default": true },
+      { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-3" }
+    ],
+    "blocks": [],
+    "presets": [{ "name": "Cart Totals (Standalone)"}]
+  }
+  {% endschema %}

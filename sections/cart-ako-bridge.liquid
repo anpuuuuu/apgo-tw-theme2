@@ -1,0 +1,27 @@
+{%- comment -%} Cart AKO Bridge (separated from CTA) {%- endcomment -%}
+
+<div class="cart-ako-bridge"></div>
+
+{% stylesheet %}
+  .cart-ako-bridge {
+    width: 100%;
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .cart-ako-bridge {
+      padding: 0 24px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Cart AKO Bridge",
+  "settings": [],
+  "blocks": [],
+  "presets": [{ "name": "Cart AKO Bridge" }]
+}
+{% endschema %}

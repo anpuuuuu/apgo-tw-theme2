@@ -1,0 +1,277 @@
+{% comment %}
+  Guide Section - APGO 快速導購區塊
+  放置位置：/sections/guide-section.liquid
+{% endcomment %}
+
+<section class="guide-section">
+  <div class="guide-container">
+    <h2 class="guide-title">{{ section.settings.title | default: "不知道選哪款？" }}</h2>
+    <p class="guide-subtitle">{{ section.settings.subtitle | default: "讓我們幫您找到最適合的鍍膜產品" }}</p>
+    
+    <div class="guide-options">
+      {% for block in section.blocks %}
+        <div class="guide-option" data-type="{{ block.settings.type }}">
+          <h3>{{ block.settings.option_title }}</h3>
+          <p>{{ block.settings.option_description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  :root {
+    --primary-orange: #f08418;
+    --text-white: #ffffff;
+    --text-gray: #cccccc;
+    --gradient-bg: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  }
+
+  .guide-section {
+    background: #000000;
+    padding: 60px 0;
+  }
+
+  .guide-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  .guide-title {
+    font-size: 2.5rem;
+    color: var(--text-white);
+    margin-bottom: 15px;
+  }
+
+  .guide-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-gray);
+    margin-bottom: 40px;
+  }
+
+  .guide-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .guide-option {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .guide-option:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-orange);
+    background: rgba(240, 132, 24, 0.1);
+  }
+
+  .guide-option h3 {
+    font-size: 1.3rem;
+    color: var(--primary-orange);
+    margin-bottom: 15px;
+  }
+
+  .guide-option p {
+    color: var(--text-gray);
+    line-height: 1.6;
+  }
+
+  /* 響應式設計 */
+  @media (max-width: 768px) {
+    .guide-section {
+      padding: 40px 0;
+    }
+
+    .guide-container {
+      padding: 0 16px;
+    }
+
+    .guide-title {
+      font-size: 2rem;
+    }
+
+    .guide-subtitle {
+      font-size: 1rem;
+      margin-bottom: 30px;
+    }
+
+    .guide-options {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      width: 100%;
+      max-width: 100%;
+      padding: 0;
+    }
+
+    .guide-option {
+      padding: 20px 15px;
+    }
+
+    .guide-option h3 {
+      font-size: 1.1rem;
+    }
+
+    .guide-option p {
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .guide-title {
+      font-size: 1.8rem;
+    }
+
+    .guide-options {
+      gap: 12px;
+    }
+
+    .guide-option {
+      padding: 18px 12px;
+    }
+
+    .guide-option h3 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .guide-option p {
+      font-size: 0.85rem;
+    }
+  }
+{% endstyle %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const options = document.querySelectorAll('.guide-option');
+    
+    options.forEach(option => {
+      option.addEventListener('click', function() {
+        const type = this.dataset.type;
+        const recommendedProduct = this.dataset.product;
+        
+        // 如果有設定推薦產品連結，直接跳轉
+        if (recommendedProduct && recommendedProduct !== '') {
+          window.location.href = recommendedProduct;
+        } else {
+          // 否則顯示推薦訊息
+          handleGuideSelection(type);
+        }
+      });
+    });
+  });
+
+  function handleGuideSelection(type) {
+    const recommendations = {
+      'new': {{ 'apgo_guide.recommend_new' | t | json }},
+      'old': {{ 'apgo_guide.recommend_old' | t | json }},
+      'diy': {{ 'apgo_guide.recommend_diy' | t | json }},
+      'pro': {{ 'apgo_guide.recommend_pro' | t | json }}
+    };
+
+    const recommendation = recommendations[type] || {{ 'apgo_guide.recommend_default' | t | json }};
+    alert(recommendation);
+  }
+</script>
+
+{% schema %}
+{
+  "name": "快速導購區塊",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "標題",
+      "default": "不知道選哪款？"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "副標題",
+      "default": "讓我們幫您找到最適合的鍍膜產品"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "guide_option",
+      "name": "導購選項",
+      "settings": [
+        {
+          "type": "text",
+          "id": "option_title",
+          "label": "選項標題",
+          "default": "新車保護"
+        },
+        {
+          "type": "text",
+          "id": "option_description",
+          "label": "選項描述",
+          "default": "剛購買的新車，想要最佳保護"
+        },
+        {
+          "type": "select",
+          "id": "type",
+          "label": "選項類型",
+          "options": [
+            {"value": "new", "label": "新車保護"},
+            {"value": "old", "label": "舊車翻新"},
+            {"value": "diy", "label": "DIY新手"},
+            {"value": "pro", "label": "專業需求"},
+            {"value": "custom", "label": "自定義"}
+          ],
+          "default": "new"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO 快速導購區塊",
+      "blocks": [
+        {
+          "type": "guide_option",
+          "settings": {
+            "option_title": "新車保護",
+            "option_description": "剛購買的新車，想要最佳保護",
+            "type": "new"
+          }
+        },
+        {
+          "type": "guide_option",
+          "settings": {
+            "option_title": "舊車翻新",
+            "option_description": "使用一段時間，想要恢復光澤",
+            "type": "old"
+          }
+        },
+        {
+          "type": "guide_option",
+          "settings": {
+            "option_title": "DIY新手",
+            "option_description": "第一次自己施工，需要簡單易用",
+            "type": "diy"
+          }
+        },
+        {
+          "type": "guide_option",
+          "settings": {
+            "option_title": "專業需求",
+            "option_description": "追求最高等級的保護效果",
+            "type": "pro"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,1781 @@
+{% comment %}
+  APGO 2026 新春戰術活動頁 - All-in-One Integrated Version
+  整合功能：吸頂導航、動態錨點、戰術購物車、完整 Schema
+{% endcomment %}
+
+{% schema %}
+  {
+    "name": "APGO - 戰術活動頁 (All-in-One)",
+    "class": "apgo-tactical-aio",
+    "settings": [
+      {
+        "type": "header",
+        "content": "🛠️ 全域設定 (Global Settings)"
+      },
+      {
+        "type": "paragraph",
+        "content": "下方「獎勵門檻」區塊可新增多檔目標；若未新增任何門檻，則使用以下單一門檻。"
+      },
+      {
+        "type": "number",
+        "id": "target_amount",
+        "label": "滿額贈門檻金額 (元) — 未設多檔時使用",
+        "default": 799
+      },
+      {
+        "type": "text",
+        "id": "target_reward",
+        "label": "滿額贈品名稱 — 未設多檔時使用",
+        "default": "鍍膜布"
+      },
+      {
+        "type": "header",
+        "content": "1. 主視覺 (Hero)"
+      },
+      {
+        "type": "image_picker",
+        "id": "hero_image_pc",
+        "label": "PC Banner (1920x800)"
+      },
+      {
+        "type": "image_picker",
+        "id": "hero_image_mb",
+        "label": "Mobile Banner (750x1100)"
+      },
+      {
+        "type": "header",
+        "content": "2. 波段活動 (Waves)"
+      },
+      {
+        "type": "text",
+        "id": "wave1_icon",
+        "label": "Wave 1 Icon (FontAwesome)",
+        "default": "fa-bolt"
+      },
+      {
+        "type": "text",
+        "id": "wave1_label",
+        "label": "Wave 1 標籤文字",
+        "default": "WAVE_01"
+      },
+      {
+        "type": "image_picker",
+        "id": "wave1_img",
+        "label": "Wave 1 圖片"
+      },
+      {
+        "type": "text",
+        "id": "wave1_anchor_left",
+        "label": "Wave 1 左側按鈕錨點 ID (選填)",
+        "info": "若要捲動到特定區塊，請填入該區塊的 ID (如: apgo-grid-1)。若填寫此欄位，將優先使用錨點捲動。"
+      },
+      {
+        "type": "url",
+        "id": "wave1_link_left",
+        "label": "Wave 1 左側按鈕連結 (了解詳情)",
+        "info": "若未填寫錨點 ID，點擊將跳轉至此連結。"
+      },
+      {
+        "type": "text",
+        "id": "wave1_anchor_right",
+        "label": "Wave 1 右側按鈕錨點 ID (選填)",
+        "info": "若要捲動到特定區塊，請填入該區塊的 ID (如: apgo-coupons)。若填寫此欄位，將優先使用錨點捲動。"
+      },
+      {
+        "type": "url",
+        "id": "wave1_link_right",
+        "label": "Wave 1 右側按鈕連結 (來去逛逛)",
+        "info": "若未填寫錨點 ID，點擊將跳轉至此連結。"
+      },
+      {
+        "type": "product",
+        "id": "wave1_right_product",
+        "label": "Wave 1 右側按鈕指定商品（加入購物車）",
+        "info": "設定後，右側按鈕會直接將此商品加入購物車。"
+      },
+      {
+        "type": "text",
+        "id": "wave1_right_btn_text",
+        "label": "Wave 1 右側按鈕文字",
+        "default": "加入購物車"
+      },
+      {
+        "type": "text",
+        "id": "wave_grid_icon",
+        "label": "Wave 2-4 Icon (FontAwesome)",
+        "default": "fa-layer-group"
+      },
+      {
+        "type": "text",
+        "id": "wave_grid_label",
+        "label": "Wave 2-4 標籤文字",
+        "default": "WAVES_02_04"
+      },
+      {
+        "type": "text",
+        "id": "wave2_tag",
+        "label": "Wave 2 左上角標籤",
+        "default": "WAVE 02"
+      },
+      {
+        "type": "text",
+        "id": "wave2_title",
+        "label": "Wave 2 標題",
+        "default": "鍍膜全系列"
+      },
+      {
+        "type": "text",
+        "id": "wave2_desc",
+        "label": "Wave 2 優惠",
+        "default": "2件9折\n3件85折"
+      },
+      {
+        "type": "image_picker",
+        "id": "wave2_img",
+        "label": "Wave 2 圖片（選填，有圖時文字顯示在圖下方）"
+      },
+      {
+        "type": "text",
+        "id": "wave2_anchor",
+        "label": "Wave 2 錨點 ID (選填)",
+        "info": "若填寫此欄位，將優先使用錨點捲動。"
+      },
+      {
+        "type": "url",
+        "id": "wave2_link",
+        "label": "Wave 2 連結（選填，點擊按鈕跳轉）"
+      },
+      {
+        "type": "checkbox",
+        "id": "wave2_show_icon",
+        "label": "Wave 2 顯示 Icon",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "wave3_tag",
+        "label": "Wave 3 左上角標籤",
+        "default": "WAVE 03"
+      },
+      {
+        "type": "text",
+        "id": "wave3_title",
+        "label": "Wave 3 標題",
+        "default": "清潔藥劑"
+      },
+      {
+        "type": "text",
+        "id": "wave3_desc",
+        "label": "Wave 3 優惠",
+        "default": "任2件\n現折$60"
+      },
+      {
+        "type": "image_picker",
+        "id": "wave3_img",
+        "label": "Wave 3 圖片（選填，有圖時文字顯示在圖下方）"
+      },
+      {
+        "type": "text",
+        "id": "wave3_anchor",
+        "label": "Wave 3 錨點 ID (選填)",
+        "info": "若填寫此欄位，將優先使用錨點捲動。"
+      },
+      {
+        "type": "url",
+        "id": "wave3_link",
+        "label": "Wave 3 連結（選填，點擊按鈕跳轉）"
+      },
+      {
+        "type": "checkbox",
+        "id": "wave3_show_icon",
+        "label": "Wave 3 顯示 Icon",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "wave4_tag",
+        "label": "Wave 4 左上角標籤",
+        "default": "WAVE 04"
+      },
+      {
+        "type": "text",
+        "id": "wave4_title",
+        "label": "Wave 4 標題",
+        "default": "洗車周邊"
+      },
+      {
+        "type": "text",
+        "id": "wave4_desc",
+        "label": "Wave 4 優惠",
+        "default": "滿599\n現折$50"
+      },
+      {
+        "type": "image_picker",
+        "id": "wave4_img",
+        "label": "Wave 4 圖片（選填，有圖時文字顯示在圖下方）"
+      },
+      {
+        "type": "text",
+        "id": "wave4_anchor",
+        "label": "Wave 4 錨點 ID (選填)",
+        "info": "若填寫此欄位，將優先使用錨點捲動。"
+      },
+      {
+        "type": "url",
+        "id": "wave4_link",
+        "label": "Wave 4 連結（選填，點擊按鈕跳轉）"
+      },
+      {
+        "type": "checkbox",
+        "id": "wave4_show_icon",
+        "label": "Wave 4 顯示 Icon",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "3. 領券中心 (Coupons)"
+      },
+      {
+        "type": "text",
+        "id": "coupon_sec_icon",
+        "label": "領券中心 Icon (FontAwesome)",
+        "default": "fa-ticket"
+      },
+      {
+        "type": "text",
+        "id": "coupon_sec_title",
+        "label": "區塊分隔標題",
+        "default": "COUPON_CENTER"
+      },
+      {
+        "type": "image_picker",
+        "id": "coupon_banner_img",
+        "label": "領券中心 Banner（與商品區塊同款）"
+      },
+      {
+        "type": "text",
+        "id": "c1_condition",
+        "label": "Coupon 1 門檻",
+        "default": "滿$799"
+      },
+      {
+        "type": "text",
+        "id": "c1_discount",
+        "label": "Coupon 1 折扣",
+        "default": "折$70"
+      },
+      {
+        "type": "text",
+        "id": "c2_condition",
+        "label": "Coupon 2 門檻",
+        "default": "滿$1499"
+      },
+      {
+        "type": "text",
+        "id": "c2_discount",
+        "label": "Coupon 2 折扣",
+        "default": "折$140"
+      },
+      {
+        "type": "text",
+        "id": "c3_condition",
+        "label": "Coupon 3 門檻",
+        "default": "滿$2499"
+      },
+      {
+        "type": "text",
+        "id": "c3_discount",
+        "label": "Coupon 3 折扣",
+        "default": "折$300"
+      },
+      {
+        "type": "paragraph",
+        "content": "提示：優惠券顯示順序改由下方「優惠券項目」blocks 拖曳控制。"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "nav_item",
+        "name": "導航項目",
+        "settings": [
+          {
+            "type": "text",
+            "id": "nav_label",
+            "label": "導航文字",
+            "default": "HOME"
+          },
+          {
+            "type": "text",
+            "id": "nav_target_id",
+            "label": "錨點 ID（捲動目標）",
+            "info": "例：apgo-hero、apgo-waves、apgo-grid-1、apgo-coupons。如果是組合區塊，請填入該區塊的 ID (可先儲存後在原始碼查看，或自訂一個唯一的 ID 填入)。",
+            "default": "apgo-hero"
+          }
+        ]
+      },
+      {
+        "type": "product_grid",
+        "name": "商品區塊 (Grid)",
+        "settings": [
+          {
+            "type": "text",
+            "id": "custom_anchor_id",
+            "label": "自訂錨點 ID (選填)",
+            "info": "若要在導航列連結此區塊，請在此輸入一個英文 ID (如: grid-1)，並在導航項目中填入相同的 ID。"
+          },
+          {
+            "type": "text",
+            "id": "section_title",
+            "label": "區塊標題",
+            "default": "新車友必收組合"
+          },
+          {
+            "type": "text",
+            "id": "section_icon",
+            "label": "Icon (FontAwesome)",
+            "default": "fa-user-astronaut"
+          },
+          {
+            "type": "image_picker",
+            "id": "banner_img",
+            "label": "區塊 Banner"
+          },
+          {
+            "type": "product_list",
+            "id": "product_list",
+            "label": "選擇商品",
+            "limit": 12
+          },
+          {
+            "type": "text",
+            "id": "card_tag",
+            "label": "卡片標籤",
+            "default": "STARTER"
+          }
+        ]
+      },
+      {
+        "type": "combo_showcase",
+        "name": "組合展示區塊",
+        "settings": [
+          {
+            "type": "text",
+            "id": "custom_anchor_id",
+            "label": "自訂錨點 ID (選填)",
+            "info": "若要在導航列連結此區塊，請在此輸入一個英文 ID (如: combo-1)，並在導航項目中填入相同的 ID。"
+          },
+          {
+            "type": "text",
+            "id": "section_title",
+            "label": "區塊標題",
+            "default": "超值組合推薦"
+          },
+          {
+            "type": "text",
+            "id": "section_icon",
+            "label": "Icon (FontAwesome)",
+            "default": "fa-layer-group"
+          },
+          {
+            "type": "image_picker",
+            "id": "main_image",
+            "label": "組合主圖 (建議正方形)"
+          },
+          {
+            "type": "text",
+            "id": "combo_title",
+            "label": "組合標題",
+            "default": "全方位洗車鍍膜組"
+          },
+          {
+            "type": "textarea",
+            "id": "combo_desc",
+            "label": "組合描述",
+            "default": "包含洗車精、鍍膜劑、擦車布等必備好物，一次滿足所有需求。"
+          },
+          {
+            "type": "product",
+            "id": "combo_product",
+            "label": "對應加入購物車的組合商品"
+          },
+          {
+            "type": "product_list",
+            "id": "sub_products",
+            "label": "組合內容物 (子商品)",
+            "limit": 12
+          }
+        ]
+      },
+      {
+        "type": "coupon_item",
+        "name": "優惠券項目",
+        "settings": [
+          {
+            "type": "text",
+            "id": "condition",
+            "label": "門檻文字",
+            "default": "滿$799"
+          },
+          {
+            "type": "text",
+            "id": "discount",
+            "label": "折扣文字",
+            "default": "折$70"
+          },
+          {
+            "type": "color",
+            "id": "theme_color",
+            "label": "主題色",
+            "default": "#f08418"
+          },
+          {
+            "type": "checkbox",
+            "id": "highlight_discount",
+            "label": "折扣文字套用主題色",
+            "default": false
+          }
+        ]
+      },
+      {
+        "type": "reward_tier",
+        "name": "獎勵門檻",
+        "settings": [
+          {
+            "type": "number",
+            "id": "amount",
+            "label": "門檻金額 (元)",
+            "default": 799
+          },
+          {
+            "type": "text",
+            "id": "reward_name",
+            "label": "達成後獎勵名稱",
+            "default": "鍍膜布"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "APGO - 戰術活動頁 (All-in-One)",
+        "blocks": [
+          {
+            "type": "nav_item",
+            "settings": { "nav_label": "HOME", "nav_target_id": "apgo-hero" }
+          },
+          {
+            "type": "nav_item",
+            "settings": { "nav_label": "波段活動", "nav_target_id": "apgo-waves" }
+          },
+          {
+            "type": "nav_item",
+            "settings": { "nav_label": "超值組合推薦", "nav_target_id": "apgo-combo-1" }
+          },
+          {
+            "type": "nav_item",
+            "settings": { "nav_label": "新車友必收組合", "nav_target_id": "apgo-grid-1" }
+          },
+          {
+            "type": "nav_item",
+            "settings": { "nav_label": "活動單品", "nav_target_id": "apgo-grid-2" }
+          },
+          {
+            "type": "nav_item",
+            "settings": { "nav_label": "領券中心", "nav_target_id": "apgo-coupons" }
+          },
+          {
+            "type": "combo_showcase",
+            "settings": {
+              "section_title": "超值組合推薦",
+              "combo_title": "全方位洗車鍍膜組",
+              "combo_desc": "包含洗車精、鍍膜劑、擦車布等必備好物，一次滿足所有需求。"
+            }
+          },
+          {
+            "type": "product_grid",
+            "settings": {
+              "section_title": "新車友必收組合",
+              "section_icon": "fa-user-astronaut",
+              "card_tag": "STARTER"
+            }
+          },
+          {
+            "type": "product_grid",
+            "settings": {
+              "section_title": "活動單品",
+              "section_icon": "fa-box-open",
+              "card_tag": "EVENT"
+            }
+          },
+          {
+            "type": "coupon_item",
+            "settings": {
+              "condition": "滿$799",
+              "discount": "折$70",
+              "theme_color": "#f08418",
+              "highlight_discount": false
+            }
+          },
+          {
+            "type": "coupon_item",
+            "settings": {
+              "condition": "滿$1499",
+              "discount": "折$140",
+              "theme_color": "#9ca3af",
+              "highlight_discount": false
+            }
+          },
+          {
+            "type": "coupon_item",
+            "settings": {
+              "condition": "滿$2499",
+              "discount": "折$300",
+              "theme_color": "#f08418",
+              "highlight_discount": true
+            }
+          },
+          {
+            "type": "reward_tier",
+            "settings": { "amount": 799, "reward_name": "鍍膜布" }
+          },
+          {
+            "type": "reward_tier",
+            "settings": { "amount": 1499, "reward_name": "進階贈品" }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  /* --- Reset & Global --- */
+  html { scroll-behavior: smooth; }
+  
+  /* 修正跳轉偏移量，避免被吸頂導航列擋住標題 */
+  section[id] { scroll-margin-top: 70px; }
+
+  .apgo-aio-container {
+    background-color: #050505 !important;
+    color: #ffffff !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+    padding-bottom: 140px !important; 
+  }
+  
+  .apgo-aio-inner {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 1rem !important;
+  }
+
+  .apgo-font-mono {
+    font-family: "SF Mono", "Menlo", "Monaco", "Courier New", monospace !important;
+  }
+
+  /* --- Sticky Nav Styles --- */
+  #apgo-sticky-nav {
+    width: 100%; 
+    background: #050505; 
+    border-bottom: 1px solid #333; 
+    z-index: 1000;
+    margin: 0 !important; /* 確保無邊距 */
+  }
+
+  /* 吸頂後的樣式 */
+  .nav-fixed {
+    position: fixed !important; 
+    top: 0; 
+    left: 0;
+    background: rgba(5, 5, 5, 0.9) !important; 
+    backdrop-filter: blur(10px);
+    animation: navSlideDown 0.3s ease-out;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  @keyframes navSlideDown { 
+    from {transform: translateY(-100%);} 
+    to {transform: translateY(0);} 
+  }
+  
+  #sticky-nav-container {
+    max-width: 1200px; 
+    margin: 0 auto; 
+    display: flex; 
+    overflow-x: auto;           /* 手機維持可橫向滑動 */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .sticky-nav-link {
+    color: #888; 
+    padding: 14px 14px; 
+    font-size: 12px; 
+    font-weight: bold; 
+    white-space: nowrap;
+    cursor: pointer; 
+    border-bottom: 2px solid transparent; 
+    transition: all 0.2s;
+    text-transform: uppercase; 
+    font-family: "SF Mono", monospace;
+    flex: 0 0 auto;            /* 手機：項目依內容寬度排，避免被壓縮 */
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    #sticky-nav-container {
+      display: flex;
+      overflow-x: visible;
+      justify-content: space-evenly;  /* 桌機：平均分配寬度 */
+      align-items: center;
+    }
+    .sticky-nav-link {
+      font-size: 13px;
+      padding: 14px 18px;
+      flex: 1 1 0;             /* 桌機：每個 nav 等寬 */
+      min-width: 0;
+    }
+  }
+
+  .sticky-nav-link.active { 
+    color: #f08418; 
+    border-bottom-color: #f08418; 
+  }
+
+  /* --- Hero --- */
+  .apgo-hero-pc { display: none !important; width: 100% !important; aspect-ratio: 1920/800 !important; }
+  .apgo-hero-mb { display: block !important; width: 100% !important; aspect-ratio: 10.5/16 !important; }
+  @media (min-width: 768px) {
+    .apgo-hero-pc { display: block !important; }
+    .apgo-hero-mb { display: none !important; }
+  }
+  .apgo-obj-cover { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+  .apgo-scan-line {
+    position: absolute !important; inset: 0 !important;
+    background: linear-gradient(to bottom, transparent, rgba(240,132,24,0.3), transparent) !important;
+    animation: apgo-scan 3s linear infinite !important;
+    pointer-events: none !important;
+  }
+  @keyframes apgo-scan { 0% {transform:translateY(-100%)} 50% {opacity:1} 100% {transform:translateY(100%);opacity:0} }
+
+  /* --- Wave & Content --- */
+  .apgo-wave1-box { width: 100% !important; background: transparent !important; border: 1px solid #333 !important; border-radius: 0.75rem !important; overflow: hidden !important; position: relative !important; display: flex !important; flex-direction: column !important; }
+  .apgo-wave1-banner-wrap { width: 100% !important; aspect-ratio: 1920/1016 !important; position: relative !important; border-radius: 0.75rem 0.75rem 0 0 !important; overflow: hidden !important; z-index: 1 !important; margin-bottom: -1px !important; }
+  
+  .apgo-wave1-btn { flex: 1 !important; padding: 0.5rem 0.25rem !important; text-align: center !important; text-decoration: none !important; font-weight: bold !important; font-size: 0.75rem !important; cursor: pointer !important; display: flex !important; justify-content: center !important; align-items: center !important; transition: all 0.2s !important; letter-spacing: 0.05em !important; border: none !important; outline: none !important; appearance: none !important; -webkit-appearance: none !important; }
+  .apgo-wave1-btn-left { background: #121212 !important; color: #f08418 !important; border-right: 1px solid #333 !important; }
+  .apgo-wave1-btn-left:hover { background: #1a1a1a !important; }
+  .apgo-wave1-btn-right { background: #f08418 !important; color: #000 !important; }
+  .apgo-wave1-btn-right:hover { background: #fff !important; color: #000 !important; }
+  
+  .apgo-wave-grid {
+    display: flex !important; width: 100% !important; height: auto !important;
+    background: #121212 !important;
+    border: 1px solid #333 !important;
+    border-radius: 0.75rem !important;
+    position: relative !important; overflow: hidden !important;
+  }
+  @media(min-width:768px){ .apgo-wave-grid { height: auto !important; } }
+  .apgo-wave-item {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+  .apgo-wave-item-top {
+    display: flex !important; flex-direction: column !important;
+    align-items: stretch !important; justify-content: flex-start !important;
+    flex: none !important;
+    background: #050505 !important;
+    border-right: 1px solid #333 !important;
+    border-bottom: none !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 1 !important;
+    text-decoration: none !important; color: inherit !important;
+    overflow: hidden !important;
+  }
+  .apgo-wave-item:last-child .apgo-wave-item-top { border-right: none !important; }
+  .apgo-wave-item-img { width: 100% !important; aspect-ratio: 1/1 !important; height: auto !important; flex: 0 0 auto !important; flex-shrink: 0 !important; background: #0a0a0a !important; display: flex !important; align-items: center !important; justify-content: center !important; overflow: hidden !important; line-height: 0 !important; }
+  .apgo-wave-item-img img { width: 100% !important; height: 100% !important; object-fit: cover !important; display: block !important; }
+  .apgo-wave-item-text { display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; padding: 0.5rem 0.25rem !important; width: 100% !important; }
+  .apgo-wave-tag { position: relative !important; font-size: 8px !important; color: #6b7280 !important; transform: scale(0.75) !important; margin-bottom: 2px !important; }
+  .apgo-wave-title { font-size: 11px !important; font-weight: bold !important; margin-bottom: 0.25rem !important; color: white !important; }
+  .apgo-wave-desc { font-size: 10px !important; color: #9ca3af !important; white-space: pre-line !important; text-align: center !important; }
+  .apgo-wave-btn {
+    background: #121212 !important;
+    color: #f08418 !important;
+    border: none !important;
+    border-top: 1px solid #333 !important;
+    border-right: 1px solid #333 !important;
+    padding: 0.5rem 0.25rem !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    font-weight: bold !important;
+    font-size: 0.75rem !important;
+    cursor: pointer !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    transition: all 0.2s !important;
+    letter-spacing: 0.05em !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+  .apgo-wave-item:last-child .apgo-wave-btn { border-right: none !important; }
+  .apgo-wave-btn:hover { background: #1a1a1a !important; }
+
+  /* --- Product Grid --- */
+  .apgo-grid-section { margin-top: 2.5rem !important; }
+  .apgo-grid-title { font-size: 1.125rem !important; font-weight: bold !important; color: white !important; display: flex !important; align-items: center !important; gap: 0.5rem !important; margin-bottom: 0.5rem !important; }
+  .apgo-grid-banner { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; aspect-ratio: 4/1 !important; background: #1a1a1a !important; border: 1px solid #333 !important; border-radius: 0.75rem !important; overflow: hidden !important; margin-bottom: 1rem !important; position: relative !important; }
+  @media(min-width:768px){ .apgo-grid-banner{aspect-ratio:1920/400!important;} }
+  .apgo-card-grid { display: grid !important; grid-template-columns: 1fr !important; gap: 1rem !important; }
+  @media(min-width:768px){ .apgo-card-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+  
+  .apgo-card { background: #121212 !important; border: 1px solid #333 !important; border-radius: 0.75rem !important; padding: 0.75rem !important; position: relative !important; display: flex !important; flex-direction: column !important; }
+  .apgo-card-head { display: flex !important; justify-content: space-between !important; margin-bottom: 0.5rem !important; }
+  .apgo-card-tag { color: #f08418 !important; font-size: 10px !important; letter-spacing: 0.05em !important; }
+  .apgo-card-body { display: flex !important; gap: 0.75rem !important; }
+  .apgo-card-img-box { width: 5rem !important; height: 5rem !important; background: #0a0a0a !important; border: 1px solid #333 !important; border-radius: 0.5rem !important; flex-shrink: 0 !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+  .apgo-card-info { flex: 1 !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; }
+  .apgo-card-title { font-size: 0.875rem !important; font-weight: bold !important; color: white !important; line-height: 1.25 !important; margin-bottom: 0.25rem !important; }
+  .apgo-card-desc { font-size: 11px !important; color: #6b7280 !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; line-height: 1.4 !important; }
+  .apgo-card-foot { display: flex !important; justify-content: space-between !important; align-items: center !important; margin-top: 0.5rem !important; gap: 0.5rem !important; }
+  .apgo-card-price { font-size: 1.125rem !important; font-weight: bold !important; color: white !important; }
+  .apgo-card-actions { display: flex !important; border: 1px solid #333 !important; border-radius: 0.25rem !important; overflow: hidden !important; flex-shrink: 0 !important; }
+  .apgo-btn { border: none !important; outline: none !important; appearance: none !important; -webkit-appearance: none !important; text-decoration: none !important; padding: 0.375rem 0.75rem !important; font-size: 11px !important; font-weight: bold !important; cursor: pointer !important; transition: all 0.2s !important; letter-spacing: 0.02em !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; }
+  .apgo-btn-left { background: #121212 !important; color: #f08418 !important; border-right: 1px solid #333 !important; }
+  .apgo-btn-left:hover { background: #1a1a1a !important; color: #f08418 !important; }
+  .apgo-btn-right { background: #f08418 !important; color: #000 !important; }
+  .apgo-btn-right:hover { background: #fff !important; color: #000 !important; }
+
+  /* --- Combo Showcase --- */
+  .apgo-combo-section { margin-top: 2.5rem !important; }
+  .apgo-combo-card { background: transparent !important; border: 1px solid #333 !important; border-radius: 0.75rem !important; overflow: hidden !important; display: flex !important; flex-direction: column !important; }
+  .apgo-combo-main-img { width: 100% !important; aspect-ratio: 1/1 !important; background: #0a0a0a !important; border-bottom: 1px solid #333 !important; border-radius: 0.75rem 0.75rem 0 0 !important; overflow: hidden !important; z-index: 1 !important; margin-bottom: -1px !important; }
+  @media(min-width:768px){
+    .apgo-combo-card { display: flex !important; align-items: stretch !important; flex-direction: row !important; }
+    .apgo-combo-main-img { width: 40% !important; flex-shrink: 0 !important; border-bottom: none !important; border-right: 1px solid #333 !important; border-radius: 0.75rem 0 0 0.75rem !important; margin-bottom: 0 !important; margin-right: -1px !important; }
+    .apgo-combo-content-wrap { width: 60% !important; display: flex !important; flex-direction: column !important; justify-content: center !important; }
+  }
+  .apgo-combo-sub-products { 
+    display: flex !important; 
+    gap: 0.75rem !important; 
+    padding: 1rem 1rem 0 1rem !important; 
+    overflow-x: auto !important; 
+    scrollbar-width: none !important; 
+  }
+  .apgo-combo-sub-products::-webkit-scrollbar { display: none !important; }
+  
+  .apgo-combo-sub-item { 
+    flex: 0 0 80px !important; 
+    display: flex !important; 
+    flex-direction: column !important; 
+    align-items: center !important; 
+    gap: 0.5rem !important; 
+  }
+  @media(min-width:768px){
+    .apgo-combo-sub-item { flex: 0 0 100px !important; }
+  }
+  .apgo-combo-sub-img { 
+    width: 100% !important; 
+    aspect-ratio: 1/1 !important; 
+    background: #1a1a1a !important; 
+    border: 1px solid #333 !important; 
+    border-radius: 0.5rem !important; 
+    overflow: hidden !important; 
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: center !important;
+  }
+  .apgo-combo-sub-title { 
+    font-size: 10px !important; 
+    color: #d1d5db !important; 
+    text-align: center !important; 
+    line-height: 1.2 !important; 
+    display: -webkit-box !important; 
+    -webkit-line-clamp: 2 !important; 
+    -webkit-box-orient: vertical !important; 
+    overflow: hidden !important; 
+  }
+  .apgo-combo-info { padding: 1rem !important; text-align: center !important; }
+  .apgo-combo-title { font-size: 1.25rem !important; font-weight: bold !important; color: white !important; margin-bottom: 0.5rem !important; }
+  .apgo-combo-desc { font-size: 0.875rem !important; color: #9ca3af !important; line-height: 1.5 !important; }
+
+  .apgo-combo-btn { flex: 1 !important; padding: 0.75rem 0.5rem !important; text-align: center !important; text-decoration: none !important; font-weight: bold !important; font-size: 0.875rem !important; cursor: pointer !important; display: flex !important; justify-content: center !important; align-items: center !important; transition: all 0.2s !important; letter-spacing: 0.05em !important; border: none !important; margin: 0 !important; }
+  .apgo-combo-btn-left { background: #121212 !important; color: #f08418 !important; border-right: 1px solid #333 !important; border-radius: 0 0 0 0.75rem !important; }
+  @media(min-width:768px){ .apgo-combo-btn-left { border-radius: 0 !important; } }
+  .apgo-combo-btn-left:hover { background: #1a1a1a !important; }
+  .apgo-combo-btn-right { background: #f08418 !important; color: #000 !important; border-radius: 0 0 0.75rem 0 !important; }
+  .apgo-combo-btn-right:hover { background: #fff !important; color: #000 !important; }
+  .apgo-combo-actions { display: flex !important; width: 100% !important; margin: 0 !important; padding: 0 !important; border-top: 1px solid #333 !important; }
+  .apgo-combo-content-wrap { display: flex !important; flex-direction: column !important; background: #121212 !important; }
+
+  /* --- Coupon --- */
+  .apgo-coupon-sec { margin-top: 2.5rem !important; overflow: hidden !important; }
+  .apgo-coupon-banner { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; background: #1a1a1a !important; border: 1px solid #333 !important; border-radius: 0.75rem !important; overflow: hidden !important; margin-bottom: 1rem !important; }
+  .apgo-coupon-banner img { width: 100% !important; height: auto !important; max-width: 100% !important; display: block !important; object-fit: contain !important; }
+  .apgo-coupon-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 0.5rem !important; }
+  .apgo-coupon-card { background: #121212 !important; border: 1px solid #333 !important; border-radius: 0.5rem !important; padding: 0.5rem !important; text-align: center !important; position: relative !important; overflow: hidden !important; }
+  .apgo-coupon-card::before { content: ''; position: absolute !important; top:0; left:0; width:100%; height:4px; background: var(--theme-color, #f08418) !important; }
+  .apgo-coupon-amt { font-size: 1.125rem !important; font-weight: 900 !important; color: white !important; font-style: italic !important; }
+
+  /* --- Smart Footer --- */
+  /* 吸底購物車 z-index 低於 APGO Tactical Hub (9999)，避免壓住小工具抽屜 */
+  #apgo-smart-footer { position: fixed !important; bottom: 0 !important; left: 0 !important; width: 100% !important; z-index: 9990 !important; transition: transform 0.3s ease !important; transform: translateY(120%); }
+  #apgo-cart-drawer { 
+    position: absolute !important; bottom: 100% !important; left: 0 !important; width: 100% !important; 
+    background: #121212 !important; border-top: 1px solid rgba(240,132,24,0.2) !important;
+    max-height: 0; overflow-y: auto !important; transition: max-height 0.3s ease-in-out !important; 
+    z-index: -1 !important;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.5) !important;
+  }
+  #footer-backdrop { position: fixed !important; inset: 0 !important; background: rgba(0,0,0,0.6) !important; z-index: 9989 !important; display: none !important; backdrop-filter: blur(2px) !important; }
+  
+  .apgo-footer-bar { background: rgba(5,5,5,0.95) !important; backdrop-filter: blur(10px) !important; border-top: 1px solid #333 !important; padding: 0.75rem 1rem !important; display: flex !important; justify-content: space-between !important; align-items: center !important; position: relative !important; z-index: 10 !important; cursor: pointer !important; }
+  .apgo-progress-strip { background: #1a1a1a !important; padding: 0.25rem 1rem !important; border-top: 1px solid rgba(240,132,24,0.5) !important; position: relative !important; z-index: 10 !important; cursor: pointer !important; }
+  
+  .apgo-drawer-qty { display: flex !important; align-items: center !important; background: #000 !important; border: 1px solid #333 !important; border-radius: 4px !important; }
+  .apgo-drawer-header { display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 0.75rem 1rem !important; border-bottom: 1px solid #333 !important; background: #151515 !important; }
+  .apgo-progress-track { width: 100% !important; height: 6px !important; background: black !important; position: relative !important; overflow: hidden !important; }
+  .apgo-progress-fill { height: 100% !important; background: #f08418 !important; width: 0%; transition: width 0.5s ease !important; }
+  .apgo-checkout-btn { background: #f08418 !important; color: black !important; font-weight: 900 !important; padding: 0.75rem 1.5rem !important; border-radius: 0.25rem !important; border: none !important; cursor: pointer !important; display: flex !important; align-items: center !important; gap: 0.5rem !important; text-decoration: none !important; }
+  
+  /* --- Modal --- */
+  /* 規格彈窗高於 Hub，選規格時可正常覆蓋畫面 */
+  .apgo-modal-backdrop { position: fixed !important; inset: 0 !important; background: rgba(0,0,0,0.8) !important; z-index: 10000 !important; display: none !important; backdrop-filter: blur(2px) !important; }
+  .apgo-modal-content { position: fixed !important; bottom: 0 !important; left: 0 !important; width: 100% !important; background: #121212 !important; border-top: 1px solid #f08418 !important; z-index: 10001 !important; border-radius: 12px 12px 0 0 !important; max-height: 80vh !important; display: flex !important; flex-direction: column !important; transform: translateY(100%); transition: transform 0.3s !important; }
+  @media(min-width:768px){ .apgo-modal-content { width: 500px !important; left: 50% !important; top: 50% !important; bottom: auto !important; transform: translate(-50%, -50%) !important; border-radius: 12px !important; border: 1px solid #f08418 !important; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5) !important; } }
+  .apgo-modal-open .apgo-modal-backdrop { display: block !important; }
+  .apgo-modal-open .apgo-modal-content { transform: translateY(0) !important; }
+  @media(min-width:768px){ .apgo-modal-open .apgo-modal-content { transform: translate(-50%, -50%) !important; } }
+</style>
+
+<div class="apgo-aio-container">
+  
+  <section id="apgo-hero" style="position: relative; border-bottom: 1px solid #333; margin-bottom: 0 !important;">
+    <div class="apgo-hero-pc">
+      {% if section.settings.hero_image_pc %}
+        {{ section.settings.hero_image_pc | image_url: width: 1920 | image_tag: class: 'apgo-obj-cover' }}
+      {% else %}
+        <img src="https://placehold.co/1920x800/121212/f08418?text=Hero+PC" class="apgo-obj-cover" style="opacity:0.8">
+      {% endif %}
+    </div>
+    <div class="apgo-hero-mb">
+      {% if section.settings.hero_image_mb %}
+        {{ section.settings.hero_image_mb | image_url: width: 750 | image_tag: class: 'apgo-obj-cover' }}
+      {% else %}
+        <img src="https://placehold.co/750x1100/121212/f08418?text=Hero+MB" class="apgo-obj-cover" style="opacity:0.8">
+      {% endif %}
+    </div>
+  </section>
+
+  <div id="nav-placeholder" style="height: 50px; display: none;"></div>
+  <nav id="apgo-sticky-nav">
+    <div id="sticky-nav-container" class="scrollbar-hide">
+      {% assign has_nav_blocks = false %}
+      {% for block in section.blocks %}
+        {% if block.type == 'nav_item' %}{% assign has_nav_blocks = true %}{% break %}{% endif %}
+      {% endfor %}
+      {% if has_nav_blocks %}
+        {% for block in section.blocks %}
+          {% if block.type == 'nav_item' %}
+            <div class="sticky-nav-link" onclick="scrollToSection('{{ block.settings.nav_target_id }}')">{{ block.settings.nav_label }}</div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <div class="sticky-nav-link" onclick="scrollToSection('apgo-hero')">HOME</div>
+        <div class="sticky-nav-link" onclick="scrollToSection('apgo-waves')">波段活動</div>
+        {% assign grid_index = 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'combo_showcase' %}
+            {% assign anchor_id = block.settings.custom_anchor_id | default: 'apgo-combo-' | append: block.id %}
+            {% if block.settings.custom_anchor_id != blank %}
+              {% assign anchor_id = block.settings.custom_anchor_id %}
+            {% endif %}
+            <div class="sticky-nav-link" onclick="scrollToSection('{{ anchor_id }}')">{{ block.settings.section_title }}</div>
+          {% elsif block.type == 'product_grid' %}
+            {% assign grid_index = grid_index | plus: 1 %}
+            {% assign anchor_id = block.settings.custom_anchor_id | default: 'apgo-grid-' | append: grid_index %}
+            {% if block.settings.custom_anchor_id != blank %}
+              {% assign anchor_id = block.settings.custom_anchor_id %}
+            {% endif %}
+            <div class="sticky-nav-link" onclick="scrollToSection('{{ anchor_id }}')">{{ block.settings.section_title }}</div>
+          {% endif %}
+        {% endfor %}
+        <div class="sticky-nav-link" onclick="scrollToSection('apgo-coupons')">領券中心</div>
+      {% endif %}
+    </div>
+  </nav>
+
+  <div class="apgo-aio-inner">
+    
+    <section id="apgo-waves">
+      <div class="apgo-grid-title" style="margin-top: 2.5rem;">
+        <i class="fa-solid {{ section.settings.wave1_icon }}" style="color:#f08418;"></i>
+        {{ section.settings.wave1_label }}
+      </div>
+      <div class="apgo-wave1-box">
+        <div class="apgo-wave1-banner-wrap">
+          {% if section.settings.wave1_anchor_left != blank %}
+            <div onclick="scrollToSection('{{ section.settings.wave1_anchor_left }}')" style="width:100%; height:100%; cursor:pointer;">
+              {% if section.settings.wave1_img %}
+                {{ section.settings.wave1_img | image_url: width: 1920 | image_tag: class: 'apgo-obj-cover' }}
+              {% else %}
+                <img src="https://placehold.co/1920x1016/1a1a1a/ffffff?text=Wave+1" class="apgo-obj-cover" style="opacity:0.8">
+              {% endif %}
+            </div>
+          {% else %}
+            <a href="{{ section.settings.wave1_link_left | default: '#' }}" style="display:block; width:100%; height:100%;">
+              {% if section.settings.wave1_img %}
+                {{ section.settings.wave1_img | image_url: width: 1920 | image_tag: class: 'apgo-obj-cover' }}
+              {% else %}
+                <img src="https://placehold.co/1920x1016/1a1a1a/ffffff?text=Wave+1" class="apgo-obj-cover" style="opacity:0.8">
+              {% endif %}
+            </a>
+          {% endif %}
+        </div>
+        <div style="margin: 0 !important; padding: 0; display: flex; width: 100%; border-top: 1px solid #333;">
+          {% if section.settings.wave1_anchor_left != blank %}
+            <div onclick="scrollToSection('{{ section.settings.wave1_anchor_left }}')" class="apgo-wave1-btn apgo-wave1-btn-left">
+              了解詳情
+            </div>
+          {% else %}
+            <a href="{{ section.settings.wave1_link_left | default: '#' }}" class="apgo-wave1-btn apgo-wave1-btn-left">
+              了解詳情
+            </a>
+          {% endif %}
+          
+          {% if section.settings.wave1_right_product != blank %}
+            {% assign wave1_right_product = section.settings.wave1_right_product %}
+            {% assign wave1_right_variant = wave1_right_product.selected_or_first_available_variant %}
+            {% assign wave1_right_img = '' %}
+            {% if wave1_right_product.featured_image %}
+              {% assign wave1_right_img = wave1_right_product.featured_image | image_url: width: 300 %}
+            {% endif %}
+            {% if wave1_right_variant %}
+              <button class="apgo-wave1-btn apgo-wave1-btn-right" onclick="apgoAdd({{ wave1_right_variant.id }}, '{{ wave1_right_product.title | escape }}', {{ wave1_right_variant.price | divided_by: 100.0 }}, '{{ wave1_right_img }}')">
+                <i class="fa-solid fa-cart-plus"></i>&nbsp;{{ section.settings.wave1_right_btn_text | default: '加入購物車' }}
+              </button>
+            {% else %}
+              <button class="apgo-wave1-btn apgo-wave1-btn-right" style="background:#333 !important; color:#999 !important; cursor:not-allowed !important;">
+                商品暫不可購買
+              </button>
+            {% endif %}
+          {% elsif section.settings.wave1_anchor_right != blank %}
+            <div onclick="scrollToSection('{{ section.settings.wave1_anchor_right }}')" class="apgo-wave1-btn apgo-wave1-btn-right">
+              {{ section.settings.wave1_right_btn_text | default: '來去逛逛' }}
+            </div>
+          {% else %}
+            <a href="{{ section.settings.wave1_link_right | default: '#' }}" class="apgo-wave1-btn apgo-wave1-btn-right">
+              {{ section.settings.wave1_right_btn_text | default: '來去逛逛' }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="apgo-grid-title" style="margin-top: 2.5rem;">
+        <i class="fa-solid {{ section.settings.wave_grid_icon }}" style="color:#f08418;"></i>
+        {{ section.settings.wave_grid_label }}
+      </div>
+      <div class="apgo-wave-grid">
+
+        {% if section.settings.wave2_anchor != blank %}
+          <div class="apgo-wave-item{% if section.settings.wave2_img %} apgo-wave-item-has-img{% endif %}" onclick="scrollToSection('{{ section.settings.wave2_anchor }}')" style="cursor:pointer;">
+            <div class="apgo-wave-item-top">
+              {% if section.settings.wave2_img %}
+                <div class="apgo-wave-item-img">
+                  {{ section.settings.wave2_img | image_url: width: 600 | image_tag: class: 'apgo-obj-cover' }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="apgo-wave-btn">
+              {{ section.settings.wave2_title }}
+            </div>
+          </div>
+        {% else %}
+          <a href="{{ section.settings.wave2_link | default: '#' }}" class="apgo-wave-item{% if section.settings.wave2_img %} apgo-wave-item-has-img{% endif %}">
+            <div class="apgo-wave-item-top">
+              {% if section.settings.wave2_img %}
+                <div class="apgo-wave-item-img">
+                  {{ section.settings.wave2_img | image_url: width: 600 | image_tag: class: 'apgo-obj-cover' }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="apgo-wave-btn">
+              {{ section.settings.wave2_title }}
+            </div>
+          </a>
+        {% endif %}
+
+        {% if section.settings.wave3_anchor != blank %}
+          <div class="apgo-wave-item{% if section.settings.wave3_img %} apgo-wave-item-has-img{% endif %}" onclick="scrollToSection('{{ section.settings.wave3_anchor }}')" style="cursor:pointer;">
+            <div class="apgo-wave-item-top">
+              {% if section.settings.wave3_img %}
+                <div class="apgo-wave-item-img">
+                  {{ section.settings.wave3_img | image_url: width: 600 | image_tag: class: 'apgo-obj-cover' }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="apgo-wave-btn">
+              {{ section.settings.wave3_title }}
+            </div>
+          </div>
+        {% else %}
+          <a href="{{ section.settings.wave3_link | default: '#' }}" class="apgo-wave-item{% if section.settings.wave3_img %} apgo-wave-item-has-img{% endif %}">
+            <div class="apgo-wave-item-top">
+              {% if section.settings.wave3_img %}
+                <div class="apgo-wave-item-img">
+                  {{ section.settings.wave3_img | image_url: width: 600 | image_tag: class: 'apgo-obj-cover' }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="apgo-wave-btn">
+              {{ section.settings.wave3_title }}
+            </div>
+          </a>
+        {% endif %}
+
+        {% if section.settings.wave4_anchor != blank %}
+          <div class="apgo-wave-item{% if section.settings.wave4_img %} apgo-wave-item-has-img{% endif %}" onclick="scrollToSection('{{ section.settings.wave4_anchor }}')" style="cursor:pointer;">
+            <div class="apgo-wave-item-top">
+              {% if section.settings.wave4_img %}
+                <div class="apgo-wave-item-img">
+                  {{ section.settings.wave4_img | image_url: width: 600 | image_tag: class: 'apgo-obj-cover' }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="apgo-wave-btn">
+              {{ section.settings.wave4_title }}
+            </div>
+          </div>
+        {% else %}
+          <a href="{{ section.settings.wave4_link | default: '#' }}" class="apgo-wave-item{% if section.settings.wave4_img %} apgo-wave-item-has-img{% endif %}">
+            <div class="apgo-wave-item-top">
+              {% if section.settings.wave4_img %}
+                <div class="apgo-wave-item-img">
+                  {{ section.settings.wave4_img | image_url: width: 600 | image_tag: class: 'apgo-obj-cover' }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="apgo-wave-btn">
+              {{ section.settings.wave4_title }}
+            </div>
+          </a>
+        {% endif %}
+      </div>
+    </section>
+
+    {% assign grid_section_index = 0 %}
+    {% assign has_coupon_blocks = false %}
+    {% for b in section.blocks %}
+      {% if b.type == 'coupon_item' %}
+        {% assign has_coupon_blocks = true %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+    {% assign coupon_section_rendered = false %}
+    {% for block in section.blocks %}
+      {% if block.type == 'nav_item' and block.settings.nav_target_id == 'apgo-coupons' %}
+        {% unless coupon_section_rendered %}
+          {% assign coupon_section_rendered = true %}
+          <section class="apgo-coupon-sec" id="apgo-coupons">
+            <div class="apgo-grid-title" style="margin-bottom: 1rem;">
+              <i class="fa-solid {{ section.settings.coupon_sec_icon }}" style="color:#f08418;"></i>
+              {{ section.settings.coupon_sec_title }}
+            </div>
+            {% if section.settings.coupon_banner_img %}
+              <div class="apgo-coupon-banner">
+                {{ section.settings.coupon_banner_img | image_url: width: 1920 | image_tag: class: 'apgo-obj-cover' }}
+              </div>
+            {% endif %}
+            <div class="apgo-coupon-grid">
+              {% if has_coupon_blocks %}
+                {% for coupon_block in section.blocks %}
+                  {% if coupon_block.type == 'coupon_item' %}
+                    <div class="apgo-coupon-card" style="--theme-color: {{ coupon_block.settings.theme_color }};{% if coupon_block.settings.highlight_discount %} border-color: {{ coupon_block.settings.theme_color }};{% endif %}" {{ coupon_block.shopify_attributes }}>
+                      <i class="fa-solid fa-ticket" style="color:{{ coupon_block.settings.theme_color }}; font-size:18px; margin:4px 0;"></i>
+                      <div style="font-size:10px; color:#6b7280;">{{ coupon_block.settings.condition }}</div>
+                      <div class="apgo-coupon-amt"{% if coupon_block.settings.highlight_discount %} style="color:{{ coupon_block.settings.theme_color }};"{% endif %}>{{ coupon_block.settings.discount }}</div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                <div class="apgo-coupon-card" style="--theme-color: #f08418;">
+                  <i class="fa-solid fa-ticket" style="color:#f08418; font-size:18px; margin:4px 0;"></i>
+                  <div style="font-size:10px; color:#6b7280;">{{ section.settings.c1_condition }}</div>
+                  <div class="apgo-coupon-amt">{{ section.settings.c1_discount }}</div>
+                </div>
+                <div class="apgo-coupon-card" style="--theme-color: #9ca3af;">
+                  <i class="fa-solid fa-ticket" style="color:#9ca3af; font-size:18px; margin:4px 0;"></i>
+                  <div style="font-size:10px; color:#6b7280;">{{ section.settings.c2_condition }}</div>
+                  <div class="apgo-coupon-amt">{{ section.settings.c2_discount }}</div>
+                </div>
+                <div class="apgo-coupon-card" style="--theme-color: #f08418; border-color: rgba(240,132,24,0.5);">
+                  <i class="fa-solid fa-ticket" style="color:#f08418; font-size:18px; margin:4px 0;"></i>
+                  <div style="font-size:10px; color:#6b7280;">{{ section.settings.c3_condition }}</div>
+                  <div class="apgo-coupon-amt" style="color:#f08418;">{{ section.settings.c3_discount }}</div>
+                </div>
+              {% endif %}
+            </div>
+            <div style="text-align:center; font-size:10px; color:#666; margin-top:10px;">※ 優惠達門檻結帳自動折抵，無需手動輸入</div>
+          </section>
+        {% endunless %}
+      {% elsif block.type == 'combo_showcase' %}
+        {% assign anchor_id = block.settings.custom_anchor_id | default: 'apgo-combo-' | append: block.id %}
+        {% if block.settings.custom_anchor_id != blank %}
+          {% assign anchor_id = block.settings.custom_anchor_id %}
+        {% endif %}
+        <section class="apgo-combo-section" {{ block.shopify_attributes }}>
+          <div class="apgo-grid-title" id="{{ anchor_id }}">
+            <i class="fa-solid {{ block.settings.section_icon }}" style="color:#f08418;"></i>
+            {{ block.settings.section_title }}
+          </div>
+          
+          <div class="apgo-combo-card">
+            <div class="apgo-combo-main-img">
+              {% if block.settings.main_image %}
+                {{ block.settings.main_image | image_url: width: 800 | image_tag: class: 'apgo-obj-cover' }}
+              {% else %}
+                <img src="https://placehold.co/800x800/1a1a1a/f08418?text=Combo+Image" class="apgo-obj-cover" style="opacity:0.8">
+              {% endif %}
+            </div>
+            
+            <div class="apgo-combo-content-wrap" id="apgo-combo-{{ block.id }}">
+              <div class="apgo-combo-sub-products">
+                {% for product in block.settings.sub_products %}
+                  <div class="apgo-combo-sub-item">
+                    <div class="apgo-combo-sub-img">
+                      {% if product.featured_image %}
+                        {{ product.featured_image | image_url: width: 200 | image_tag: class: 'apgo-obj-cover' }}
+                      {% else %}
+                        <i class="fa-solid fa-box" style="color:#666; font-size:24px;"></i>
+                      {% endif %}
+                    </div>
+                    <div class="apgo-combo-sub-title">{{ product.title | truncate: 20 }}</div>
+                  </div>
+                {% else %}
+                  <div style="font-size:12px; color:#666; width:100%; text-align:center;">請從後台選擇組合子商品</div>
+                {% endfor %}
+              </div>
+
+              <div class="apgo-combo-info">
+                <div class="apgo-combo-title">{{ block.settings.combo_title }}</div>
+                <div class="apgo-combo-desc">{{ block.settings.combo_desc }}</div>
+              </div>
+              
+              <div class="apgo-combo-actions">
+                {% if block.settings.combo_product != blank %}
+                  {% assign cp = block.settings.combo_product %}
+                  <a href="{{ cp.url }}" class="apgo-combo-btn apgo-combo-btn-left">
+                    了解詳情
+                  </a>
+                  
+                  {% assign cp_img = '' %}
+                  {% if cp.featured_image %}{% assign cp_img = cp.featured_image | image_url: width: 300 %}{% endif %}
+                  <button class="apgo-combo-btn apgo-combo-btn-right" onclick="apgoAdd({{ cp.selected_or_first_available_variant.id }}, '{{ cp.title | escape }}', {{ cp.price | divided_by: 100.0 }}, '{{ cp_img }}')">
+                    <i class="fa-solid fa-cart-plus"></i> 加入組合
+                  </button>
+                {% else %}
+                  <button class="apgo-combo-btn apgo-combo-btn-right" style="background:#333 !important; color:#999 !important; cursor:not-allowed !important; width:100% !important; border-radius: 0 0 0.75rem 0.75rem !important;">
+                    請於後台綁定組合商品
+                  </button>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </section>
+      {% elsif block.type == 'product_grid' %}
+        {% assign grid_section_index = grid_section_index | plus: 1 %}
+        {% assign anchor_id = block.settings.custom_anchor_id | default: 'apgo-grid-' | append: grid_section_index %}
+        {% if block.settings.custom_anchor_id != blank %}
+          {% assign anchor_id = block.settings.custom_anchor_id %}
+        {% endif %}
+        <section class="apgo-grid-section" {{ block.shopify_attributes }}>
+          <div class="apgo-grid-title" id="{{ anchor_id }}">
+            <i class="fa-solid {{ block.settings.section_icon }}" style="color:#f08418;"></i>
+            {{ block.settings.section_title }}
+          </div>
+          {% if block.settings.banner_img %}
+            <div class="apgo-grid-banner">
+              {{ block.settings.banner_img | image_url: width: 1920 | image_tag: class: 'apgo-obj-cover', style: 'opacity:0.8' }}
+            </div>
+          {% endif %}
+          
+          <div class="apgo-card-grid">
+            {% for product in block.settings.product_list %}
+              {% assign has_variants = false %}
+              {% if product.variants.size > 1 %}
+                {% assign has_variants = true %}
+              {% endif %}
+              
+              <div class="apgo-card" data-pid="{{ product.id }}">
+                <div class="apgo-card-head">
+                  <span class="apgo-card-tag apgo-font-mono">// {{ block.settings.card_tag }}</span>
+                </div>
+                <div class="apgo-card-body">
+                  <div class="apgo-card-img-box">
+                    {% if product.featured_image %}
+                      {{ product.featured_image | image_url: width: 200 | image_tag: class: 'apgo-obj-cover' }}
+                    {% else %}
+                      <i class="fa-solid fa-box" style="color:#666; font-size:24px;"></i>
+                    {% endif %}
+                  </div>
+                  <div class="apgo-card-info">
+                    <div>
+                      <div class="apgo-card-title">{{ product.title }}</div>
+                      <div class="apgo-card-desc">{{ product.description | strip_html | truncate: 50 }}</div>
+                    </div>
+                    <div class="apgo-card-foot">
+                      <div class="apgo-card-price apgo-font-mono">{{ product.price | money }}</div>
+                      <div class="apgo-card-actions">
+                        <a href="{{ product.url }}" class="apgo-btn apgo-btn-left">詳情</a>
+                        {% if has_variants %}
+                          <button class="apgo-btn apgo-btn-right" onclick="apgoOpenModal({{ product.id }})">加入</button>
+                        <script type="application/json" id="json-{{ product.id }}">
+                          [
+                            {% for v in product.variants %}
+                              {
+                                "id": {{ v.id }},
+                                "title": {{ v.title | json }},
+                                "price": {{ v.price | divided_by: 100.0 }},
+                                "display_price": {{ v.price | money | json }},
+                                "img": "{{ v.featured_image | image_url: width: 300 | default: product.featured_image | image_url: width: 300 }}"
+                              }{% unless forloop.last %},{% endunless %}
+                            {% endfor %}
+                          ]
+                        </script>
+                        {% else %}
+                          {% assign p_img = '' %}
+                          {% if product.featured_image %}{% assign p_img = product.featured_image | image_url: width: 300 %}{% endif %}
+                          <button class="apgo-btn apgo-btn-right" onclick="apgoAdd({{ product.selected_or_first_available_variant.id }}, '{{ product.title | escape }}', {{ product.price | divided_by: 100.0 }}, '{{ p_img }}')">加入</button>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+      {% elsif block.type == 'coupon_item' %}
+        {% unless coupon_section_rendered %}
+          {% assign coupon_section_rendered = true %}
+          <section class="apgo-coupon-sec" id="apgo-coupons">
+            <div class="apgo-grid-title" style="margin-bottom: 1rem;">
+              <i class="fa-solid {{ section.settings.coupon_sec_icon }}" style="color:#f08418;"></i>
+              {{ section.settings.coupon_sec_title }}
+            </div>
+            {% if section.settings.coupon_banner_img %}
+              <div class="apgo-coupon-banner">
+                {{ section.settings.coupon_banner_img | image_url: width: 1920 | image_tag: class: 'apgo-obj-cover' }}
+              </div>
+            {% endif %}
+            <div class="apgo-coupon-grid">
+              {% for coupon_block in section.blocks %}
+                {% if coupon_block.type == 'coupon_item' %}
+                  <div class="apgo-coupon-card" style="--theme-color: {{ coupon_block.settings.theme_color }};{% if coupon_block.settings.highlight_discount %} border-color: {{ coupon_block.settings.theme_color }};{% endif %}" {{ coupon_block.shopify_attributes }}>
+                    <i class="fa-solid fa-ticket" style="color:{{ coupon_block.settings.theme_color }}; font-size:18px; margin:4px 0;"></i>
+                    <div style="font-size:10px; color:#6b7280;">{{ coupon_block.settings.condition }}</div>
+                    <div class="apgo-coupon-amt"{% if coupon_block.settings.highlight_discount %} style="color:{{ coupon_block.settings.theme_color }};"{% endif %}>{{ coupon_block.settings.discount }}</div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div style="text-align:center; font-size:10px; color:#666; margin-top:10px;">※ 優惠達門檻結帳自動折抵，無需手動輸入</div>
+          </section>
+        {% endunless %}
+      {% endif %}
+    {% endfor %}
+
+    {% unless coupon_section_rendered %}
+      <section class="apgo-coupon-sec" id="apgo-coupons">
+        <div class="apgo-grid-title" style="margin-bottom: 1rem;">
+          <i class="fa-solid {{ section.settings.coupon_sec_icon }}" style="color:#f08418;"></i>
+          {{ section.settings.coupon_sec_title }}
+        </div>
+        {% if section.settings.coupon_banner_img %}
+          <div class="apgo-coupon-banner">
+            {{ section.settings.coupon_banner_img | image_url: width: 1920 | image_tag: class: 'apgo-obj-cover' }}
+          </div>
+        {% endif %}
+        <div class="apgo-coupon-grid">
+          <div class="apgo-coupon-card" style="--theme-color: #f08418;">
+            <i class="fa-solid fa-ticket" style="color:#f08418; font-size:18px; margin:4px 0;"></i>
+            <div style="font-size:10px; color:#6b7280;">{{ section.settings.c1_condition }}</div>
+            <div class="apgo-coupon-amt">{{ section.settings.c1_discount }}</div>
+          </div>
+          <div class="apgo-coupon-card" style="--theme-color: #9ca3af;">
+            <i class="fa-solid fa-ticket" style="color:#9ca3af; font-size:18px; margin:4px 0;"></i>
+            <div style="font-size:10px; color:#6b7280;">{{ section.settings.c2_condition }}</div>
+            <div class="apgo-coupon-amt">{{ section.settings.c2_discount }}</div>
+          </div>
+          <div class="apgo-coupon-card" style="--theme-color: #f08418; border-color: rgba(240,132,24,0.5);">
+            <i class="fa-solid fa-ticket" style="color:#f08418; font-size:18px; margin:4px 0;"></i>
+            <div style="font-size:10px; color:#6b7280;">{{ section.settings.c3_condition }}</div>
+            <div class="apgo-coupon-amt" style="color:#f08418;">{{ section.settings.c3_discount }}</div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:10px; color:#666; margin-top:10px;">※ 優惠達門檻結帳自動折抵，無需手動輸入</div>
+      </section>
+    {% endunless %}
+
+  </div>
+</div>
+
+<div id="footer-backdrop" onclick="toggleApgoDrawer()"></div>
+<div id="apgo-smart-footer">
+  <div id="apgo-cart-drawer">
+    <div class="apgo-drawer-header">
+      <div style="font-size:12px; font-weight:bold; color:#f08418;">裝備庫明細</div>
+      <div onclick="toggleApgoDrawer()" style="cursor:pointer; color:#999; font-size:12px; display:flex; align-items:center; gap:4px;">
+        收起 <i class="fa-solid fa-chevron-down"></i>
+      </div>
+    </div>
+    <div style="padding:1rem; display:flex; flex-direction:column; gap:0.75rem;" id="apgo-cart-items-container"></div>
+    <div style="height:20px;"></div>
+  </div>
+
+  <div class="apgo-progress-strip" onclick="toggleApgoDrawer()">
+    <div style="display:flex; justify-content:space-between; color:#9ca3af; font-size:10px; margin-bottom:4px; font-family:monospace;">
+      <span id="apgo-task-text">任務目標: {{ section.settings.target_reward }} (尚差 <span style="color:#f08418; font-weight:bold;">${{ section.settings.target_amount }}</span>)</span>
+      <i id="apgo-drawer-arrow" class="fa-solid fa-chevron-up" style="transition:transform 0.3s;"></i>
+    </div>
+    <div class="apgo-progress-track">
+      <div id="apgo-progress-bar" class="apgo-progress-fill">
+        <div class="apgo-scan-line" style="animation-duration:1s;"></div>
+      </div>
+    </div>
+  </div>
+  <div class="apgo-footer-bar" onclick="handleApgoFooterClick(event)">
+    <div>
+      <div style="font-size:10px; color:#999; text-transform:uppercase; font-family:monospace;">裝備數量 <span id="apgo-count" style="background:#333; color:white; padding:0 4px; border-radius:2px;">0</span></div>
+      <div style="color:white; font-family:monospace; font-weight:bold; font-size:24px;">$<span id="apgo-total">0</span></div>
+    </div>
+    <button class="apgo-checkout-btn" onclick="window.location.href='/cart'">
+      結帳 <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i>
+    </button>
+  </div>
+</div>
+
+<div id="apgo-modal" class="apgo-modal-backdrop">
+  <div class="apgo-modal-content">
+    <div style="padding:1rem; border-bottom:1px solid #333; background:#1a1a1a; display:flex; flex-direction:column; align-items:center;">
+      <div style="font-weight:bold; color:white; font-size:1.125rem;" id="modal-title">選擇規格</div>
+    </div>
+    <div style="padding:1rem; overflow-y:auto; flex:1; background:#0a0a0a;">
+      <div id="modal-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;"></div>
+    </div>
+    <div style="padding:1rem; border-top:1px solid #333; background:#1a1a1a; display:flex; gap:0.5rem;">
+      <button style="flex:1; padding:0.75rem; background:transparent; border:1px solid #333; color:#999; border-radius:0.25rem; font-weight:bold;" onclick="apgoCloseModal()">取消</button>
+      <button style="flex:2; padding:0.75rem; background:#f08418; border:none; color:black; border-radius:0.25rem; font-weight:bold;" id="modal-confirm-btn">加入裝備庫</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+  var APGO_TIERS_RAW = [
+  {% assign has_tiers = false %}
+  {% for block in section.blocks %}
+    {% if block.type == 'reward_tier' %}
+      {% if has_tiers %},{% endif %}
+      {"amount":{{ block.settings.amount | default: 799 }},"reward_name":{{ block.settings.reward_name | default: '鍍膜布' | json }}}
+      {% assign has_tiers = true %}
+    {% endif %}
+  {% endfor %}
+  ];
+  if (APGO_TIERS_RAW.length === 0) {
+    APGO_TIERS_RAW = [{"amount":{{ section.settings.target_amount | default: 799 }},"reward_name":{{ section.settings.target_reward | default: '鍍膜布' | json }}}];
+  }
+  window.APGO_TIERS = APGO_TIERS_RAW.slice().sort(function(a,b){ return a.amount - b.amount; });
+  })();
+  let cart = {};
+  {% for item in cart.items %}
+    cart["{{ item.variant_id }}"] = {
+      key: "{{ item.key }}",
+      qty: {{ item.quantity }},
+      price: {{ item.final_price | default: item.price | divided_by: 100.0 }},
+      original_price: {{ item.original_price | default: item.price | divided_by: 100.0 }},
+      discounts: [
+        {% for d in item.discounts %}
+          { title: {{ d.title | json }} }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ],
+      title: {{ item.title | json }},
+      img: "{{ item.image | image_url: width: 200 }}"
+    };
+  {% endfor %}
+  let selVid = null; let tempVar = null; let isDrawerOpen = false;
+  var lastCartTotalFromShopify = {{ cart.total_price | default: 'null' }};
+  var cartLevelDiscounts = [
+    {% for d in cart.cart_level_discount_applications %}
+      {
+        title: {{ d.title | json }},
+        total_allocated_amount: {{ d.total_allocated_amount | default: 0 }}
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ];
+
+  /** 從 Shopify 取得最新購物車並同步到畫面上（含折扣後價格、line key、訂單總計） */
+  async function apgoSyncCartFromShopify() {
+    try {
+      const root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) ? window.Shopify.routes.root : '/';
+      const res = await fetch(root + 'cart.js');
+      if (!res.ok) return;
+      const data = await res.json();
+      lastCartTotalFromShopify = data.total_price != null ? data.total_price : null;
+      cartLevelDiscounts = data.cart_level_discount_applications || [];
+      cart = {};
+      (data.items || []).forEach(function(item) {
+        var img = (item.featured_image && item.featured_image.url) ? item.featured_image.url : (item.image || '');
+        var rawPrice = item.final_price != null ? item.final_price : (item.discounted_price != null ? item.discounted_price : item.price);
+        var priceInCents = typeof rawPrice === 'number' ? rawPrice : parseInt(rawPrice, 10) || 0;
+        
+        var rawOriginalPrice = item.original_price != null ? item.original_price : item.price;
+        var originalPriceInCents = typeof rawOriginalPrice === 'number' ? rawOriginalPrice : parseInt(rawOriginalPrice, 10) || 0;
+
+        cart[String(item.variant_id)] = {
+          key: item.key,
+          qty: item.quantity,
+          price: priceInCents / 100,
+          original_price: originalPriceInCents / 100,
+          discounts: item.discounts || [],
+          title: item.title || '',
+          img: img
+        };
+      });
+      updateUI();
+    } catch (e) {
+      console.error('apgoSyncCartFromShopify:', e);
+    }
+  }
+
+  // --- [整合導航邏輯] ---
+  const nav = document.getElementById('apgo-sticky-nav');
+  const placeholder = document.getElementById('nav-placeholder');
+  const hero = document.getElementById('apgo-hero');
+  const navLinks = document.querySelectorAll('.sticky-nav-link');
+  let navStickTop = 0;
+
+  function updateNavStickTop() {
+    if (!nav) return;
+    const wasFixed = nav.classList.contains('nav-fixed');
+    if (wasFixed) {
+      nav.classList.remove('nav-fixed');
+      placeholder.style.display = 'none';
+    }
+    navStickTop = nav.getBoundingClientRect().top + window.scrollY;
+    if (wasFixed) {
+      nav.classList.add('nav-fixed');
+      placeholder.style.display = 'block';
+    }
+  }
+
+  updateNavStickTop();
+  window.addEventListener('load', updateNavStickTop);
+  window.addEventListener('resize', updateNavStickTop);
+
+  window.addEventListener('scroll', () => {
+    // 吸頂邏輯
+    if (window.scrollY >= navStickTop) {
+      nav.classList.add('nav-fixed');
+      placeholder.style.display = 'block';
+    } else {
+      nav.classList.remove('nav-fixed');
+      placeholder.style.display = 'none';
+    }
+
+    // Scroll Spy (自動亮起導航標籤): 依 nav 目標 ID 判定，不限 section[id]
+    let current = "";
+    navLinks.forEach(link => {
+      const onclickAttr = link.getAttribute('onclick');
+      const match = onclickAttr && onclickAttr.match(/scrollToSection\s*\(\s*['"]([^'"]+)['"]\s*\)/);
+      const linkTargetId = match ? match[1] : '';
+      const targetEl = linkTargetId ? document.getElementById(linkTargetId) : null;
+      if (targetEl && pageYOffset >= targetEl.offsetTop - 120) {
+        current = linkTargetId;
+      }
+    });
+
+    navLinks.forEach((link, index) => {
+      link.classList.remove('active');
+      const onclickAttr = link.getAttribute('onclick');
+      const match = onclickAttr && onclickAttr.match(/scrollToSection\s*\(\s*['"]([^'"]+)['"]\s*\)/);
+      const linkTargetId = match ? match[1] : '';
+      if (linkTargetId && linkTargetId === current) {
+        link.classList.add('active');
+        const container = document.getElementById('sticky-nav-container');
+        if (container && container.scrollWidth > container.clientWidth) {
+          // 將 Active 的導航項目盡可能保持在容器正中央
+          const scrollLeft = link.offsetLeft - (container.clientWidth / 2) + (link.clientWidth / 2);
+          // 原生 scrollTo 已經會自動處理 < 0 或超出最大捲動範圍的安全限制
+          container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+        }
+      }
+    });
+  });
+
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      window.scrollTo({ top: el.offsetTop - 60, behavior: 'smooth' });
+    }
+  }
+
+  // --- [原有購物車與彈窗邏輯] ---
+  async function apgoAdd(vid, title, price, img) {
+    if(navigator.vibrate) navigator.vibrate(15);
+    const root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) ? window.Shopify.routes.root : '/';
+    try {
+      const addRes = await fetch(root + 'cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: [{ id: vid, quantity: 1 }] })
+      });
+      if (!addRes.ok) {
+        var err = await addRes.json().catch(function(){ return {}; });
+        console.error('Error adding to cart:', err);
+        return;
+      }
+      await apgoSyncCartFromShopify();
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
+  }
+
+  async function apgoRemove(vid) {
+    if(navigator.vibrate) navigator.vibrate(15);
+    const v = String(vid);
+    var key = cart[v] && cart[v].key;
+    if (!key) {
+      await apgoSyncCartFromShopify();
+      key = cart[v] && cart[v].key;
+    }
+    if (!key) return;
+    const root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) ? window.Shopify.routes.root : '/';
+    try {
+      const res = await fetch(root + 'cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: key, quantity: 0 })
+      });
+      if (!res.ok) { console.error('Error removing from cart'); return; }
+      await apgoSyncCartFromShopify();
+    } catch (error) {
+      console.error('Error removing from cart:', error);
+    }
+  }
+
+  async function apgoChangeQty(vid, delta) {
+    if(navigator.vibrate) navigator.vibrate(15);
+    const v = String(vid);
+    if(!cart[v]) return;
+    var key = cart[v].key;
+    if (!key) {
+      await apgoSyncCartFromShopify();
+      if (!cart[v]) return;
+      key = cart[v].key;
+    }
+    if (!key) return;
+    var newQty = Math.max(0, (cart[v].qty || 0) + delta);
+    const root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) ? window.Shopify.routes.root : '/';
+    try {
+      const res = await fetch(root + 'cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: key, quantity: newQty })
+      });
+      if (!res.ok) { console.error('Error updating cart quantity'); return; }
+      await apgoSyncCartFromShopify();
+    } catch (error) {
+      console.error('Error updating cart quantity:', error);
+    }
+  }
+
+  // 監聽 Shopify 購物車更新事件 (如果主題有發送事件)
+  document.addEventListener('cart:updated', function(event) {
+    if(event.detail && event.detail.cart) {
+      apgoSyncCartFromShopify();
+    }
+  });
+
+  function updateUI() {
+    let total = 0; let count = 0;
+    const list = document.getElementById('apgo-cart-items-container');
+    list.innerHTML = '';
+    const cartLevelDiscountTitleSet = new Set(
+      (cartLevelDiscounts || [])
+        .map(function(d) { return ((d && d.title) ? String(d.title) : '').trim(); })
+        .filter(Boolean)
+    );
+
+    for(let k in cart) {
+      const item = cart[k];
+      total += item.price * item.qty;
+      count += item.qty;
+      
+      let priceHtml = '';
+      if (item.original_price && item.original_price > item.price) {
+        priceHtml = `<span style="text-decoration:line-through; color:#999; margin-right:6px;">$${Number(item.original_price).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</span>` +
+                    `<span style="color:#f08418; font-weight:bold;">$${Number(item.price).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</span>`;
+      } else {
+        priceHtml = `<span style="color:#f08418;">$${Number(item.price).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</span>`;
+      }
+
+      let discountsHtml = '';
+      if (item.discounts && item.discounts.length > 0) {
+        item.discounts.forEach(d => {
+          var discountTitle = ((d && d.title) ? String(d.title) : '').trim();
+          // 避免整單折扣在每個商品重複顯示，只保留真正的商品折扣
+          if (!discountTitle || cartLevelDiscountTitleSet.has(discountTitle)) return;
+          discountsHtml += `<div style="font-size:10px; color:#22c55e; margin-top:2px; display:flex; align-items:center; gap:4px;"><i class="fa-solid fa-tag"></i> ${d.title}</div>`;
+        });
+      }
+
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex; gap:10px; padding:8px; background:#1a1a1a; border:1px solid #333; border-radius:4px; align-items:center;';
+      row.innerHTML = `
+        <img src="${item.img}" style="width:40px; height:40px; object-fit:cover; border-radius:4px; background:#000;">
+        <div style="flex:1;">
+          <div style="font-size:12px; color:white; font-weight:bold;">${item.title}</div>
+          <div style="font-size:10px; font-family:monospace; margin-top:2px;">${priceHtml}</div>
+          ${discountsHtml}
+        </div>
+        <div class="apgo-drawer-qty">
+          <div style="width:24px; height:24px; display:flex; align-items:center; justify-content:center; color:#999; cursor:pointer;" onclick="apgoChangeQty('${k}', -1)">-</div>
+          <span style="width:20px; text-align:center; font-size:12px; font-weight:bold; color:white; font-family:monospace;">${item.qty}</span>
+          <div style="width:24px; height:24px; display:flex; align-items:center; justify-content:center; color:#999; cursor:pointer;" onclick="apgoChangeQty('${k}', 1)">+</div>
+        </div>
+        <button onclick="apgoRemove('${k}')" style="background:transparent; border:none; color:#666; cursor:pointer; margin-left:8px;"><i class="fa-solid fa-trash"></i></button>
+      `;
+      list.appendChild(row);
+    }
+
+    if (cartLevelDiscounts && cartLevelDiscounts.length > 0) {
+      const discountContainer = document.createElement('div');
+      discountContainer.style.cssText = 'border-top: 1px dashed #333; padding-top: 8px; margin-top: 4px;';
+      
+      cartLevelDiscounts.forEach(d => {
+        const dRow = document.createElement('div');
+        dRow.style.cssText = 'display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#22c55e; margin-bottom:4px;';
+        
+        let amountText = '';
+        let amount = d.total_allocated_amount != null ? d.total_allocated_amount : d.amount;
+        if (amount != null) {
+          let displayAmount = (typeof amount === 'number' ? amount : parseInt(amount, 10)) / 100;
+          amountText = `-$${Number(displayAmount).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+        }
+        
+        dRow.innerHTML = `
+          <div style="display:flex; align-items:center; gap:6px;">
+            <i class="fa-solid fa-ticket"></i> ${d.title}
+          </div>
+          <div style="font-family:monospace; font-weight:bold;">${amountText}</div>
+        `;
+        discountContainer.appendChild(dRow);
+      });
+      list.appendChild(discountContainer);
+    }
+    
+    var displayTotal = (typeof lastCartTotalFromShopify === 'number' && lastCartTotalFromShopify >= 0) ? (lastCartTotalFromShopify / 100) : total;
+    document.getElementById('apgo-total').innerText = displayTotal.toLocaleString();
+    document.getElementById('apgo-count').innerText = count;
+    
+    const footer = document.getElementById('apgo-smart-footer');
+    if(count > 0) {
+       footer.style.transform = 'translateY(0)';
+    } else {
+       footer.style.transform = 'translateY(120%)';
+       if(isDrawerOpen) toggleApgoDrawer();
+    }
+
+    const bar = document.getElementById('apgo-progress-bar');
+    const txt = document.getElementById('apgo-task-text');
+    const tiers = (window.APGO_TIERS && window.APGO_TIERS.length) ? window.APGO_TIERS : [{ amount: 799, reward_name: '鍍膜布' }];
+
+    var lastUnlockedIndex = -1;
+    for (var i = 0; i < tiers.length; i++) {
+      if (total >= tiers[i].amount) lastUnlockedIndex = i;
+    }
+    var nextTierIndex = lastUnlockedIndex + 1;
+    var nextTier = tiers[nextTierIndex];
+    var needForNext = nextTier ? Math.max(0, nextTier.amount - total) : 0;
+    var pct = nextTier ? Math.min((total / nextTier.amount) * 100, 100) : 100;
+    bar.style.width = pct + '%';
+
+    if (nextTier) {
+      bar.style.backgroundColor = '#f08418';
+      if (lastUnlockedIndex >= 0) {
+        txt.innerHTML = '<span style="color:#22c55e; font-weight:bold;">已獲取 ' + tiers[lastUnlockedIndex].reward_name + '</span>。再消費 <span style="color:#f08418; font-weight:bold;">$' + needForNext.toLocaleString() + '</span> 可獲得 ' + nextTier.reward_name;
+      } else {
+        txt.innerHTML = '任務目標: ' + nextTier.reward_name + ' (尚差 <span style="color:#f08418; font-weight:bold;">$' + needForNext.toLocaleString() + '</span>)';
+      }
+    } else {
+      bar.style.backgroundColor = '#22c55e';
+      txt.innerHTML = '<span style="color:#22c55e; font-weight:bold;">已獲取 ' + tiers[lastUnlockedIndex].reward_name + '</span>。全部目標已達成！';
+    }
+  }
+  
+  function toggleApgoDrawer() {
+    const drawer = document.getElementById('apgo-cart-drawer');
+    const arrow = document.getElementById('apgo-drawer-arrow');
+    const backdrop = document.getElementById('footer-backdrop');
+    isDrawerOpen = !isDrawerOpen;
+    if(isDrawerOpen) {
+      drawer.style.maxHeight = '50vh';
+      arrow.style.transform = 'rotate(180deg)';
+      backdrop.style.display = 'block';
+    } else {
+      drawer.style.maxHeight = '0';
+      arrow.style.transform = 'rotate(0deg)';
+      backdrop.style.display = 'none';
+    }
+  }
+  
+  function handleApgoFooterClick(e) {
+    if(e.target.closest('button') || e.target.closest('a')) return;
+    toggleApgoDrawer();
+  }
+
+  function apgoOpenModal(pid) {
+    if(navigator.vibrate) navigator.vibrate(15);
+    const data = document.getElementById('json-'+pid);
+    if(!data) return;
+    const vars = JSON.parse(data.innerText);
+    const title = document.querySelector(`[data-pid="${pid}"] .apgo-card-title`).innerText;
+    document.getElementById('modal-title').innerText = title;
+    const grid = document.getElementById('modal-grid');
+    grid.innerHTML = ''; selVid = null;
+    const btn = document.getElementById('modal-confirm-btn');
+    btn.style.opacity = '0.5'; btn.disabled = true;
+    vars.forEach(v => {
+      const el = document.createElement('div');
+      el.style.cssText = 'border:1px solid #333; background:#1a1a1a; border-radius:8px; padding:8px; position:relative; cursor:pointer;';
+      el.innerHTML = `<img src="${v.img}" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:4px; margin-bottom:8px;"><div style="font-size:12px; color:#ddd; font-weight:bold;">${v.title}</div><div style="font-size:14px; color:#f08418; font-family:monospace; font-weight:bold;">${v.display_price}</div><div class="ring" style="position:absolute; inset:0; border:2px solid #f08418; border-radius:8px; display:none;"></div>`;
+      el.onclick = () => {
+        document.querySelectorAll('.ring').forEach(r => r.style.display='none');
+        el.querySelector('.ring').style.display='block';
+        selVid = v.id; tempVar = { title: title + ' - ' + v.title, price: v.price, img: v.img };
+        btn.style.opacity = '1'; btn.disabled = false;
+      };
+      grid.appendChild(el);
+    });
+    document.body.classList.add('apgo-modal-open');
+    btn.onclick = async () => { await apgoAdd(selVid, tempVar.title, tempVar.price, tempVar.img); apgoCloseModal(); };
+  }
+
+  function apgoCloseModal() { document.body.classList.remove('apgo-modal-open'); }
+
+  updateUI();
+  apgoSyncCartFromShopify();
+</script>

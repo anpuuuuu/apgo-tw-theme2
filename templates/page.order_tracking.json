@@ -1,0 +1,109 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "shogun-helper": {
+      "type": "shogun-helper",
+      "disabled": true,
+      "settings": {}
+    },
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "shogun-optimizer": {
+      "type": "shogun-optimizer",
+      "disabled": true,
+      "settings": {}
+    },
+    "order_check_LRHech": {
+      "type": "order_check",
+      "name": "APGO 訂單查詢 v2",
+      "settings": {
+        "gas_url": "https://script.google.com/macros/s/AKfycbwzGxwM1Z6MktA-bJ8X4xKIWSanuUteNyXxmXrz8x6GZfS5PRCaEQfvW1ZIay2G4aqU/exec",
+        "accent_color": "#ff6b00",
+        "show_bg_effect": true,
+        "heading_text": "追蹤您的訂單",
+        "subheading_text": "請輸入訂單編號或確認編號查詢",
+        "label_order_id": "訂購人名稱 / 訂單編號 / 確認編號",
+        "placeholder_order_id": "9碼大寫英文混合數字例如：K730BL58C",
+        "label_phone": "手機號碼",
+        "placeholder_phone": "",
+        "btn_search_text": "立即查詢",
+        "status_step1": "訂單待確認",
+        "status_step2": "理貨中",
+        "status_step3": "運送中",
+        "status_step4": "已送達",
+        "status_step4_pickup": "已取件",
+        "btn_17track_default": "查看詳細貨態",
+        "btn_17track_711": "點擊查看 7-11 詳細貨態",
+        "btn_17track_family": "查看全家詳細貨態",
+        "btn_hct": "點擊查看 宅配 詳細貨態",
+        "btn_hint_text": "點擊按鈕前往物流查詢頁面查看即時進度",
+        "label_products": "商品內容",
+        "btn_reset": "查詢其他",
+        "btn_home": "回首頁",
+        "err_title": "物流狀態異常",
+        "err_msg": "請聯繫 APGO 客服為您協助處理。",
+        "status_error": "狀態異常"
+      }
+    }
+  },
+  "order": [
+    "shogun-helper",
+    "main",
+    "shogun-optimizer",
+    "order_check_LRHech"
+  ]
+}

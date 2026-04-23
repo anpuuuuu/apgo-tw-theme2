@@ -1,0 +1,4350 @@
+{%- liquid
+  assign reward_blocks = section.blocks | where: 'type', 'reward'
+  assign popup_blocks = section.blocks | where: 'type', 'popup_tab'
+
+  assign progress_target = 0
+  for block in reward_blocks
+    assign threshold_cents = block.settings.threshold_amount | times: 100
+    if threshold_cents > progress_target
+      assign progress_target = threshold_cents
+    endif
+  endfor
+  if progress_target <= 0
+    assign progress_target = 100
+  endif
+
+  assign progress_percentage = cart.total_price | times: 100.0 | divided_by: progress_target | round
+  if progress_percentage > 100
+    assign progress_percentage = 100
+  endif
+
+  assign next_locked_title = blank
+  assign next_locked_amount = 0
+  for block in reward_blocks
+    assign threshold_cents = block.settings.threshold_amount | times: 100
+    if cart.total_price < threshold_cents
+      assign next_locked_title = block.settings.title
+      assign next_locked_amount = threshold_cents | minus: cart.total_price
+      break
+    endif
+  endfor
+
+  assign upsell_products = blank
+  if section.settings.upsell_source_mode == 'collection' and section.settings.upsell_source_collection != blank
+    assign upsell_products = section.settings.upsell_source_collection.products
+  elsif section.settings.upsell_source_products != blank
+    assign upsell_products = section.settings.upsell_source_products
+  endif
+
+  comment
+    訂單折扣多階：Shopify 只套用最高等級折扣。找出「目前符合且已套用折扣」的最高門檻 = 當前階級。
+    低於此階級的 order_discount 卡片顯示「已享更優」。
+  endcomment
+  assign current_order_discount_tier_cents = 0
+  if cart.total_discount > 0
+    for block in reward_blocks
+      assign bt = block.settings.reward_type | default: 'standard'
+      if bt == 'order_discount'
+        assign tc = block.settings.threshold_amount | times: 100
+        if cart.total_price >= tc and tc > current_order_discount_tier_cents
+          assign current_order_discount_tier_cents = tc
+        endif
+      endif
+    endfor
+  endif
+-%}
+
+<section
+  id="CartShellV2-{{ section.id }}"
+  class="cart-shell-v2"
+  data-section-id="{{ section.id }}"
+  data-section-type="cart-shell-v2"
+  data-invoice-mode="{{ section.settings.invoice_ui_mode | default: 'custom' }}"
+  data-customer-logged-in="{% if customer %}true{% else %}false{% endif %}"
+>
+  <main class="cv-main">
+    <div class="cv-col cv-col--left">
+      <section data-block="mission" class="cv-card m-mission">
+        {% comment %} 參考: 小標 UNLOCK PROGRESS → section.settings.mission_title {% endcomment %}
+        <div class="m-mission-head">
+          <span class="cv-label cv-label--accent m-mission-label">{% if section.settings.mission_title == blank or section.settings.mission_title == 'UNLOCK PROGRESS' %}解鎖進度{% else %}{{ section.settings.mission_title | escape }}{% endif %}</span>
+        </div>
+        <div class="m-progress-copy">
+          {% comment %} 參考: 當前金額/下一門檻 → cart.total_price 大字、progress_target 反灰小字 {% endcomment %}
+          <div class="m-progress-value">
+            <span class="m-progress-current">{{ cart.total_price | money }}</span>
+            <span class="m-progress-target">/ {{ progress_target | money }}</span>
+          </div>
+          {% comment %} 參考: 再差 $XX、即將解鎖 → next_locked_amount, mission_next_label {% endcomment %}
+          <div class="m-progress-right">
+            <div class="m-progress-description" data-mission-description>
+              {%- if next_locked_title != blank -%}
+                再差 <span class="m-progress-gap">{{ next_locked_amount | money }}</span>
+              {%- else -%}
+                所有階段已解鎖完成
+              {%- endif -%}
+            </div>
+            <div class="m-progress-next-label">{{ section.settings.mission_next_label | default: '即將解鎖下一個目標' | escape }}</div>
+          </div>
+        </div>
+        {% comment %} 參考: progress-bar width % → progress_percentage, data-mission-target {% endcomment %}
+        <div class="m-track"><div class="m-fill" style="width: {{ progress_percentage }}%;" data-mission-fill data-mission-target="{{ progress_percentage }}"></div></div>
+        {% assign first_locked_found = false %}
+        <div class="m-rewards m-rewards-grid">
+        {% for block in reward_blocks %}
+          {%- liquid
+            assign threshold_cents = block.settings.threshold_amount | times: 100
+            assign rtype = block.settings.reward_type | default: 'standard'
+            assign is_unlocked = false
+            assign reward_note = block.settings.locked_text
+            if rtype == 'standard'
+              if cart.total_price >= threshold_cents
+                assign is_unlocked = true
+                assign reward_note = block.settings.unlocked_text | default: '已達成'
+              endif
+            elsif rtype == 'free_shipping'
+              assign has_shipping_discount = false
+              for disc in cart.discount_applications
+                if disc.target_type == 'shipping_line'
+                  assign has_shipping_discount = true
+                  break
+                endif
+              endfor
+              if has_shipping_discount or cart.total_price >= threshold_cents
+                assign is_unlocked = true
+                assign reward_note = block.settings.unlocked_text | default: '已達成'
+              endif
+            elsif rtype == 'order_discount'
+              if cart.total_discount > 0 and cart.total_price >= threshold_cents
+                assign is_unlocked = true
+                if threshold_cents < current_order_discount_tier_cents
+                  assign reward_note = block.settings.better_tier_text | default: '已享更優'
+                else
+                  assign reward_note = block.settings.unlocked_text | default: '已達成'
+                endif
+              elsif cart.total_price >= threshold_cents
+                assign is_unlocked = true
+                assign reward_note = block.settings.unlocked_text | default: '已達成'
+              else
+                assign reward_note = block.settings.locked_text
+              endif
+            elsif rtype == 'gift'
+              if cart.total_price >= threshold_cents
+                assign is_unlocked = true
+                assign reward_note = block.settings.unlocked_text | default: '已達成'
+              endif
+            endif
+            assign gap_cents = threshold_cents | minus: cart.total_price
+            if gap_cents < 0
+              assign gap_cents = 0
+            endif
+            assign is_next_locked = false
+            if is_unlocked == false and first_locked_found == false
+              assign is_next_locked = true
+              assign first_locked_found = true
+            endif
+            assign display_note = reward_note
+            if is_unlocked and display_note == '已解鎖'
+              assign display_note = '已達成'
+            endif
+            if is_unlocked == false and display_note == blank
+              assign display_note = '尚未解鎖'
+            endif
+            if is_unlocked == false and display_note contains 'gift tiers'
+              assign display_note = '待解鎖'
+            endif
+            if is_unlocked == false and display_note contains 'GIFT TIERS'
+              assign display_note = '待解鎖'
+            endif
+          -%}
+          {%- assign gift_variant_id = '' -%}
+          {%- if rtype == 'gift' and block.settings.gift_product != blank -%}
+            {%- assign gp = block.settings.gift_product -%}
+            {%- assign gift_variant_id = gp.selected_or_first_available_variant.id -%}
+          {%- endif -%}
+          {%- assign modal_desc = block.settings.reward_description | default: reward_note -%}
+          {%- assign modal_image = '' -%}
+          {%- if rtype == 'gift' and block.settings.gift_product != blank and block.settings.gift_product.featured_image != blank -%}
+            {%- assign modal_image = block.settings.gift_product.featured_image | image_url: width: 400 -%}
+          {%- elsif block.settings.icon_image != blank -%}
+            {%- assign modal_image = block.settings.icon_image | image_url: width: 400 -%}
+          {%- endif -%}
+          <div
+            class="m-reward{% if is_unlocked %} is-unlocked{% else %} is-locked{% endif %}{% if is_next_locked %} is-next-locked{% endif %}"
+            data-reward-card
+            data-reward-id="{{ block.id }}"
+            data-reward-title="{{ block.settings.title | escape }}"
+            data-reward-type="{{ rtype }}"
+            data-threshold="{{ threshold_cents }}"
+            data-reward-modal-title="{{ block.settings.title | escape }}"
+            data-reward-modal-desc="{{ modal_desc | escape }}"
+            {% if modal_image != '' %}data-reward-modal-image="{{ modal_image }}"{% endif %}
+            data-reward-modal-type="{{ rtype }}"
+            {% if gift_variant_id != '' %}data-gift-variant-id="{{ gift_variant_id }}"{% endif %}
+            {{ block.shopify_attributes }}
+          >
+            <div class="m-reward-icon-wrap">
+              {%- if is_unlocked -%}
+                <span class="m-reward-icon m-reward-icon--check" aria-hidden="true"><svg class="m-reward-icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="4"><path d="M5 13l4 4L19 7"></path></svg></span>
+              {%- else -%}
+                <span class="m-reward-icon m-reward-icon--lock" aria-hidden="true"><svg class="m-reward-icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 10-8 0v4h8z" stroke-width="2"></path></svg></span>
+              {%- endif -%}
+            </div>
+            <div class="m-reward-thumb m-reward-thumb--{% if rtype == 'gift' %}gift{% else %}service{% endif %}">
+              {%- if block.settings.icon_image != blank -%}
+                {{ block.settings.icon_image | image_url: width: 180 | image_tag: loading: 'lazy', alt: block.settings.title }}
+              {%- elsif rtype == 'gift' and block.settings.gift_product != blank -%}
+                {%- assign gift_product = block.settings.gift_product -%}
+                {%- if gift_product.featured_image != blank -%}
+                  {{ gift_product.featured_image | image_url: width: 180 | image_tag: loading: 'lazy', alt: gift_product.title }}
+                {%- else -%}
+                  <span class="m-reward-fallback">{{ block.settings.icon_fallback | escape }}</span>
+                {%- endif -%}
+              {%- else -%}
+                <span class="m-reward-fallback">{{ block.settings.icon_fallback | escape }}</span>
+              {%- endif -%}
+            </div>
+            <div class="m-reward-title">{{ block.settings.title | escape }}</div>
+            {%- if block.settings.reward_subtitle != blank -%}
+              <div class="m-reward-desc">{{ block.settings.reward_subtitle | escape }}</div>
+            {%- endif -%}
+            <div class="m-reward-note">
+              <span class="m-reward-note-text">{{ display_note | escape }}</span>
+              {%- if is_unlocked == false and gap_cents > 0 -%}
+                <span class="m-reward-note-gap">差 {{ gap_cents | money }}</span>
+              {%- endif -%}
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+        <div class="m-mission-toggle-wrap">
+          <button type="button" class="m-mission-toggle" data-mission-all-toggle>
+            {{ section.settings.mission_expand_label | default: '展開所有獎勵' | escape }} ({{ reward_blocks.size }})
+            <svg class="m-mission-toggle-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9l-7 7-7-7" stroke-width="2"></path></svg>
+          </button>
+        </div>
+      </section>
+
+      {% render 'cart-items-v2', section: section %}
+
+      {% comment %} 推薦加購 (改為與彈窗 100% 共用同一套 Collection 資料) {% endcomment %}
+      <section data-block="upsell" class="cv-card">
+      <div class="u-head">
+        <div>
+          <span class="cv-label cv-label--accent">{{ section.settings.upsell_title | escape }}</span>
+          <div class="u-filter-list" data-upsell-filters>
+            {%- for block in popup_blocks -%}
+              {%- if block.settings.collection != blank and block.settings.show_in_popup -%}
+                <button type="button" class="u-filter-chip {% if forloop.first %}is-active{% endif %}" data-filter-collection="{{ block.settings.collection.handle }}">
+                  {{ block.settings.label | escape }}
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+        <div>
+          <button type="button" class="u-open" data-open-popup>{{ section.settings.popup_label | escape }}</button>
+        </div>
+      </div>
+
+      <div class="u-list-container">
+        {%- for block in popup_blocks -%}
+          {%- if block.settings.collection != blank and block.settings.show_in_popup -%}
+            <div class="u-list" data-upsell-group="{{ block.settings.collection.handle }}" {% unless forloop.first %}hidden style="display: none;"{% endunless %}>
+              {% assign available_products = block.settings.collection.products | where: 'available', true %}
+              {% assign sold_out_products = block.settings.collection.products | where: 'available', false %}
+              {% assign sorted_products = available_products | concat: sold_out_products %}
+              {%- for product in sorted_products limit: section.settings.upsell_max_products -%}
+                {%- assign current_variant = product.selected_or_first_available_variant -%}
+                {%- assign has_variants = false -%}
+                {%- if product.variants.size > 1 -%}
+                  {%- assign has_variants = true -%}
+                {%- endif -%}
+                <article
+                  class="u-card"
+                  data-upsell-card
+                  data-collections="{% for collection in product.collections %}{{ collection.handle }}{% unless forloop.last %},{% endunless %}{% endfor %}"
+                >
+                  <a href="{{ product.url }}" class="u-img">
+                    {%- if product.featured_image != blank -%}
+                      {{ product.featured_image | image_url: width: 320 | image_tag: loading: 'lazy', alt: product.title }}
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'u-img-placeholder' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="u-content">
+                    <div class="u-title">{{ product.title }}</div>
+                    <div class="m-val">{{ current_variant.price | money }}</div>
+                  </div>
+
+                  {%- if product.available == false -%}
+                    <button class="u-add" type="button" disabled style="color: #666; background: transparent; cursor: not-allowed; border-top: 1px solid rgba(255,255,255,0.08);">已售完</button>
+                  {%- elsif has_variants -%}
+                    <button class="u-add" type="button" data-open-variant-modal="{{ product.id }}" data-product-title="{{ product.title | escape }}">選擇規格</button>
+                    <script type="application/json" id="v2-json-{{ product.id }}">
+                      [
+                        {%- for v in product.variants -%}
+                          {
+                            "id": {{ v.id }},
+                            "title": {{ v.title | json }},
+                            "price": {{ v.price | divided_by: 100.0 }},
+                            "display_price": {{ v.price | money | json }},
+                            "img": "{{ v.featured_image | image_url: width: 300 | default: product.featured_image | image_url: width: 300 }}"
+                          }{%- unless forloop.last -%},{%- endunless -%}
+                        {%- endfor -%}
+                      ]
+                    </script>
+                  {%- else -%}
+                    <button class="u-add" type="button" data-variant-id="{{ current_variant.id }}">加入購物車</button>
+                  {%- endif -%}
+                </article>
+              {%- endfor -%}
+              {%- if block.settings.collection.products.size == 0 -%}
+                <p style="color: #666; font-size: 12px; padding: 10px;">此分類目前無商品。</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      </section>
+    </div>
+
+    <div class="cv-col cv-col--right">
+      <section data-block="invoice" class="cv-card">
+      <div class="cv-label cv-label--accent">發票設定 (E-INVOICE)</div>
+      <div class="i-tabs" data-invoice-custom-tabs>
+        <button type="button" class="i-chip is-active" data-invoice-type="personal">個人發票</button>
+        <button type="button" class="i-chip" data-invoice-type="company">公司統編</button>
+        {% if section.settings.show_invoice_mobile %}
+          <button type="button" class="i-chip" data-invoice-type="mobile">手機載具</button>
+        {% endif %}
+        {% if section.settings.show_invoice_donate %}
+          <button type="button" class="i-chip" data-invoice-type="donate">捐贈碼</button>
+        {% endif %}
+      </div>
+      <div class="i-content" data-invoice-content>已選擇個人雲端發票，將寄送至 Email。</div>
+      </section>
+
+      <section class="cv-card cart-shell-v2__ako-native-zone" data-ako-native-zone aria-label="AKO 本尊（測試用）">
+        <div class="cv-label cv-label--accent">AKO 本尊（測試用）</div>
+        <p class="cart-shell-v2__ako-native-hint">可關閉下方區塊，測試上方自訂發票 UI 是否正常。</p>
+        <button type="button" class="cart-shell-v2__ako-native-toggle" data-ako-native-toggle aria-expanded="true">隱藏 AKO 本尊</button>
+        <div class="cart-shell-v2__invoice-ako-host" data-invoice-ako-host data-invoice-ako-hidden aria-hidden="true"></div>
+      </section>
+
+      <section data-block="shipping" class="cv-card">
+      <div class="cv-label">收件資訊預填</div>
+
+      <!-- 共用欄位：姓名、電話（跨宅配/超商共用，與舊版行為一致） -->
+      <div class="s-row">
+        <label class="s-label">收件人姓名 <span style="color:var(--dt-signal-orange)">*</span></label>
+        <input class="cv-input" id="v2-shared-name" autocomplete="name" placeholder="例：王小明">
+      </div>
+      <div class="s-row">
+        <label class="s-label">聯絡電話 <span style="color:var(--dt-signal-orange)">*</span></label>
+        <input class="cv-input" id="v2-shared-phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="例：0912345678">
+      </div>
+
+      <div class="s-tabs">
+        <button type="button" class="s-tab is-active" data-shipping-tab="home">宅配到府</button>
+        <button type="button" class="s-tab" data-shipping-tab="cvs">超商取貨</button>
+        {% if section.settings.show_pickup_tab %}
+          <button type="button" class="s-tab" data-shipping-tab="pickup">自取</button>
+        {% endif %}
+      </div>
+      <div class="s-pane is-active" data-shipping-pane="home">
+        <div class="s-row s-grid">
+          <div>
+            <label class="s-label">縣市</label>
+            <select class="cv-input cv-input--select" id="v2-receiver-city" data-v2-county>
+              <option value="">請選擇</option>
+              <option>臺北市</option>
+              <option>新北市</option>
+              <option>基隆市</option>
+              <option>桃園市</option>
+              <option>新竹市</option>
+              <option>新竹縣</option>
+              <option>苗栗縣</option>
+              <option>臺中市</option>
+              <option>彰化縣</option>
+              <option>南投縣</option>
+              <option>雲林縣</option>
+              <option>嘉義市</option>
+              <option>嘉義縣</option>
+              <option>臺南市</option>
+              <option>高雄市</option>
+              <option>屏東縣</option>
+              <option>宜蘭縣</option>
+              <option>花蓮縣</option>
+              <option>臺東縣</option>
+              <option>澎湖縣</option>
+              <option>金門縣</option>
+              <option>連江縣</option>
+            </select>
+          </div>
+          <div>
+            <label class="s-label">區域</label>
+            <select class="cv-input cv-input--select" id="v2-receiver-district" data-v2-district disabled>
+              <option value="">請先選縣市</option>
+            </select>
+            <div class="cart-shell-v2__zip-hint" id="v2-receiver-zip-wrap">郵遞區號：<span id="v2-receiver-zip-value">—</span></div>
+          </div>
+        </div>
+        <div class="s-row">
+          <label class="s-label">詳細地址</label>
+          <input class="cv-input" id="v2-receiver-address1">
+        </div>
+      </div>
+      <div class="s-pane" data-shipping-pane="cvs">
+        <p class="cart-shell-v2__cvs-hint">請先選擇縣市、區域，系統將依此顯示附近超商門市；下方可填寫路名或門市名稱。</p>
+        <div class="s-row s-grid">
+          <div>
+            <label class="s-label">縣市</label>
+            <select class="cv-input cv-input--select" id="v2-cvs-city" data-v2-cvs-county>
+              <option value="">請選擇</option>
+              <option>臺北市</option>
+              <option>新北市</option>
+              <option>基隆市</option>
+              <option>桃園市</option>
+              <option>新竹市</option>
+              <option>新竹縣</option>
+              <option>苗栗縣</option>
+              <option>臺中市</option>
+              <option>彰化縣</option>
+              <option>南投縣</option>
+              <option>雲林縣</option>
+              <option>嘉義市</option>
+              <option>嘉義縣</option>
+              <option>臺南市</option>
+              <option>高雄市</option>
+              <option>屏東縣</option>
+              <option>宜蘭縣</option>
+              <option>花蓮縣</option>
+              <option>臺東縣</option>
+              <option>澎湖縣</option>
+              <option>金門縣</option>
+              <option>連江縣</option>
+            </select>
+          </div>
+          <div>
+            <label class="s-label">區域</label>
+            <select class="cv-input cv-input--select" id="v2-cvs-district" data-v2-cvs-district disabled>
+              <option value="">請先選縣市</option>
+            </select>
+            <div class="cart-shell-v2__zip-hint" id="v2-cvs-zip-wrap">郵遞區號：<span id="v2-cvs-zip-value">—</span></div>
+          </div>
+        </div>
+        <div class="s-row">
+          <label class="s-label">詳細地址</label>
+          <input class="cv-input" id="v2-cvs-store" placeholder="路名或門市名稱（選填）">
+        </div>
+      </div>
+      {% if section.settings.show_pickup_tab %}
+      <div class="s-pane" data-shipping-pane="pickup">
+        <p class="cart-shell-v2__pickup-notice">自取選項僅能透過<strong>信用卡</strong>付款，請於結帳時選擇信用卡支付。</p>
+        {% assign pickup_addr = section.settings.pickup_address | strip %}
+          {% assign pickup_hrs = section.settings.pickup_hours | strip %}
+          {% assign pickup_nt = section.settings.pickup_note | strip %}
+          {% assign pickup_placeholder = '（選填）' %}
+          {% if section.settings.pickup_heading != blank or pickup_addr != blank and pickup_addr != pickup_placeholder or pickup_hrs != blank and pickup_hrs != pickup_placeholder or pickup_nt != blank and pickup_nt != pickup_placeholder %}
+          <div class="cart-shell-v2__pickup-info">
+            {% if section.settings.pickup_heading != blank %}
+              <div class="cart-shell-v2__pickup-heading">{{ section.settings.pickup_heading | escape }}</div>
+            {% endif %}
+            {% if pickup_addr != blank and pickup_addr != pickup_placeholder %}
+              <div class="cart-shell-v2__pickup-address">{{ pickup_addr | escape }}</div>
+            {% endif %}
+            {% if pickup_hrs != blank and pickup_hrs != pickup_placeholder %}
+              <div class="cart-shell-v2__pickup-hours">營業時間：{{ pickup_hrs | escape }}</div>
+            {% endif %}
+            {% if pickup_nt != blank and pickup_nt != pickup_placeholder %}
+              <div class="cart-shell-v2__pickup-note">{{ pickup_nt | escape }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+      {% endif %}
+      </section>
+
+      {% render 'cart-subtotal-v2', section: section %}
+    </div>
+  </main>
+
+  <section data-block="sticky">
+    <footer class="f-wrap">
+      <div class="f-total">
+        <div class="f-label">{{ section.settings.sticky_total_label | escape }}</div>
+        <div class="f-price" data-cart-total-price>{{ cart.total_price | money }}</div>
+      </div>
+      <div class="f-actions" data-sticky-cta-host>
+        <button type="button" class="f-btn" data-checkout-trigger>
+          {{ section.settings.checkout_label | escape }}
+        </button>
+      </div>
+    </footer>
+  </section>
+
+  <section data-block="popup">
+    <div class="p-overlay" data-close-popup></div>
+    <div class="p-sheet">
+      <div class="p-head">
+        <div><strong>{{ section.settings.popup_title | escape }}</strong></div>
+        <button type="button" class="p-close" data-close-popup>×</button>
+      </div>
+      <div class="p-tabs">
+        {%- for block in popup_blocks -%}
+          {%- if block.settings.collection != blank and block.settings.show_in_popup -%}
+            <button
+              type="button"
+              class="p-tab{% if forloop.first %} is-active{% endif %}"
+              data-collection="{{ block.settings.collection.handle }}"
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.label | escape }}
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <div class="p-body">
+        <div class="p-grid" data-popup-grid>
+          {%- if popup_blocks == blank -%}
+            <div class="cart-shell-v2__host-placeholder">請先設定 popup collections。</div>
+          {%- endif -%}
+        </div>
+        {%- for block in popup_blocks -%}
+          {%- if block.settings.collection != blank and block.settings.show_in_popup -%}
+            <template data-popup-template="{{ block.settings.collection.handle }}">
+              {% assign available_products = block.settings.collection.products | where: 'available', true %}
+              {% assign sold_out_products = block.settings.collection.products | where: 'available', false %}
+              {% assign sorted_products = available_products | concat: sold_out_products %}
+              {%- for product in sorted_products limit: section.settings.popup_products_limit -%}
+                {%- assign current_variant = product.selected_or_first_available_variant -%}
+                {%- assign has_variants = false -%}
+                {%- if product.variants.size > 1 -%}
+                  {%- assign has_variants = true -%}
+                {%- endif -%}
+
+                {% comment %} 🌟 樣式統一：全場使用 u-card 樣式 🌟 {% endcomment %}
+                <article class="u-card">
+                  <a href="{{ product.url }}" class="u-img">
+                    {%- if product.featured_image != blank -%}
+                      {{
+                        product.featured_image
+                        | image_url: width: 320
+                        | image_tag: loading: 'lazy', alt: product.title
+                      }}
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'u-img-placeholder' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="u-content">
+                    <div class="u-title">{{ product.title }}</div>
+                    <div class="m-val">{{ current_variant.price | money }}</div>
+                  </div> {% comment %} 👈 關鍵修復：u-content 在這裡提早結束，不包住按鈕 {% endcomment %}
+
+                  {%- if product.available == false -%}
+                    <button type="button" class="u-add" disabled style="color: #666; background: transparent; cursor: not-allowed; border-top: 1px solid rgba(255,255,255,0.08);">已售完</button>
+                  {%- elsif has_variants -%}
+                    <button type="button" class="u-add" data-open-variant-modal="{{ product.id }}" data-product-title="{{ product.title | escape }}">選擇規格</button>
+                    <script type="application/json" id="v2-json-{{ product.id }}">
+                      [
+                        {%- for v in product.variants -%}
+                          {
+                            "id": {{ v.id }},
+                            "title": {{ v.title | json }},
+                            "price": {{ v.price | divided_by: 100.0 }},
+                            "display_price": {{ v.price | money | json }},
+                            "img": "{{ v.featured_image | image_url: width: 300 | default: product.featured_image | image_url: width: 300 }}"
+                          }{%- unless forloop.last -%},{%- endunless -%}
+                        {%- endfor -%}
+                      ]
+                    </script>
+                  {%- else -%}
+                    <button type="button" class="u-add" data-variant-id="{{ current_variant.id }}">加入購物車</button>
+                  {%- endif -%}
+                </article>
+              {%- endfor -%}
+            </template>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  {% comment %} Bottom Sheet 置於最外層，脫離父層疊上下文，避免被吸底結帳蓋住 {% endcomment %}
+  <div id="mission-detail-modal-{{ section.id }}" class="m-bottom-sheet" data-mission-modal aria-hidden="true">
+    <div class="m-bottom-sheet-backdrop" data-mission-modal-close></div>
+    <div class="m-bottom-sheet-content">
+      <div class="m-bottom-sheet-drag-handle"></div>
+      <button type="button" class="m-bottom-sheet-close" data-mission-modal-close aria-label="關閉">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2"></path></svg>
+      </button>
+      <div class="m-bottom-sheet-body">
+        <div class="m-detail-modal-icon" data-mission-modal-icon></div>
+        <h2 class="m-detail-modal-title" data-mission-modal-title></h2>
+        {% comment %} 動態顯示「已達成」或「差 $XXX」 {% endcomment %}
+        <div class="m-detail-modal-status" data-mission-modal-status></div>
+        <p class="m-detail-modal-desc" data-mission-modal-desc></p>
+        <button type="button" class="m-bottom-sheet-btn" data-mission-modal-close>確認目標</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="mission-all-modal-{{ section.id }}" class="m-bottom-sheet" data-mission-all-modal aria-hidden="true">
+    <div class="m-bottom-sheet-backdrop" data-mission-all-modal-close></div>
+    <div class="m-bottom-sheet-content m-all-sheet-content">
+      <div class="m-bottom-sheet-drag-handle"></div>
+      <button type="button" class="m-bottom-sheet-close" data-mission-all-modal-close aria-label="關閉">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2"></path></svg>
+      </button>
+      <div class="m-bottom-sheet-body">
+        <div class="cv-label cv-label--accent" style="margin-bottom: 1.5rem;">MISSION ROADMAP</div>
+        <div class="m-timeline-list">
+          {% for block in reward_blocks %}
+            {%- liquid
+              assign threshold_cents = block.settings.threshold_amount | times: 100
+              assign rtype = block.settings.reward_type | default: 'standard'
+              assign is_unlocked = false
+
+              if rtype == 'standard' or rtype == 'gift'
+                if cart.total_price >= threshold_cents
+                  assign is_unlocked = true
+                endif
+              elsif rtype == 'free_shipping'
+                assign has_shipping_discount = false
+                for disc in cart.discount_applications
+                  if disc.target_type == 'shipping_line'
+                    assign has_shipping_discount = true
+                    break
+                  endif
+                endfor
+                if has_shipping_discount or cart.total_price >= threshold_cents
+                  assign is_unlocked = true
+                endif
+              elsif rtype == 'order_discount'
+                if cart.total_price >= threshold_cents
+                  assign is_unlocked = true
+                endif
+              endif
+
+              assign gap_cents = threshold_cents | minus: cart.total_price
+              if gap_cents < 0
+                assign gap_cents = 0
+              endif
+            -%}
+            <div class="m-timeline-row {% if is_unlocked %}is-unlocked{% else %}is-locked{% endif %}">
+              <div class="m-timeline-node"></div>
+              <div class="m-timeline-thumb m-reward-thumb--{% if rtype == 'gift' %}gift{% else %}service{% endif %}">
+                {%- if block.settings.icon_image != blank -%}
+                  {{ block.settings.icon_image | image_url: width: 80 | image_tag: loading: 'lazy', alt: block.settings.title }}
+                {%- elsif rtype == 'gift' and block.settings.gift_product != blank and block.settings.gift_product.featured_image != blank -%}
+                  {{ block.settings.gift_product.featured_image | image_url: width: 80 | image_tag: loading: 'lazy', alt: block.settings.gift_product.title }}
+                {%- else -%}
+                  <span class="m-reward-fallback">{{ block.settings.icon_fallback | escape }}</span>
+                {%- endif -%}
+              </div>
+              <div class="m-timeline-info">
+                <div class="m-timeline-title">{{ block.settings.title | escape }}</div>
+                <div class="m-timeline-status">
+                  {% if is_unlocked %}
+                    <span style="color: #ea580c;">[ 任務達成 ]</span>
+                  {% else %}
+                    <span>需滿 {{ threshold_cents | money }}</span>
+                    <span style="color: #fb923c; margin-left: 6px;">(差 {{ gap_cents | money }})</span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% comment %} 會員結帳攔截抽屜 (Bottom Sheet) - LINE 權益版 {% endcomment %}
+  <div id="member-warning-modal-{{ section.id }}" class="m-bottom-sheet" data-member-warning-modal aria-hidden="true">
+    <div class="m-bottom-sheet-backdrop" data-member-warning-modal-close></div>
+    <div class="m-bottom-sheet-content">
+      <div class="m-bottom-sheet-drag-handle"></div>
+      <button type="button" class="m-bottom-sheet-close" data-member-warning-modal-close aria-label="關閉">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2"></path></svg>
+      </button>
+      <div class="m-bottom-sheet-body" style="padding-top: 0.5rem;">
+
+        {% comment %} 替換為完整不破圖的認證徽章 ICON {% endcomment %}
+        <div style="color: var(--dt-signal-orange); margin-bottom: 16px;">
+          <svg width="52" height="52" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+          </svg>
+        </div>
+
+        <h2 class="m-detail-modal-title" style="font-size: 1.25rem;">解鎖 LINE VIP 專屬權益</h2>
+
+        {% comment %} 條列式權益清單 (比起一整段文字，顧客更容易掃描) {% endcomment %}
+        <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; text-align: left; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 16px; border-radius: 12px; margin-top: 16px; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fa-solid fa-headset" style="color: var(--dt-signal-orange); width: 16px; text-align: center; font-size: 14px;"></i>
+            <span style="font-size: 13px; color: #e4e4e7; font-weight: 700;">最速尊榮客服 (無憂退換貨)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fa-solid fa-truck-fast" style="color: var(--dt-signal-orange); width: 16px; text-align: center; font-size: 14px;"></i>
+            <span style="font-size: 13px; color: #e4e4e7; font-weight: 700;">物流進度 LINE 即時推播</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fa-solid fa-ticket" style="color: var(--dt-signal-orange); width: 16px; text-align: center; font-size: 14px;"></i>
+            <span style="font-size: 13px; color: #e4e4e7; font-weight: 700;">首購滿699元立即享 <span style="color: var(--dt-signal-orange); font-weight: 900; font-family: monospace;">$100</span> 新客優惠券</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fa-solid fa-gift" style="color: var(--dt-signal-orange); width: 16px; text-align: center; font-size: 14px;"></i>
+            <span style="font-size: 13px; color: #e4e4e7; font-weight: 700;">不定期發放限時專屬折扣</span>
+          </div>
+        </div>
+
+        {% comment %} 按鈕區塊 {% endcomment %}
+        <p class="cart-shell-v2__member-legal-hint" style="font-size: 11px; line-height: 1.45; color: rgba(255,255,255,0.42); margin: 0 0 12px; text-align: center; width: 100%;">
+          點擊下方按鈕即代表您已閱讀並同意
+          {% if shop.terms_of_service %}
+            <a href="{{ shop.terms_of_service.url }}" target="_blank" rel="noopener noreferrer" style="color: var(--dt-signal-orange); text-decoration: underline;">服務條款</a>
+          {% else %}
+            <span style="color: rgba(255,255,255,0.55);">服務條款</span>
+          {% endif %}
+          與
+          {% if shop.privacy_policy %}
+            <a href="{{ shop.privacy_policy.url }}" target="_blank" rel="noopener noreferrer" style="color: var(--dt-signal-orange); text-decoration: underline;">隱私權政策</a>
+          {% else %}
+            <span style="color: rgba(255,255,255,0.55);">隱私權政策</span>
+          {% endif %}
+          ，我們將依此提供訂單服務、售後保障及會員專屬優惠資訊。
+        </p>
+        <div style="width: 100%; display: flex; flex-direction: column; gap: 12px;">
+          <a href="{{ routes.account_login_url }}?return_to=/cart" class="m-bottom-sheet-btn" style="text-align: center; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 8px;">
+            <i class="fa-brands fa-line" style="font-size: 18px;"></i> LINE 快速登入 / 註冊
+          </a>
+          <button type="button" class="m-bottom-sheet-btn" data-guest-checkout-trigger style="background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #999;">不登入，直接結帳</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  {% comment %} 變體規格選擇抽屜 (Bottom Sheet) {% endcomment %}
+  <div id="variant-modal-{{ section.id }}" class="m-bottom-sheet" data-variant-modal aria-hidden="true">
+    <div class="m-bottom-sheet-backdrop" data-variant-modal-close></div>
+    <div class="m-bottom-sheet-content" style="max-height: 90vh;">
+      <div class="m-bottom-sheet-drag-handle"></div>
+      <button type="button" class="m-bottom-sheet-close" data-variant-modal-close aria-label="關閉">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2"></path></svg>
+      </button>
+      <div class="m-bottom-sheet-body" style="padding-top: 0.5rem; text-align: left; align-items: flex-start; width: 100%;">
+        <h2 class="m-detail-modal-title" style="font-size: 1.1rem; margin-bottom: 1rem; width: 100%; text-align: left;" data-variant-modal-title>選擇規格</h2>
+
+        <div class="v2-variant-grid" data-variant-grid>
+          </div>
+
+        <div style="width: 100%; margin-top: 16px;">
+          <button type="button" class="m-bottom-sheet-btn" data-variant-confirm disabled style="opacity: 0.5;">確認加入</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cart-shell-v2__notice" data-v2-notice hidden></div>
+</section>
+
+<script>
+  (function () {
+    if (window.__apgoCartV2Bound) return;
+    window.__apgoCartV2Bound = true;
+    const ROOT_SELECTOR = '[data-section-type="cart-shell-v2"]';
+
+    // --- 基礎工具函數 ---
+    function getRoot(element) {
+      return element?.closest(ROOT_SELECTOR);
+    }
+
+    function getCartUrl(path) {
+      const root = window.Shopify?.routes?.root || '/';
+      return root + path.replace(/^\//, '');
+    }
+
+    function setLoading(button, loading) {
+      if (!button) return;
+      button.disabled = loading;
+      button.classList.toggle('is-loading', loading);
+    }
+
+    function showNotice(root, text) {
+      if (!root) return;
+      const notice = root.querySelector('[data-v2-notice]');
+      if (!notice) return;
+      notice.textContent = text;
+      notice.hidden = false;
+    }
+
+    function clearNotice(root) {
+      if (!root) return;
+      const notice = root.querySelector('[data-v2-notice]');
+      if (notice) {
+        notice.hidden = true;
+        notice.textContent = '';
+      }
+    }
+
+    async function parseResponseAsJsonSafe(response) {
+      const text = await response.text();
+      try {
+        return JSON.parse(text);
+      } catch (error) {
+        throw new Error(`NON_JSON_RESPONSE:${response.status}:${text.slice(0, 60)}`);
+      }
+    }
+
+    // --- 發票類型記錄（配合 AKO 同步用） ---
+    function setInvoiceTypeInForm(root, type) {
+      if (!root) return;
+      root.dataset.invoiceType = type || 'personal';
+    }
+
+    function validateTaxIdChecksum(taxId) {
+      if (!taxId || taxId.length !== 8) return false;
+      var weights = [1, 2, 1, 2, 1, 2, 4, 1];
+      var sum = 0;
+      for (var i = 0; i < 8; i++) {
+        var num = parseInt(taxId[i], 10);
+        if (isNaN(num)) return false;
+        var product = num * weights[i];
+        sum += Math.floor(product / 10) + (product % 10);
+      }
+      if (sum % 5 === 0) return true;
+      if (taxId.charAt(6) === '7' && (sum + 1) % 5 === 0) return true;
+      return false;
+    }
+
+    function readInvoiceFieldInRoot(root, fieldName) {
+      if (!root || !fieldName) return '';
+      var block = root.querySelector('[data-block="invoice"]');
+      var content = block && block.querySelector('[data-invoice-content]');
+      var el = content && content.querySelector('[data-invoice-field="' + fieldName + '"]');
+      return el ? String(el.value || '').trim() : '';
+    }
+
+    // 回傳 { attributes } 或 { error: 錯誤訊息字串 }
+    function buildInvoiceCartAttributes(root) {
+      var block = root && root.querySelector('[data-block="invoice"]');
+      var activeChip = block && block.querySelector('.i-chip[data-invoice-type].is-active');
+      var type = (activeChip && activeChip.dataset.invoiceType) || (root && root.dataset.invoiceType) || 'personal';
+
+      // Cart / 訂單屬性鍵名與 App 一致：「發票種類(InvoiceType)」等，勿用「attributes[…]」當鍵名
+      // （attributes[鍵] 僅用於結帳 URL query，見 proceedToCheckout 內 _set）
+      var a = {};
+      var setBase = function (invoiceType, carrierType, carrierNum, companyName, companyId, loveCode) {
+        a['發票種類(InvoiceType)'] = invoiceType;
+        a['載具類型(CarrierType)'] = carrierType;
+        a['載具編號(CarrierNum)'] = carrierNum;
+        a['公司名稱(CompanyName)'] = companyName;
+        a['統一編號(CompanyId)'] = companyId;
+        a['捐贈碼(LoveCode)'] = loveCode;
+      };
+
+      // 發票種類(InvoiceType) 與 App 選單一致：e-invoice / company / carrier / donate
+      if (type === 'personal') {
+        setBase('e-invoice', '', '', '', '', '');
+      } else if (type === 'company') {
+        var rawId = readInvoiceFieldInRoot(root, 'company_id');
+        var taxId = rawId.replace(/\D+/g, '');
+        if (taxId.length !== 8) {
+          return { error: '請填寫 8 碼公司統一編號。' };
+        }
+        if (!validateTaxIdChecksum(taxId)) {
+          return { error: '統一編號檢核未通過，請再確認。' };
+        }
+        var title = readInvoiceFieldInRoot(root, 'company_title');
+        // 公司發票：僅寫入此四鍵（與 App 對接）。注意：cart/update 為合併，若曾選過載具／捐贈，舊鍵可能仍留在購物車屬性。
+        return {
+          attributes: {
+            '發票種類(InvoiceType)': 'company',
+            '代處理發票(DelegateInvoice)': 'Y',
+            '公司名稱(CompanyName)': title,
+            '統一編號(CompanyId)': taxId
+          }
+        };
+      } else if (type === 'mobile') {
+        var carrier = readInvoiceFieldInRoot(root, 'mobile');
+        if (!carrier) {
+          return { error: '請填寫手機載具條碼。' };
+        }
+        setBase('carrier', '3', carrier, '', '', '');
+      } else if (type === 'donate') {
+        var code = readInvoiceFieldInRoot(root, 'donate_code');
+        if (!code) {
+          return { error: '請填寫捐贈碼。' };
+        }
+        setBase('donate', '', '', '', '', code);
+      } else {
+        setBase('e-invoice', '', '', '', '', '');
+      }
+
+      a['代處理發票(DelegateInvoice)'] = 'Y';
+      return { attributes: a };
+    }
+
+    // --- 畫面狀態獲取與渲染 ---
+    function getRootState(root) {
+      const popup = root?.querySelector('[data-block="popup"]');
+      const activeTab = popup?.querySelector('.p-tab.is-active');
+      return {
+        popupOpen: popup?.classList.contains('is-open') || false,
+        activeCollection: activeTab?.dataset.collection || ''
+      };
+    }
+
+    function renderPopupProducts(root, collectionHandle) {
+      if (!root) return;
+      const popup = root.querySelector('[data-block="popup"]');
+      const grid = popup?.querySelector('[data-popup-grid]');
+      const note = popup?.querySelector('[data-popup-collection-note]');
+      if (!popup || !grid) return;
+
+      const template = popup.querySelector(`[data-popup-template="${collectionHandle}"]`);
+      if (!template) return;
+
+      popup.querySelectorAll('.p-tab').forEach((tab) => {
+        tab.classList.toggle('is-active', tab.dataset.collection === collectionHandle);
+      });
+
+      // if (note) note.textContent = `COLLECTION: ${collectionHandle}`;
+      grid.innerHTML = template.innerHTML;
+    }
+
+    // --- 推薦加購同步切換邏輯 ---
+    function applyUpsellFilter(root, filterKey) {
+      if (!root || !filterKey) return;
+
+      // 切換按鈕亮燈
+      root.querySelectorAll('.u-filter-chip').forEach((chip) => {
+        if (chip.dataset.filterCollection === filterKey) {
+          chip.classList.add('is-active');
+        } else {
+          chip.classList.remove('is-active');
+        }
+      });
+
+      // 顯示/隱藏對應的產品群組
+      let hasVisibleCards = false;
+      root.querySelectorAll('[data-upsell-group]').forEach((group) => {
+        if (group.dataset.upsellGroup === filterKey) {
+          group.style.display = '';
+          group.removeAttribute('hidden');
+          group.scrollTo({ left: 0, behavior: 'smooth' });
+          hasVisibleCards = true;
+        } else {
+          group.style.display = 'none';
+          group.setAttribute('hidden', 'hidden');
+        }
+      });
+
+      // 防呆：如果找不到該分類商品，退回顯示全部分類
+      if (filterKey !== 'all' && !hasVisibleCards) {
+        root.querySelectorAll('[data-upsell-group]').forEach(function (group) {
+          group.style.display = '';
+          group.removeAttribute('hidden');
+        });
+      }
+    }
+
+    // --- 任務進度條動畫 ---
+    function scrollMissionToNextLocked(root) {
+      if (!root) return;
+      const track = root.querySelector('.m-rewards');
+      const nextLocked = root.querySelector('.m-reward.is-next-locked') || root.querySelector('.m-reward.is-locked');
+      if (!track || !nextLocked) return;
+
+      function doScroll() {
+        const containerWidth = track.clientWidth;
+        const cardWidth = nextLocked.offsetWidth;
+        let targetScrollLeft = nextLocked.offsetLeft - cardWidth + (containerWidth - cardWidth * 2) / 2;
+        const maxScroll = track.scrollWidth - track.clientWidth;
+        const clamped = Math.max(0, Math.min(targetScrollLeft, maxScroll));
+        track.scrollTo({ left: clamped, behavior: 'smooth' });
+      }
+      setTimeout(function () { requestAnimationFrame(doScroll); }, 100);
+    }
+
+    function syncMissionRewards(root) {
+      if (!root) return;
+      const rewardCards = root.querySelectorAll('[data-reward-card]');
+      if (!rewardCards.length) return;
+
+      window.__apgoCartV2RewardState = window.__apgoCartV2RewardState || {};
+      var targetChanged = false;
+
+      rewardCards.forEach(function (card) {
+        var rewardId = card.dataset.rewardId;
+        var previousUnlocked = Boolean(window.__apgoCartV2RewardState[rewardId]);
+        var currentUnlocked = card.classList.contains('is-unlocked');
+
+        if (currentUnlocked && !previousUnlocked) {
+          card.classList.remove('is-unlock-animate');
+          window.requestAnimationFrame(function () {
+            card.classList.add('is-unlock-animate');
+          });
+          targetChanged = true;
+        }
+        if (!currentUnlocked && previousUnlocked) {
+          targetChanged = true;
+        }
+        window.__apgoCartV2RewardState[rewardId] = currentUnlocked;
+      });
+
+      rewardCards.forEach(function (card) { card.classList.remove('is-next-locked'); });
+      var firstLocked = root.querySelector('.m-reward.is-locked');
+      if (firstLocked) firstLocked.classList.add('is-next-locked');
+
+      if (!window.__apgoMissionScrollDone || targetChanged) {
+        scrollMissionToNextLocked(root);
+        window.__apgoMissionScrollDone = true;
+      }
+    }
+
+    function bindMissionUI(root) {
+      if (!root || root.dataset.missionUIBound) return;
+      root.dataset.missionUIBound = '1';
+      const missionBlock = root.querySelector('[data-block="mission"]');
+      if (!missionBlock) return;
+
+      var allToggleBtn = missionBlock.querySelector('[data-mission-all-toggle]');
+      var allModal = root.querySelector('[data-mission-all-modal]');
+      if (allToggleBtn && allModal) {
+        allToggleBtn.addEventListener('click', function () {
+          allModal.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        });
+      }
+
+      var modal = root.querySelector('[data-mission-modal]');
+      var openMissionModal = function (card) {
+        if (!modal) return;
+        var title = card.dataset.rewardModalTitle || '';
+        var desc = card.dataset.rewardModalDesc || '';
+        var img = card.dataset.rewardModalImage || '';
+        var iconEl = modal.querySelector('[data-mission-modal-icon]');
+        var titleEl = modal.querySelector('[data-mission-modal-title]');
+        var descEl = modal.querySelector('[data-mission-modal-desc]');
+        var statusEl = modal.querySelector('[data-mission-modal-status]');
+        var cardNote = card.querySelector('.m-reward-note');
+
+        if (statusEl) statusEl.innerHTML = cardNote ? cardNote.innerHTML : '';
+
+        if (iconEl) {
+          iconEl.innerHTML = '';
+          iconEl.className = 'm-detail-modal-icon';
+          if (img) {
+            iconEl.classList.add('m-detail-modal-icon--img');
+            var im = document.createElement('img');
+            im.src = img; im.alt = title;
+            iconEl.appendChild(im);
+          } else {
+            iconEl.classList.add('m-detail-modal-icon--service');
+          }
+        }
+        if (titleEl) titleEl.textContent = title;
+        if (descEl) descEl.textContent = desc;
+        modal.setAttribute('aria-hidden', 'false');
+      };
+
+      missionBlock.addEventListener('click', function (e) {
+        var card = e.target.closest('[data-reward-card]');
+        if (card && !e.target.closest('a, button')) {
+          e.preventDefault();
+          openMissionModal(card);
+        }
+      });
+
+      // 統一綁定所有彈窗的關閉事件
+      root.querySelectorAll('[data-mission-modal-close], [data-mission-all-modal-close]').forEach(function (el) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (modal) modal.setAttribute('aria-hidden', 'true');
+          if (allModal) allModal.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        });
+      });
+    }
+
+    // 取得 /cart.js 並依門檻同步滿額贈（加／扣／校正數量）
+    async function syncGiftRewardsFromCart(root) {
+      const cartRes = await fetch(getCartUrl('/cart.js'));
+      let cartData = await parseResponseAsJsonSafe(cartRes);
+
+      const allGiftCards = root.querySelectorAll('[data-reward-type="gift"][data-gift-variant-id]');
+      if (allGiftCards.length === 0 || !cartData) {
+        return { cartData, mutated: false };
+      }
+
+      const cartTotalCents = cartData.total_price || 0;
+      const targetGifts = new Set();
+
+      allGiftCards.forEach(function (card) {
+        const vid = card.getAttribute('data-gift-variant-id');
+        const th = parseInt(card.getAttribute('data-threshold') || '0', 10);
+        if (vid && cartTotalCents >= th) targetGifts.add(String(vid));
+      });
+
+      const currentGifts = {};
+      const allPossibleGiftIds = new Set(Array.from(allGiftCards).map(function (c) {
+        return String(c.getAttribute('data-gift-variant-id'));
+      }));
+
+      (cartData.items || []).forEach(function (item) {
+        const vid = String(item.variant_id);
+        if (allPossibleGiftIds.has(vid)) currentGifts[vid] = { key: item.key, qty: item.quantity };
+      });
+
+      let requiresUpdate = false;
+      const bulkUpdates = {};
+      const itemsToAdd = [];
+
+      for (const vid of allPossibleGiftIds) {
+        if (!targetGifts.has(vid) && currentGifts[vid]) {
+          bulkUpdates[currentGifts[vid].key] = 0;
+          requiresUpdate = true;
+        } else if (targetGifts.has(vid) && currentGifts[vid] && currentGifts[vid].qty !== 1) {
+          bulkUpdates[currentGifts[vid].key] = 1;
+          requiresUpdate = true;
+        }
+      }
+
+      for (const vid of targetGifts) {
+        if (!currentGifts[vid]) {
+          itemsToAdd.push({ id: parseInt(vid, 10), quantity: 1, properties: { _gift_auto: 'true' } });
+          requiresUpdate = true;
+        }
+      }
+
+      if (!requiresUpdate) {
+        return { cartData, mutated: false };
+      }
+
+      if (Object.keys(bulkUpdates).length > 0) {
+        await fetch(getCartUrl('/cart/update.js'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ updates: bulkUpdates })
+        });
+      }
+      if (itemsToAdd.length > 0) {
+        await fetch(getCartUrl('/cart/add.js'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: itemsToAdd })
+        });
+      }
+      const finalCartRes = await fetch(getCartUrl('/cart.js'));
+      cartData = await parseResponseAsJsonSafe(finalCartRes);
+      return { cartData, mutated: true };
+    }
+
+    async function refreshCartSection(root, state, cartData) {
+      const sectionId = root.dataset.sectionId;
+      const currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.set('sections', sectionId);
+
+      const htmlRes = await fetch(currentUrl.toString(), {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      });
+      const htmlJson = await parseResponseAsJsonSafe(htmlRes);
+      const finalHtml = htmlJson && htmlJson[sectionId];
+
+      if (finalHtml) {
+        const oldFill = root.querySelector('[data-mission-fill]');
+        const previousPercent = oldFill ? (oldFill.style.width || '0%') : '0%';
+
+        const doc = new DOMParser().parseFromString(finalHtml, 'text/html');
+        const nextRoot = doc.querySelector(ROOT_SELECTOR);
+
+        if (nextRoot) {
+          root.replaceWith(nextRoot);
+          initRoot(nextRoot);
+          if (typeof window.__apgoV2HydrateShippingSelects === 'function') {
+            window.__apgoV2HydrateShippingSelects();
+          }
+
+          const fill = nextRoot.querySelector('[data-mission-fill]');
+          if (fill) {
+            const targetAttr = fill.getAttribute('data-mission-target');
+            const target = (targetAttr !== null && targetAttr !== '') ? (targetAttr + '%') : (fill.style.width || '0%');
+            fill.style.width = previousPercent;
+            requestAnimationFrame(function () {
+              requestAnimationFrame(function () { fill.style.width = target; });
+            });
+          }
+
+          if (state.popupOpen) {
+            const popup = nextRoot.querySelector('[data-block="popup"]');
+            if (popup) {
+              popup.classList.add('is-open');
+              document.body.style.overflow = 'hidden';
+            }
+            if (state.activeCollection) {
+              renderPopupProducts(nextRoot, state.activeCollection);
+            }
+          }
+        }
+      }
+
+      document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: cartData } }));
+    }
+
+    // 初次進入購物車／編輯器載入：達標即補贈品並重繪 section（與加購後路徑一致）
+    function hydrateGiftRewardsOnEnter(root) {
+      if (!root) return;
+      (async function () {
+        try {
+          const { cartData, mutated } = await syncGiftRewardsFromCart(root);
+          if (mutated) {
+            await refreshCartSection(root, getRootState(root), cartData);
+          } else {
+            document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: cartData } }));
+          }
+        } catch (e) {
+          console.error('[cart-shell-v2] hydrateGiftRewardsOnEnter', e);
+        }
+      })();
+    }
+
+    // 🚀🚀🚀 極速打包核心 API (One-Shot Request) 🚀🚀🚀
+    async function executeCartAction(action, payload, root) {
+      const state = getRootState(root);
+      let cartData = null;
+
+      try {
+        if (action === 'add') {
+          await fetch(getCartUrl('/cart/add.js'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        } else if (action === 'change') {
+          await fetch(getCartUrl('/cart/change.js'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        }
+
+        const synced = await syncGiftRewardsFromCart(root);
+        cartData = synced.cartData;
+        await refreshCartSection(root, state, cartData);
+      } catch (error) {
+        throw error;
+      }
+    }
+
+
+    // --- 根節點初始化 ---
+    function initRoot(root) {
+      if (!root || root.dataset.cartV2Ready === 'true') return;
+      root.dataset.cartV2Ready = 'true';
+
+      const firstTab = root.querySelector('[data-block="popup"] .p-tab');
+      if (firstTab) {
+        renderPopupProducts(root, firstTab.dataset.collection);
+      }
+
+      syncMissionRewards(root);
+      bindMissionUI(root);
+
+      // 初始化加購分類
+      var firstFilter = root.querySelector('.u-filter-chip');
+      if (firstFilter) {
+        applyUpsellFilter(root, firstFilter.dataset.filterCollection);
+      }
+      clearNotice(root);
+    }
+
+    // --- 全域事件監聽 (事件代理) ---
+    document.addEventListener('click', async function (event) {
+      const root = getRoot(event.target);
+      if (!root) return;
+
+      // 開啟規格選擇彈窗
+      const openVarBtn = event.target.closest('[data-open-variant-modal]');
+      if (openVarBtn && root) {
+        event.preventDefault();
+        const pid = openVarBtn.dataset.openVariantModal;
+        const pTitle = openVarBtn.dataset.productTitle;
+        const jsonEl = root.querySelector(`#v2-json-${pid}`);
+        if (!jsonEl) return;
+
+        const variants = JSON.parse(jsonEl.textContent);
+        const modal = root.querySelector('[data-variant-modal]');
+        if (!modal) return;
+
+        modal.querySelector('[data-variant-modal-title]').textContent = pTitle;
+        const grid = modal.querySelector('[data-variant-grid]');
+        grid.innerHTML = '';
+
+        const confirmBtn = modal.querySelector('[data-variant-confirm]');
+        confirmBtn.disabled = true;
+        confirmBtn.style.opacity = '0.5';
+        confirmBtn.dataset.selectedVariant = '';
+        confirmBtn.textContent = '確認加入';
+
+        variants.forEach(v => {
+          const el = document.createElement('div');
+          el.className = 'v2-v-card';
+          el.innerHTML = `
+            <img src="${v.img}" alt="${v.title}">
+            <div class="v2-v-title">${v.title}</div>
+            <div class="v2-v-price">${v.display_price}</div>
+            <div class="v2-v-ring"></div>
+          `;
+          el.onclick = () => {
+            grid.querySelectorAll('.v2-v-ring').forEach(r => r.classList.remove('is-active'));
+            el.querySelector('.v2-v-ring').classList.add('is-active');
+            confirmBtn.dataset.selectedVariant = v.id;
+            confirmBtn.disabled = false;
+            confirmBtn.style.opacity = '1';
+          };
+          grid.appendChild(el);
+        });
+
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+
+      // 關閉規格彈窗
+      if (event.target.closest('[data-variant-modal-close]') && root) {
+        event.preventDefault();
+        const modal = root.querySelector('[data-variant-modal]');
+        if (modal) {
+          modal.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        }
+        return;
+      }
+
+      // 確認加入所選規格 (串接極速大腦)
+      const confirmVarBtn = event.target.closest('[data-variant-confirm]');
+      if (confirmVarBtn && root) {
+        event.preventDefault();
+        const vid = confirmVarBtn.dataset.selectedVariant;
+        if (!vid) return;
+
+        setLoading(confirmVarBtn, true);
+        try {
+          await executeCartAction('add', { items: [{ id: Number(vid), quantity: 1 }] }, root);
+          const modal = root.querySelector('[data-variant-modal]');
+          if (modal) {
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+          }
+        } catch (error) {
+          showNotice(root, '加入失敗，請稍後再試。');
+        } finally {
+          setLoading(confirmVarBtn, false);
+        }
+        return;
+      }
+
+      // 🔥 修復：發票與物流切換 (遺失的事件處理) 🔥
+      const invoiceChip = event.target.closest('.i-chip[data-invoice-type]');
+      if (invoiceChip) {
+        const block = root.querySelector('[data-block="invoice"]');
+        const content = block && block.querySelector('[data-invoice-content]');
+        if (!content) return;
+
+        root.querySelectorAll('.i-chip[data-invoice-type]').forEach((c) => c.classList.remove('is-active'));
+        invoiceChip.classList.add('is-active');
+
+        const type = invoiceChip.dataset.invoiceType;
+        const renderMap = {
+          personal: '已選擇個人雲端發票，將寄送至 Email。',
+          company: '<div class="i-row"><label class="s-label">公司統編</label><input class="cv-input" data-invoice-field="company_id" placeholder="8碼統編"></div><div class="i-row"><label class="s-label">公司抬頭</label><input class="cv-input" data-invoice-field="company_title" placeholder="公司名稱 (選填)"></div>',
+          mobile: '<div class="i-row"><label class="s-label">手機載具條碼</label><input class="cv-input" data-invoice-field="mobile" placeholder="/AB12345"></div>',
+          donate: '<div class="i-row"><label class="s-label">捐贈碼</label><input class="cv-input" data-invoice-field="donate_code" placeholder="例如：5280"></div>'
+        };
+        content.innerHTML = renderMap[type] || '';
+
+        var hidden = root.querySelector('[data-invoice-ako-hidden]');
+        var akoRoot = hidden && (hidden.querySelector('#akocommerce_cvs_section') || hidden.querySelector('.akoCvsScNS'));
+        if (akoRoot) {
+          var items = akoRoot.querySelectorAll('li[data-invoice]');
+          var idx = { personal: 0, company: 1, mobile: 2, donate: 3 }[type];
+          if (items[idx]) items[idx].click();
+        }
+        setInvoiceTypeInForm(root, type);
+        return;
+      }
+
+      const shippingTab = event.target.closest('[data-shipping-tab]');
+      if (shippingTab) {
+        root.querySelectorAll('[data-shipping-tab]').forEach((tab) => tab.classList.remove('is-active'));
+        shippingTab.classList.add('is-active');
+        const target = shippingTab.dataset.shippingTab;
+        root.querySelectorAll('[data-shipping-pane]').forEach((pane) => {
+          pane.classList.toggle('is-active', pane.dataset.shippingPane === target);
+        });
+        return;
+      }
+
+      // 1. 彈窗與分類切換
+      if (event.target.closest('[data-open-popup]')) {
+        const popup = root.querySelector('[data-block="popup"]');
+        if (popup) {
+          popup.classList.add('is-open');
+          document.body.style.overflow = 'hidden';
+          const active = popup.querySelector('.p-tab.is-active');
+          if (active) renderPopupProducts(root, active.dataset.collection);
+        }
+        return;
+      }
+
+      if (event.target.closest('[data-close-popup]')) {
+        const popup = root.querySelector('[data-block="popup"]');
+        if (popup) {
+          popup.classList.remove('is-open');
+          document.body.style.overflow = '';
+        }
+        return;
+      }
+
+      const tab = event.target.closest('.p-tab');
+      if (tab) {
+        renderPopupProducts(root, tab.dataset.collection);
+        return;
+      }
+
+      const upsellFilter = event.target.closest('[data-filter-collection]');
+      if (upsellFilter && upsellFilter.closest('[data-block="upsell"]')) {
+        event.preventDefault();
+        applyUpsellFilter(root, upsellFilter.dataset.filterCollection);
+        return;
+      }
+
+      // 2. 加購、改數、刪除
+      const addButton = event.target.closest('[data-variant-id]');
+      if (addButton) {
+        event.preventDefault();
+        setLoading(addButton, true);
+        try {
+          await executeCartAction('add', { items: [{ id: Number(addButton.dataset.variantId), quantity: 1 }] }, root);
+        } catch (error) {
+          showNotice(root, '加入購物車過於頻繁，請稍後再試。');
+        } finally {
+          setLoading(addButton, false);
+        }
+        return;
+      }
+
+      const qtyButton = event.target.closest('[data-quantity-delta]');
+      if (qtyButton) {
+        event.preventDefault();
+        const line = qtyButton.dataset.line;
+        const delta = Number(qtyButton.dataset.quantityDelta || 0);
+        const qtyVal = qtyButton.parentElement?.querySelector('.qty-val');
+        const current = Number(qtyVal?.textContent || 1);
+        const eItem = qtyButton.closest('.e-item');
+        const isGift = eItem && eItem.getAttribute('data-is-gift') === 'true';
+        var next = Math.max(0, current + delta);
+        if (isGift && delta > 0 && current >= 1) next = 1;
+
+        setLoading(qtyButton, true);
+        try {
+          await executeCartAction('change', { line: Number(line), quantity: Number(next) }, root);
+        } catch (error) {
+          showNotice(root, '購物車更新失敗，請稍後再試。');
+        } finally {
+          setLoading(qtyButton, false);
+        }
+        return;
+      }
+
+      const removeButton = event.target.closest('[data-remove-line]');
+      if (removeButton) {
+        event.preventDefault();
+        const line = removeButton.dataset.removeLine;
+        setLoading(removeButton, true);
+        try {
+          await executeCartAction('change', { line: Number(line), quantity: 0 }, root);
+        } catch (_error) {
+          showNotice(root, '移除失敗，請稍後再試。');
+        } finally {
+          setLoading(removeButton, false);
+        }
+        return;
+      }
+
+      // 3. 結帳與會員攔截邏輯
+      const proceedToCheckout = async function (root) {
+        // --- 工具函式 ---
+        function _digitsOnly(v) { return (v || '').toString().replace(/\D+/g, ''); }
+        function _normPhone(v) {
+          var local = (v || '').trim();
+          if (!local) return '';
+          if (/^\+/.test(local)) return '+' + _digitsOnly(local);
+          var d = _digitsOnly(local).replace(/^0+/, '');
+          return d ? '+886' + d : '';
+        }
+        /** 國際碼數字（886…）無 +，給 checkout[phone]／query／部分瀏覽器較不易把 + 誤解成空白 */
+        function _phoneDigitsIntl(e164) {
+          if (!e164) return '';
+          return _digitsOnly(e164);
+        }
+        function _splitName(full) {
+          if (!full) return { first: '', last: '' };
+          var raw = full.trim();
+          if (/[A-Za-z]/.test(raw)) {
+            var parts = raw.split(/\s+/);
+            if (parts.length === 1) return { first: parts[0], last: '' };
+            return { first: parts.slice(0, -1).join(' '), last: parts.slice(-1)[0] };
+          }
+          var name = raw.replace(/\s+/g, '');
+          if (name.length <= 1) return { first: name, last: '' };
+          return { first: name.slice(1), last: name[0] };
+        }
+        /** id 全站唯一：先 getElementById，避免 root 範圍或區段重繪後抓不到輸入 */
+        function _val(id) {
+          var e = document.getElementById(id);
+          if (!e && root && root.querySelector) e = root.querySelector('#' + id);
+          return e ? (e.value || '').trim() : '';
+        }
+        function _txt(id) {
+          var e = document.getElementById(id);
+          if (!e && root && root.querySelector) e = root.querySelector('#' + id);
+          return e ? (e.textContent || '').trim() : '';
+        }
+
+        // --- 判斷目前選擇的運送方式（優先同一 section） ---
+        var activePaneEl = root.querySelector ? root.querySelector('[data-shipping-pane].is-active') : null;
+        if (!activePaneEl) activePaneEl = document.querySelector('[data-shipping-pane].is-active');
+        var method = activePaneEl ? activePaneEl.dataset.shippingPane : 'home';
+
+        var qp = new URLSearchParams(window.location.search);
+        function _set(key, val) {
+          var v = (val == null ? '' : String(val).trim());
+          if (v) qp.set(key, v);
+        }
+
+        // 共用欄位（姓名、電話）— 跨宅配/超商共享，與舊版 cp-name/cp-phone 行為一致
+        var sharedName  = _val('v2-shared-name');
+        var sharedPhone = _normPhone(_val('v2-shared-phone'));
+        var sp = _splitName(sharedName);
+        // cart／note 屬性：886… 純數字 | 結帳 URL 的 checkout[phone]：與運送相同 E.164（+886…），Shopify 聯絡欄較常接受；用 URL 物件組 query 避免 + 在字串拼接時被瀏覽器誤解
+        var phoneForContact = _phoneDigitsIntl(sharedPhone);
+
+        // 有電話時勿帶 checkout[email]，避免結帳只套用 email、忽略電話（舊版 checkout-prefill 同樣處理）
+        if (sharedPhone) qp.delete('checkout[email]');
+
+        _set('checkout[shipping_address][first_name]', sp.first);
+        _set('checkout[shipping_address][last_name]',  sp.last);
+        _set('checkout[shipping_address][phone]',      sharedPhone);
+        _set('checkout[phone]', sharedPhone);
+        _set('checkout[shipping_address][country]',    'Taiwan');
+        _set('checkout[billing_address][phone]', sharedPhone);
+        _set('checkout[billing_address][country]', 'Taiwan');
+
+        if (method === 'home') {
+          var city     = _val('v2-receiver-city');
+          var district = _val('v2-receiver-district');
+          var addr     = _val('v2-receiver-address1');
+          var zip      = _txt('v2-receiver-zip-value');
+          var address1 = (district ? district + ' ' : '') + addr;
+
+          _set('checkout[shipping_address][city]',     city);
+          _set('checkout[shipping_address][province]', city);
+          _set('checkout[shipping_address][address1]', address1);
+          if (zip && zip !== '—') _set('checkout[shipping_address][zip]', zip);
+
+        } else if (method === 'cvs') {
+          var city     = _val('v2-cvs-city');
+          var district = _val('v2-cvs-district');
+          var store    = _val('v2-cvs-store');
+          var zip      = _txt('v2-cvs-zip-value');
+          var address1 = (district ? district + ' ' : '') + store;
+
+          _set('checkout[shipping_address][city]',     city);
+          _set('checkout[shipping_address][province]', city);
+          _set('checkout[shipping_address][address1]', address1);
+          if (zip && zip !== '—') _set('checkout[shipping_address][zip]', zip);
+        }
+
+        var invResult = buildInvoiceCartAttributes(root);
+        if (invResult.error) {
+          showNotice(root, invResult.error);
+          return;
+        }
+
+        var cartAttrPayload = Object.assign({}, invResult.attributes);
+        if (phoneForContact) {
+          cartAttrPayload['電話'] = phoneForContact;
+          cartAttrPayload['聯絡電話'] = phoneForContact;
+          _set('attributes[電話]', phoneForContact);
+        }
+
+        Object.keys(invResult.attributes).forEach(function (ik) {
+          _set('attributes[' + ik + ']', invResult.attributes[ik]);
+        });
+
+        try {
+          await fetch(getCartUrl('/cart/update.js'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ attributes: cartAttrPayload })
+          });
+        } catch (e) {
+          console.warn('[cart-shell-v2] cart attributes before checkout', e);
+        }
+
+        var path = getCartUrl('/checkout');
+        if (path.indexOf('http') === 0) {
+          var checkoutUrl = new URL(path);
+          qp.forEach(function (value, key) {
+            checkoutUrl.searchParams.set(key, value);
+          });
+          window.location.assign(checkoutUrl.toString());
+        } else {
+          if (path.charAt(0) !== '/') path = '/' + path;
+          var u = new URL(path, window.location.origin);
+          qp.forEach(function (value, key) {
+            u.searchParams.set(key, value);
+          });
+          window.location.assign(u.toString());
+        }
+      };
+
+      const checkoutTrigger = event.target.closest('[data-checkout-trigger]');
+      if (checkoutTrigger) {
+        event.preventDefault();
+        const isLoggedIn = root.dataset.customerLoggedIn === 'true';
+        if (!isLoggedIn) {
+          const memberModal = root.querySelector('[data-member-warning-modal]');
+          if (memberModal) {
+            memberModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+          } else {
+            await proceedToCheckout(root);
+          }
+        } else {
+          await proceedToCheckout(root);
+        }
+        return;
+      }
+
+      const guestCheckoutTrigger = event.target.closest('[data-guest-checkout-trigger]');
+      if (guestCheckoutTrigger) {
+        event.preventDefault();
+        const memberModal = root.querySelector('[data-member-warning-modal]');
+        if (memberModal) {
+          memberModal.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        }
+        await proceedToCheckout(root);
+        return;
+      }
+
+      const closeMemberModal = event.target.closest('[data-member-warning-modal-close]');
+      if (closeMemberModal) {
+        event.preventDefault();
+        const memberModal = root.querySelector('[data-member-warning-modal]');
+        if (memberModal) {
+          memberModal.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        }
+        return;
+      }
+    });
+
+    // --- 快捷鍵與外部更新監聽 ---
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== 'Escape') return;
+      document.querySelectorAll(`${ROOT_SELECTOR} [data-block="popup"].is-open`).forEach((popup) => {
+        popup.classList.remove('is-open');
+      });
+      document.querySelectorAll(`${ROOT_SELECTOR} [data-member-warning-modal]`).forEach(function (m) {
+        m.setAttribute('aria-hidden', 'true');
+      });
+      document.body.style.overflow = '';
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll(ROOT_SELECTOR).forEach(initRoot);
+      document.querySelectorAll(ROOT_SELECTOR).forEach(hydrateGiftRewardsOnEnter);
+    });
+
+    // 🔥 bfcache 恢復（從結帳/登入按返回）：DOMContentLoaded 不會再觸發，
+    //    必須用 pageshow + event.persisted 偵測，並強制重繪整個 section。
+    window.addEventListener('pageshow', function(event) {
+      // event.persisted === true 代表從 bfcache 恢復，頁面是凍結快照
+      var isBackNav = event.persisted ||
+        (window.performance && window.performance.navigation &&
+         window.performance.navigation.type === window.performance.navigation.TYPE_BACK_FORWARD) ||
+        (document.referrer && document.referrer.includes('login'));
+
+      if (!isBackNav) return;
+
+      var roots = document.querySelectorAll(ROOT_SELECTOR);
+      if (!roots.length) return;
+
+      // 先送一次空 update 讓 Shopify 重新計算折扣，再用 Section Rendering API 重繪 DOM
+      fetch(getCartUrl('/cart/update.js'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates: {} })
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(cartData) {
+        roots.forEach(function(root) {
+          refreshCartSection(root, getRootState(root), cartData);
+        });
+      })
+      .catch(function() {});
+    });
+
+    // Shopify Theme Editor 重新載入時初始化
+    document.addEventListener('shopify:section:load', function() {
+      document.querySelectorAll(ROOT_SELECTOR).forEach(initRoot);
+      document.querySelectorAll(ROOT_SELECTOR).forEach(hydrateGiftRewardsOnEnter);
+    });
+
+  })();
+</script>
+
+<script>
+/* 吸底列：行動版 Chrome/Safari 網址列收合時，layout / visual viewport 不同步時補齊 bottom 間隙 */
+(function () {
+  function initStickyViewportBottom() {
+    if (!document.querySelector('.cart-shell-v2')) return;
+    if (window.__apgoV2StickyViewportBound) return;
+    window.__apgoV2StickyViewportBound = true;
+
+    var vv = window.visualViewport;
+    function update() {
+      if (!vv) {
+        document.documentElement.style.setProperty('--vv-bottom-gap', '0px');
+        return;
+      }
+      var gap = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      document.documentElement.style.setProperty('--vv-bottom-gap', gap + 'px');
+    }
+
+    if (vv) {
+      vv.addEventListener('resize', update);
+      vv.addEventListener('scroll', update);
+    }
+    window.addEventListener('resize', update);
+    window.addEventListener('orientationchange', function () {
+      setTimeout(update, 250);
+    });
+    update();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initStickyViewportBottom);
+  } else {
+    initStickyViewportBottom();
+  }
+  document.addEventListener('shopify:section:load', initStickyViewportBottom);
+})();
+</script>
+
+<script>
+/* =========================================================
+  V2 Subtotal Floating Card (Desktop)
+  以 fixed 方式確保訂單明細在捲動時持續可見
+  ========================================================= */
+(function () {
+  if (window.__apgoV2SubtotalFloatBound) return;
+  window.__apgoV2SubtotalFloatBound = true;
+
+  var mqDesktop = window.matchMedia('(min-width: 1024px)');
+  var TOP_OFFSET = 24;
+  var MAIN_GAP = 24;
+  var FOOTER_GAP = 16;
+  var FOOTER_SELECTORS = [
+    '#shopify-section-footer',
+    '.shopify-section-group-footer-group',
+    '.site-footer',
+    'footer'
+  ];
+  var states = [];
+  var rafId = 0;
+
+  function getFooterTopInDocument() {
+    for (var i = 0; i < FOOTER_SELECTORS.length; i += 1) {
+      var el = document.querySelector(FOOTER_SELECTORS[i]);
+      if (el) {
+        var rect = el.getBoundingClientRect();
+        return rect.top + window.scrollY;
+      }
+    }
+    return null;
+  }
+
+  function clearCardStyles(card) {
+    card.style.position = '';
+    card.style.top = '';
+    card.style.left = '';
+    card.style.width = '';
+    card.style.zIndex = '';
+    card.style.bottom = '';
+  }
+
+  function resetState(state) {
+    if (!state || !state.card) return;
+    clearCardStyles(state.card);
+    if (state.anchor) state.anchor.style.position = '';
+    if (state.placeholder) {
+      state.placeholder.style.display = 'none';
+      state.placeholder.style.height = '';
+    }
+    state.isFixed = false;
+  }
+
+  function cleanupStates() {
+    states.forEach(function (state) {
+      resetState(state);
+      if (state.placeholder && state.placeholder.parentNode) {
+        state.placeholder.parentNode.removeChild(state.placeholder);
+      }
+    });
+    states = [];
+  }
+
+  function buildStates() {
+    cleanupStates();
+    document.querySelectorAll('.cart-shell-v2').forEach(function (root) {
+      var anchor = root.querySelector('.cv-col--right');
+      var card = root.querySelector('.cv-col--right [data-block="subtotal"]');
+      if (!anchor || !card) return;
+
+      var ph = document.createElement('div');
+      ph.setAttribute('data-subtotal-float-placeholder', 'true');
+      ph.style.display = 'none';
+      ph.style.width = '100%';
+      card.parentNode.insertBefore(ph, card);
+
+      states.push({
+        root: root,
+        boundaryBlock: root.querySelector('[data-block="upsell"]'),
+        main: root.querySelector('.cv-main'),
+        anchor: anchor,
+        card: card,
+        placeholder: ph,
+        startY: 0,
+        isFixed: false
+      });
+    });
+  }
+
+  function updateState(state) {
+    if (!state.card.isConnected || !state.anchor.isConnected) return;
+
+    if (!mqDesktop.matches) {
+      resetState(state);
+      return;
+    }
+
+    if (!state.isFixed) {
+      state.startY = state.card.getBoundingClientRect().top + window.scrollY;
+    }
+
+    var shouldFix = window.scrollY + TOP_OFFSET >= state.startY;
+    if (!shouldFix) {
+      resetState(state);
+      return;
+    }
+
+    var anchorRect = state.anchor.getBoundingClientRect();
+    var cardHeight = state.card.offsetHeight;
+    var anchorTopDoc = anchorRect.top + window.scrollY;
+    var sectionBottomDoc = null;
+    if (state.boundaryBlock && state.boundaryBlock.isConnected) {
+      sectionBottomDoc = state.boundaryBlock.getBoundingClientRect().bottom + window.scrollY;
+    } else if (state.main && state.main.isConnected) {
+      sectionBottomDoc = state.main.getBoundingClientRect().bottom + window.scrollY;
+    } else {
+      sectionBottomDoc = state.root.getBoundingClientRect().bottom + window.scrollY;
+    }
+    var fixedTopDoc = window.scrollY + TOP_OFFSET;
+    var maxTopDoc = sectionBottomDoc - cardHeight - MAIN_GAP;
+    state.placeholder.style.display = 'block';
+    state.placeholder.style.height = cardHeight + 'px';
+    state.anchor.style.position = 'relative';
+    if (fixedTopDoc < maxTopDoc) {
+      state.card.style.position = 'fixed';
+      state.card.style.top = TOP_OFFSET + 'px';
+      state.card.style.left = anchorRect.left + 'px';
+      state.card.style.width = anchorRect.width + 'px';
+      state.card.style.zIndex = '20';
+      state.card.style.bottom = '';
+    } else {
+      var absoluteTop = Math.max(0, maxTopDoc - anchorTopDoc);
+      state.card.style.position = 'absolute';
+      state.card.style.top = absoluteTop + 'px';
+      state.card.style.left = '0';
+      state.card.style.width = '100%';
+      state.card.style.zIndex = '5';
+      state.card.style.bottom = '';
+    }
+    state.isFixed = true;
+  }
+
+  function updateAll() {
+    rafId = 0;
+    states.forEach(updateState);
+  }
+
+  function requestUpdate() {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(updateAll);
+  }
+
+  function init() {
+    buildStates();
+    requestUpdate();
+  }
+
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', function () {
+    buildStates();
+    requestUpdate();
+  });
+  if (mqDesktop.addEventListener) {
+    mqDesktop.addEventListener('change', function () {
+      buildStates();
+      requestUpdate();
+    });
+  }
+
+  document.addEventListener('shopify:section:load', function () {
+    setTimeout(init, 80);
+  });
+  document.addEventListener('shopify:section:unload', function () {
+    setTimeout(init, 80);
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+<script>
+/* =========================================================
+   V2 收件資訊預填 — OpenSheet 縣市/區域/郵遞區號聯動
+   ========================================================= */
+(function () {
+  if (window.__apgoV2ShippingBound) return;
+  window.__apgoV2ShippingBound = true;
+
+  const OPENSHEET_URL = 'https://opensheet.elk.sh/1S81a-nrJR1yzmEnWVjuGJuiiW1S2UWP2VpGaxmBuoJ4/taiwan_road';
+  let _cache = null;
+
+  function normTW(s) {
+    return s ? String(s).replace(/台/g, '臺').replace(/\s+/g, '') : '';
+  }
+
+  function fillSelect(sel, list, placeholder) {
+    sel.innerHTML = '';
+    const ph = document.createElement('option');
+    ph.value = '';
+    ph.textContent = placeholder;
+    sel.appendChild(ph);
+    list.forEach(function(v) {
+      const o = document.createElement('option');
+      o.value = v;
+      o.textContent = v;
+      sel.appendChild(o);
+    });
+    sel.disabled = list.length === 0;
+  }
+
+  function getDistricts(data, city) {
+    const c = normTW(city);
+    return [...new Set(
+      data.filter(function(r) { return normTW(r.city) === c; })
+          .map(function(r) { return normTW(r.district); })
+    )].filter(Boolean).sort();
+  }
+
+  function getZip(data, city, district) {
+    const c = normTW(city), d = normTW(district);
+    const rows = data.filter(function(r) {
+      return normTW(r.city) === c && normTW(r.district) === d;
+    });
+    const zips = [...new Set(
+      rows.map(function(r) {
+        return (r.zip || r.ZIP || r['郵遞區號'] || '').toString().trim();
+      }).filter(Boolean)
+    )];
+    return zips[0] || '';
+  }
+
+  function setZip(id, zip) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = zip || '—';
+  }
+
+  async function loadData() {
+    if (_cache) return _cache;
+    try {
+      const res = await fetch(OPENSHEET_URL, { mode: 'cors', cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      if (!Array.isArray(data)) throw new Error('非陣列格式');
+      _cache = data;
+      return data;
+    } catch (e) {
+      console.error('[v2-shipping] OpenSheet 載入失敗:', e.message);
+      return [];
+    }
+  }
+
+  /** Section 重繪（贈品／改數量）後 DOM 會換新，需重灌縣市選項 */
+  async function hydrateCountySelects() {
+    const homeCity = document.getElementById('v2-receiver-city');
+    const cvsCity = document.getElementById('v2-cvs-city');
+    if (!homeCity && !cvsCity) return;
+    const data = await loadData();
+    if (!data || !data.length) return;
+    const counties = [...new Set(data.map(function(r) { return normTW(r.city); }))].filter(Boolean).sort();
+    if (homeCity) {
+      fillSelect(homeCity, counties, '請選擇');
+      const homeDist = document.getElementById('v2-receiver-district');
+      if (homeDist) fillSelect(homeDist, [], '請先選縣市');
+    }
+    if (cvsCity) {
+      fillSelect(cvsCity, counties, '請選擇');
+      const cvsDist = document.getElementById('v2-cvs-district');
+      if (cvsDist) fillSelect(cvsDist, [], '請先選縣市');
+    }
+    setZip('v2-receiver-zip-value', '');
+    setZip('v2-cvs-zip-value', '');
+  }
+
+  window.__apgoV2HydrateShippingSelects = function () {
+    hydrateCountySelects();
+  };
+
+  // 事件委派：換掉整塊 section 後仍能收到 change（不可綁在舊 select 上）
+  document.addEventListener('change', async function (ev) {
+    const t = ev.target;
+    const id = t && t.id;
+    if (!id) return;
+
+    if (id === 'v2-receiver-city') {
+      const homeDist = document.getElementById('v2-receiver-district');
+      if (!homeDist) return;
+      const city = t.value;
+      setZip('v2-receiver-zip-value', '');
+      if (!city) {
+        fillSelect(homeDist, [], '請先選縣市');
+        return;
+      }
+      const data = await loadData();
+      fillSelect(homeDist, getDistricts(data, city), '請選擇區域');
+      return;
+    }
+
+    if (id === 'v2-receiver-district') {
+      const homeCity = document.getElementById('v2-receiver-city');
+      const city = homeCity && homeCity.value;
+      const dist = t.value;
+      if (!city || !dist) {
+        setZip('v2-receiver-zip-value', '');
+        return;
+      }
+      const data = await loadData();
+      setZip('v2-receiver-zip-value', getZip(data, city, dist));
+      return;
+    }
+
+    if (id === 'v2-cvs-city') {
+      const cvsDist = document.getElementById('v2-cvs-district');
+      if (!cvsDist) return;
+      const city = t.value;
+      setZip('v2-cvs-zip-value', '');
+      if (!city) {
+        fillSelect(cvsDist, [], '請先選縣市');
+        return;
+      }
+      const data = await loadData();
+      fillSelect(cvsDist, getDistricts(data, city), '請選擇區域');
+      return;
+    }
+
+    if (id === 'v2-cvs-district') {
+      const cvsCity = document.getElementById('v2-cvs-city');
+      const city = cvsCity && cvsCity.value;
+      const dist = t.value;
+      if (!city || !dist) {
+        setZip('v2-cvs-zip-value', '');
+        return;
+      }
+      const data = await loadData();
+      setZip('v2-cvs-zip-value', getZip(data, city, dist));
+    }
+  });
+
+  function initShipping() {
+    hydrateCountySelects();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initShipping);
+  } else {
+    initShipping();
+  }
+
+  document.addEventListener('shopify:section:load', function() {
+    _cache = null;
+    initShipping();
+  });
+})();
+</script>
+
+{% stylesheet %}
+  .cart-shell-v2 {
+    --dt-bg-screen: #050505;
+    --dt-bg-surface: #121212;
+    --dt-bg-input: #1a1a1a;
+    --dt-border: #333333;
+    --dt-signal-orange: #f08418;
+    --dt-text-primary: #ffffff;
+    --dt-text-secondary: #999999;
+    --dt-space: 16px;
+    --dt-radius: 12px;
+    --dt-radius-card: 12px;
+    --dt-radius-inner: 8px;
+    --safe-area-bottom: env(safe-area-inset-bottom, 20px);
+    --z-modal: 9999;
+    --z-sticky: 100;
+
+    background: var(--dt-bg-screen);
+    color: var(--dt-text-primary);
+    display: block;
+  }
+
+  @supports selector(body:has(.cart-shell-v2)) {
+    body:has(.cart-shell-v2) {
+      background: #050505;
+      color: #ffffff;
+      /* --vv-bottom-gap：visualViewport 與 layout 底部不同步時由腳本寫入 */
+      padding-bottom: calc(92px + env(safe-area-inset-bottom, 20px) + var(--vv-bottom-gap, 0px));
+    }
+  }
+
+  .cart-shell-v2 * {
+    box-sizing: border-box;
+  }
+
+  /* =========================================
+     全局圓角統一 (Consistency)
+     ========================================= */
+  .cart-shell-v2 .cv-card,
+  .cart-shell-v2 .u-card,
+  .cart-shell-v2 .p-card,
+  .cart-shell-v2 .m-reward,
+  .cart-shell-v2 .i-content,
+  .cart-shell-v2__notice {
+    border-radius: var(--dt-radius-card) !important;
+  }
+
+  .cart-shell-v2 .cv-input,
+  .cart-shell-v2 input,
+  .cart-shell-v2 select,
+  .cart-shell-v2 .u-img,
+  .cart-shell-v2 .p-thumb,
+  .cart-shell-v2 .e-thumb,
+  .cart-shell-v2 .f-btn,
+  .cart-shell-v2 .p-add,
+  .cart-shell-v2 .qty {
+    border-radius: var(--dt-radius-inner) !important;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .u-add {
+    border-radius: 0 0 var(--dt-radius-card) var(--dt-radius-card) !important;
+  }
+
+  /* =========================================
+     按鈕 Loading 狀態與動畫
+     ========================================= */
+  .cart-shell-v2 button.is-loading {
+    position: relative !important;
+    color: transparent !important;
+    pointer-events: none !important;
+    opacity: 0.8;
+  }
+
+  .cart-shell-v2 button.is-loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-top-color: var(--dt-signal-orange);
+    border-radius: 50%;
+    animation: apgo-cart-spinner 0.6s linear infinite;
+  }
+
+  .cart-shell-v2 .f-btn.is-loading::after,
+  .cart-shell-v2 .p-add.is-loading::after {
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-top-color: #000;
+  }
+
+  @keyframes apgo-cart-spinner {
+    to { transform: rotate(360deg); }
+  }
+
+  .cart-shell-v2 .cv-main {
+    padding: var(--dt-space);
+    display: flex;
+    flex-direction: column;
+    gap: var(--dt-space);
+  }
+  .cart-shell-v2 .cv-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--dt-space);
+  }
+
+  .cart-shell-v2 .cv-card {
+    background: var(--dt-bg-surface);
+    border: 1px solid var(--dt-border);
+    border-radius: var(--dt-radius);
+    padding: 20px;
+  }
+
+  .cart-shell-v2 .cv-label {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--dt-text-secondary);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .cart-shell-v2 .cv-label--accent {
+    color: var(--dt-signal-orange);
+  }
+
+  .cart-shell-v2 .cv-input,
+  .cart-shell-v2 .cv-select,
+  .cart-shell-v2 input,
+  .cart-shell-v2 select {
+    width: 100%;
+    min-height: 46px;
+    border-radius: 8px;
+    border: 1px solid var(--dt-border);
+    background: var(--dt-bg-input);
+    color: #fff;
+    padding: 0 12px;
+    font-size: 16px;
+  }
+
+  .cart-shell-v2 .cv-input::placeholder,
+  .cart-shell-v2 input::placeholder,
+  .cart-shell-v2 textarea::placeholder {
+    color: var(--dt-text-secondary);
+    opacity: 1;
+  }
+
+  .cart-shell-v2 .cart-shell-v2__integration-host {
+    margin-top: 12px;
+    border: 1px dashed rgba(255,255,255,0.12);
+    border-radius: 10px;
+    min-height: 120px;
+    padding: 12px;
+  }
+
+  .cart-shell-v2 [data-shipping-host] #checkout-prefill,
+  .cart-shell-v2 [data-shipping-host] .apgo-checkout-section {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .cart-shell-v2 [data-shipping-host] .apgo-checkout-container,
+  .cart-shell-v2 [data-shipping-host] .apgo-checkout-card {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .cart-shell-v2 [data-shipping-host] .apgo-checkout-header {
+    display: none !important;
+  }
+
+  .cart-shell-v2 [data-shipping-host] .apgo-actions {
+    margin-top: 12px;
+  }
+
+  .cart-shell-v2 [data-shipping-host] .apgo-message {
+    color: #999;
+  }
+
+  .cart-shell-v2 .cart-shell-v2__host-placeholder {
+    color: #777;
+    font-size: 12px;
+  }
+
+  .cart-shell-v2 .cart-shell-v2__empty {
+    padding: 16px 0 4px;
+  }
+
+  .cart-shell-v2 .cart-shell-v2__empty-title {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .cart-shell-v2 .cart-shell-v2__empty-text {
+    margin-top: 6px;
+    color: #999;
+  }
+
+  .cart-shell-v2 .cart-shell-v2__empty-link {
+    margin-top: 12px;
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    padding: 0 14px;
+    border-radius: 8px;
+    background: var(--dt-signal-orange);
+    color: #000;
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .cart-shell-v2 [data-block='mission'] {
+    border-color: rgba(240, 132, 24, 0.3);
+    overflow: visible;
+  }
+  .cart-shell-v2 .m-rewards {
+    margin-top: 0;
+    overflow: visible;
+  }
+
+  /* 參考 UI：標題區、金額右側、進度條漸層（空隙由 .cv-label margin-bottom 統一控制，避免疊加） */
+  .cart-shell-v2 .m-mission-head {
+    margin-bottom: 0;
+  }
+  .cart-shell-v2 .m-mission-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: rgba(249, 115, 22, 0.95);
+    font-family: ui-monospace, "JetBrains Mono", Menlo, monospace;
+  }
+  .cart-shell-v2 .m-mission-label-line {
+    display: none; /* 標題改為單純文字，不再顯示裝飾線 */
+  }
+  .cart-shell-v2 .m-progress-copy {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+  .cart-shell-v2 .m-progress-value {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+  }
+  .cart-shell-v2 .m-progress-current {
+    color: #fff;
+    font-family: ui-monospace, Menlo, monospace;
+    font-weight: 700;
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    letter-spacing: -0.02em;
+  }
+  .cart-shell-v2 .m-progress-target {
+    color: #71717a;
+    font-size: 1rem;
+    font-weight: 300;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+  .cart-shell-v2 .m-progress-right {
+    text-align: right;
+    padding-bottom: 2px;
+  }
+  .cart-shell-v2 .m-progress-description {
+    color: #cfcfcf;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .cart-shell-v2 .m-progress-gap {
+    color: rgba(251, 146, 60, 1);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+  .cart-shell-v2 .m-progress-next-label {
+    font-size: 10px;
+    color: #71717a;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+  }
+
+  .cart-shell-v2 .m-track {
+    height: 16px;
+    background: rgba(24, 24, 27, 0.8);
+    border-radius: 9999px;
+    overflow: hidden;
+    margin-top: 12px;
+    margin-bottom: 2.5rem;
+    padding: 3.5px;
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  .cart-shell-v2 .m-fill {
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 1s ease-out;
+    background: linear-gradient(to right, #ea580c, #fb923c, #facc15);
+    box-shadow: 0 0 25px rgba(249, 115, 22, 0.4);
+  }
+
+  /* 手機與電腦版皆橫向滑動，不切換 grid */
+  .cart-shell-v2 .m-rewards-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 1rem;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+    width: 100%;
+  }
+  .cart-shell-v2 .m-rewards::-webkit-scrollbar {
+    height: 6px;
+  }
+  .cart-shell-v2 .m-rewards::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+  }
+  .cart-shell-v2 .m-rewards::-webkit-scrollbar-thumb {
+    background: rgba(240,132,24,0.4);
+    border-radius: 3px;
+  }
+
+  .cart-shell-v2 .m-reward {
+    position: relative;
+    z-index: 1;
+    flex: 0 0 auto;
+    width: calc((100% - 1rem) / 2);
+    padding: 1.25rem;
+    border-radius: 1rem;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    border: 2px solid rgba(255,255,255,0.08);
+    background: rgba(22, 22, 22, 1);
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .cart-shell-v2 .m-reward:hover {
+    transform: scale(1.02);
+    z-index: 2;
+  }
+  @media (min-width: 768px) {
+    .cart-shell-v2 .m-reward {
+      width: calc((100% - 2rem) / 3);
+    }
+  }
+
+  .cart-shell-v2 .m-reward-icon-wrap {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+  }
+  .cart-shell-v2 .m-reward-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+  }
+  /* 已達成：白底、橘勾、陰影、略放大（與參考代碼一致） */
+  .cart-shell-v2 .m-reward-icon--check {
+    background: #fff;
+    color: #ea580c;
+    padding: 4px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    transform: scale(1.1);
+  }
+  .cart-shell-v2 .m-reward-icon--check .m-reward-icon-svg {
+    width: 12px;
+    height: 12px;
+  }
+  /* 未解鎖：深色圓、毛玻璃、細邊框（與參考代碼一致） */
+  .cart-shell-v2 .m-reward-icon--lock {
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 6px;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #71717a;
+  }
+  .cart-shell-v2 .m-reward-icon--lock .m-reward-icon-svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .cart-shell-v2 .m-reward.is-unlocked {
+    border-color: rgba(249, 115, 22, 0.2);
+    background: rgba(22, 22, 22, 1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .cart-shell-v2 .m-reward.is-unlock-animate {
+    animation: cart-shell-v2-unlock-burst 900ms ease;
+  }
+
+  .cart-shell-v2 .m-reward.is-locked {
+    opacity: 0.5;
+    filter: grayscale(1);
+    border-color: rgba(255,255,255,0.05);
+    background: rgba(24, 24, 27, 0.2);
+  }
+  /* 下一個目標的狀態：解除灰階、加上定時左右晃動 */
+  .cart-shell-v2 .m-reward.is-next-locked {
+    opacity: 1;
+    filter: grayscale(0);
+    animation: cart-shell-v2-shake-attention 3s ease-in-out infinite;
+  }
+
+  /* 震動動畫：平時靜止，每 3 秒快速左右晃動一下 */
+  @keyframes cart-shell-v2-shake-attention {
+    0%, 80%, 100% {
+      transform: translateX(0);
+      box-shadow: none;
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    84% {
+      transform: translateX(-3px);
+      border-color: rgba(249, 115, 22, 0.4);
+    }
+    88% { transform: translateX(3px); }
+    92% { transform: translateX(-3px); }
+    96% {
+      transform: translateX(3px);
+      border-color: rgba(249, 115, 22, 0.4);
+    }
+  }
+  @keyframes cart-shell-v2-locked-nudge {
+    0%, 90%, 100% { transform: translateX(0); }
+    93% { transform: translateX(-1px); }
+    96% { transform: translateX(1px); }
+    99% { transform: translateX(0); }
+  }
+
+  .cart-shell-v2 .m-reward.is-locked .m-reward-note {
+    color: #666;
+  }
+
+  /* 免運費、訂單折扣：已解鎖時橘色漸層（與參考一致），未解鎖時深色 */
+  .cart-shell-v2 .m-reward-thumb--service {
+    background: linear-gradient(145deg, #202020, #111111);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: #fff;
+  }
+  .cart-shell-v2 .m-reward.is-unlocked .m-reward-thumb--service {
+    background: linear-gradient(to bottom right, #fb923c, #ea580c);
+    border-top: 1px solid rgba(253, 186, 116, 0.5);
+    box-shadow: 0 15px 30px rgba(249, 115, 22, 0.3);
+    color: #fff;
+  }
+  /* 滿額贈：產品圖背景深黑 */
+  .cart-shell-v2 .m-reward-thumb--gift {
+    background: #0a0a0a;
+    border: 1px solid rgba(255,255,255,0.06);
+    color: #fff;
+  }
+  .cart-shell-v2 .m-reward-thumb {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 1rem;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+  .cart-shell-v2 .m-reward.is-locked .m-reward-thumb--service,
+  .cart-shell-v2 .m-reward.is-locked .m-reward-thumb--gift {
+    background: #1a1a1a;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: none;
+  }
+  .cart-shell-v2 .m-reward-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .cart-shell-v2 .m-reward.is-locked .m-reward-thumb img {
+    filter: brightness(0.25) grayscale(1);
+  }
+  .cart-shell-v2 .m-reward-fallback {
+    font-size: 2rem;
+  }
+
+  .cart-shell-v2 .m-reward-title {
+    font-size: 1.25rem;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .cart-shell-v2 .m-reward.is-locked .m-reward-title {
+    color: #a1a1aa;
+  }
+  .cart-shell-v2 .m-reward-desc {
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: rgba(249, 115, 22, 1);
+    margin-bottom: 8px;
+  }
+  .cart-shell-v2 .m-reward.is-locked .m-reward-desc {
+    color: #71717a;
+  }
+  .cart-shell-v2 .m-reward-note {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    color: #999;
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+  }
+  .cart-shell-v2 .m-reward-note-text {
+    flex: 1;
+    min-width: 0;
+  }
+  .cart-shell-v2 .m-reward-note-gap {
+    font-family: ui-monospace, Menlo, monospace;
+    color: rgba(251, 146, 60, 1);
+    flex-shrink: 0;
+  }
+  .cart-shell-v2 .m-reward.is-unlocked .m-reward-note,
+  .cart-shell-v2 .m-reward.is-unlocked .m-reward-note-text {
+    color: rgba(249, 115, 22, 0.8);
+  }
+  .cart-shell-v2 .m-reward.is-locked .m-reward-note .m-reward-note-gap {
+    color: rgba(251, 146, 60, 1);
+  }
+
+  .cart-shell-v2 .m-mission-toggle-wrap {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+  .cart-shell-v2 .m-mission-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 32px;
+    border-radius: 9999px;
+    background: rgba(24, 24, 27, 1);
+    border: 1px solid rgba(255,255,255,0.05);
+    color: #71717a;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .cart-shell-v2 .m-mission-toggle:hover {
+    color: var(--dt-signal-orange);
+    border-color: rgba(249, 115, 22, 0.3);
+  }
+  .cart-shell-v2 .m-mission-toggle-icon {
+    flex-shrink: 0;
+  }
+
+  /* =========================================
+     Bottom Sheet (底部抽屜彈窗) 基礎設定
+     ========================================= */
+  .cart-shell-v2 .m-bottom-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 99999 !important; /* 脫離層疊上下文後壓過吸底結帳區 */
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .cart-shell-v2 .m-bottom-sheet[aria-hidden="false"] {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+  }
+  .cart-shell-v2 .m-bottom-sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    cursor: pointer;
+  }
+
+  .cart-shell-v2 .m-bottom-sheet-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 600px;
+    max-height: 85vh;
+    background: var(--dt-bg-surface);
+    border-top: 1px solid rgba(240, 132, 24, 0.4);
+    border-radius: 24px 24px 0 0;
+    padding: 2rem 1.5rem max(2rem, env(safe-area-inset-bottom));
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    display: flex;
+    flex-direction: column;
+  }
+  .cart-shell-v2 .m-bottom-sheet[aria-hidden="false"] .m-bottom-sheet-content {
+    transform: translateY(0);
+  }
+
+  .cart-shell-v2 .m-bottom-sheet-drag-handle {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+  }
+
+  .cart-shell-v2 .m-bottom-sheet-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 8px;
+    color: #71717a;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .cart-shell-v2 .m-bottom-sheet-close:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* =========================================
+     單一任務詳情 (Detail Modal) 內部樣式
+     ========================================= */
+  .cart-shell-v2 .m-bottom-sheet-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .cart-shell-v2 .m-bottom-sheet-body::-webkit-scrollbar { display: none; }
+
+  .cart-shell-v2 .m-detail-modal-icon {
+    width: 6.5rem;
+    height: 6.5rem;
+    border-radius: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(145deg, #202020, #111111);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 2.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  }
+  .cart-shell-v2 .m-detail-modal-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .cart-shell-v2 .m-detail-modal-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 8px;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+  .cart-shell-v2 .m-detail-modal-desc {
+    color: #a1a1aa;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 90%;
+  }
+  .cart-shell-v2 .m-detail-modal-status {
+    margin-bottom: 12px;
+    padding: 6px 16px;
+    background: rgba(249, 115, 22, 0.15);
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    border-radius: 8px;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--dt-signal-orange, #f97316);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cart-shell-v2 .m-bottom-sheet-btn {
+    width: 100%;
+    padding: 16px;
+    background: rgba(249, 115, 22, 0.1);
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    color: var(--dt-signal-orange);
+    font-weight: 800;
+    letter-spacing: 2px;
+    border-radius: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.2s, color 0.2s;
+  }
+  .cart-shell-v2 .m-bottom-sheet-btn:hover {
+    background: var(--dt-signal-orange);
+    color: #000;
+  }
+
+  /* =========================================
+     所有任務總覽 (Timeline) 內部樣式
+     ========================================= */
+  .cart-shell-v2 .m-all-sheet-content .m-bottom-sheet-body {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .cart-shell-v2 .m-timeline-list {
+    position: relative;
+    width: 100%;
+    padding-left: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .cart-shell-v2 .m-timeline-list::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 20px;
+    left: 19px;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 0;
+  }
+
+  .cart-shell-v2 .m-timeline-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    z-index: 1;
+    padding-left: 1.5rem;
+  }
+
+  .cart-shell-v2 .m-timeline-node {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #3f3f46;
+    border: 3px solid var(--dt-bg-surface);
+    z-index: 2;
+    transition: all 0.3s ease;
+  }
+  .cart-shell-v2 .m-timeline-row.is-unlocked .m-timeline-node {
+    background: var(--dt-signal-orange);
+    box-shadow: 0 0 12px rgba(249, 115, 22, 0.6);
+  }
+
+  .cart-shell-v2 .m-timeline-thumb {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-size: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .cart-shell-v2 .m-timeline-row.is-unlocked .m-timeline-thumb {
+    border-color: rgba(249, 115, 22, 0.4);
+  }
+  .cart-shell-v2 .m-timeline-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 11px;
+  }
+  .cart-shell-v2 .m-timeline-row.is-locked .m-timeline-thumb img {
+    filter: grayscale(1) brightness(0.5);
+  }
+
+  .cart-shell-v2 .m-timeline-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .cart-shell-v2 .m-timeline-title {
+    font-weight: 800;
+    color: #fff;
+    font-size: 1.1rem;
+  }
+  .cart-shell-v2 .m-timeline-status {
+    font-size: 0.8rem;
+    color: #71717a;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+  .cart-shell-v2 .m-timeline-row.is-locked .m-timeline-title {
+    color: #a1a1aa;
+  }
+
+  @keyframes cart-shell-v2-unlock-burst {
+    0% { transform: scale(0.96); box-shadow: 0 0 0 rgba(240,132,24,0); }
+    40% { transform: scale(1.05) translateY(-2px); box-shadow: 0 0 0 10px rgba(240,132,24,0.2); }
+    70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(240,132,24,0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 rgba(240,132,24,0); }
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-head,
+  .cart-shell-v2 [data-block='upsell'] .u-head,
+  .cart-shell-v2 [data-block='subtotal'] .t-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .cart-shell-v2 [data-block='upsell'] .u-head > div:first-child {
+    min-width: 0;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-item {
+    display: flex;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-item:last-child {
+    border-bottom: 0;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-thumb {
+    width: 76px;
+    height: 76px;
+    border-radius: 8px;
+    background: #222;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-thumb-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: start;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-title-wrap {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-title {
+    font-weight: 600;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-variant {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #999;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-discount {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(103,214,155,0.08);
+    border: 1px solid rgba(103,214,155,0.25);
+    color: #aef0ce;
+    font-size: 11px;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-remove {
+    border: 0;
+    background: transparent;
+    color: #b3b3b3;
+    cursor: pointer;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-top: 8px;
+    gap: 12px;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-price-wrap {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-price-before {
+    font-size: 12px;
+    color: #777;
+    text-decoration: line-through;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-price {
+    font-family: ui-monospace, Menlo, monospace;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .qty {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--dt-border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .qty-btn {
+    width: 32px;
+    height: 32px;
+    border: 0;
+    background: #000;
+    color: #bbb;
+    cursor: pointer;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .qty-val {
+    width: 30px;
+    text-align: center;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .u-open {
+    color: var(--dt-signal-orange);
+    font-weight: 700;
+    cursor: pointer;
+    background: none;
+    border: 0;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .u-filter-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .u-filter-chip {
+    min-height: 28px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: #0d0d0d;
+    color: #bbb;
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .u-filter-chip.is-active {
+    border-color: rgba(240,132,24,0.5);
+    background: rgba(240,132,24,0.12);
+    color: #fff;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .u-list {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  /* 1. 卡片外框：移除內邊距，並加上 overflow: hidden 確保底部的按鈕不會凸出圓角 */
+  .cart-shell-v2 [data-block='upsell'] .u-card {
+    min-width: 148px;
+    border: 1px solid var(--dt-border);
+    border-radius: 8px;
+    padding: 0;
+    background: rgba(255,255,255,0.02);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+
+  /* 2. 圖片區塊：把剛剛卡片拿掉的 padding 補回圖片外圍 */
+  .cart-shell-v2 [data-block='upsell'] .u-img {
+    width: calc(100% - 20px);
+    margin: 10px 10px 8px 10px;
+    aspect-ratio: 1;
+    border-radius: 6px;
+    background: #000;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .u-img img,
+  .cart-shell-v2 [data-block='upsell'] .u-img svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .u-title {
+    font-weight: 600;
+    min-height: 42px;
+    line-height: 1.35;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* 3. 內文區塊：同樣補回左右的邊距，並在下方留一點空間 */
+  .cart-shell-v2 [data-block='upsell'] .u-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    padding: 0 10px 12px 10px;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .m-val {
+    color: var(--dt-signal-orange);
+    font-family: ui-monospace, Menlo, monospace;
+    font-weight: 800;
+    min-height: 24px;
+  }
+
+  /* 4. 吸底按鈕：改為戰術暗黑底色、橘色字體，並緊貼邊緣 */
+  .cart-shell-v2 [data-block='upsell'] .u-add {
+    margin-top: auto;
+    width: 100%;
+    border: 0;
+    border-top: 1px solid var(--dt-border);
+    border-radius: 0;
+    background: var(--dt-signal-orange);
+    color: #000;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 10px;
+    min-height: 44px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  @media (max-width: 768px) {
+    .cart-shell-v2 [data-block='upsell'] .u-add {
+      min-height: 36px;
+      padding: 6px 10px;
+    }
+  }
+
+  /* 僅在「自訂 UI」模式隱藏整個 AKO 本尊區（已移出發票區塊到下方） */
+  .cart-shell-v2[data-invoice-mode="custom"] [data-ako-native-zone] {
+    display: none !important;
+  }
+
+  /* AKO 本尊區：收合時隱藏 AKO 內容，方便測試上方自訂 UI */
+  .cart-shell-v2__ako-native-zone.is-collapsed [data-invoice-ako-hidden] {
+    display: none !important;
+  }
+
+  .cart-shell-v2__ako-native-hint {
+    font-size: var(--font-size--xs, 0.875rem);
+    color: var(--color-foreground-muted, #888);
+    margin: 0.5rem 0 0.75rem;
+  }
+
+  .cart-shell-v2__ako-native-toggle {
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    font-size: var(--font-size--xs, 0.875rem);
+    background: transparent;
+    border: 1px solid var(--dt-border, #333);
+    color: var(--color-foreground, #eee);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .cart-shell-v2__ako-native-zone.is-collapsed .cart-shell-v2__ako-native-toggle {
+    margin-bottom: 0;
+  }
+
+  .cart-shell-v2 [data-block='invoice'] .i-tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+
+  .cart-shell-v2 [data-block='invoice'] .i-chip {
+    border: 1px solid var(--dt-border);
+    background: #000;
+    color: #aaa;
+    border-radius: 999px;
+    padding: 8px 14px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .cart-shell-v2 [data-block='invoice'] .i-chip.is-active {
+    border-color: var(--dt-signal-orange);
+    color: var(--dt-signal-orange);
+    background: rgba(240,132,24,0.15);
+  }
+
+  .cart-shell-v2 [data-block='invoice'] .i-content {
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px dashed var(--dt-border);
+    border-radius: 8px;
+  }
+
+  .cart-shell-v2 [data-block='invoice'] .i-row {
+    margin-bottom: 10px;
+  }
+
+  .cart-shell-v2 [data-block='invoice'] .i-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .cart-shell-v2__pickup-notice {
+    margin: 0;
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(240,132,24,0.12);
+    border: 1px solid var(--dt-signal-orange, #f08418);
+    color: #eee;
+    font-size: var(--font-size--xs, 0.875rem);
+  }
+
+  .cart-shell-v2__pickup-notice strong {
+    color: var(--dt-signal-orange, #f08418);
+  }
+
+  .cart-shell-v2__pickup-info {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--dt-border, #333);
+    font-size: var(--font-size--xs, 0.875rem);
+    color: #aaa;
+    line-height: 1.5;
+  }
+
+  .cart-shell-v2__pickup-heading {
+    font-weight: 600;
+    color: #ccc;
+    margin-bottom: 4px;
+  }
+
+  .cart-shell-v2__pickup-address,
+  .cart-shell-v2__pickup-hours,
+  .cart-shell-v2__pickup-note {
+    margin-bottom: 2px;
+  }
+
+  .cart-shell-v2__pickup-note {
+    margin-top: 6px;
+    opacity: 0.9;
+  }
+
+  .cart-shell-v2__zip-hint {
+    margin-top: 4px;
+    font-size: 11px;
+    color: #888;
+  }
+
+  .cart-shell-v2 [data-block='shipping'] .cv-input--select {
+    width: 100%;
+    min-height: 48px;
+    cursor: pointer;
+    appearance: auto;
+  }
+
+  .cart-shell-v2 [data-block='shipping'] .s-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid var(--dt-border);
+    background: #000;
+    margin-top: 14px;
+    margin-bottom: 14px;
+  }
+
+  .cart-shell-v2 [data-block='shipping'] .s-tab {
+    flex: 1;
+    border: 0;
+    background: transparent;
+    color: #999;
+    border-radius: 6px;
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .cart-shell-v2 [data-block='shipping'] .s-tab.is-active {
+    background: #171717;
+    border: 1px solid var(--dt-border);
+    color: #fff;
+  }
+
+  .cart-shell-v2 [data-block='shipping'] .s-pane {
+    display: none;
+  }
+
+  .cart-shell-v2 [data-block='shipping'] .s-pane.is-active {
+    display: block;
+  }
+
+  .cart-shell-v2__cvs-hint {
+    margin: 0 0 12px;
+    font-size: var(--font-size--xs, 0.875rem);
+    color: #999;
+    line-height: 1.4;
+  }
+
+  .cart-shell-v2 [data-block='shipping'] .s-row {
+    margin-bottom: 12px;
+  }
+
+  .cart-shell-v2 [data-block='shipping'] .s-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cart-shell-v2 [data-block='shipping'] .s-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: #999;
+  }
+
+  .cart-shell-v2 .cart-shell-v2__notice {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: calc(74px + var(--safe-area-bottom) + var(--vv-bottom-gap, 0px));
+    z-index: 99999;
+    border: 1px solid rgba(240,132,24,0.45);
+    background: rgba(18,18,18,0.96);
+    color: #ffd3a8;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .t-coupon--discount .cart-discount__form {
+    display: grid;
+    grid-template-columns: 1fr 88px;
+    gap: 8px;
+    padding: 0;
+    height: auto;
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .t-coupon--discount .cart-discount__button {
+    min-height: 46px;
+    border-radius: 8px;
+    border: 1px solid var(--dt-signal-orange);
+    background: transparent;
+    color: var(--dt-signal-orange);
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .t-coupon--discount .cart-discount__input {
+    min-height: 46px;
+    border-radius: 8px;
+    border: 1px solid var(--dt-border);
+    background: var(--dt-bg-input);
+    color: #fff;
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .t-note {
+    margin-top: 14px;
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .t-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .t-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: start;
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .t-label {
+    color: #a0a0a0;
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .t-value {
+    text-align: right;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .t-row--discount .t-value {
+    color: #aef0ce;
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .t-row--shipping .t-value {
+    color: var(--dt-signal-orange);
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .t-total {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .t-total-value {
+    font-size: 1.1rem;
+    font-weight: 800;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+
+  /* 運費列下方 inline 優惠碼輸入區 */
+  .cart-shell-v2 [data-block='subtotal'] .t-coupon--discount {
+    margin-top: 4px;
+  }
+
+  /* error / success 訊息 */
+  .cart-shell-v2 [data-block='subtotal'] .cdi-msg {
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .cdi-msg--error {
+    background: rgba(255, 80, 80, 0.08);
+    border: 1px solid rgba(255, 80, 80, 0.25);
+    color: #ff8f8f;
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .cdi-msg--success {
+    background: rgba(76, 175, 80, 0.08);
+    border: 1px solid rgba(76, 175, 80, 0.25);
+    color: #81c784;
+  }
+
+  .cart-shell-v2 [data-block='subtotal'] .cdi-msg.hidden {
+    display: none;
+  }
+
+  .cart-shell-v2 [data-block='sticky'] .f-wrap {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: var(--vv-bottom-gap, 0px);
+    z-index: var(--z-sticky);
+    background: rgba(18,18,18,0.95);
+    border-top: 1px solid var(--dt-border);
+    padding: 12px 20px max(12px, var(--safe-area-bottom));
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+
+  .cart-shell-v2 [data-block='sticky'] .f-total {
+    flex: 1;
+  }
+
+  .cart-shell-v2 [data-block='sticky'] .f-label {
+    font-size: 11px;
+    color: #888;
+  }
+
+  .cart-shell-v2 [data-block='sticky'] .f-price {
+    font-size: 1.2rem;
+    font-weight: 800;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+
+  .cart-shell-v2 [data-block='sticky'] .f-actions {
+    flex: 1.4;
+  }
+
+  .cart-shell-v2 [data-block='sticky'] .f-btn {
+    width: 100%;
+    height: 50px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--dt-signal-orange);
+    color: #000;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+
+  .cart-shell-v2 [data-block='popup'] {
+    position: relative;
+    z-index: var(--z-modal);
+    pointer-events: none;
+  }
+
+  .cart-shell-v2 [data-block='popup'].is-open {
+    pointer-events: auto;
+  }
+
+  .cart-shell-v2 [data-block='popup'] .p-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: var(--z-modal);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.25s;
+  }
+
+  /* =========================================
+     修正彈窗在手機滑動時的「漏風」問題
+     ========================================= */
+  .cart-shell-v2 [data-block='popup'] .p-sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: min(82vh, 760px);
+    height: min(82dvh, 760px);
+    z-index: calc(var(--z-modal) + 1);
+    background: #111;
+    border-top: 1px solid var(--dt-signal-orange);
+    border-radius: 20px 20px 0 0;
+
+    transform: translateY(calc(100% + 50px));
+
+    visibility: hidden;
+
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), visibility 0.4s;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .cart-shell-v2 [data-block='popup'].is-open .p-sheet {
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  .cart-shell-v2 [data-block='popup'].is-open .p-overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .cart-shell-v2 [data-block='popup'] .p-head {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    background: #111;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--dt-border);
+    display: flex;
+    justify-content: space-between;
+    transform: translateZ(0);
+  }
+
+  .cart-shell-v2 [data-block='popup'] .p-close {
+    border: 0;
+    background: none;
+    color: #999;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .cart-shell-v2 [data-block='popup'] .p-tabs {
+    position: sticky;
+    top: 54px;
+    z-index: 10;
+    isolation: isolate;
+    background: #111;
+    display: flex;
+    gap: 18px;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--dt-border);
+    overflow-x: auto;
+    transform: translateZ(0);
+    scrollbar-width: none;
+    flex-shrink: 0;
+  }
+
+  .cart-shell-v2 [data-block='popup'] .p-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cart-shell-v2 [data-block='popup'] .p-tab {
+    border: 0;
+    background: none;
+    color: #999;
+    padding: 12px 0;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .cart-shell-v2 [data-block='popup'] .p-tab.is-active {
+    color: #fff;
+    border-bottom-color: var(--dt-signal-orange);
+  }
+
+  .cart-shell-v2 [data-block='popup'] .p-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 18px;
+    padding-bottom: calc(18px + var(--safe-area-bottom));
+    position: relative;
+    z-index: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cart-shell-v2 [data-block='popup'] .p-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  @media (min-width: 1024px) {
+    @supports selector(body:has(.cart-shell-v2)) {
+      body:has(.cart-shell-v2) {
+        padding-bottom: calc(132px + var(--vv-bottom-gap, 0px));
+      }
+    }
+
+    .cart-shell-v2 .cv-main {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 22px 24px 36px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(360px, 0.9fr);
+      gap: 20px;
+      align-items: start;
+      overflow: visible;
+    }
+    .cart-shell-v2 .cv-col {
+      gap: 20px;
+      min-width: 0;
+    }
+    .cart-shell-v2 .cv-col--right {
+      align-self: start;
+      overflow: visible;
+    }
+
+    .cart-shell-v2 .cv-card {
+      padding: 22px;
+    }
+    .cart-shell-v2 [data-block='equipment'] .e-item {
+      gap: 16px;
+      padding: 16px 0;
+    }
+
+    .cart-shell-v2 [data-block='equipment'] .e-thumb {
+      width: 88px;
+      height: 88px;
+    }
+
+    .cart-shell-v2 [data-block='upsell'] .u-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      overflow: visible;
+      padding-bottom: 0;
+    }
+
+    .cart-shell-v2 [data-block='upsell'] .u-card {
+      min-width: 0;
+    }
+
+    .cart-shell-v2 [data-block='sticky'] .f-wrap {
+      left: 24px;
+      right: 24px;
+      bottom: calc(20px + var(--vv-bottom-gap, 0px));
+      max-width: 1360px;
+      margin: 0 auto;
+      border: 1px solid var(--dt-border);
+      border-radius: 14px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+    }
+
+    .cart-shell-v2 [data-block='sticky'] .f-btn {
+      min-width: 220px;
+    }
+
+    .cart-shell-v2 [data-block='popup'] .p-sheet {
+      left: 50%;
+      right: auto;
+      width: min(1180px, calc(100vw - 48px));
+      height: min(86vh, 860px);
+      height: min(86dvh, 860px);
+      border-left: 1px solid var(--dt-border);
+      border-right: 1px solid var(--dt-border);
+      transform: translate(-50%, 100%);
+    }
+
+    .cart-shell-v2 [data-block='popup'].is-open .p-sheet {
+      transform: translate(-50%, 0);
+    }
+
+    .cart-shell-v2 [data-block='popup'] .p-body {
+      padding: 20px 24px 24px;
+    }
+
+    .cart-shell-v2 [data-block='popup'] .p-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* =========================================
+     全域字體與標題易讀性優化 (Mobile Legibility)
+     ========================================= */
+
+  .cart-shell-v2 .cv-label {
+    font-size: 14px !important;
+    font-weight: 900 !important;
+    letter-spacing: 2px !important;
+    margin-bottom: 16px !important;
+    display: inline-block;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-title {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    margin-bottom: 4px !important;
+  }
+  .cart-shell-v2 [data-block='equipment'] .e-variant {
+    font-size: 13px !important;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .u-title {
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+  }
+  .cart-shell-v2 [data-block='popup'] .p-title {
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+  }
+
+  .cart-shell-v2 .m-reward-desc {
+    font-size: 12px !important;
+  }
+  .cart-shell-v2 .m-reward-note {
+    font-size: 13px !important;
+  }
+  .cart-shell-v2 .m-reward-note-gap {
+    font-size: 14px !important;
+    font-weight: 800;
+  }
+
+  .cart-shell-v2 [data-block='sticky'] .f-label {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+  }
+  .cart-shell-v2 [data-block='sticky'] .f-price {
+    font-size: 1.5rem !important;
+  }
+  .cart-shell-v2 [data-block='sticky'] .f-btn {
+    font-size: 16px !important;
+    letter-spacing: 2px !important;
+  }
+
+  /* =========================================
+     1 & 4. 標題統一化 (統一橘色、調整大小)
+     ========================================= */
+  .cart-shell-v2 .cv-label {
+    font-size: 15px !important;
+    font-weight: 900 !important;
+    letter-spacing: 1.5px !important;
+    color: var(--dt-signal-orange) !important;
+    text-transform: uppercase;
+    margin-bottom: 16px !important;
+    display: inline-block;
+  }
+
+  /* =========================================
+     2. 按鈕輕量化 & 彈窗卡片樣式同步 (吸底)
+     ========================================= */
+  .cart-shell-v2 [data-block='upsell'] .u-card,
+  .cart-shell-v2 [data-block='popup'] .p-grid .u-card {
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: rgba(255,255,255,0.02);
+    border-radius: var(--dt-radius-card) !important;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .u-img,
+  .cart-shell-v2 [data-block='popup'] .p-grid .u-img {
+    width: calc(100% - 20px) !important;
+    margin: 10px 10px 8px 10px !important;
+    border-radius: var(--dt-radius-inner) !important;
+    border-bottom: none !important;
+    aspect-ratio: 1;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .u-content,
+  .cart-shell-v2 [data-block='popup'] .p-grid .u-content {
+    padding: 0 10px 12px 10px !important;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .u-add,
+  .cart-shell-v2 [data-block='popup'] .p-grid .u-add {
+    margin-top: auto !important;
+    width: 100% !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 0 0 var(--dt-radius-card) var(--dt-radius-card) !important;
+    background: transparent !important;
+    color: var(--dt-signal-orange) !important;
+    font-weight: 800 !important;
+    letter-spacing: 1px !important;
+    padding: 10px !important;
+    min-height: 44px !important;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .cart-shell-v2 [data-block='upsell'] .u-add:hover,
+  .cart-shell-v2 [data-block='popup'] .p-grid .u-add:hover {
+    background: var(--dt-signal-orange) !important;
+    color: #000 !important;
+  }
+
+  /* =========================================
+     3. 任務進度區塊瘦身 & 金額字體放大
+     ========================================= */
+  .cart-shell-v2 .m-reward {
+    padding: 1rem !important;
+  }
+
+  .cart-shell-v2 .m-reward-thumb {
+    width: 72px !important;
+    height: 72px !important;
+    margin-bottom: 12px !important;
+    border-radius: 12px !important;
+  }
+
+  .cart-shell-v2 .m-progress-description {
+    font-size: 14px !important;
+    color: #fff !important;
+  }
+  .cart-shell-v2 .m-progress-gap {
+    font-size: 20px !important;
+    font-weight: 900 !important;
+  }
+
+  .cart-shell-v2 .m-reward-note-gap {
+    font-size: 15px !important;
+    font-weight: 900 !important;
+  }
+
+  /* =========================================
+     徹底解決 Loading 狀態文字與轉圈重疊
+     ========================================= */
+  .cart-shell-v2 button.is-loading {
+    color: transparent !important;
+    text-shadow: none !important;
+  }
+
+  .cart-shell-v2 button.is-loading > * {
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+
+  /* =========================================
+     縮小標題下方的多餘空隙
+     ========================================= */
+  .cart-shell-v2 .cv-label {
+    margin-bottom: 8px !important;
+  }
+
+  .cart-shell-v2 .m-mission-head {
+    margin-bottom: 4px !important;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .e-head,
+  .cart-shell-v2 [data-block='upsell'] .u-head,
+  .cart-shell-v2 [data-block='subtotal'] .t-head {
+    margin-bottom: 8px !important;
+  }
+
+  /* =========================================
+     修復 HTML5 hidden 屬性失效的陷阱
+     ========================================= */
+  .cart-shell-v2 [hidden] {
+    display: none !important;
+  }
+
+  /* =========================================
+     🌟 極速打包版：u-card 樣式修正 🌟
+     ========================================= */
+
+  /* 🌟 手機版橫向滑動：鎖定 150px */
+  @media (max-width: 1023px) {
+    .cart-shell-v2 [data-block='upsell'] .u-list .u-card {
+      flex: 0 0 auto !important;
+      width: 150px !important;
+      min-width: 150px !important;
+    }
+  }
+
+  /* 🌟 電腦版 3 欄網格：解除鎖定，自動填滿 100% */
+  @media (min-width: 1024px) {
+    .cart-shell-v2 [data-block='upsell'] .u-list .u-card {
+      flex: 1 1 auto !important;
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+  }
+
+  /* 🔥 關鍵新增：當 u-card 在彈窗網格中時，必須強制填滿網格單元格 🔥 */
+  .cart-shell-v2 [data-block='popup'] .p-grid .u-card {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* =========================================
+     規格選擇卡片 (Variant Select)
+     ========================================= */
+  .v2-variant-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+    max-height: 55vh;
+    overflow-y: auto;
+    padding-bottom: 12px;
+    scrollbar-width: none; /* 隱藏滾動條 */
+  }
+  .v2-v-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--dt-radius-inner);
+    padding: 8px;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .v2-v-card img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    background: transparent !important;
+  }
+  .v2-v-title {
+    font-size: 12px;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .v2-v-price {
+    font-size: 13px;
+    color: var(--dt-signal-orange);
+    font-family: ui-monospace, Menlo, monospace;
+    font-weight: 800;
+  }
+  .v2-v-ring {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--dt-signal-orange);
+    border-radius: var(--dt-radius-inner);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .v2-v-ring.is-active {
+    opacity: 1;
+  }
+
+  /* =========================================
+     🔥 修復：隱藏醜陋原生捲軸，防止按鈕被切斷 🔥
+     ========================================= */
+  .cart-shell-v2 .i-tabs,
+  .cart-shell-v2 .s-tabs,
+  .cart-shell-v2 .m-rewards-grid,
+  .cart-shell-v2 .u-filter-list,
+  .cart-shell-v2 .u-list,
+  .cart-shell-v2 .p-tabs {
+    scrollbar-width: none !important; /* 隱藏 Firefox 捲軸 */
+    -ms-overflow-style: none !important; /* 隱藏 IE/Edge 捲軸 */
+    padding-bottom: 4px !important; /* 往下撐開 4px，讓橘色邊框能完整露出來 */
+  }
+
+  /* 隱藏 Chrome, Safari 的捲軸 */
+  .cart-shell-v2 .i-tabs::-webkit-scrollbar,
+  .cart-shell-v2 .s-tabs::-webkit-scrollbar,
+  .cart-shell-v2 .m-rewards-grid::-webkit-scrollbar,
+  .cart-shell-v2 .u-filter-list::-webkit-scrollbar,
+  .cart-shell-v2 .u-list::-webkit-scrollbar,
+  .cart-shell-v2 .p-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* =========================================
+     🔥 防禦機制：避免被右下角聊天 `+` 按鈕擋住表單 🔥
+     ========================================= */
+  .cart-shell-v2 .cv-main {
+    /* 讓整個購物車最底部多出 80px 的空隙，讓顧客可以把表單往上滑，避開懸浮按鈕 */
+    padding-bottom: 80px !important;
+  }
+
+  /* =========================================
+     🔥 終極修復：移除黑底 & 全域統一樣式 🔥
+     ========================================= */
+
+  /* 1. 移除圖片與卡片的死硬底色，還原輸出原貌 (去背圖不再有黑塊) */
+  .cart-shell-v2 [data-block='upsell'] .u-card,
+  .cart-shell-v2 [data-block='popup'] .p-grid .u-card {
+    background: transparent !important;
+  }
+  .cart-shell-v2 [data-block='popup'] .p-grid .u-card {
+    border: 1px solid var(--dt-border) !important;
+  }
+  .cart-shell-v2 [data-block='upsell'] .u-img,
+  .cart-shell-v2 [data-block='popup'] .p-grid .u-img {
+    background: transparent !important;
+  }
+
+  /* 2. 解除區域限制，讓全場的標題與價格 100% 長一模一樣 */
+  .cart-shell-v2 .u-title {
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    min-height: 42px !important;
+    line-height: 1.4 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .cart-shell-v2 .m-val {
+    color: var(--dt-signal-orange) !important;
+    font-family: ui-monospace, Menlo, monospace !important;
+    font-weight: 800 !important;
+    font-size: 14px !important;
+    min-height: 24px !important;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Cart Shell V2",
+  "settings": [
+    { "type": "text", "id": "mission_title", "label": "區塊標題", "default": "解鎖進度" },
+    { "type": "text", "id": "mission_next_label", "label": "即將解鎖文案", "default": "即將解鎖下一個目標" },
+    { "type": "text", "id": "mission_expand_label", "label": "展開按鈕文案", "default": "展開所有獎勵" },
+    { "type": "text", "id": "mission_collapse_label", "label": "收合按鈕文案", "default": "隱藏額外獎勵" },
+    { "type": "range", "id": "mission_visible_count", "label": "預設可見獎勵卡片數", "min": 1, "max": 12, "step": 1, "default": 3 },
+    { "type": "text", "id": "equipment_title", "label": "Equipment title", "default": "購物車商品" },
+    { "type": "checkbox", "id": "show_item_count", "label": "Show item count", "default": true },
+    { "type": "text", "id": "upsell_title", "label": "Upsell title", "default": "推薦加購" },
+    { "type": "text", "id": "popup_label", "label": "Popup label", "default": "查看全部" },
+    { "type": "text", "id": "popup_title", "label": "Popup title", "default": "戰術裝備庫" },
+    { "type": "text", "id": "subtotal_title", "label": "Subtotal title", "default": "訂單明細" },
+    { "type": "text", "id": "sticky_total_label", "label": "Sticky total label", "default": "EST. TOTAL" },
+    { "type": "text", "id": "checkout_label", "label": "Checkout label", "default": "結帳 →" },
+    { "type": "text", "id": "empty_state_title", "label": "Empty title", "default": "目前購物車內沒有商品" },
+    { "type": "textarea", "id": "empty_state_text", "label": "Empty text", "default": "先去挑選你需要的裝備，再回來這裡完成任務。" },
+    { "type": "text", "id": "continue_shopping_label", "label": "Continue shopping label", "default": "繼續購物" },
+    { "type": "url", "id": "continue_shopping_url", "label": "Continue shopping URL" },
+    {
+      "type": "select",
+      "id": "upsell_source_mode",
+      "label": "Upsell source mode",
+      "options": [
+        { "value": "collection", "label": "Collection" },
+        { "value": "product_list", "label": "Product list" }
+      ],
+      "default": "product_list"
+    },
+    { "type": "collection", "id": "upsell_source_collection", "label": "Upsell source collection" },
+    { "type": "product_list", "id": "upsell_source_products", "label": "Upsell source products", "limit": 12 },
+    { "type": "range", "id": "upsell_max_products", "label": "Upsell max products", "min": 3, "max": 12, "step": 1, "default": 6 },
+    { "type": "checkbox", "id": "show_upsell_category_badge", "label": "Show upsell category badge", "default": true },
+    { "type": "text", "id": "upsell_badge_fallback", "label": "Upsell badge fallback", "default": "系列分類" },
+    { "type": "range", "id": "popup_products_limit", "label": "Popup products limit", "min": 4, "max": 16, "step": 1, "default": 8 },
+    {
+      "type": "select",
+      "id": "invoice_ui_mode",
+      "label": "發票區顯示模式",
+      "options": [
+        { "value": "ako_native", "label": "AKO 本尊（顯示 AKO 原生發票/超商 UI）" },
+        { "value": "custom", "label": "自訂 UI（目前的自訂外觀 + 隱藏 AKO）" }
+      ],
+      "default": "custom",
+      "info": "自訂 UI 為預設；可改選「AKO 本尊」比對功能。"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_invoice_mobile",
+      "label": "顯示「手機載具」選項",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_invoice_donate",
+      "label": "顯示「捐贈碼」選項",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "自取選項（顯示於自取 tab）"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pickup_tab",
+      "label": "顯示自取選項",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "pickup_heading",
+      "label": "自取地址標題",
+      "default": "自取地點"
+    },
+    {
+      "type": "textarea",
+      "id": "pickup_address",
+      "label": "自取地址",
+      "default": "（選填）",
+      "placeholder": "例：台北市信義區某某路 1 號"
+    },
+    {
+      "type": "text",
+      "id": "pickup_hours",
+      "label": "營業時間",
+      "default": "（選填）",
+      "placeholder": "例：週一至週五 10:00–18:00"
+    },
+    {
+      "type": "textarea",
+      "id": "pickup_note",
+      "label": "選項備註",
+      "default": "（選填）",
+      "placeholder": "選填，可留空不顯示"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "reward",
+      "name": "Reward",
+      "settings": [
+        {
+          "type": "select",
+          "id": "reward_type",
+          "label": "Reward type",
+          "options": [
+            { "value": "standard", "label": "Standard" },
+            { "value": "free_shipping", "label": "Free shipping" },
+            { "value": "order_discount", "label": "Order discount" },
+            { "value": "gift", "label": "Gift" }
+          ],
+          "default": "standard"
+        },
+        {
+          "type": "text",
+          "id": "icon_fallback",
+          "label": "Fallback icon",
+          "default": "🎁"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "滿額贈"
+        },
+        {
+          "type": "text",
+          "id": "reward_subtitle",
+          "label": "卡片描述（標題下方）",
+          "default": "滿 $XXX 即享",
+          "placeholder": "例：滿 $800 即享免運"
+        },
+        {
+          "type": "text",
+          "id": "locked_text",
+          "label": "Locked text",
+          "default": "下一階段解鎖"
+        },
+        {
+          "type": "text",
+          "id": "unlocked_text",
+          "label": "Unlocked text",
+          "default": "已達成"
+        },
+        {
+          "type": "text",
+          "id": "better_tier_text",
+          "label": "已享更優文案（訂單折扣多階時，低階顯示）",
+          "default": "已享更優",
+          "info": "僅「Reward type」為訂單折扣且顧客已享有更高階折扣時顯示"
+        },
+        {
+          "type": "number",
+          "id": "threshold_amount",
+          "label": "Threshold amount",
+          "default": 1000
+        },
+        {
+          "type": "textarea",
+          "id": "reward_description",
+          "label": "詳情彈窗長文案",
+          "info": "點擊卡片時彈窗顯示；留空則使用鎖定/解鎖說明。"
+        },
+        {
+          "type": "product",
+          "id": "gift_product",
+          "label": "滿額贈品商品",
+          "info": "僅「Reward type」選「Gift」時使用。達標時自動加入購物車。"
+        }
+      ]
+    },
+    {
+      "type": "popup_tab",
+      "name": "Popup tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "全部商品"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_in_popup",
+          "label": "Show in popup",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart Shell V2",
+      "blocks": [
+        { "type": "reward", "settings": { "reward_type": "free_shipping", "icon_fallback": "🚚", "title": "免運費", "reward_subtitle": "滿 $800 即享免運", "locked_text": "下一階段解鎖", "unlocked_text": "已達成", "threshold_amount": 999 } },
+        { "type": "reward", "settings": { "reward_type": "order_discount", "icon_fallback": "🏷️", "title": "訂單折扣", "reward_subtitle": "滿 $1,500 現折 $150", "locked_text": "下一階段解鎖", "unlocked_text": "已達成", "threshold_amount": 1499 } },
+        { "type": "reward", "settings": { "reward_type": "gift", "icon_fallback": "🎁", "title": "滿額贈", "reward_subtitle": "滿 $2,200 送保溫杯", "locked_text": "下一階段解鎖", "unlocked_text": "已達成", "threshold_amount": 2200 } },
+        { "type": "popup_tab", "settings": { "label": "全部商品" } },
+        { "type": "popup_tab", "settings": { "label": "清潔藥劑系列" } },
+        { "type": "popup_tab", "settings": { "label": "鍍膜維護系列" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

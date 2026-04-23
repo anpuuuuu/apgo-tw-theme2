@@ -1,0 +1,410 @@
+{%- liquid
+  assign reward_blocks = section.blocks | where: 'type', 'reward'
+  assign highest_threshold = 0
+  assign first_locked_threshold = 0
+
+  for block in reward_blocks
+    assign threshold_cents = block.settings.threshold_amount | times: 100
+    if threshold_cents > highest_threshold
+      assign highest_threshold = threshold_cents
+    endif
+    if first_locked_threshold == 0 and cart.total_price < threshold_cents
+      assign first_locked_threshold = threshold_cents
+    endif
+  endfor
+
+  assign progress_target = highest_threshold
+  if section.settings.progress_reference == 'first_locked' and first_locked_threshold > 0
+    assign progress_target = first_locked_threshold
+  endif
+
+  if progress_target <= 0
+    assign progress_target = 100
+  endif
+
+  assign progress_percentage = cart.total_price | times: 100.0 | divided_by: progress_target | round
+  if progress_percentage > 100
+    assign progress_percentage = 100
+  endif
+-%}
+
+<section
+  id="CartMissionProgress-{{ section.id }}"
+  class="cart-mission-progress"
+  data-section-id="{{ section.id }}"
+  data-progress-target="{{ progress_target }}"
+>
+  <div class="cart-mission-progress__card">
+    <div class="cart-mission-progress__head">
+      <span class="cart-mission-progress__eyebrow">{{ section.settings.title | escape }}</span>
+      <div class="cart-mission-progress__bind">cart.total_price</div>
+    </div>
+
+    {%- if section.settings.show_progress_bar -%}
+      <div class="cart-mission-progress__track">
+        <div
+          class="cart-mission-progress__fill"
+          data-progress-fill
+          style="width: {{ progress_percentage }}%;"
+        ></div>
+      </div>
+    {%- endif -%}
+
+    <div class="cart-mission-progress__rewards">
+      {%- for block in reward_blocks -%}
+        {%- liquid
+          assign threshold_cents = block.settings.threshold_amount | times: 100
+          assign is_unlocked = false
+          if cart.total_price >= threshold_cents
+            assign is_unlocked = true
+          endif
+
+          assign fallback_label = 'GIFT'
+          case block.settings.reward_type
+            when 'free_shipping'
+              assign fallback_label = 'SHIP'
+            when 'order_discount'
+              assign fallback_label = 'OFF'
+          endcase
+        -%}
+        <article
+          class="cart-mission-progress__reward{% if is_unlocked %} is-unlocked{% endif %}"
+          {{ block.shopify_attributes }}
+          data-threshold="{{ threshold_cents }}"
+          data-locked-text="{{ block.settings.locked_text | escape }}"
+          data-unlocked-text="{{ block.settings.unlocked_text | escape }}"
+        >
+          <div class="cart-mission-progress__reward-thumb">
+            {%- if block.settings.icon_image != blank -%}
+              {{
+                block.settings.icon_image
+                | image_url: width: 240
+                | image_tag: class: 'cart-mission-progress__reward-image', loading: 'lazy'
+              }}
+            {%- else -%}
+              <span class="cart-mission-progress__reward-fallback">{{ fallback_label }}</span>
+            {%- endif -%}
+          </div>
+          <div class="cart-mission-progress__reward-title">{{ block.settings.title | escape }}</div>
+          {%- if section.settings.show_reward_notes -%}
+            <div class="cart-mission-progress__reward-note">
+              {% if is_unlocked %}
+                {{ block.settings.unlocked_text | escape }}
+              {% else %}
+                {{ block.settings.locked_text | escape }}
+              {% endif %}
+            </div>
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .cart-mission-progress {
+    margin: 16px auto;
+    max-width: 1360px;
+    padding: 0 16px;
+  }
+
+  .cart-mission-progress__card {
+    border: 1px solid rgba(240, 132, 24, 0.3);
+    border-radius: 12px;
+    background: #121212;
+    padding: 18px;
+  }
+
+  .cart-mission-progress__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .cart-mission-progress__eyebrow {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #f08418;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .cart-mission-progress__bind {
+    font-size: 10px;
+    color: #f6c38d;
+    border: 1px solid rgba(240, 132, 24, 0.35);
+    background: rgba(240, 132, 24, 0.08);
+    border-radius: 999px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .cart-mission-progress__track {
+    height: 10px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: #2a2a2a;
+  }
+
+  .cart-mission-progress__fill {
+    height: 100%;
+    border-radius: inherit;
+    background: #f08418;
+    box-shadow: 0 0 10px rgba(240, 132, 24, 0.45);
+    transition: width 0.35s ease;
+  }
+
+  .cart-mission-progress__rewards {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .cart-mission-progress__reward {
+    min-width: 0;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto minmax(28px, auto) 20px;
+    align-content: start;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .cart-mission-progress__reward.is-unlocked {
+    border-color: rgba(240, 132, 24, 0.45);
+    background: rgba(240, 132, 24, 0.08);
+  }
+
+  .cart-mission-progress__reward-thumb {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: linear-gradient(145deg, #202020, #111111);
+    display: grid;
+    place-items: center;
+    margin-bottom: 6px;
+  }
+
+  .cart-mission-progress__reward-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .cart-mission-progress__reward-fallback {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: #f08418;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .cart-mission-progress__reward-title {
+    min-width: 0;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #fff;
+  }
+
+  .cart-mission-progress__reward-note {
+    margin-top: 2px;
+    font-size: 10px;
+    line-height: 1.2;
+    color: #999;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .cart-mission-progress {
+      padding: 0 24px;
+      margin-top: 22px;
+      margin-bottom: 0;
+    }
+
+    .cart-mission-progress__card {
+      padding: 22px;
+    }
+  }
+{% endstylesheet %}
+
+<script>
+  (function() {
+    const section = document.getElementById('CartMissionProgress-{{ section.id }}');
+    if (!section) return;
+
+    const fill = section.querySelector('[data-progress-fill]');
+    const rewards = Array.from(section.querySelectorAll('[data-threshold]'));
+
+    function updateProgress(cart) {
+      if (!cart) return;
+      const target = Number(section.dataset.progressTarget || 0);
+      if (fill && target > 0) {
+        const width = Math.min(100, Math.round((cart.total_price / target) * 100));
+        fill.style.width = width + '%';
+      }
+
+      rewards.forEach((reward) => {
+        const threshold = Number(reward.dataset.threshold || 0);
+        const unlocked = cart.total_price >= threshold;
+        reward.classList.toggle('is-unlocked', unlocked);
+
+        const note = reward.querySelector('.cart-mission-progress__reward-note');
+        if (note) {
+          note.textContent = unlocked
+            ? reward.dataset.unlockedText || note.textContent
+            : reward.dataset.lockedText || note.textContent;
+        }
+      });
+    }
+
+    function handleUpdate(event) {
+      if (event && event.detail && event.detail.cart) {
+        updateProgress(event.detail.cart);
+        return;
+      }
+      fetch('/cart.js')
+        .then((response) => response.json())
+        .then((cart) => updateProgress(cart))
+        .catch(() => {});
+    }
+
+    ['cart:update', 'cart:updated', 'cart:change', 'product:added'].forEach((eventName) => {
+      document.addEventListener(eventName, handleUpdate);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Cart Mission Progress",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "UNLOCK PROGRESS"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress_bar",
+      "label": "Show progress bar",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "progress_reference",
+      "label": "Progress target",
+      "options": [
+        {
+          "value": "first_locked",
+          "label": "First locked reward"
+        },
+        {
+          "value": "highest_threshold",
+          "label": "Highest threshold"
+        }
+      ],
+      "default": "first_locked"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reward_notes",
+      "label": "Show reward notes",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "reward",
+      "name": "Reward",
+      "settings": [
+        {
+          "type": "select",
+          "id": "reward_type",
+          "label": "Reward type",
+          "options": [
+            { "value": "free_shipping", "label": "Free shipping" },
+            { "value": "order_discount", "label": "Order discount" },
+            { "value": "gift", "label": "Gift" }
+          ],
+          "default": "free_shipping"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "免運費"
+        },
+        {
+          "type": "text",
+          "id": "locked_text",
+          "label": "Locked text",
+          "default": "下一階段解鎖"
+        },
+        {
+          "type": "text",
+          "id": "unlocked_text",
+          "label": "Unlocked text",
+          "default": "已解鎖"
+        },
+        {
+          "type": "number",
+          "id": "threshold_amount",
+          "label": "Threshold amount",
+          "default": 1000
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart Mission Progress",
+      "blocks": [
+        {
+          "type": "reward",
+          "settings": {
+            "reward_type": "free_shipping",
+            "title": "免運費",
+            "locked_text": "下一階段解鎖",
+            "unlocked_text": "已解鎖",
+            "threshold_amount": 1000
+          }
+        },
+        {
+          "type": "reward",
+          "settings": {
+            "reward_type": "order_discount",
+            "title": "訂單折扣",
+            "locked_text": "下一階段解鎖",
+            "unlocked_text": "已解鎖",
+            "threshold_amount": 1500
+          }
+        },
+        {
+          "type": "reward",
+          "settings": {
+            "reward_type": "gift",
+            "title": "滿額贈",
+            "locked_text": "gift tiers JS",
+            "unlocked_text": "已解鎖",
+            "threshold_amount": 2000
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

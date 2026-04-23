@@ -1,0 +1,472 @@
+{% comment %}
+  APGO Custom Order Details Page - Dark Tech Style V2.1
+  Fix: Overriding Theme Variables for Buttons to prevent wrong colors.
+{% endcomment %}
+
+<style>
+  /* --- 核心佈局 --- */
+  .customer-order-section {
+    background-color: #050505 !important;
+    color: #ffffff !important;
+    padding: 60px 20px;
+    min-height: 90vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .order-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* --- 頂部導航與標題 --- */
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .header-content h1 {
+    font-size: 2rem;
+    margin: 10px 0 5px 0;
+    color: #fff !important;
+    font-weight: 700;
+  }
+
+  .order-meta {
+    color: #888;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .back-link {
+    color: #888;
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: #f08418 !important; }
+  .back-link::before { content: '←'; margin-right: 5px; }
+
+  /* --- 按鈕樣式 (強力修正版) --- */
+  
+  /* 1. 主要按鈕 (橘底白字) */
+  .btn-primary {
+    /* 強制蓋過主題變數 */
+    background-color: #f08418 !important; 
+    color: #ffffff !important; 
+    border: 1px solid #f08418 !important;
+    
+    padding: 12px 24px !important; 
+    border-radius: 8px !important;
+    text-decoration: none !important; 
+    cursor: pointer !important; 
+    font-weight: 600 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 4px 10px rgba(240, 132, 24, 0.2) !important;
+  }
+  .btn-primary:hover { 
+    background-color: #d66a00 !important; 
+    border-color: #d66a00 !important;
+    transform: translateY(-2px);
+  }
+
+  /* 2. 次要按鈕 (透明底灰白字) - 修正重點 */
+  .btn-secondary {
+    /* 強制透明背景，解決變成白色的問題 */
+    background-color: transparent !important; 
+    background: transparent !important; 
+    
+    /* 設定邊框與文字 */
+    color: #cccccc !important; 
+    border: 1px solid #444444 !important;
+    
+    padding: 10px 20px !important; 
+    border-radius: 6px !important; 
+    cursor: pointer !important; 
+    text-decoration: none !important; 
+    font-size: 0.9rem !important;
+    transition: all 0.2s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .btn-secondary:hover { 
+    border-color: #ffffff !important; 
+    color: #ffffff !important; 
+    background-color: rgba(255,255,255,0.1) !important;
+  }
+
+  /* --- 兩欄佈局 --- */
+  .order-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+  }
+
+  /* --- 左側：商品列表 --- */
+  .order-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+  }
+
+  .order-table th {
+    text-align: left;
+    color: #666;
+    font-size: 0.85rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #222;
+  }
+
+  .line-item-row td {
+    background-color: #111 !important;
+    padding: 20px;
+    vertical-align: middle;
+    border-top: 1px solid #222;
+    border-bottom: 1px solid #222;
+  }
+  
+  .line-item-row td:first-child { 
+    border-left: 1px solid #222; 
+    border-top-left-radius: 12px; 
+    border-bottom-left-radius: 12px; 
+  }
+  .line-item-row td:last-child { 
+    border-right: 1px solid #222; 
+    border-top-right-radius: 12px; 
+    border-bottom-right-radius: 12px; 
+  }
+
+  .product-cell {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .product-image {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #333;
+    background: #000;
+  }
+
+  .product-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+    color: #fff;
+  }
+  /* 確保商品標題連結顏色正確 */
+  .product-info h3 a { color: #fff !important; text-decoration: none; transition: color 0.2s; }
+  .product-info h3 a:hover { color: #f08418 !important; }
+  
+  .product-variant { color: #888; font-size: 0.85rem; }
+
+  /* 物流追蹤按鈕 */
+  .tracking-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 4px 10px;
+    background: rgba(240, 132, 24, 0.1) !important;
+    color: #f08418 !important;
+    border: 1px solid rgba(240, 132, 24, 0.3) !important;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .tracking-btn:hover { background: rgba(240, 132, 24, 0.2) !important; }
+
+  .price-cell, .qty-cell { color: #ccc; font-size: 0.95rem; }
+  .total-cell { font-weight: bold; color: #f08418; font-size: 1rem; }
+
+  /* --- 右側：摘要卡片 --- */
+  .summary-card {
+    background-color: #111 !important;
+    border: 1px solid #222 !important;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 25px;
+  }
+
+  .summary-title {
+    font-size: 1.1rem;
+    margin: 0 0 20px 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #333;
+    color: #fff !important;
+    font-weight: 700;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    color: #ccc;
+    font-size: 0.95rem;
+  }
+  
+  .summary-row.total {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed #333;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #fff !important;
+  }
+
+  .address-content {
+    color: #ccc;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-style: normal;
+  }
+
+  /* 狀態標籤 */
+  .status-tag {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-bottom: 15px;
+    font-weight: 500;
+  }
+  .status-tag.fulfillment { color: #f08418; background: rgba(240, 132, 24, 0.15); border: 1px solid rgba(240, 132, 24, 0.2); }
+  .status-tag.payment { color: #ccc; background: #222; border: 1px solid #333; }
+
+  /* --- CTA 按鈕區塊 --- */
+  .cta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .cta-group .btn-primary, 
+  .cta-group .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* --- RWD 手機版優化 --- */
+  @media (max-width: 768px) {
+    .customer-order-section { padding: 40px 15px; }
+    .order-grid { grid-template-columns: 1fr; gap: 30px; }
+    
+    .order-table, .order-table tbody, .order-table tr, .order-table td {
+      display: block; width: 100%;
+    }
+    .order-table thead { display: none; } 
+    
+    .line-item-row td { border: none; padding: 0; background: transparent !important; }
+    .line-item-row {
+      background: #111 !important;
+      border: 1px solid #222 !important;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 15px;
+      align-items: center;
+    }
+    
+    .line-item-row td:first-child { 
+      grid-column: 1 / -1; 
+      border-bottom: 1px solid #222 !important; 
+      padding-bottom: 15px; 
+      border-radius: 0;
+    }
+    
+    .line-item-row td:nth-child(2), 
+    .line-item-row td:nth-child(3), 
+    .line-item-row td:nth-child(4) { 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .line-item-row td:nth-child(2) { display: none; }
+    
+    .mobile-label { display: inline-block; color: #666; font-size: 0.85rem; margin-right: 10px; }
+    .cta-group { flex-direction: row; }
+  }
+
+  /* 核彈級覆蓋：防止任何全域變數干擾按鈕 */
+  .customer-order-section a.btn-primary,
+  .customer-order-section button.btn-primary {
+     color: #fff !important;
+     background: #f08418 !important;
+  }
+  
+  .customer-order-section a.btn-secondary,
+  .customer-order-section button.btn-secondary {
+     color: #ccc !important;
+     background: transparent !important;
+  }
+</style>
+
+<div class="customer-order-section">
+  <div class="order-container">
+    
+    <div class="order-header">
+      <div class="header-content">
+        <a href="{{ routes.account_url }}" class="back-link">返回訂單列表</a>
+        <h1>訂單 {{ order.name }}</h1>
+        <div class="order-meta">
+          <span>{{ order.created_at | date: "%Y/%m/%d" }}</span>
+          {% if order.cancelled %}
+            <span style="color: #ff4444; background: rgba(255,0,0,0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-left: 10px;">
+              已取消 ({{ order.cancelled_at | date: "%Y/%m/%d" }})
+            </span>
+          {% endif %}
+        </div>
+      </div>
+      
+      <div class="header-actions mobile-hidden">
+        <a href="{{ routes.all_products_collection_url }}" class="btn-primary">繼續購物</a>
+      </div>
+    </div>
+
+    <div class="order-grid">
+      
+      <div class="order-items-area">
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th width="55%">商品資訊</th>
+              <th>單價</th>
+              <th>數量</th>
+              <th style="text-align: right;">小計</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for line_item in order.line_items %}
+              <tr class="line-item-row">
+                <td>
+                  <div class="product-cell">
+                    {% if line_item.image %}
+                      <img src="{{ line_item.image | image_url: width: 140 }}" 
+                           alt="{{ line_item.title | escape }}" 
+                           class="product-image"
+                           width="70" height="70" loading="lazy">
+                    {% else %}
+                      <div class="product-image" style="background: #222; display: flex; align-items: center; justify-content: center; color: #444;">No Img</div>
+                    {% endif %}
+                    <div class="product-info">
+                      <h3>{{ line_item.product.title | link_to: line_item.product.url }}</h3>
+                      {% unless line_item.product.has_only_default_variant %}
+                        <div class="product-variant">{{ line_item.variant.title }}</div>
+                      {% endunless %}
+                      
+                      {% if line_item.fulfillment and line_item.fulfillment.tracking_url %}
+                        <a href="{{ line_item.fulfillment.tracking_url }}" target="_blank" class="tracking-btn">
+                          🚚 追蹤物流: {{ line_item.fulfillment.tracking_company }}
+                        </a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="mobile-label">單價</span>
+                  <span class="price-cell">{{ line_item.original_price | money }}</span>
+                </td>
+                <td>
+                  <span class="mobile-label">數量</span>
+                  <span class="qty-cell">x {{ line_item.quantity }}</span>
+                </td>
+                <td style="text-align: right;">
+                  <span class="mobile-label">小計</span>
+                  <span class="total-cell">{{ line_item.final_line_price | money }}</span>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="order-sidebar">
+        
+        <div class="summary-card">
+          <h3 class="summary-title">訂單操作</h3>
+          <div class="cta-group">
+            <a href="{{ routes.all_products_collection_url }}" class="btn-primary">再次購買 / 繼續逛逛</a>
+            <a href="/pages/contact" class="btn-secondary">聯繫客服協助</a>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <h3 class="summary-title">訂單金額</h3>
+          <div class="summary-row">
+            <span>小計</span>
+            <span>{{ order.line_items_subtotal_price | money }}</span>
+          </div>
+          
+          {% for discount in order.cart_level_discount_applications %}
+            <div class="summary-row" style="color: #f08418;">
+              <span>折扣 ({{ discount.title }})</span>
+              <span>-{{ discount.total_allocated_amount | money }}</span>
+            </div>
+          {% endfor %}
+
+          <div class="summary-row">
+            <span>運費 ({{ order.shipping_methods.first.title }})</span>
+            <span>{{ order.shipping_price | money }}</span>
+          </div>
+          
+          <div class="summary-row">
+            <span>稅金</span>
+            <span>{{ order.tax_price | money }}</span>
+          </div>
+
+          <div class="summary-row total">
+            <span>總計</span>
+            <span style="color: #f08418;">{{ order.total_price | money }}</span>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <h3 class="summary-title">收件資訊</h3>
+          <div class="status-tag fulfillment">{{ order.fulfillment_status_label }}</div>
+          <div class="address-content">
+            <strong>{{ order.shipping_address.name }}</strong><br>
+            {{ order.shipping_address.phone }}<br>
+            {{ order.shipping_address.zip }} {{ order.shipping_address.city }}<br>
+            {{ order.shipping_address.province }} {{ order.shipping_address.country }}<br>
+            {{ order.shipping_address.address1 }}
+            {% if order.shipping_address.address2 != blank %}<br>{{ order.shipping_address.address2 }}{% endif %}
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <h3 class="summary-title">帳單地址</h3>
+          <div class="status-tag payment">{{ order.financial_status_label }}</div>
+          <div class="address-content">
+            <strong>{{ order.billing_address.name }}</strong><br>
+            {{ order.billing_address.city }} {{ order.billing_address.address1 }}
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Order Details V2.1",
+  "settings": []
+}
+{% endschema %}

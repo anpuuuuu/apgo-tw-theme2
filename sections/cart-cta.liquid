@@ -1,0 +1,2103 @@
+{%- comment -%} Cart Checkout CTA (standalone section) {%- endcomment -%}
+<div class="cart-cta color-{{ section.settings.color_scheme }}">
+  <div class="cart-cta__bar">
+    <div class="cart-cta__summary">
+      <span class="cart-cta__summary-label">{{ section.settings.total_label | escape }}</span>
+      <span class="cart-cta__summary-value" data-cart-cta-total>{{ cart.total_price | money }}</span>
+    </div>
+    <button
+      type="submit"
+      id="checkout-standalone"
+      class="cart__checkout-button button"
+      name="checkout"
+      {%- if cart == empty -%}
+        disabled
+      {%- endif -%}
+      form="cart-form"
+    >
+      {{ section.settings.checkout_label | escape }}
+    </button>
+  </div>
+
+  {%- if section.settings.show_accelerated
+    and additional_checkout_buttons
+    and settings.show_accelerated_checkout_buttons
+  -%}
+    <div class="additional-checkout-buttons additional-checkout-buttons--vertical cart-cta__accelerated">
+      {{ content_for_additional_checkout_buttons }}
+    </div>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+    /* ========================================
+       購物車結帳按鈕樣式設計
+       ======================================== */
+
+    /* 主容器樣式 */
+    .cart-cta {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-md);
+      margin: 32px 0 40px 0;
+    }
+
+    /* 結帳按鈕主體樣式 */
+    .cart-cta .cart__checkout-button,
+    .cart-cta .button,
+    #checkout-standalone.cart__checkout-button {
+      background: linear-gradient(135deg, #ff6b35, #f7931e) !important;
+      border: none !important;
+      border-radius: 16px !important;
+      padding: 20px 40px !important;
+      font-size: 18px !important;
+      font-weight: 700 !important;
+      color: #ffffff !important;
+      width: 100% !important;
+      max-width: 480px !important;
+      margin: 0 auto !important;
+      cursor: pointer !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      box-shadow:
+          0 12px 35px rgba(255, 107, 53, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+      text-transform: none !important;
+      letter-spacing: 1px !important;
+      position: relative !important;
+      overflow: hidden !important;
+      display: block !important;
+      z-index: 100 !important;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif !important;
+
+      /* 確保按鈕不會被覆蓋 */
+      clear: both !important;
+    }
+
+    /* 結帳按鈕發光效果 */
+    .cart-cta .cart__checkout-button::before,
+    .cart-cta .button::before,
+    #checkout-standalone.cart__checkout-button::before {
+      content: '' !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: -100% !important;
+      width: 100% !important;
+      height: 100% !important;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent) !important;
+      transition: left 0.6s ease !important;
+    }
+
+    /* 懸停效果 */
+    .cart-cta .cart__checkout-button:hover,
+    .cart-cta .button:hover,
+    #checkout-standalone.cart__checkout-button:hover {
+      transform: translateY(-4px) !important;
+      box-shadow:
+          0 16px 45px rgba(255, 107, 53, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    }
+
+    .cart-cta .cart__checkout-button:hover::before,
+    .cart-cta .button:hover::before,
+    #checkout-standalone.cart__checkout-button:hover::before {
+      left: 100% !important;
+    }
+
+    /* 按下效果 */
+    .cart-cta .cart__checkout-button:active,
+    .cart-cta .button:active,
+    #checkout-standalone.cart__checkout-button:active {
+      transform: translateY(-2px) !important;
+      box-shadow:
+          0 8px 25px rgba(255, 107, 53, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    }
+
+    /* 禁用狀態 */
+    .cart-cta .cart__checkout-button:disabled,
+    .cart-cta .button:disabled,
+    #checkout-standalone.cart__checkout-button:disabled,
+    .cart-cta .cart__checkout-button[style*="pointer-events: none"],
+    .cart-cta .button[style*="pointer-events: none"],
+    #checkout-standalone.cart__checkout-button[style*="pointer-events: none"] {
+      background: linear-gradient(135deg, #666666, #555555) !important;
+      cursor: not-allowed !important;
+      transform: none !important;
+      box-shadow:
+          0 4px 15px rgba(0, 0, 0, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      opacity: 0.6 !important;
+    }
+
+    /* 額外結帳按鈕樣式 */
+    .additional-checkout-buttons {
+      margin-top: 16px !important;
+    }
+
+    .additional-checkout-buttons .additional-checkout-button {
+      background: linear-gradient(145deg, #2d2d2d, #1a1a1a) !important;
+      border: 2px solid #404040 !important;
+      border-radius: 12px !important;
+      padding: 16px 20px !important;
+      font-size: 15px !important;
+      color: #ffffff !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      box-shadow:
+          0 4px 15px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      margin: 8px 0 !important;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+    }
+
+    .additional-checkout-buttons .additional-checkout-button:hover {
+      border-color: #ff6b35 !important;
+      box-shadow:
+          0 8px 25px rgba(255, 107, 53, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      transform: translateY(-2px) !important;
+    }
+
+    /* 響應式設計 */
+    @media (max-width: 768px) {
+      .cart-cta .cart__checkout-button,
+      .cart-cta .button,
+      #checkout-standalone.cart__checkout-button {
+        padding: 18px 32px !important;
+        font-size: 16px !important;
+        margin: 24px auto 32px auto !important;
+        border-radius: 14px !important;
+      }
+
+      .cart-cta {
+        margin: 24px 0 32px 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .cart-cta .cart__checkout-button,
+      .cart-cta .button,
+      #checkout-standalone.cart__checkout-button {
+        padding: 16px 28px !important;
+        font-size: 15px !important;
+        margin: 20px auto 28px auto !important;
+        border-radius: 12px !important;
+      }
+
+      .cart-cta {
+        margin: 20px 0 28px 0;
+      }
+    }
+
+    /* 動畫效果 */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .cart-cta {
+      animation: fadeInUp 0.6s ease-out !important;
+    }
+
+  .cart-cta {
+      position: fixed !important;
+      left: 16px !important;
+      right: 16px !important;
+      bottom: 16px !important;
+      z-index: 90 !important;
+      margin: 0 !important;
+  }
+
+  .cart-cta__bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px;
+      border: 1px solid #333333;
+      border-radius: 14px;
+      background: rgba(18, 18, 18, 0.96);
+      backdrop-filter: blur(12px);
+  }
+
+  .cart-cta__summary {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+  }
+
+  .cart-cta__summary-label {
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #999999;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .cart-cta__summary-value {
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 800;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .cart-cta .cart__checkout-button,
+  .cart-cta .button,
+  #checkout-standalone.cart__checkout-button {
+      max-width: none !important;
+      margin: 0 !important;
+      flex: 1 1 auto;
+      min-height: 52px;
+      border-radius: 10px !important;
+      box-shadow: none !important;
+  }
+
+  .cart-cta__accelerated {
+      display: none;
+  }
+
+  @supports selector(body:has(.cart-cta)) {
+      body:has(.cart-cta) {
+          padding-bottom: 120px !important;
+      }
+  }
+
+  @media (min-width: 1024px) {
+      .cart-cta {
+          left: 50% !important;
+          right: auto !important;
+          width: min(1360px, calc(100vw - 48px)) !important;
+          transform: translateX(-50%);
+          bottom: 20px !important;
+      }
+
+      .cart-cta__bar {
+          width: min(420px, 100%);
+          margin-left: auto;
+      }
+
+      @supports selector(body:has(.cart-cta)) {
+          body:has(.cart-cta) {
+              padding-bottom: 140px !important;
+          }
+      }
+  }
+
+  #akocommerce_cvs_section,
+  #akocommerce_cvs_section *,
+  .akoCvsScNS,
+  .akoCvsScNS * {
+      color: #ffffff !important;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif !important;
+      box-sizing: border-box !important;
+  }
+
+  /* 確保頁面背景 */
+  body:has(#akocommerce_cvs_section),
+  body:has(.akoCvsScNS) {
+      background: #0a0a0a !important;
+      color: #ffffff !important;
+  }
+
+  /* 主容器樣式 */
+  #akocommerce_cvs_section,
+  .akoCvsScNS {
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 auto !important;
+  }
+
+  .ako-container {
+      position: relative;
+      overflow: hidden; 
+      background: linear-gradient(145deg, #1a1a1a, #2d2d2d) !important;
+      border-radius: 20px !important;
+      box-shadow:
+          0 25px 50px rgba(0, 0, 0, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid #333333 !important;
+      padding: 0 !important;
+      margin: 20px auto !important;
+      max-width: 480px !important;
+      width: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0 !important;
+      min-height: auto !important;
+      position: relative !important;
+      z-index: 1 !important;
+  }
+
+  /* 區段樣式 */
+  .ako-invoice,
+  .ako-cvs-section,
+  section.ako-invoice,
+  section.ako-cvs-section {
+      padding: 32px !important;
+      border-bottom: 1px solid #333333 !important;
+      position: relative !important;
+      background: transparent !important;
+      margin: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      row-gap: 16px !important;
+      overflow: visible !important;
+      z-index: 2 !important;
+  }
+
+  .ako-cvs-section:last-child,
+  section.ako-cvs-section:last-child {
+      border-bottom: none !important;
+  }
+
+  /* 橘色頂部線條 */
+  .ako-invoice::before,
+  .ako-cvs-section::before,
+  section.ako-invoice::before,
+  section.ako-cvs-section::before {
+      content: '' !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      height: 3px !important;
+      background: linear-gradient(90deg, #ff6b35, #f7931e) !important;
+      border-radius: 0 0 2px 2px !important;
+      width: 100%;
+  }
+
+  /* 標題樣式 */
+  .ako-invoice-title,
+  .ako-cvs-title,
+  h2.ako-invoice-title,
+  h2.ako-cvs-title {
+      font-size: 24px !important;
+      font-weight: 700 !important;
+      color: #ffffff !important;
+      margin: 0 0 8px 0 !important;
+      background: linear-gradient(135deg, #ff6b35, #f7931e) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+      text-shadow: 0 0 10px rgba(255, 107, 53, 0.5) !important;
+      text-align: left !important;
+      padding: 0 !important;
+  }
+
+  .ako-invoice-subtitle {
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      color: #cccccc !important;
+      margin: 0 0 16px 0 !important;
+      padding: 0 !important;
+  }
+
+  /* 資訊框樣式 */
+  .ako-info-box,
+  p.ako-info-box {
+      background: linear-gradient(135deg, #2a1810, #1a1a1a) !important;
+      border: 1px solid #ff6b35 !important;
+      border-radius: 12px !important;
+      padding: 20px !important;
+      margin: 0 0 24px 0 !important;
+      font-size: 14px !important;
+      color: #e0e0e0 !important;
+      position: relative !important;
+      overflow: hidden !important;
+      line-height: 1.5 !important;
+  }
+
+  .ako-info-box::before,
+  p.ako-info-box::before {
+      content: '' !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      height: 3px !important;
+      background: linear-gradient(90deg, #ff6b35, #f7931e) !important;
+  }
+
+  .ako-info-box strong,
+  p.ako-info-box strong {
+      color: #ff6b35 !important;
+      font-weight: 600 !important;
+  }
+
+  /* 發票設定區域 */
+  .ako-invoice-setting,
+  .ako-invoice-type {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 16px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+  }
+
+  /* ========================================
+     關鍵修復：下拉選單系統
+     ======================================== */
+
+  /* 下拉選單容器 - 最高優先級 */
+  .ako-menu {
+      position: relative !important;
+      z-index: 9999 !important;
+      margin: 0 0 20px 0 !important;
+      width: 100% !important;
+  }
+
+  /* 下拉按鈕 - 手機版優化 + 點擊修復 */
+  .ako-menu-button {
+      width: 100% !important;
+      background: linear-gradient(145deg, #2d2d2d, #1a1a1a) !important;
+      border: 2px solid #404040 !important;
+      border-radius: 12px !important;
+      padding: 16px 20px !important;
+      font-size: 15px !important;
+      color: #ffffff !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      box-shadow:
+          0 4px 15px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      margin: 0 !important;
+      min-height: 56px !important;
+      position: relative !important;
+
+      /* 手機端觸控優化 */
+      -webkit-tap-highlight-color: rgba(255, 107, 53, 0.3) !important;
+      touch-action: manipulation !important;
+      user-select: none !important;
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+
+      /* 點擊事件修復 */
+      pointer-events: auto !important;
+  }
+
+  /* 修復按鈕內部元素的點擊事件傳遞 */
+  .ako-menu-button * {
+      pointer-events: auto !important;
+  }
+
+  /* 確保按鈕內的 li 元素能正確處理點擊 */
+  .ako-menu-button .ako-menu__item {
+      pointer-events: auto !important;
+      cursor: pointer !important;
+      width: 100% !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      list-style: none !important;
+      background: transparent !important;
+      border: none !important;
+  }
+
+  /* 修復按鈕內部元素的樣式衝突 */
+  .ako-menu-button .ako-menu__item span {
+      pointer-events: none !important; /* 防止圖示攔截點擊 */
+  }
+
+  .ako-menu-button:hover,
+  .ako-menu-button:focus,
+  .ako-menu-button:active {
+      border-color: #ff6b35 !important;
+      box-shadow:
+          0 8px 25px rgba(255, 107, 53, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      transform: translateY(-2px) !important;
+      outline: none !important;
+  }
+
+  /* 箭頭圖示 */
+  .ako-menu-button__arrow {
+      width: 20px !important;
+      height: 20px !important;
+      color: #888888 !important;
+      transition: transform 0.3s ease, color 0.3s ease !important;
+      position: static !important;
+      transform: none !important;
+      right: auto !important;
+      top: auto !important;
+      margin: 0 !important;
+      flex-shrink: 0 !important;
+      pointer-events: none !important; /* 確保箭頭不會攔截點擊事件 */
+  }
+
+  .ako-menu-button:hover .ako-menu-button__arrow {
+      color: #ff6b35 !important;
+  }
+
+  /* 核心修復：下拉選單顯示邏輯 */
+  .ako-menu-list {
+      position: absolute !important;
+      top: 100% !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      background: linear-gradient(145deg, #2d2d2d, #1a1a1a) !important;
+      border: 2px solid #404040 !important;
+      border-radius: 12px !important;
+      margin: 8px 0 0 0 !important;
+      padding: 0 !important;
+      z-index: 10000 !important;
+      box-shadow:
+          0 20px 40px rgba(0, 0, 0, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+
+      /* 預設隱藏 - 重要：覆蓋所有可能的顯示狀態 */
+      max-height: 0 !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      transform: translateY(-10px) scale(0.95) !important;
+      pointer-events: none !important;
+
+      /* 流暢動畫 */
+      transition:
+          max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+          opacity 0.3s ease,
+          visibility 0.3s ease,
+          transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  /* 關鍵修復：多種顯示狀態檢測 */
+  /* 當 JavaScript 設定非零 max-height 時顯示 */
+  .ako-menu-list[style*="max-height"][style*="px"]:not([style*="max-height: 0px"]),
+  .ako-menu-list[style*="max-height: 1"],
+  .ako-menu-list[style*="max-height: 2"],
+  .ako-menu-list[style*="max-height: 3"],
+  .ako-menu-list[style*="max-height: 4"],
+  .ako-menu-list[style*="max-height: 5"],
+  .ako-menu-list[style*="max-height: 100"],
+  .ako-menu-list[style*="max-height: 150"],
+  .ako-menu-list[style*="max-height: 200"],
+  .ako-menu-list[style*="max-height: 250"],
+  .ako-menu-list[style*="max-height: 300"],
+  .ako-menu-list[style*="max-height: 400"],
+  .ako-menu-list[style*="max-height: 500"] {
+      max-height: 300px !important;
+      overflow: visible !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: translateY(0) scale(1) !important;
+      pointer-events: auto !important;
+      border-color: #ff6b35 !important;
+  }
+
+  /* 備用顯示方案 - 基於 class 或 data 屬性 */
+  .ako-menu.open .ako-menu-list,
+  .ako-menu[data-open="true"] .ako-menu-list,
+  .ako-menu-list.open,
+  .ako-menu-list[data-open="true"],
+  .ako-menu-list.show,
+  .ako-menu-list[data-show="true"] {
+      max-height: 300px !important;
+      overflow: visible !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: translateY(0) scale(1) !important;
+      pointer-events: auto !important;
+      border-color: #ff6b35 !important;
+  }
+
+  /* 下拉選單項目 - 手機版優化 + 點擊修復 */
+  .ako-menu-list .ako-menu__item,
+  .ako-menu-list li.ako-menu__item {
+      padding: 18px 20px !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      justify-content: space-between !important;
+      border-bottom: 1px solid #404040 !important;
+      color: #e0e0e0 !important;
+      list-style: none !important;
+      margin: 0 !important;
+      position: relative !important;
+
+      /* 手機端觸控優化 */
+      -webkit-tap-highlight-color: rgba(255, 107, 53, 0.2) !important;
+      touch-action: manipulation !important;
+      min-height: 56px !important;
+      user-select: none !important;
+      -webkit-user-select: none !important;
+
+      /* 點擊事件修復 */
+      pointer-events: auto !important;
+
+      /* 流暢過渡 */
+      transition:
+          background-color 0.2s ease,
+          color 0.2s ease !important;
+  }
+
+  /* 確保選單項目內的所有元素都能傳遞點擊事件 */
+  .ako-menu-list .ako-menu__item * {
+      pointer-events: none !important; /* 讓點擊事件穿透到父元素 */
+  }
+
+  /* 但是保持項目本身可點擊 */
+  .ako-menu-list .ako-menu__item {
+      pointer-events: auto !important;
+  }
+
+  /* 修復：當選單顯示時確保可以互動 */
+  .ako-menu-list[style*="max-height"][style*="px"]:not([style*="max-height: 0px"]) .ako-menu__item {
+      pointer-events: auto !important;
+  }
+
+  /* 額外修復：確保在所有顯示狀態下都能點擊 */
+  .ako-menu-list[style*="max-height: 1"] .ako-menu__item,
+  .ako-menu-list[style*="max-height: 2"] .ako-menu__item,
+  .ako-menu-list[style*="max-height: 3"] .ako-menu__item,
+  .ako-menu-list[style*="max-height: 4"] .ako-menu__item,
+  .ako-menu-list[style*="max-height: 5"] .ako-menu__item,
+  .ako-menu-list[style*="max-height: 200"] .ako-menu__item,
+  .ako-menu-list[style*="max-height: 250"] .ako-menu__item,
+  .ako-menu-list[style*="max-height: 300"] .ako-menu__item,
+  .ako-menu-list[style*="max-height: 400"] .ako-menu__item,
+  .ako-menu-list[style*="max-height: 500"] .ako-menu__item {
+      pointer-events: auto !important;
+      cursor: pointer !important;
+  }
+
+  /* 特別處理：確保在任何情況下選單項目都能響應點擊 */
+  .ako-menu-list li[data-invoice] {
+      pointer-events: auto !important;
+      cursor: pointer !important;
+  }
+
+  .ako-menu-list .ako-menu__item:last-child,
+  .ako-menu-list li.ako-menu__item:last-child {
+      border-bottom: none !important;
+      border-radius: 0 0 10px 10px !important;
+  }
+
+  .ako-menu-list .ako-menu__item:first-child,
+  .ako-menu-list li.ako-menu__item:first-child {
+      border-radius: 10px 10px 0 0 !important;
+  }
+
+  /* 點擊效果 */
+  .ako-menu-list .ako-menu__item:active,
+  .ako-menu-list li.ako-menu__item:active {
+      background: linear-gradient(90deg, rgba(255, 107, 53, 0.2), rgba(247, 147, 30, 0.2)) !important;
+      color: #ff6b35 !important;
+  }
+
+  /* 懸停效果 - 僅桌面 */
+  @media (hover: hover) and (pointer: fine) {
+      .ako-menu-list .ako-menu__item:hover,
+      .ako-menu-list li.ako-menu__item:hover {
+          background: linear-gradient(90deg, rgba(255, 107, 53, 0.1), rgba(247, 147, 30, 0.1)) !important;
+          color: #ff6b35 !important;
+      }
+
+      .ako-menu-list li[data-invoice]:hover {
+          background: linear-gradient(90deg, rgba(255, 107, 53, 0.1), rgba(247, 147, 30, 0.1)) !important;
+      }
+  }
+
+  .ako-menu-list li[data-invoice]:active {
+      background: linear-gradient(90deg, rgba(255, 107, 53, 0.2), rgba(247, 147, 30, 0.2)) !important;
+  }
+
+  /* 選中狀態 */
+  .ako-menu-list .ako-menu__item.selected,
+  .ako-menu-list li.ako-menu__item.selected,
+  .ako-menu-list .ako-menu__item[data-selected="true"],
+  .ako-menu-list li.ako-menu__item[data-selected="true"] {
+      background: linear-gradient(90deg, rgba(255, 107, 53, 0.15), rgba(247, 147, 30, 0.15)) !important;
+      color: #ff6b35 !important;
+      font-weight: 600 !important;
+  }
+
+  /* 隱藏左側圖示 */
+  .ako-item__left-icon,
+  .ako-menu__item .ako-item__left-icon,
+  .ako-menu-list .ako-item__left-icon {
+      display: none !important;
+  }
+
+  /* 右側選中圖示 */
+  .ako-item__right-icon,
+  .ako-selected-icon {
+      width: 20px !important;
+      height: 20px !important;
+      color: #ff6b35 !important;
+      flex-shrink: 0 !important;
+  }
+
+  .ako-item__right-icon svg,
+  .ako-selected-icon svg {
+      width: 18px !important;
+      height: 18px !important;
+      color: inherit !important;
+  }
+
+  /* 核取方塊樣式 */
+  .ako-checkbox,
+  label.ako-checkbox {
+      display: flex !important;
+      align-items: flex-start !important;
+      gap: 16px !important;
+      padding: 20px !important;
+      background: linear-gradient(135deg, #2a1810, #1a1a1a) !important;
+      border: 1px solid #ff6b35 !important;
+      border-radius: 12px !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+      margin: 16px 0 0 0 !important;
+      font-size: 14px !important;
+      line-height: 1.5 !important;
+      color: #e0e0e0 !important;
+      width: 100% !important;
+  }
+
+  .ako-checkbox:hover,
+  label.ako-checkbox:hover {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2) !important;
+      transform: translateY(-1px) !important;
+  }
+
+  .ako-checkbox input {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      opacity: 0 !important;
+      position: absolute !important;
+  }
+
+  .ako-checkmark {
+      width: 24px !important;
+      height: 24px !important;
+      border: 2px solid #ff6b35 !important;
+      border-radius: 6px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+      background: transparent !important;
+      transition: all 0.3s ease !important;
+  }
+
+  .ako-checkbox input:checked + .ako-checkmark {
+      background: linear-gradient(135deg, #ff6b35, #f7931e) !important;
+      border-color: #f7931e !important;
+  }
+
+  .ako-checkmark svg {
+      width: 14px !important;
+      height: 14px !important;
+      color: #ffffff !important;
+      opacity: 0 !important;
+      transition: opacity 0.3s ease !important;
+  }
+
+  .ako-checkbox input:checked + .ako-checkmark svg {
+      opacity: 1 !important;
+  }
+
+  /* 物流按鈕樣式 */
+  .akocommerce-logistics-buttons {
+      display: flex !important;
+      gap: 16px !important;
+      margin: 20px 0 !important;
+      flex-wrap: wrap !important;
+  }
+
+  .akocommerce-logistics-button {
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: center !important;
+      border: 2px solid #404040 !important;
+      flex: 1 !important;
+      box-shadow:
+          0 4px 15px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+      min-height: 120px !important;
+      cursor: pointer !important;
+      border-radius: 12px !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      background: linear-gradient(145deg, #2d2d2d, #1a1a1a) !important;
+      position: relative !important;
+      overflow: hidden !important;
+      padding: 20px !important;
+      margin: 0 !important;
+      color: #ffffff !important;
+  }
+
+  .akocommerce-logistics-button::before {
+      content: '' !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: -100% !important;
+      width: 100% !important;
+      height: 100% !important;
+      background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent) !important;
+      transition: left 0.5s ease !important;
+  }
+
+  .akocommerce-logistics-button:hover::before {
+      left: 100% !important;
+  }
+
+  .akocommerce-logistics-button:hover {
+      border-color: #ff6b35 !important;
+      box-shadow:
+          0 12px 35px rgba(255, 107, 53, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      transform: translateY(-4px) !important;
+  }
+
+  .akocommerce-logistics-button.active {
+      background: linear-gradient(135deg, #ff6b35, #f7931e) !important;
+      border-color: #f7931e !important;
+      color: #ffffff !important;
+      box-shadow:
+          0 12px 35px rgba(255, 107, 53, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+      transform: translateY(-2px) !important;
+  }
+
+  .akocommerce-logistics-button__icon {
+      width: 48px !important;
+      height: 48px !important;
+      background: linear-gradient(135deg, #404040, #2d2d2d) !important;
+      border-radius: 12px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: all 0.3s ease !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      margin: 0 0 10px 0 !important;
+  }
+
+  .akocommerce-logistics-button.active .akocommerce-logistics-button__icon {
+      background: rgba(255, 255, 255, 0.2) !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  }
+
+  .akocommerce-logistics-button__icon svg,
+  .akocommerce-logistics-button .akocommerce-logistics-button__icon > svg {
+      width: 24px !important;
+      height: 24px !important;
+      color: #ff6b35 !important;
+      transition: all 0.3s ease !important;
+      fill: #ff6b35 !important;
+  }
+
+  .akocommerce-logistics-button.active .akocommerce-logistics-button__icon svg,
+  .akocommerce-logistics-button.active .akocommerce-logistics-button__icon > svg {
+      color: #ffffff !important;
+      fill: #ffffff !important;
+  }
+
+  .akocommerce-logistics-button div {
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      color: #ffffff !important;
+      line-height: 1.4 !important;
+      text-align: center !important;
+      margin: 0 !important;
+      padding: 0 !important;
+  }
+
+  .akocommerce-logistics-button.active div {
+      color: #ffffff !important;
+  }
+
+  /* ========================================
+     輸入框樣式設計 - 新增部分
+     ======================================== */
+
+  /* 輸入框標籤 */
+  .ako-label,
+  label.ako-label {
+      display: block !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      color: #ff6b35 !important;
+      margin: 0 0 8px 0 !important;
+      text-shadow: 0 0 10px rgba(255, 107, 53, 0.3) !important;
+      background: transparent !important;
+      padding: 0 !important;
+      cursor: default !important;
+  }
+
+  /* 輸入框主體樣式 */
+  .ako-input,
+  input.ako-input {
+      width: 100% !important;
+      height: 56px !important;
+      padding: 16px 20px !important;
+      background: linear-gradient(145deg, #2d2d2d, #1a1a1a) !important;
+      border: 2px solid #404040 !important;
+      border-radius: 12px !important;
+      color: #ffffff !important;
+      font-size: 15px !important;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      box-shadow:
+          0 4px 15px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+      outline: none !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+  }
+
+  /* 輸入框焦點狀態 */
+  .ako-input:focus,
+  input.ako-input:focus {
+      border-color: #ff6b35 !important;
+      box-shadow:
+          0 8px 25px rgba(255, 107, 53, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1),
+          0 0 20px rgba(255, 107, 53, 0.4) !important;
+      transform: translateY(-1px) !important;
+      background: linear-gradient(145deg, #333333, #1d1d1d) !important;
+  }
+
+  /* 輸入框懸停狀態 - 僅桌面 */
+  @media (hover: hover) and (pointer: fine) {
+      .ako-input:hover,
+      input.ako-input:hover {
+          border-color: #ff8c5c !important;
+          box-shadow:
+              0 6px 20px rgba(0, 0, 0, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+      }
+  }
+
+  /* 佔位符樣式 */
+  .ako-input::placeholder,
+  input.ako-input::placeholder {
+      color: #888888 !important;
+      opacity: 1 !important;
+      font-style: italic !important;
+  }
+
+  .ako-input:focus::placeholder,
+  input.ako-input:focus::placeholder {
+      color: #aaaaaa !important;
+      opacity: 0.8 !important;
+  }
+
+  /* 啟動狀態的輸入框 */
+  .ako-input--start,
+  input.ako-input--start {
+      border-color: #ff6b35 !important;
+      background: linear-gradient(145deg, #333333, #1d1d1d) !important;
+      box-shadow:
+          0 8px 25px rgba(255, 107, 53, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* 錯誤狀態 */
+  .ako-input[aria-invalid='true'],
+  input.ako-input[aria-invalid='true'] {
+      border-color: #ff4444 !important;
+      box-shadow:
+          0 8px 25px rgba(255, 68, 68, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .ako-input[aria-invalid='true']:focus,
+  input.ako-input[aria-invalid='true']:focus {
+      box-shadow:
+          0 8px 25px rgba(255, 68, 68, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1),
+          0 0 20px rgba(255, 68, 68, 0.4) !important;
+  }
+
+  /* 輸入框容器 */
+  .ako-company-invoice,
+  div.ako-company-invoice {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 20px !important;
+      margin: 20px 0 0 0 !important;
+      padding: 0 !important;
+  }
+
+  /* 輸入框組 */
+  .ako-company-invoice > div {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+  }
+
+  /* 提示文字樣式 */
+  .ako-helper-text,
+  p.ako-helper-text {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      margin: 8px 0 0 0 !important;
+      padding: 0 !important;
+      font-size: 13px !important;
+      color: #cccccc !important;
+      line-height: 1.4 !important;
+  }
+
+  .ako-helper-text--start,
+  p.ako-helper-text--start {
+      color: #ff6b35 !important;
+      font-weight: 500 !important;
+  }
+
+  /* 提示圖示 */
+  .ako-helper-text__icon {
+      width: 16px !important;
+      height: 16px !important;
+      color: inherit !important;
+      flex-shrink: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+  }
+
+  .ako-helper-text__icon svg {
+      width: 14px !important;
+      height: 14px !important;
+      color: inherit !important;
+  }
+
+  /* 錯誤狀態的提示文字 */
+  .ako-input[aria-invalid='true'] ~ p.ako-helper-text,
+  input.ako-input[aria-invalid='true'] ~ p.ako-helper-text {
+      color: #ff4444 !important;
+  }
+
+  /* 愛心碼區塊樣式 */
+  .ako-lovecode__title {
+      color: #ff6b35 !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      margin: 20px 0 8px 0 !important;
+      text-shadow: 0 0 10px rgba(255, 107, 53, 0.3) !important;
+  }
+
+  .ako-lovecode__code {
+      padding: 12px 16px !important;
+      border-radius: 8px !important;
+      background: linear-gradient(135deg, #2a1810, #1a1a1a) !important;
+      border: 1px solid #ff6b35 !important;
+      font-size: 13px !important;
+      color: #e0e0e0 !important;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+      letter-spacing: 1px !important;
+      margin: 0 !important;
+  }
+
+  /* 自動填入狀態優化 */
+  .ako-input:-webkit-autofill,
+  input.ako-input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px #2d2d2d inset !important;
+      -webkit-text-fill-color: #ffffff !important;
+      transition: background-color 5000s ease-in-out 0s !important;
+  }
+
+  .ako-input:-webkit-autofill:focus,
+  input.ako-input:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0 1000px #333333 inset !important;
+      -webkit-text-fill-color: #ffffff !important;
+  }
+
+  /* 確保在深色主題下的高對比 */
+  .ako-input,
+  input.ako-input {
+      caret-color: #ff6b35 !important;
+  }
+
+  /* 選取文字顏色 */
+  .ako-input::selection,
+  input.ako-input::selection {
+      background: rgba(255, 107, 53, 0.3) !important;
+      color: #ffffff !important;
+  }
+
+  .ako-input::-moz-selection,
+  input.ako-input::-moz-selection {
+      background: rgba(255, 107, 53, 0.3) !important;
+      color: #ffffff !important;
+  }
+
+  /* ========================================
+     超商選擇按鈕和結果區塊樣式 - 修復版本
+     ======================================== */
+
+  /* 超商選擇按鈕容器 */
+  .akocommerce-company-buttons {
+      display: flex !important;
+      gap: 16px !important;
+      margin: 20px 0 !important;
+      flex-wrap: wrap !important;
+  }
+
+  /* 超商選擇按鈕 - 修復白色邊框問題 */
+  .akocommerce-company-button {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      border: 2px solid #404040 !important;
+      flex: 1 !important;
+      height: 96px !important;
+      cursor: pointer !important;
+      border-radius: 12px !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      background: linear-gradient(145deg, #2d2d2d, #1a1a1a) !important;
+      position: relative !important;
+      overflow: hidden !important;
+      padding: 20px !important;
+      margin: 0 !important;
+      box-shadow:
+          0 4px 15px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  }
+
+  /* 移除原始的漸變背景 */
+  .akocommerce-company-button[data-company='seven'],
+  .akocommerce-company-button[data-company='fami'],
+  .akocommerce-company-button[data-company='hilife'] {
+      background: linear-gradient(145deg, #2d2d2d, #1a1a1a) !important;
+  }
+
+  /* 修復：超商按鈕圖片樣式 - 完全按照原始顯示，移除任何可能的白色背景或邊框 */
+  .akocommerce-company-button img {
+      width: 48px !important;
+      height: 48px !important;
+      /* 關鍵修復：確保圖片按照原始樣式顯示 */
+      background: transparent !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      /* 確保圖片不會被任何容器樣式影響 */
+      object-fit: contain !important;
+      object-position: center !important;
+      /* 移除可能的濾鏡效果 */
+      filter: none !important;
+      /* 確保透明度正常 */
+      opacity: 1 !important;
+      /* 移除可能的變換效果 */
+      transform: none !important;
+      /* 確保圖片顯示模式正確 */
+      display: block !important;
+      /* 移除可能的邊框半徑 */
+      border-radius: 0 !important;
+  }
+
+  /* 懸停效果 */
+  .akocommerce-company-button:hover {
+      border-color: #ff6b35 !important;
+      box-shadow:
+          0 12px 35px rgba(255, 107, 53, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      transform: translateY(-4px) !important;
+  }
+
+  /* 選中狀態 */
+  .akocommerce-company-button[data-selected='true'],
+  .akocommerce-company-button.selected {
+      background: linear-gradient(135deg, #ff6b35, #f7931e) !important;
+      border-color: #f7931e !important;
+      box-shadow:
+          0 12px 35px rgba(255, 107, 53, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+      transform: translateY(-2px) !important;
+  }
+
+  /* 未選中狀態的透明度 */
+  .akocommerce-company-button[data-selected='false'] {
+      opacity: 0.6 !important;
+  }
+
+  .akocommerce-company-button[data-selected='false']:hover {
+      opacity: 1 !important;
+  }
+
+  /* 移除原始的選中邊框顏色 */
+  .akocommerce-company-button[data-company='seven'][data-selected='true'],
+  .akocommerce-company-button[data-company='fami'][data-selected='true'],
+  .akocommerce-company-button[data-company='hilife'][data-selected='true'] {
+      border-color: #f7931e !important;
+  }
+
+  /* 修復：超商選擇結果區塊 - 統一手機版和電腦版風格 */
+  .akocommerce-result {
+      background: linear-gradient(135deg, #2a1810, #1a1a1a) !important;
+      border: 1px solid #ff6b35 !important;
+      border-radius: 12px !important;
+      padding: 20px !important;
+      margin: 20px 0 !important;
+      position: relative !important;
+      overflow: hidden !important;
+      box-shadow:
+          0 8px 25px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+      animation: fadeInUp 0.6s ease-out !important;
+      animation-delay: 0.3s !important;
+      animation-fill-mode: both !important;
+  }
+
+  /* 結果區塊頂部橘色線條 */
+  .akocommerce-result::before {
+      content: '' !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      height: 3px !important;
+      background: linear-gradient(90deg, #ff6b35, #f7931e) !important;
+  }
+
+  /* 結果標題樣式 */
+  .akocommerce-result-title {
+      color: #ff6b35 !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      margin: 0 0 12px 0 !important;
+      text-shadow: 0 0 10px rgba(255, 107, 53, 0.3) !important;
+  }
+
+  /* 結果內容樣式 */
+  .akocommerce-result-shop {
+      color: #ffffff !important;
+      font-size: 16px !important;
+      font-weight: 500 !important;
+      line-height: 1.5 !important;
+      margin: 0 0 8px 0 !important;
+  }
+
+  .akocommerce-result-shop:first-of-type {
+      font-size: 18px !important;
+      font-weight: 600 !important;
+      color: #ff6b35 !important;
+      text-shadow: 0 0 10px rgba(255, 107, 53, 0.3) !important;
+  }
+
+  /* 警告提示樣式 */
+  .akocommerce-warning {
+      background: linear-gradient(135deg, #ff4444, #cc3333) !important;
+      color: #ffffff !important;
+      padding: 16px 20px !important;
+      border-radius: 8px !important;
+      margin: 16px 0 !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      text-align: center !important;
+      box-shadow:
+          0 4px 15px rgba(255, 68, 68, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      animation: pulse 2s infinite !important;
+  }
+
+  @keyframes pulse {
+      0% {
+          box-shadow:
+              0 4px 15px rgba(255, 68, 68, 0.3),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+      50% {
+          box-shadow:
+              0 8px 25px rgba(255, 68, 68, 0.5),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+      100% {
+          box-shadow:
+              0 4px 15px rgba(255, 68, 68, 0.3),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+  }
+
+  /* 注意事項樣式 */
+  .akocommerce-note {
+      color: #cccccc !important;
+      font-size: 13px !important;
+      font-weight: 400 !important;
+      line-height: 1.5 !important;
+      margin: 16px 0 0 0 !important;
+      padding: 16px !important;
+      background: rgba(255, 107, 53, 0.1) !important;
+      border-left: 4px solid #ff6b35 !important;
+      border-radius: 0 8px 8px 0 !important;
+  }
+
+  /* ========================================
+     結帳按鈕樣式設計
+     ======================================== */
+
+  /* 結帳按鈕樣式 */
+  #checkout.cart__checkout-button,
+  button#checkout.cart__checkout-button,
+  .cart__checkout-button#checkout {
+      background: linear-gradient(135deg, #ff6b35, #f7931e) !important;
+      border: none !important;
+      border-radius: 16px !important;
+      padding: 20px 40px !important;
+      font-size: 18px !important;
+      font-weight: 700 !important;
+      color: #ffffff !important;
+      width: 100% !important;
+      max-width: 480px !important;
+      margin: 32px auto 40px auto !important;
+      cursor: pointer !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      box-shadow:
+          0 12px 35px rgba(255, 107, 53, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+      text-transform: none !important;
+      letter-spacing: 1px !important;
+      position: relative !important;
+      overflow: hidden !important;
+      display: block !important;
+      z-index: 100 !important;
+
+      /* 確保按鈕不會被覆蓋 */
+      clear: both !important;
+  }
+
+  /* 結帳按鈕發光效果 */
+  #checkout.cart__checkout-button::before,
+  button#checkout.cart__checkout-button::before,
+  .cart__checkout-button#checkout::before {
+      content: '' !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: -100% !important;
+      width: 100% !important;
+      height: 100% !important;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent) !important;
+      transition: left 0.6s ease !important;
+  }
+
+  /* 懸停效果 */
+  #checkout.cart__checkout-button:hover,
+  button#checkout.cart__checkout-button:hover,
+  .cart__checkout-button#checkout:hover {
+      transform: translateY(-4px) !important;
+      box-shadow:
+          0 16px 45px rgba(255, 107, 53, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  }
+
+  #checkout.cart__checkout-button:hover::before,
+  button#checkout.cart__checkout-button:hover::before,
+  .cart__checkout-button#checkout:hover::before {
+      left: 100% !important;
+  }
+
+  /* 按下效果 */
+  #checkout.cart__checkout-button:active,
+  button#checkout.cart__checkout-button:active,
+  .cart__checkout-button#checkout:active {
+      transform: translateY(-2px) !important;
+      box-shadow:
+          0 8px 25px rgba(255, 107, 53, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  }
+
+  /* 禁用狀態 */
+  #checkout.cart__checkout-button:disabled,
+  button#checkout.cart__checkout-button:disabled,
+  .cart__checkout-button#checkout:disabled,
+  #checkout.cart__checkout-button[style*="pointer-events: none"],
+  button#checkout.cart__checkout-button[style*="pointer-events: none"],
+  .cart__checkout-button#checkout[style*="pointer-events: none"] {
+      background: linear-gradient(135deg, #666666, #555555) !important;
+      cursor: not-allowed !important;
+      transform: none !important;
+      box-shadow:
+          0 4px 15px rgba(0, 0, 0, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      opacity: 0.6 !important;
+  }
+
+  /* 確保結帳按鈕與上方內容有適當間距 */
+  #akocommerce_cvs_section ~ #checkout,
+  .akoCvsScNS ~ #checkout,
+  div[id*="akocommerce"] ~ #checkout {
+      margin-top: 40px !important;
+  }
+
+  /* 如果結帳按鈕在容器內 */
+  #akocommerce_cvs_section #checkout,
+  .akoCvsScNS #checkout,
+  div[id*="akocommerce"] #checkout {
+      margin: 32px 0 0 0 !important;
+  }
+
+  /* ========================================
+     響應式設計
+     ======================================== */
+
+  /* 手機版優化 */
+  @media (max-width: 768px) {
+      .ako-container {
+          margin: 12px auto !important;
+          border-radius: 16px !important;
+          width: calc(100% - 24px) !important;
+          max-width: calc(100% - 24px) !important;
+      }
+
+      .ako-invoice,
+      .ako-cvs-section,
+      section.ako-invoice,
+      section.ako-cvs-section {
+          padding: 24px 20px !important;
+      }
+
+
+      .ako-invoice-title,
+      .ako-cvs-title,
+      h2.ako-invoice-title,
+      h2.ako-cvs-title {
+          font-size: 20px !important;
+      }
+
+      /* 手機版下拉選單特別優化 */
+      .ako-menu-button {
+          min-height: 60px !important;
+          padding: 20px !important;
+          font-size: 16px !important;
+      }
+
+      .ako-menu-list .ako-menu__item,
+      .ako-menu-list li.ako-menu__item {
+          min-height: 60px !important;
+          padding: 20px !important;
+          font-size: 16px !important;
+
+          /* 手機版點擊優化 */
+          -webkit-tap-highlight-color: rgba(255, 107, 53, 0.2) !important;
+          touch-action: manipulation !important;
+      }
+
+      /* 移除可能干擾觸控的變換效果 */
+      .ako-menu-list .ako-menu__item:hover {
+          transform: none !important;
+      }
+
+      /* 簡化點擊效果 */
+      .ako-menu-list .ako-menu__item:active {
+          background: rgba(255, 107, 53, 0.2) !important;
+          transform: none !important;
+      }
+
+      .ako-menu-list {
+          max-height: 250px !important;
+          overflow-y: auto !important;
+          -webkit-overflow-scrolling: touch !important;
+      }
+
+      .ako-menu-list[style*="max-height"][style*="px"]:not([style*="max-height: 0px"]) {
+          max-height: 250px !important;
+          overflow-y: auto !important;
+      }
+
+      .akocommerce-logistics-buttons {
+          flex-direction: column !important;
+          gap: 12px !important;
+      }
+
+      .akocommerce-logistics-button {
+          padding: 20px !important;
+          width: 100% !important;
+      }
+
+      /* 手機版輸入框優化 */
+      .ako-input,
+      input.ako-input {
+          height: 52px !important;
+          padding: 14px 18px !important;
+          font-size: 16px !important; /* 防止 iOS 縮放 */
+      }
+
+      .ako-label,
+      label.ako-label {
+          font-size: 13px !important;
+      }
+
+      .ako-helper-text,
+      p.ako-helper-text {
+          font-size: 12px !important;
+      }
+
+      .ako-company-invoice,
+      div.ako-company-invoice {
+          gap: 18px !important;
+      }
+
+      /* 手機版超商按鈕優化 */
+      .akocommerce-company-buttons {
+          gap: 12px !important;
+      }
+
+      .akocommerce-company-button {
+          height: 80px !important;
+          padding: 16px !important;
+      }
+
+      .akocommerce-company-button img {
+          width: 48px !important;
+          height: 48px !important;
+      }
+
+      /* 手機版結果區塊統一樣式 */
+      .akocommerce-result {
+          padding: 16px !important;
+          margin: 16px 0 !important;
+          /* 確保手機版也使用相同的背景和邊框 */
+          background: linear-gradient(135deg, #2a1810, #1a1a1a) !important;
+          border: 1px solid #ff6b35 !important;
+          border-radius: 12px !important;
+          box-shadow:
+              0 8px 25px rgba(0, 0, 0, 0.3),
+              inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+      }
+
+      .akocommerce-result-title {
+          font-size: 13px !important;
+      }
+
+      .akocommerce-result-shop {
+          font-size: 15px !important;
+      }
+
+      .akocommerce-result-shop:first-of-type {
+          font-size: 16px !important;
+      }
+
+      .akocommerce-note {
+          font-size: 12px !important;
+          padding: 12px !important;
+      }
+
+      /* 手機版結帳按鈕優化 */
+      #checkout.cart__checkout-button,
+      button#checkout.cart__checkout-button,
+      .cart__checkout-button#checkout {
+          padding: 18px 32px !important;
+          font-size: 16px !important;
+          margin: 24px auto 32px auto !important;
+          border-radius: 14px !important;
+      }
+
+      /* 手機版間距調整 */
+      #akocommerce_cvs_section ~ #checkout,
+      .akoCvsScNS ~ #checkout,
+      div[id*="akocommerce"] ~ #checkout {
+          margin-top: 32px !important;
+      }
+  }
+
+  /* 超小螢幕優化 */
+  @media (max-width: 480px) {
+      .ako-menu {
+          margin: 0 0 16px 0 !important;
+      }
+
+      .ako-menu-list {
+          margin: 6px 0 0 0 !important;
+          border-radius: 8px !important;
+          max-height: 200px !important;
+      }
+
+      .ako-menu-list[style*="max-height"][style*="px"]:not([style*="max-height: 0px"]) {
+          max-height: 200px !important;
+      }
+
+      .akocommerce-company-buttons {
+          flex-direction: column !important;
+          gap: 10px !important;
+      }
+
+      .akocommerce-company-button {
+          width: 100% !important;
+          height: 70px !important;
+      }
+
+      /* 超小螢幕結帳按鈕優化 */
+      #checkout.cart__checkout-button,
+      button#checkout.cart__checkout-button,
+      .cart__checkout-button#checkout {
+          padding: 16px 28px !important;
+          font-size: 15px !important;
+          margin: 20px auto 28px auto !important;
+          border-radius: 12px !important;
+      }
+
+      /* 超小螢幕間距調整 */
+      #akocommerce_cvs_section ~ #checkout,
+      .akoCvsScNS ~ #checkout,
+      div[id*="akocommerce"] ~ #checkout {
+          margin-top: 28px !important;
+      }
+  }
+
+  /* 發光效果 */
+  .akocommerce-logistics-button.active,
+  .ako-menu-button:hover,
+  .ako-checkbox:hover,
+  label.ako-checkbox:hover {
+      box-shadow:
+          0 0 20px rgba(255, 107, 53, 0.3),
+          0 12px 35px rgba(255, 107, 53, 0.2) !important;
+  }
+
+  /* 動畫 */
+  @keyframes fadeInUp {
+      from {
+          opacity: 0;
+          transform: translateY(20px);
+      }
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+
+  .ako-invoice,
+  .ako-cvs-section,
+  section.ako-invoice,
+  section.ako-cvs-section {
+      animation: fadeInUp 0.6s ease-out !important;
+  }
+
+  .ako-cvs-section,
+  section.ako-cvs-section {
+      animation-delay: 0.1s !important;
+  }
+
+  /* 輸入框進場動畫 */
+  .ako-company-invoice {
+      animation: fadeInUp 0.6s ease-out !important;
+      animation-delay: 0.2s !important;
+      animation-fill-mode: both !important;
+  }
+{% endstylesheet %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // === 設定 ===
+    // true: 以 GET 直接導到 /checkout?…（最保險，百分百帶參數）
+    // false: 保留主題原本的 POST，僅把 form.action 改為 /checkout?…
+    var REDIRECT_MODE = true;
+
+    var btn = document.getElementById('checkout-standalone');
+    if (!btn) return;
+
+    var formId = btn.getAttribute('form') || 'cart-form';
+    var form = document.getElementById(formId);
+    var ctaContainer = btn.closest('.cart-cta');
+
+    function relocateInjectedNodes() {
+      if (!ctaContainer) return;
+      var bridgeSection = document.querySelector('[id*="cart_ako_bridge_auto"]');
+      if (!bridgeSection) return;
+
+      // 精準搬移 AKO root，避免把 checkout 一起搬走
+      var ctaAkoRoots = Array.prototype.slice.call(ctaContainer.querySelectorAll('#akocommerce_cvs_section, .akoCvsScNS'));
+      ctaAkoRoots.forEach(function (akoRoot) {
+        if (!akoRoot) return;
+        var akoParent = akoRoot.parentElement;
+        var styleSiblings = akoParent ? Array.prototype.slice.call(akoParent.querySelectorAll(':scope > style')) : [];
+        styleSiblings.forEach(function (styleEl) {
+          bridgeSection.appendChild(styleEl);
+        });
+        bridgeSection.appendChild(akoRoot);
+      });
+
+      // fallback：避免誤搬含 checkout 的整包容器
+      Array.prototype.slice.call(ctaContainer.children).forEach(function (child) {
+        var isCheckoutStandalone = child.id === 'checkout-standalone';
+        var isAdditionalButtons = child.classList && child.classList.contains('additional-checkout-buttons');
+        if (isCheckoutStandalone || isAdditionalButtons) return;
+        if (child.querySelector && child.querySelector('#checkout-standalone')) return;
+        bridgeSection.appendChild(child);
+      });
+
+      // 若 checkout 被第三方 DOM 操作搬離 .cart-cta，強制錨回
+      if (!ctaContainer.querySelector('#checkout-standalone')) {
+        var detachedCheckout = document.getElementById('checkout-standalone');
+        if (detachedCheckout) {
+          ctaContainer.insertBefore(detachedCheckout, ctaContainer.firstChild || null);
+        }
+      }
+    }
+
+    relocateInjectedNodes();
+
+    // 取目前 query（先嘗試把最新輸入寫進網址）
+    function getCurrentQuery() {
+      try {
+        // 你的收件欄位 section 內若有此函式，就會把當前輸入同步到 location.search
+        if (typeof window.buildCheckoutParams === 'function') {
+          window.buildCheckoutParams();
+        }
+      } catch (e) {
+        /* ignore */
+      }
+      return window.location.search || '';
+    }
+
+    // 讓 a/form 也能同步（POST 模式時用得到；或主題別處有 checkout 連結）
+    function syncEntrancesNow() {
+      var qs = getCurrentQuery();
+
+      // 改本表單 action（POST 模式用）
+      if (!REDIRECT_MODE && form) {
+        form.action = '/checkout' + qs;
+      }
+
+      // 如果主題上還有其它 /checkout 連結，也幫它們接上 query
+      document.querySelectorAll('a[href^="/checkout"]').forEach(function (a) {
+        a.setAttribute('href', '/checkout' + qs);
+      });
+    }
+
+    // 初始化同步一次（特別是 POST 模式要先設好 action）
+    syncEntrancesNow();
+
+    var stickyTotal = ctaContainer ? ctaContainer.querySelector('[data-cart-cta-total]') : null;
+    function syncStickyTotal() {
+      if (!stickyTotal) return;
+      var source =
+        document.querySelector('[data-cart-subtotal]') ||
+        document.querySelector('.cart__total .cart__value');
+      if (!source) return;
+      var text = (source.textContent || '').trim();
+      if (text) stickyTotal.textContent = text;
+    }
+    syncStickyTotal();
+
+    var totalSource = document.querySelector('[data-cart-subtotal]');
+    if (totalSource) {
+      var totalObserver = new MutationObserver(syncStickyTotal);
+      totalObserver.observe(totalSource, { characterData: true, childList: true, subtree: true });
+    }
+
+    // 主要行為：點擊 CTA
+    btn.addEventListener(
+      'click',
+      function (ev) {
+        // 若按鈕 disabled（空購物車），就不處理
+        if (btn.disabled || btn.getAttribute('aria-disabled') === 'true') return;
+
+        var qs = getCurrentQuery();
+
+        if (REDIRECT_MODE) {
+          // 攔截提交，保證帶著 query 直達 /checkout
+          ev.preventDefault();
+          window.location.assign('/checkout' + qs);
+        } else {
+          // 保留原本 POST：只把 action 改成 /checkout?…
+          if (form) form.action = '/checkout' + qs;
+          // 不 preventDefault，照常提交
+        }
+      },
+      true
+    );
+
+    // 若你的收件欄位用 history.replaceState 即時改網址，這裡再保險補一次
+    window.addEventListener('popstate', syncEntrancesNow);
+
+    // 有些主題/抽屜會晚載入或改動 DOM；短期輪詢補強一下
+    var tries = 0,
+      iv = setInterval(function () {
+        syncEntrancesNow();
+        syncStickyTotal();
+        relocateInjectedNodes();
+        if (++tries > 10) clearInterval(iv);
+      }, 500);
+
+    if (ctaContainer) {
+      var ctaObserver = new MutationObserver(function (mutations) {
+        var shouldRelocate = mutations.some(function (m) {
+          return m.type === 'childList' && m.addedNodes && m.addedNodes.length > 0;
+        });
+        if (shouldRelocate) {
+          relocateInjectedNodes();
+        }
+      });
+      ctaObserver.observe(ctaContainer, { childList: true });
+    }
+  });
+
+  // 確保 DOM 完全載入後再執行
+  document.addEventListener('DOMContentLoaded', function () {
+    // 監聽整個 AKO 購物車區塊的點擊事件
+    const akoSection = document.getElementById('akocommerce_cvs_section') || document.querySelector('.akoCvsScNS');
+
+    if (akoSection) {
+      akoSection.addEventListener('click', function (event) {
+        let targetElement = event.target;
+
+        // 向上遍歷父元素，直到找到具有 data-invoice 屬性的 li 元素
+        while (targetElement && targetElement !== this) {
+          if (targetElement.matches('li[data-invoice]')) {
+            // 找到目標 li 元素，強制觸發點擊事件
+            // 模擬原生點擊事件，確保插件的 JS 能夠捕獲到
+            const clickEvent = new MouseEvent('click', {
+              view: window,
+              bubbles: true,
+              cancelable: true,
+            });
+            targetElement.dispatchEvent(clickEvent);
+
+            // 嘗試觸發觸控事件，以防插件只監聽觸控
+            const touchStartEvent = new TouchEvent('touchstart', {
+              touches: [
+                {
+                  identifier: Date.now(),
+                  target: targetElement,
+                  clientX: event.clientX,
+                  clientY: event.clientY,
+                  screenX: event.screenX,
+                  screenY: event.screenY,
+                  pageX: event.pageX,
+                  pageY: event.pageY,
+                },
+              ],
+              targetTouches: [
+                {
+                  identifier: Date.now(),
+                  target: targetElement,
+                  clientX: event.clientX,
+                  clientY: event.clientY,
+                  screenX: event.screenX,
+                  screenY: event.screenY,
+                  pageX: event.pageX,
+                  pageY: event.pageY,
+                },
+              ],
+              changedTouches: [
+                {
+                  identifier: Date.now(),
+                  target: targetElement,
+                  clientX: event.clientX,
+                  clientY: event.clientY,
+                  screenX: event.screenX,
+                  screenY: event.screenY,
+                  pageX: event.pageX,
+                  pageY: event.pageY,
+                },
+              ],
+              bubbles: true,
+              cancelable: true,
+            });
+            targetElement.dispatchEvent(touchStartEvent);
+
+            const touchEndEvent = new TouchEvent('touchend', {
+              touches: [],
+              targetTouches: [],
+              changedTouches: [
+                {
+                  identifier: Date.now(),
+                  target: targetElement,
+                  clientX: event.clientX,
+                  clientY: event.clientY,
+                  screenX: event.screenX,
+                  screenY: event.screenY,
+                  pageX: event.pageX,
+                  pageY: event.pageY,
+                },
+              ],
+              bubbles: true,
+              cancelable: true,
+            });
+            targetElement.dispatchEvent(touchEndEvent);
+
+            // 阻止原始事件的默認行為和冒泡，避免重複觸發或衝突
+            event.preventDefault();
+            event.stopPropagation();
+            break; // 找到並處理後就跳出循環
+          }
+          targetElement = targetElement.parentElement;
+        }
+      });
+
+      // 針對手機版，確保下拉選單項目始終可點擊
+      const menuListItems = akoSection.querySelectorAll('.ako-menu-list li[data-invoice]');
+      menuListItems.forEach((item) => {
+        item.style.setProperty('pointer-events', 'auto', 'important');
+        item.style.setProperty('cursor', 'pointer', 'important');
+        item.style.setProperty('touch-action', 'manipulation', 'important');
+        item.style.setProperty('-webkit-tap-highlight-color', 'rgba(255, 107, 53, 0.4)', 'important');
+        item.style.setProperty('user-select', 'none', 'important');
+        item.style.setProperty('-webkit-user-select', 'none', 'important');
+        item.style.setProperty('-moz-user-select', 'none', 'important');
+        item.style.setProperty('-ms-user-select', 'none', 'important');
+      });
+
+      // 確保按鈕本身也始終可點擊
+      const menuButton = akoSection.querySelector('.ako-menu-button');
+      if (menuButton) {
+        menuButton.style.setProperty('pointer-events', 'auto', 'important');
+        menuButton.style.setProperty('cursor', 'pointer', 'important');
+        menuButton.style.setProperty('touch-action', 'manipulation', 'important');
+        menuButton.style.setProperty('-webkit-tap-highlight-color', 'rgba(255, 107, 53, 0.4)', 'important');
+        menuButton.style.setProperty('user-select', 'none', 'important');
+        menuButton.style.setProperty('-webkit-user-select', 'none', 'important');
+        menuButton.style.setProperty('-moz-user-select', 'none', 'important');
+        menuButton.style.setProperty('-ms-user-select', 'none', 'important');
+      }
+
+      // 觀察 DOM 變化，如果插件動態添加或修改元素，重新應用樣式
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'childList' || mutation.type === 'attributes') {
+            const newItems = akoSection.querySelectorAll('.ako-menu-list li[data-invoice]');
+            newItems.forEach((item) => {
+              item.style.setProperty('pointer-events', 'auto', 'important');
+              item.style.setProperty('cursor', 'pointer', 'important');
+              item.style.setProperty('touch-action', 'manipulation', 'important');
+              item.style.setProperty('-webkit-tap-highlight-color', 'rgba(255, 107, 53, 0.4)', 'important');
+              item.style.setProperty('user-select', 'none', 'important');
+              item.style.setProperty('-webkit-user-select', 'none', 'important');
+              item.style.setProperty('-moz-user-select', 'none', 'important');
+              item.style.setProperty('-ms-user-select', 'none', 'important');
+            });
+          }
+        });
+      });
+
+      // 配置觀察器選項：監聽子節點變化和屬性變化
+      const config = { childList: true, subtree: true, attributes: true };
+      observer.observe(akoSection, config);
+    }
+
+    // 輸入框增強功能
+    const enhanceInputs = () => {
+      const akoInputs = document.querySelectorAll('.ako-input, input.ako-input');
+
+      akoInputs.forEach(function (input) {
+        // 避免重複綁定
+        if (input.hasAttribute('data-ako-enhanced')) return;
+        input.setAttribute('data-ako-enhanced', 'true');
+
+        // 焦點增強效果
+        input.addEventListener('focus', function () {
+          this.classList.add('ako-input--focused');
+          // 輕微震動反饋（支援的設備）
+          if (navigator.vibrate) {
+            navigator.vibrate(10);
+          }
+        });
+
+        input.addEventListener('blur', function () {
+          this.classList.remove('ako-input--focused');
+        });
+
+        // 即時驗證反饋
+        input.addEventListener('input', function () {
+          // 移除錯誤狀態（如果有輸入內容）
+          if (this.value.trim() !== '') {
+            this.setAttribute('aria-invalid', 'false');
+            this.classList.remove('ako-input--error');
+          }
+
+          // 特殊處理統一編號格式
+          if (this.name === 'ako-company-code') {
+            // 只允許數字，最多8位
+            this.value = this.value.replace(/\D/g, '').slice(0, 8);
+
+            // 即時驗證統一編號長度
+            if (this.value.length === 8) {
+              this.classList.add('ako-input--valid');
+            } else {
+              this.classList.remove('ako-input--valid');
+            }
+          }
+
+          // 公司名稱長度提示
+          if (this.name === 'ako-company-name') {
+            if (this.value.length > 50) {
+              this.value = this.value.slice(0, 50);
+            }
+          }
+        });
+
+        // 貼上事件處理
+        input.addEventListener('paste', function (e) {
+          setTimeout(() => {
+            this.dispatchEvent(new Event('input', { bubbles: true }));
+          }, 0);
+        });
+      });
+    };
+
+    // 初始化輸入框增強
+    enhanceInputs();
+
+    // 監聽 DOM 變化，為新增的輸入框加上增強功能
+    const inputObserver = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        mutation.addedNodes.forEach(function (node) {
+          if (node.nodeType === 1) {
+            // 元素節點
+            enhanceInputs(); // 重新掃描所有輸入框
+          }
+        });
+      });
+    });
+
+    // 觀察整個文檔的變化
+    if (akoSection) {
+      inputObserver.observe(akoSection, {
+        childList: true,
+        subtree: true,
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Cart CTA (Standalone)",
+  "settings": [
+    {
+      "type": "text",
+      "id": "total_label",
+      "label": "Total label",
+      "default": "小計"
+    },
+    {
+      "type": "text",
+      "id": "checkout_label",
+      "label": "Checkout label",
+      "default": "前往結帳"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_accelerated",
+      "label": "Show accelerated checkout buttons (uses theme settings)",
+      "default": true
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-3" }
+  ],
+  "blocks": [],
+  "presets": [{ "name": "Cart CTA (Standalone)" }]
+}
+{% endschema %}

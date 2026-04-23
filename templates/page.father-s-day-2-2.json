@@ -1,0 +1,106 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "shogun-helper": {
+      "type": "shogun-helper",
+      "disabled": true,
+      "settings": {}
+    },
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "disabled": true,
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "disabled": true,
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "shogun-optimizer": {
+      "type": "shogun-optimizer",
+      "disabled": true,
+      "settings": {}
+    },
+    "apgo_cleaning_sale_brrjTV": {
+      "type": "apgo-cleaning-sale",
+      "name": "APGO 清潔類大降價",
+      "settings": {
+        "logo_height": 48,
+        "heading": "清潔大促銷",
+        "burst": "限時",
+        "subheading": "<p>告別300ml包裝 × 更大更划算，限時優惠下殺。</p>",
+        "collection": "清潔組大降價",
+        "limit": 24,
+        "show_badges": false,
+        "enable_countdown": true,
+        "countdown_end": "2025-09-30T23:59:59"
+      }
+    },
+    "custom_liquid_hBAJyn": {
+      "type": "custom-liquid",
+      "name": "t:names.custom_liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"apgo-test-container\" style=\"text-align: center; margin: 50px 0;\">\n    <a href=\"/account/login?return_to=/cart\" \n       class=\"apgo-line-btn\">\n        <span class=\"btn-text\">使用 LINE 登入領取紅包</span>\n    </a>\n</div>\n\n<style>\n.apgo-line-btn {\n    background: #FF6600; \n    color: #FFFFFF !important;\n    padding: 18px 45px;\n    border-radius: 8px;\n    font-size: 20px;\n    font-weight: 900;\n    text-decoration: none !important;\n    display: inline-block;\n    box-shadow: 0 0 15px rgba(255, 102, 0, 0.4);\n    transition: all 0.3s ease;\n    border: 1px solid rgba(255, 255, 255, 0.1);\n}\n.apgo-line-btn:hover {\n    background: #FF8533;\n    box-shadow: 0 0 25px rgba(255, 102, 0, 0.7);\n    transform: translateY(-3px);\n}\n</style>",
+        "color_scheme": "",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    }
+  },
+  "order": [
+    "shogun-helper",
+    "main",
+    "shogun-optimizer",
+    "apgo_cleaning_sale_brrjTV",
+    "custom_liquid_hBAJyn"
+  ]
+}

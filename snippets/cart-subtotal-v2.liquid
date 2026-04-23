@@ -1,0 +1,101 @@
+{%- liquid
+  assign total_order_discount = 0
+  for app in cart.cart_level_discount_applications
+    assign total_order_discount = total_order_discount | plus: app.total_allocated_amount
+  endfor
+
+  assign total_product_discount = cart.total_discount | minus: total_order_discount
+-%}
+<section data-block="subtotal" class="cv-card">
+  <div class="t-head">
+    <div>
+      <div class="cv-label">{{ section.settings.subtotal_title | escape }}</div>
+    </div>
+  </div>
+
+  {%- comment -%}
+    原本的 cart-discount 在此處（頂部）已移至運費列下方。
+    settings.show_add_discount_code 設定保留備用，可日後恢復原位。
+  {%- endcomment -%}
+
+  {%- if settings.show_cart_note -%}
+    <div class="t-note">
+      {% render 'cart-note' %}
+    </div>
+  {%- endif -%}
+
+  <div class="t-list">
+    <div class="t-row">
+      <div class="t-label">商品總價</div>
+      <div class="t-value">{{ cart.original_total_price | money }}</div>
+    </div>
+
+    {% comment %} --- 商品折扣區塊 --- {% endcomment %}
+    {%- if total_product_discount > 0 -%}
+      <div class="t-row t-row--discount">
+        <span class="t-label">商品折扣</span>
+        <span class="t-value">-{{ total_product_discount | money }}</span>
+      </div>
+      {%- assign printed_product_discounts = "" -%}
+      {%- for item in cart.items -%}
+        {%- for allocation in item.line_level_discount_allocations -%}
+          {%- assign title   = allocation.discount_application.title -%}
+          {%- assign app_key = title | append: "||" -%}
+          {%- unless printed_product_discounts contains app_key -%}
+            <div class="t-row t-row--discount-detail" style="color: #999; font-size: 13px; margin-bottom: 4px;">
+              {%- if allocation.discount_application.type == "discount_code" -%}
+                <span>- 折扣碼 {{ title | escape }}</span>
+              {%- else -%}
+                <span>- {{ title | escape }}</span>
+              {%- endif -%}
+            </div>
+            {%- assign printed_product_discounts = printed_product_discounts | append: app_key -%}
+          {%- endunless -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {% comment %} --- 訂單折扣區塊 --- {% endcomment %}
+    {%- if total_order_discount > 0 -%}
+      <div class="t-row t-row--discount" style="margin-top: 8px;">
+        <span class="t-label">訂單折扣</span>
+        <span class="t-value">-{{ total_order_discount | money }}</span>
+      </div>
+      {%- for app in cart.cart_level_discount_applications -%}
+        <div class="t-row t-row--discount-detail" style="color: #999; font-size: 13px; margin-bottom: 4px;">
+          {%- if app.type == "discount_code" -%}
+            <span>- 折扣碼 {{ app.title | escape }}</span>
+          {%- else -%}
+            <span>- {{ app.title | escape }}</span>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+
+    <div class="t-row t-row--shipping">
+      <div class="t-label">運費</div>
+      <div class="t-value">
+        {%- if cart.requires_shipping -%}
+          結帳時計算
+        {%- else -%}
+          免運商品
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%}
+      運費折扣碼顯示列由 cart-discount-input-only.liquid 的 JS 動態注入
+      （Shopify Liquid 無法讀取 cart.discount_codes，故改為 JS 處理）
+    {%- endcomment -%}
+
+    {%- comment -%} 優惠碼輸入區：放在運費列正下方 {%- endcomment -%}
+    <div class="t-coupon t-coupon--discount">
+      {% render 'cart-discount-input-only', section_id: section.id %}
+    </div>
+  </div>
+
+  <div class="t-total">
+    <div class="t-label">商品總計</div>
+    <div class="t-total-value" data-cart-total-price>{{ cart.total_price | money }}</div>
+  </div>
+</section>

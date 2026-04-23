@@ -1,0 +1,597 @@
+{% comment %} sections/main-sale-section.liquid {% endcomment %}
+
+<section
+  class="double-eleven-main-sale"
+  id="{{ section.settings.section_id }}"
+  data-section-id="{{ section.settings.section_id }}"
+>
+  <div class="main-sale-container">
+    <div class="main-sale-header">
+      <div class="main-sale-header-content">
+        <h2 class="main-sale-title">{{ section.settings.main_sale_title }}</h2>
+        <p class="main-sale-subtitle">{{ section.settings.main_sale_subtitle }}</p>
+      </div>
+
+      <a href="{{ section.settings.main_product_link }}" class="main-product-card">
+        <div class="main-product-image-wrapper main-product-image-wrapper-mobile">
+          {% if section.settings.main_product_image_mobile %}
+            <img
+              src="{{ section.settings.main_product_image_mobile | img_url }}"
+              srcset="
+                {{ section.settings.main_product_image_mobile | img_url: '686x' }} 1x,
+                {{ section.settings.main_product_image_mobile | img_url: '2000x' }} 2x
+              "
+              alt="{{ section.settings.main_product_name }}"
+              class="main-product-image"
+            >
+          {% else %}
+            <div class="main-product-image-placeholder"></div>
+          {% endif %}
+        </div>
+
+        <div class="main-product-info">
+          <div class="main-product-date">{{ section.settings.main_product_date }}</div>
+          <div class="main-product-name">{{ section.settings.main_product_name }}</div>
+          <div class="main-product-price">
+            <span class="original-price">{{ section.settings.main_product_original_price }}</span>
+            <span class="sale-price">{{ section.settings.main_product_sale_price }}</span>
+          </div>
+          <div class="main-product-promo">
+            <span class="promo-text">{{ section.settings.main_product_promo }}</span>
+            <div class="discount-tag">{{ section.settings.main_product_discount }}</div>
+          </div>
+        </div>
+
+        <div class="main-product-image-wrapper main-product-image-wrapper-desktop">
+          {% if section.settings.main_product_image %}
+            <img
+              src="{{ section.settings.main_product_image | img_url }}"
+              srcset="
+                {{ block.settings.main_product_image | img_url: '798x' }} 1x,
+                {{ block.settings.main_product_image | img_url: '2000x' }} 2x
+              "
+              alt="{{ section.settings.main_product_name }}"
+              class="main-product-image"
+            >
+          {% else %}
+            <div class="main-product-image-placeholder"></div>
+          {% endif %}
+        </div>
+      </a>
+
+      <div class="sub-products-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'sub_product' %}
+            <a href="{{ block.settings.sub_product_link }}" class="sub-product-card">
+              <div class="sub-product-image-wrapper">
+                {% if block.settings.sub_product_image %}
+                  <img
+                    src="{{ block.settings.sub_product_image | img_url }}"
+                    srcset="
+                      {{ block.settings.sub_product_image | img_url: '989x' }} 1x,
+                      {{ block.settings.sub_product_image | img_url: '2000x' }} 2x
+                    "
+                    alt="{{ block.settings.sub_product_name }}"
+                    class="sub-product-image"
+                  >
+                {% else %}
+                  <div class="sub-product-image-placeholder"></div>
+                {% endif %}
+              </div>
+              <div class="sub-product-info">
+                <h3 class="sub-product-name">{{ block.settings.sub_product_name }}</h3>
+                <p class="sub-product-promo">{{ block.settings.sub_product_promo }}</p>
+                <div class="sub-product-price">
+                  <span class="original-price">{{ block.settings.sub_product_original_price }}</span>
+                  <span class="sale-price">{{ block.settings.sub_product_sale_price }}</span>
+                </div>
+              </div>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ===== 第三块 活动主轴日样式 ===== */
+  .double-eleven-main-sale {
+    width: 100%;
+    padding: 40px 0;
+  }
+
+  .main-sale-container {
+    padding: 0 188px;
+  }
+
+  .main-sale-header {
+    background: linear-gradient(180deg, #ff5323 0%, #fff5cf 100%);
+    border-radius: 24px;
+    padding: 48px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .main-sale-header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .main-sale-title {
+    font-size: 44px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 62px;
+    color: white;
+    text-align: center;
+  }
+
+  .main-sale-subtitle {
+    font-size: 24px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 32px;
+    color: white;
+    text-align: center;
+  }
+
+  .main-product-card {
+    width: 100%;
+    max-width: 1140px;
+    height: 430px;
+    background: black;
+    border-radius: 12px;
+    padding: 32px 0 32px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    text-decoration: none; /* ← 添加 */
+    color: inherit; /* ← 添加 */
+  }
+
+  .main-product-info {
+    width: 310px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .main-product-date {
+    font-size: 56px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 76px;
+    color: #ff651d;
+  }
+
+  .main-product-name {
+    font-size: 24px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 32px;
+    color: white;
+  }
+
+  .main-product-price {
+    display: flex;
+    gap: 5px;
+  }
+
+  .main-product-price .original-price {
+    font-size: 20px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 24px;
+    color: #a1a1aa;
+    text-decoration: line-through;
+  }
+
+  .main-product-price .sale-price {
+    font-size: 20px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 24px;
+    color: #ff9d00;
+  }
+
+  .main-product-promo {
+    display: flex;
+    gap: 12px;
+  }
+
+  .promo-text {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    color: #a1a1aa;
+  }
+
+  .discount-tag {
+    padding: 2px 8px;
+    background-color: #f52424;
+    border-top-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    color: white;
+    font-size: 12px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 16px;
+  }
+
+  .main-product-image-wrapper {
+    width: 798px;
+    height: 430px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 32px;
+  }
+
+  .main-product-image-wrapper-desktop {
+    display: block;
+  }
+
+  .main-product-image-wrapper-mobile {
+    display: none;
+  }
+
+  .main-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  .main-product-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #e4e4e7;
+    border-radius: 12px;
+  }
+
+  .sub-products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 1140px;
+  }
+
+  .sub-product-card {
+    background: black;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-decoration: none; /* ← 添加 */
+    color: inherit; /* ← 添加 */
+  }
+
+  .sub-product-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #f4f4f5;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+
+  .sub-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .sub-product-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #e4e4e7;
+  }
+
+  .sub-product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sub-product-name {
+    font-size: 20px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 24px;
+    color: white;
+    text-align: center;
+    margin: 0;
+  }
+
+  .sub-product-promo {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    color: #a1a1aa;
+    text-align: center;
+  }
+
+  .sub-product-price {
+    gap: 0;
+    text-align: center;
+  }
+
+  .sub-product-price .original-price {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    color: #a1a1aa;
+    text-decoration: line-through;
+  }
+
+  .sub-product-price .sale-price {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    color: #ff9d00;
+  }
+
+  /* ===== 手機響應式 ===== */
+  @media (max-width: 450px) {
+    .main-sale-container {
+      padding: 0;
+    }
+
+    .main-sale-header {
+      border-radius: 0px;
+      padding: 24px 12px;
+      gap: 24px;
+    }
+
+    .main-sale-title {
+      font-size: 22px;
+      line-height: 30px;
+    }
+
+    .main-sale-subtitle {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .main-product-card {
+      padding: 0;
+      height: 100%;
+      gap: 0;
+      flex-direction: column;
+    }
+
+    .main-product-image-wrapper-desktop {
+      display: none;
+    }
+
+    .main-product-image-wrapper-mobile {
+      display: block;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 1 / 1;
+      padding: 12px;
+    }
+
+    .main-product-info {
+      width: 100%;
+      padding: 0 16px 16px 16px;
+    }
+
+    .main-product-date {
+      font-size: 28px;
+      line-height: 34px;
+    }
+
+    .main-product-name {
+      font-size: 16px;
+      line-height: 16px;
+    }
+
+    .main-product-price .original-price,
+    .main-product-price .sale-price {
+      font-size: 14px;
+      line-height: 14px;
+    }
+
+    .promo-text,
+    .discount-tag {
+      font-size: 12px;
+      line-height: 17px;
+    }
+
+    .main-product-image-wrapper {
+      width: 100%;
+      padding: 0px;
+    }
+    .sub-product-info {
+      padding: 8px 2px 8px 8px;
+    }
+    .sub-products-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .sub-product-card {
+      padding: 0px;
+    }
+
+    .sub-product-name {
+      font-size: 16px;
+      line-height: 16px;
+      text-align: left;
+    }
+
+    .sub-product-promo {
+      font-size: 14px;
+      line-height: 14px;
+      text-align: left;
+    }
+
+    .sub-product-price {
+      display: flex;
+      gap: 3px;
+      text-align: left;
+    }
+
+    .sub-product-price .original-price,
+    .sub-product-price .sale-price {
+      font-size: 14px;
+      line-height: 14px;
+    }
+
+    .sub-product-image-wrapper {
+      aspect-ratio: 1 / 1;
+      width: 100%;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "活動主軸日",
+  "settings": [
+    {
+      "type": "text",
+      "id": "main_sale_title",
+      "label": "主軸日標題",
+      "default": "雙11活動主軸日"
+    },
+    {
+      "type": "text",
+      "id": "main_sale_subtitle",
+      "label": "主軸日副標題",
+      "default": "主要活動 (11/8 - 11/11)"
+    },
+    {
+      "type": "text",
+      "id": "main_product_date",
+      "label": "主要產品日期",
+      "default": "11.11"
+    },
+    {
+      "type": "text",
+      "id": "main_product_name",
+      "label": "主要產品名稱",
+      "default": "原子琉璃釉"
+    },
+    {
+      "type": "text",
+      "id": "main_product_original_price",
+      "label": "主要產品原價",
+      "default": "NT$3,998"
+    },
+    {
+      "type": "text",
+      "id": "main_product_sale_price",
+      "label": "主要產品現價",
+      "default": "NT$1,999"
+    },
+    {
+      "type": "text",
+      "id": "main_product_promo",
+      "label": "主要產品促銷文案",
+      "default": "買一送一，限量111組"
+    },
+    {
+      "type": "text",
+      "id": "main_product_discount",
+      "label": "主要產品折扣標籤",
+      "default": "5折"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_product_image",
+      "label": "主要產品圖片 - 電腦端"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_product_image_mobile",
+      "label": "主要產品圖片 - 手機端"
+    },
+    {
+      "type": "url",
+      "id": "main_product_link",
+      "label": "主要產品鏈接",
+      "info": "點擊主要產品卡片跳轉的商品頁面鏈接"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "info": "用於導航欄，不能有空格或特殊字符",
+      "default": "section-main-sale",
+      "placeholder": "例如: section-hero"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "sub_product",
+      "name": "副產品",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "sub_product_image",
+          "label": "副產品圖片"
+        },
+        {
+          "type": "text",
+          "id": "sub_product_name",
+          "label": "副產品名稱",
+          "default": "G11測速器"
+        },
+        {
+          "type": "text",
+          "id": "sub_product_promo",
+          "label": "副產品促銷文案",
+          "default": "買就送 Lead 車內清潔＋APGO 車內鍍膜"
+        },
+        {
+          "type": "text",
+          "id": "sub_product_original_price",
+          "label": "副產品原價",
+          "default": "$2588"
+        },
+        {
+          "type": "text",
+          "id": "sub_product_sale_price",
+          "label": "副產品現價",
+          "default": "$1880"
+        },
+        {
+          "type": "url",
+          "id": "sub_product_link",
+          "label": "副產品鏈接",
+          "info": "點擊副產品卡片跳轉的商品頁面鏈接"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "活動模板 - 活動主軸日"
+    }
+  ]
+}
+{% endschema %}

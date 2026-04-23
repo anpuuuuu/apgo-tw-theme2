@@ -1,0 +1,256 @@
+{%- doc -%}
+  Self-contained discount input — no dependency on cart-discount.js.
+  Uses a document-level delegated event listener so the handler survives
+  morphCartSection DOM replacement without needing reExecScripts.
+  Discount code rows (below shipping) are rendered via JS using /cart.js,
+  because cart.discount_codes is not available in Shopify Liquid.
+  @param {string} section_id - The parent section ID (cart-shell-v2)
+{%- enddoc -%}
+
+{%- assign _sid = section_id | default: section.id -%}
+
+<div class="cdi-wrap" id="CartDiscountInline-{{ _sid }}">
+  <form class="cart-discount__form cdi-form" id="CartDiscountForm-{{ _sid }}" onsubmit="return false;">
+    <input
+      id="cdi-input-{{ _sid }}"
+      class="cart-discount__input cdi-input"
+      type="text"
+      placeholder="{{ 'content.discount_code' | t | default: '套用折扣代碼' }}"
+      autocomplete="off"
+      aria-label="{{ 'accessibility.discount' | t | default: '折扣碼' }}"
+    >
+    <button type="submit" class="button button--primary cart-discount__button cdi-btn">
+      {{ 'actions.apply' | t | default: '套用' }}
+    </button>
+  </form>
+  <div class="cdi-msg hidden" id="CartDiscountMsg-{{ _sid }}" role="alert" aria-live="polite"></div>
+</div>
+
+<script>
+(function () {
+  var sid      = {{ _sid | json }};
+  var moneyFmt = {{ shop.money_format | json }};
+  var root     = (window.Shopify && Shopify.routes && Shopify.routes.root
+                   ? Shopify.routes.root.replace(/\/$/, '') : '');
+
+  var guardKey = '__cdiReady_' + sid;
+  if (window[guardKey]) return;
+  window[guardKey] = true;
+
+  /* ── DOM helpers（每次呼叫都重新查找，抵抗 DOM 替換）─────────── */
+  function $sec()    { return document.getElementById('shopify-section-' + sid); }
+  function $form()   { return document.getElementById('CartDiscountForm-' + sid); }
+  function $input()  { return document.getElementById('cdi-input-'        + sid); }
+  function $msg()    { return document.getElementById('CartDiscountMsg-'  + sid); }
+  function $btn()    { var f = $form(); return f ? f.querySelector('button[type="submit"]') : null; }
+
+  /* ── 金額格式化 ────────────────────────────────────────────────── */
+  function formatMoney(cents) {
+    if (window.Shopify && typeof Shopify.formatMoney === 'function') {
+      return Shopify.formatMoney(cents, moneyFmt);
+    }
+    return '$' + Math.round(cents / 100);
+  }
+
+  /* ── 渲染已套用折扣碼列（運費列下方，t-coupon 上方）─────────────
+     Liquid 沒有 cart.discount_codes，改由 JS 注入 DOM。
+     ────────────────────────────────────────────────────────────── */
+  function renderCodeRows(cartData) {
+    var sec = $sec();
+    if (!sec) return;
+
+    /* 先清除上次渲染的列，避免重複 */
+    sec.querySelectorAll('.t-row--coupon-applied').forEach(function (el) { el.remove(); });
+
+    /* 正規化 cart_level：/cart.js 是 flat（apps[i].title），
+       /cart/update.js 是 nested（apps[i].discount_application.title） */
+    var apps = (cartData.cart_level_discount_applications || []).map(function (item) {
+      return item.discount_application || item;
+    });
+
+    /* 收集「已由 Liquid 顯示」的折扣碼 title（訂單層 + 商品層），避免重複注入 */
+    var shownTitles = {};
+    apps.forEach(function (app) {
+      if (app.title) shownTitles[app.title.toUpperCase()] = true;
+    });
+    (cartData.items || []).forEach(function (item) {
+      (item.line_level_discount_allocations || []).forEach(function (alloc) {
+        var t = ((alloc.discount_application || alloc).title) || '';
+        if (t) shownTitles[t.toUpperCase()] = true;
+      });
+    });
+
+    /* 只顯示不在任何已顯示層裡的碼 → 純運費折扣碼（結帳時才生效） */
+    var codes = (cartData.discount_codes || []).filter(function (dc) {
+      if (!dc.applicable) return false;
+      return !shownTitles[dc.code.toUpperCase()];
+    });
+    if (!codes.length) return;
+
+    var shippingRow = sec.querySelector('.t-row--shipping');
+    if (!shippingRow) return;
+
+    var insertAfter = shippingRow;
+
+    codes.forEach(function (dc) {
+      var upper  = dc.code.toUpperCase();
+      var amount = 0;
+      for (var i = 0; i < apps.length; i++) {
+        if ((apps[i].title || '').toUpperCase() === upper) {
+          amount = apps[i].total_allocated_amount || 0;
+          break;
+        }
+      }
+
+      var row = document.createElement('div');
+      row.className = 't-row t-row--discount-detail t-row--coupon-applied';
+      row.style.cssText = 'font-size:13px;margin-bottom:4px;';
+      var valueColor = amount > 0 ? '#aef0ce' : 'var(--dt-signal-orange, #f5a623)';
+      row.innerHTML =
+        '<span style="color:#999;">- 折扣碼 ' + upper + '</span>' +
+        '<span class="t-value" style="color:' + valueColor + ';font-family:ui-monospace,Menlo,monospace;">' +
+        (amount > 0 ? '-' + formatMoney(amount) : '結帳時計算') + '</span>';
+
+      insertAfter.parentNode.insertBefore(row, insertAfter.nextSibling);
+      insertAfter = row;
+    });
+  }
+
+  /* ── message ─────────────────────────────────────────────────── */
+  var msgTimer = null;
+  function showMsg(text, isError) {
+    var el = $msg();
+    if (!el) return;
+    clearTimeout(msgTimer);
+    el.textContent = text;
+    el.classList.toggle('cdi-msg--error',   !!isError);
+    el.classList.toggle('cdi-msg--success', !isError);
+    el.classList.remove('hidden');
+    msgTimer = setTimeout(function () {
+      var e2 = $msg(); if (e2) e2.classList.add('hidden');
+    }, 6000);
+  }
+
+  /* ── loading ─────────────────────────────────────────────────── */
+  var BTN_LABEL = '{{ "actions.apply" | t | default: "套用" }}';
+  function setLoading(on) {
+    var btn = $btn();
+    if (!btn) return;
+    btn.disabled    = on;
+    btn.textContent = on ? '驗證中…' : BTN_LABEL;
+  }
+
+  /* ── section 重繪（不呼叫 reExecScripts）──────────────────────── */
+  function morphCartSection(afterDone) {
+    fetch(root + '/cart?sections=' + encodeURIComponent(sid), {
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (json) {
+      var html    = json[sid];
+      if (!html) { if (afterDone) afterDone(); return; }
+      var doc     = new DOMParser().parseFromString(html, 'text/html');
+      var fresh   = doc.getElementById('shopify-section-' + sid);
+      var current = document.getElementById('shopify-section-' + sid);
+      if (fresh && current) {
+        current.replaceWith(fresh);
+        document.dispatchEvent(new CustomEvent('cart:update', { bubbles: true }));
+      }
+      if (typeof afterDone === 'function') afterDone();
+    })
+    .catch(function () { if (typeof afterDone === 'function') afterDone(); });
+  }
+
+  /* ── 核心 submit 處理 ─────────────────────────────────────────── */
+  function handleSubmit() {
+    var inp  = $input();
+    var code = inp ? inp.value.trim() : '';
+    if (!code) return;
+
+    setLoading(true);
+    var msgEl = $msg(); if (msgEl) msgEl.classList.add('hidden');
+
+    fetch(root + '/cart.js', { headers: { Accept: 'application/json' } })
+    .then(function (r) { return r.json(); })
+    .then(function (cart) {
+      var existing = (cart.discount_codes || []).map(function (d) { return d.code; });
+      var upper    = code.toUpperCase();
+
+      if (existing.map(function (c) { return c.toUpperCase(); }).indexOf(upper) !== -1) {
+        setLoading(false);
+        showMsg('此優惠碼已經套用過了', true);
+        return;
+      }
+
+      return fetch(root + '/cart/update.js', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ discount: existing.concat([code]).join(',') })
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        setLoading(false);
+        var codes = data.discount_codes || [];
+        var match = null;
+        for (var i = 0; i < codes.length; i++) {
+          if (codes[i].code.toUpperCase() === upper) { match = codes[i]; break; }
+        }
+
+        if (match && match.applicable === true) {
+          var inp2 = $input(); if (inp2) inp2.value = '';
+          morphCartSection(function () {
+            renderCodeRows(data);
+            showMsg('優惠碼「' + upper + '」已套用！', false);
+          });
+        } else {
+          var errMsg = !match
+            ? '找不到此優惠碼，請確認是否正確或已過期'
+            : '此優惠碼目前無法套用，可能是條件未達成或無法與現有優惠合併';
+
+          fetch(root + '/cart/update.js', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ discount: existing.join(',') })
+          })
+          .then(function (r2) { return r2.json(); })
+          .then(function (rolledBack) {
+            morphCartSection(function () {
+              renderCodeRows(rolledBack);
+              showMsg(errMsg, true);
+            });
+          })
+          .catch(function () {
+            morphCartSection(function () { showMsg(errMsg, true); });
+          });
+        }
+      });
+    })
+    .catch(function () {
+      setLoading(false);
+      showMsg('網路異常，請稍後再試', true);
+    });
+  }
+
+  /* ── 頁面初始載入：渲染已存在的折扣碼列 ─────────────────────── */
+  function initCodeRows() {
+    fetch(root + '/cart.js', { headers: { Accept: 'application/json' } })
+      .then(function (r) { return r.json(); })
+      .then(function (d) { renderCodeRows(d); })
+      .catch(function () {});
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCodeRows);
+  } else {
+    initCodeRows();
+  }
+
+  /* ── Delegated event listener（綁在 document，不受 DOM 替換影響）── */
+  document.addEventListener('submit', function (e) {
+    var form = $form();
+    if (!form || e.target !== form) return;
+    e.preventDefault();
+    handleSubmit();
+  });
+})();
+</script>

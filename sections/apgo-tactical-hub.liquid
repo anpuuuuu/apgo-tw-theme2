@@ -1,0 +1,409 @@
+{% comment %}
+  APGO Tactical Hub v2.4 - Shopify Liquid Version
+  遵循 APGO Design System: Dark Tech Minimalist v2.0 規範
+  更新：移除 Emoji，全面替換為精緻 Tactical SVG 圖示，保留拖曳與層級修正。
+{% endcomment %}
+
+<div id="apgo-hub-{{ section.id }}" class="apgo-widget-container" style="--widget-bottom: {{ section.settings.bottom_offset }}px;">
+  <!-- 背景遮罩 (手機版專用) -->
+  <div class="hub-overlay" onclick="toggleApgoHub()"></div>
+
+  <!-- 戰術選單面板 (Z-index 確保在按鈕上方) -->
+  <div id="apgo-hub-panel" class="hub-panel">
+    <div class="panel-inner">
+      <div class="panel-header">
+        <span class="card-label">// {{ section.settings.panel_title | default: 'COMMS_CENTRAL' }}</span>
+        <div class="status-pill">
+          <div class="status-dot"></div>
+          ONLINE
+        </div>
+      </div>
+
+      <div class="bento-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'link' %}
+            <a href="{{ block.settings.url }}" 
+               class="bento-item {% if block.settings.is_primary %}item-primary{% endif %}" 
+               {{ block.shopify_attributes }}
+               onclick="handleTacticalClick()">
+              
+              <div class="item-icon" style="width: {{ block.settings.icon_size }}px; height: {{ block.settings.icon_size }}px;">
+                {% if block.settings.icon_svg != blank %}
+                  {{ block.settings.icon_svg }}
+                {% else %}
+                  <span style="font-size: {{ block.settings.icon_size }}px;">{{ block.settings.icon_emoji }}</span>
+                {% endif %}
+              </div>
+
+              <div class="item-text">
+                <span class="item-title">{{ block.settings.title | upcase }}</span>
+                <span class="item-sub">{{ block.settings.subtitle }}</span>
+              </div>
+
+              {% if block.settings.is_primary %}
+                <div class="scan-line"></div>
+              {% endif %}
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- 浮動觸發按鈕 (+ 圖示) -->
+  <button id="apgo-trigger" class="hub-trigger" aria-label="Toggle Hub">
+    <div class="trigger-ring"></div>
+    <div class="trigger-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+    </div>
+  </button>
+</div>
+
+<style>
+/* --- APGO 2.0 CSS Variables --- */
+#apgo-hub-{{ section.id }} {
+  --dt-bg-screen: #050505;
+  --dt-bg-surface: #121212;
+  --dt-bg-input: #1a1a1a;
+  --dt-signal-orange: #f08418;
+  --dt-signal-glow: rgba(240, 132, 24, 0.4);
+  --dt-text-secondary: #999999;
+  --dt-border: #333333;
+  --dt-radius: 12px;
+  --font-mono: "SF Mono", "Menlo", "Courier New", monospace;
+  
+  position: fixed;
+  right: 20px;
+  bottom: var(--widget-bottom);
+  z-index: 9999;
+  font-family: var(--font-mono);
+  touch-action: none;
+}
+
+/* 觸發按鈕 */
+.hub-trigger {
+  width: 60px;
+  height: 60px;
+  background: var(--dt-bg-surface);
+  border: 1px solid var(--dt-border);
+  border-radius: 50%;
+  cursor: grab;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dt-signal-orange);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 10;
+  outline: none;
+  user-select: none;
+}
+
+.hub-trigger:active { cursor: grabbing; transform: scale(0.95); }
+
+.trigger-icon svg {
+  width: 26px;
+  height: 26px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.is-open .trigger-icon svg {
+  transform: rotate(135deg);
+}
+
+.trigger-ring {
+  position: absolute;
+  top: -1px; left: -1px; right: -1px; bottom: -1px;
+  border: 1px solid var(--dt-signal-orange);
+  border-radius: 50%;
+  animation: hub-pulse 2s infinite;
+  pointer-events: none;
+}
+
+@keyframes hub-pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* 面板與 Bento 佈局 */
+.hub-panel {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  width: 300px;
+  background: var(--dt-bg-surface);
+  border: 1px solid var(--dt-border);
+  border-radius: var(--dt-radius);
+  display: none;
+  backdrop-filter: blur(12px);
+  animation: panel-pop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  z-index: 20; 
+}
+
+@keyframes panel-pop {
+  from { opacity: 0; transform: translateY(10px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.panel-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--dt-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-label { font-size: 10px; color: var(--dt-text-secondary); letter-spacing: 1px; }
+
+.status-pill {
+  display: flex; align-items: center; gap: 6px; font-size: 9px; color: #00ff00;
+}
+
+.status-dot {
+  width: 5px; height: 5px; background: #00ff00; border-radius: 50%;
+  box-shadow: 0 0 8px #00ff00;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink { 50% { opacity: 0.3; } }
+
+.bento-grid { padding: 12px; display: grid; gap: 10px; }
+
+.bento-item {
+  background: var(--dt-bg-input);
+  border: 1px solid var(--dt-border);
+  border-radius: 8px;
+  padding: 14px;
+  text-decoration: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.item-primary { border-color: var(--dt-signal-orange); }
+
+.item-icon { margin-right: 14px; display: flex; align-items: center; justify-content: center; color: var(--dt-signal-orange); }
+.item-icon svg { width: 100%; height: auto; }
+
+.item-title { display: block; font-size: 13px; font-weight: 800; letter-spacing: 0.5px; }
+.item-sub { display: block; font-size: 10px; color: var(--dt-text-secondary); margin-top: 2px; }
+
+.scan-line {
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(240, 132, 24, 0.15), transparent);
+  animation: apgo-scan 3s infinite;
+}
+
+@keyframes apgo-scan {
+  0% { left: -100%; }
+  100% { left: 150%; }
+}
+
+@media (max-width: 768px) {
+  .hub-panel {
+    position: fixed;
+    bottom: 0; left: 0; right: 0; width: 100%;
+    border-radius: var(--dt-radius) var(--dt-radius) 0 0;
+    border-bottom: none;
+    z-index: 10001;
+  }
+  .hub-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 10000;
+  }
+  .is-open .hub-overlay { display: block; }
+}
+</style>
+
+<script>
+(function() {
+    const container = document.getElementById('apgo-hub-{{ section.id }}');
+    const trigger = document.getElementById('apgo-trigger');
+    const panel = document.getElementById('apgo-hub-panel');
+    
+    let isDragging = false;
+    let startX, startY, initialRight, initialBottom;
+    let dragThreshold = 5;
+
+    window.toggleApgoHub = function() {
+        const isVisible = panel.style.display === 'block';
+        if (navigator.vibrate) navigator.vibrate(10);
+
+        if (isVisible) {
+            panel.style.display = 'none';
+            container.classList.remove('is-open');
+        } else {
+            panel.style.display = 'block';
+            container.classList.add('is-open');
+        }
+    };
+
+    window.handleTacticalClick = function() {
+        if (navigator.vibrate) navigator.vibrate(15);
+    };
+
+    const startDrag = (e) => {
+        isDragging = false;
+        const event = e.type === 'touchstart' ? e.touches[0] : e;
+        startX = event.clientX;
+        startY = event.clientY;
+        const style = window.getComputedStyle(container);
+        initialRight = parseInt(style.right);
+        initialBottom = parseInt(style.bottom);
+
+        document.addEventListener(e.type === 'touchstart' ? 'touchmove' : 'mousemove', moveDrag, { passive: false });
+        document.addEventListener(e.type === 'touchstart' ? 'touchend' : 'mouseup', stopDrag);
+    };
+
+    const moveDrag = (e) => {
+        const event = e.type === 'touchmove' ? e.touches[0] : e;
+        const dx = startX - event.clientX;
+        const dy = startY - event.clientY;
+
+        if (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold) {
+            isDragging = true;
+            if (e.cancelable) e.preventDefault();
+            const newRight = initialRight + dx;
+            const newBottom = initialBottom + dy;
+            if (newRight > 0 && newRight < window.innerWidth - 60) container.style.right = newRight + 'px';
+            if (newBottom > 0 && newBottom < window.innerHeight - 60) container.style.bottom = newBottom + 'px';
+        }
+    };
+
+    const stopDrag = (e) => {
+        document.removeEventListener('touchmove', moveDrag);
+        document.removeEventListener('mousemove', moveDrag);
+        document.removeEventListener('touchend', stopDrag);
+        document.removeEventListener('mouseup', stopDrag);
+        if (!isDragging) toggleApgoHub();
+    };
+
+    trigger.addEventListener('mousedown', startDrag);
+    trigger.addEventListener('touchstart', startDrag, { passive: true });
+
+    document.addEventListener('click', function(e) {
+        if (container && !container.contains(e.target)) {
+            panel.style.display = 'none';
+            container.classList.remove('is-open');
+        }
+    });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "APGO Tactical Hub",
+  "settings": [
+    {
+      "type": "text",
+      "id": "panel_title",
+      "label": "面板標籤 (// LABEL)",
+      "default": "COMMS_CENTRAL"
+    },
+    {
+      "type": "range",
+      "id": "bottom_offset",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "小工具初始底部偏移量",
+      "default": 24
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "戰術連結區塊",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "is_primary",
+          "label": "設為主要連結 (橘框+掃描線)",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "連結標題",
+          "default": "ESTABLISH COMMS"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "副標題/狀態描述",
+          "default": "連線至 LINE 客服"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "跳轉連結"
+        },
+        {
+          "type": "header",
+          "content": "圖示設定"
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "SVG 代碼 (建議使用)",
+          "info": "將 SVG 代碼貼在此處，將會覆蓋 Emoji。"
+        },
+        {
+          "type": "text",
+          "id": "icon_emoji",
+          "label": "或使用 Emoji 圖示",
+          "default": "💬"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 12,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "圖示寬度/高度",
+          "default": 24
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO Tactical Hub",
+      "blocks": [
+        {
+          "type": "link",
+          "settings": {
+            "title": "ESTABLISH COMMS",
+            "subtitle": "連線至 LINE 技術支援",
+            "is_primary": true,
+            "icon_svg": "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z'></path></svg>"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "title": "TRACK_MISSION",
+            "subtitle": "訂單物流進度查詢",
+            "icon_svg": "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z'></path><path d='m3.3 7 8.7 5 8.7-5'></path><path d='M12 22V12'></path></svg>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

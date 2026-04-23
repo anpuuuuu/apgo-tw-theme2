@@ -1,0 +1,436 @@
+{% comment %} sections/warmup-other-selected.liquid {% endcomment %}
+
+<div
+  class="warmup-other-selected"
+  id="{{ section.settings.section_id }}"
+  data-section-id="{{ section.settings.section_id }}"
+>
+  <div class="other-selected-header">
+    {% if section.settings.other_selected_header_image_desktop %}
+      <img
+        src="{{ section.settings.other_selected_header_image_desktop | img_url }}"
+        srcset="{{ section.settings.other_selected_header_image_desktop | img_url: '1536x' }} 1x,
+                {{ section.settings.other_selected_header_image_desktop | img_url: '3072x' }} 2x"
+        alt="Other Selected Header Background"
+        class="other-selected-header-image other-selected-header-image-desktop"
+        loading="lazy"
+      >
+    {% endif %}
+
+    {% if section.settings.other_selected_header_image_mobile %}
+      <img
+        src="{{ section.settings.other_selected_header_image_mobile | img_url }}"
+        srcset="{{ section.settings.other_selected_header_image_mobile | img_url: '686x686' }} 1x,
+                {{ section.settings.other_selected_header_image_mobile | img_url: '3000x3000' }} 2x"
+        alt="Other Selected Header Background"
+        class="other-selected-header-image other-selected-header-image-mobile"
+        loading="lazy"
+      >
+    {% endif %}
+  </div>
+
+  <div class="other-selected-products-container">
+    <div class="other-selected-products-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'other_selected_product' %}
+          <a href="{{ block.settings.other_product_link }}" class="other-selected-product-card-link">
+            <div class="other-selected-product-card">
+              <div class="other-selected-product-image-wrapper">
+                {% if block.settings.other_product_image %}
+                  <img
+                    src="{{ block.settings.other_product_image | img_url }}"
+                    srcset="{{ block.settings.other_product_image | img_url: '572x' }} 1x,
+                          {{ block.settings.other_product_image | img_url: '2000x' }} 2x"
+                    alt="{{ block.settings.other_product_name }}"
+                    class="other-selected-product-image"
+                  >
+                {% else %}
+                  <div class="other-selected-product-image-placeholder"></div>
+                {% endif %}
+              </div>
+              <div class="other-selected-product-info">
+                <h4 class="other-selected-product-name">{{ block.settings.other_product_name }}</h4>
+                <div class="other-selected-product-desc-container">
+                  <p class="other-selected-product-desc">
+                    {{ block.settings.other_product_desc -}}
+                    <span class="other-selected-product-discount">{{ block.settings.other_product_discount }}</span>
+                  </p>
+                </div>
+                <div class="other-selected-product-price">
+                  <span class="original-price">{{ block.settings.other_product_original_price }}</span>
+                  <span class="sale-price">{{ block.settings.other_product_sale_price }}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .warmup-other-selected {
+    background: #020303;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    position: relative;
+    margin: 100px 190px 0px 190px;
+  }
+
+  .warmup-other-selected::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(
+        120% 85% at 50% 115%,
+        rgba(222, 88, 54, 0.95) 0%,
+        rgba(160, 66, 39, 0.9) 35%,
+        rgba(66, 20, 9, 0.95) 62%,
+        rgba(0, 0, 0, 1) 82%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.15) 0%,
+        rgba(0, 0, 0, 0.75) 40%,
+        rgba(0, 0, 0, 0.95) 55%,
+        rgba(0, 0, 0, 1) 70%
+      );
+  }
+
+  .other-selected-header {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 366px;
+    padding: 32px;
+    overflow: hidden;
+  }
+
+  .other-selected-header-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .other-selected-header-image-desktop {
+    display: block;
+  }
+
+  .other-selected-header-image-mobile {
+    display: none;
+  }
+
+  .other-selected-header-content {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .other-selected-header-title {
+    font-size: 32px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 44px;
+    color: white;
+    margin: 0;
+  }
+
+  .other-selected-products-container {
+    position: relative;
+    z-index: 20;
+    padding: 0 32px 32px 32px;
+  }
+
+  .other-selected-products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(280px, 1fr));
+    gap: 24px;
+    position: relative;
+    z-index: 20;
+  }
+
+  .other-selected-product-card {
+    background: #18181b;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 446px;
+  }
+
+  .other-selected-product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .other-selected-product-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1;
+    background-color: #18181b;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .other-selected-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .other-selected-product-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #27272a;
+  }
+
+  .other-selected-product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .other-selected-product-name {
+    font-size: 20px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 24px;
+    color: white;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+  }
+
+  .other-selected-product-desc-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .other-selected-product-desc {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    color: #e4e4e7;
+    text-align: center;
+    margin: 0;
+    flex: 1;
+  }
+
+  .other-selected-product-discount {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 20px;
+    color: #ff9d00;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .other-selected-product-price {
+    text-align: center;
+    width: 100%;
+    margin: 0;
+  }
+
+  .other-selected-product-price .original-price {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    color: #a1a1aa;
+    text-decoration: line-through;
+  }
+
+  .other-selected-product-price .sale-price {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    color: #ff9d00;
+  }
+
+  /* 手機響應式 */
+  @media (max-width: 450px) {
+    .warmup-other-selected {
+      margin: 20px 8px 20px 8px;
+      gap: 15px;
+      border-radius: 12px;
+    }
+    .other-selected-header-image-desktop {
+      display: none;
+    }
+
+    .other-selected-header-image-mobile {
+      display: block;
+    }
+
+    .other-selected-header {
+      height: 100%;
+      aspect-ratio: 1 / 1;
+      padding: 0px;
+    }
+
+    .other-selected-header-title {
+      font-size: 18px;
+      line-height: 24px;
+    }
+
+    .other-selected-products-container {
+      padding: 0 12px 12px 12px;
+    }
+
+    .other-selected-products-grid {
+      grid-template-columns: repeat(2, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .other-selected-product-card {
+      padding: 0px 0px 8px 0px;
+      min-height: 255px;
+    }
+
+    .other-selected-product-image-wrapper {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      margin-bottom: 8px;
+    }
+
+    .other-selected-product-name {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .other-selected-product-desc-container {
+      gap: 6px;
+    }
+
+    .other-selected-product-desc {
+      font-size: 12px;
+      line-height: 16px;
+      flex: 1;
+    }
+
+    .other-selected-product-discount {
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .other-selected-product-price .original-price,
+    .other-selected-product-price .sale-price {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "其他精選商品",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "other_selected_header_image_desktop",
+      "label": "其他精選商品 Header 背景圖 - 電腦端 (1536×366)"
+    },
+    {
+      "type": "image_picker",
+      "id": "other_selected_header_image_mobile",
+      "label": "其他精選商品 Header 背景圖 - 手機端 (343×343)"
+    },
+    {
+      "type": "text",
+      "id": "other_selected_title",
+      "label": "其他精選商品标题",
+      "default": "精選商品現省11%"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "info": "用於導航欄，不能有空格或特殊字符",
+      "default": "other-selected",
+      "placeholder": "例如: section-hero"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "other_selected_product",
+      "name": "其他精選商品",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "other_product_image",
+          "label": "商品图片"
+        },
+        {
+          "type": "text",
+          "id": "other_product_name",
+          "label": "商品名称",
+          "default": "打氣機"
+        },
+        {
+          "type": "text",
+          "id": "other_product_desc",
+          "label": "商品描述",
+          "default": "雙11購物節精選商品"
+        },
+        {
+          "type": "text",
+          "id": "other_product_discount",
+          "label": "商品折扣",
+          "default": "現省11%"
+        },
+        {
+          "type": "text",
+          "id": "other_product_original_price",
+          "label": "商品原价",
+          "default": "$1499"
+        },
+        {
+          "type": "text",
+          "id": "other_product_sale_price",
+          "label": "商品现价",
+          "default": "$1349"
+        },
+        {
+          "type": "url",
+          "id": "other_product_link",
+          "label": "商品鏈接"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "活動模板 - 其他精選商品"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,119 @@
+{% comment %}
+  FAQ Section - AI 友好的常见问题
+  帮助 AI 搜索引擎理解和检索产品信息
+{% endcomment %}
+
+<section class="faq-section" itemscope itemtype="https://schema.org/FAQPage">
+  <h2>{{ section.settings.title }}</h2>
+
+  {% for block in section.blocks %}
+    <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 itemprop="name">{{ block.settings.question }}</h3>
+      <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <div itemprop="text">
+          {{ block.settings.answer }}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for block in section.blocks %}
+    {
+      "@type": "Question",
+      "name": {{ block.settings.question | json }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ block.settings.answer | json }}
+      }
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}
+</script>
+
+<style>
+.faq-section {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.faq-item {
+  margin-bottom: 30px;
+  padding: 20px;
+  border-left: 4px solid #f08418;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.faq-item h3 {
+  color: #f08418;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+</style>
+
+{% schema %}
+{
+  "name": "產品 FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "標題",
+      "default": "常見問題"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "問題",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "問題"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "答案"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "產品 FAQ",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "APGO 原子釉鍍膜可以持續多久？",
+            "answer": "APGO 原子釉鍍膜在正常使用和保養下，可以維持約 120 天（4個月）的保護效果。實際持久度會因使用環境、洗車頻率和保養方式而有所不同。"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "新手可以自己施工嗎？",
+            "answer": "可以！APGO 原子釉鍍膜專為 DIY 設計，即使是新手也能輕鬆施工。只需要清潔車身、均勻噴塗、用布擦拭即可。整個過程約 30-60 分鐘。"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "可以用在改色膜或犀牛皮上嗎？",
+            "answer": "可以！APGO 鍍膜不分材質，適用於車漆、改色膜、犀牛皮（PPF）、玻璃等各種表面。對包膜車特別推薦，可以保護膜料並增加光澤。"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

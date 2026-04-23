@@ -1,0 +1,1609 @@
+{% comment %}
+  APGO 安心保證區塊 Section
+  檔案名稱: apgo-trust-section.liquid
+{% endcomment %}
+
+{% style %}
+  /* 基礎重置與變數 - 確保與網站整體風格一致 */
+  #shopify-section-{{ section.id }} * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} {
+      --apgo-trust-primary-orange: {{ section.settings.primary_color }};
+      --apgo-trust-secondary-orange: {{ section.settings.secondary_color }};
+      --apgo-trust-text-white: #ffffff;
+      --apgo-trust-text-gray: #cccccc;
+      --apgo-trust-text-light-gray: #b0b0b0;
+      --apgo-trust-dark-bg: {{ section.settings.background_color }};
+      --apgo-trust-card-bg: rgba(255, 255, 255, 0.06);
+      --apgo-trust-card-border: rgba(240, 132, 24, 0.15);
+  }
+
+  /* 安心保證區塊 */
+  #shopify-section-{{ section.id }} .apgo-trust-section {
+      background: var(--apgo-trust-dark-bg);
+      padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
+      position: relative;
+      overflow: hidden;
+      z-index: 5;
+      font-family: 'Arial', 'Microsoft JhengHei', sans-serif;
+      color: var(--apgo-trust-text-white);
+  }
+
+  /* 動態粒子背景效果 */
+  #shopify-section-{{ section.id }} .apgo-trust-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+          radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.02) 0%, transparent 70%),
+          radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.01) 0%, transparent 65%),
+          radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.01) 0%, transparent 60%);
+      pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+  }
+
+  /* 標題區域 */
+  #shopify-section-{{ section.id }} .apgo-trust-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 60px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: apgo-trust-fadeInUp-{{ section.id }} 0.8s ease forwards;
+      position: relative;
+      z-index: 15;
+  }
+
+  @keyframes apgo-trust-fadeInUp-{{ section.id }} {
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+
+  /* LOGO 樣式 */
+  #shopify-section-{{ section.id }} .apgo-trust-logo {
+      flex-shrink: 0;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: apgo-trust-fadeInUp-{{ section.id }} 0.8s ease 0.3s forwards;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-logo img {
+      height: 50px;
+      width: auto;
+      max-width: 180px;
+      object-fit: contain;
+      filter: brightness(1.1) contrast(1.1);
+      transition: all 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-logo img:hover {
+      filter: brightness(1.2) contrast(1.2);
+      transform: scale(1.05);
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-text-content {
+      flex: 1;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--apgo-trust-primary-orange);
+      line-height: 1.2;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-subtitle {
+      font-size: 0.9rem;
+      color: var(--apgo-trust-text-light-gray);
+      font-weight: 400;
+      max-width: 700px;
+      line-height: 1.5;
+  }
+
+  /* 保證卡片區域 */
+  #shopify-section-{{ section.id }} .apgo-trust-cards {
+      display: flex;
+      gap: 25px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 20px;
+      padding-bottom: 40px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--apgo-trust-primary-orange) rgba(255, 255, 255, 0.1);
+      position: relative;
+      z-index: 1;
+  }
+
+  /* 滾動條美化 */
+  #shopify-section-{{ section.id }} .apgo-trust-cards::-webkit-scrollbar {
+      height: 8px;
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-cards::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-cards::-webkit-scrollbar-thumb {
+      background: var(--apgo-trust-primary-orange);
+      border-radius: 4px;
+      transition: background 0.3s ease;
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-cards::-webkit-scrollbar-thumb:hover {
+      background: var(--apgo-trust-secondary-orange);
+  }
+
+  /* 卡片本身 */
+  #shopify-section-{{ section.id }} .apgo-trust-card {
+      flex-shrink: 0;
+      width: 320px;
+      background: var(--apgo-trust-card-bg);
+      backdrop-filter: blur(30px);
+      border-radius: 24px;
+      padding: 40px 20px;
+      border: 2px solid var(--apgo-trust-card-border);
+      background-clip: padding-box;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(50px) scale(0.9);
+      animation: apgo-trust-cardUp-{{ section.id }} 0.8s ease forwards;
+      box-shadow:
+          0 8px 32px rgba(240, 132, 24, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      z-index: 5;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-card:nth-child(1) { animation-delay: 0.1s; }
+  #shopify-section-{{ section.id }} .apgo-trust-card:nth-child(2) { animation-delay: 0.2s; }
+  #shopify-section-{{ section.id }} .apgo-trust-card:nth-child(3) { animation-delay: 0.3s; }
+  #shopify-section-{{ section.id }} .apgo-trust-card:nth-child(4) { animation-delay: 0.4s; }
+
+  @keyframes apgo-trust-cardUp-{{ section.id }} {
+      to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+      }
+  }
+
+  /* 懸停效果 */
+  #shopify-section-{{ section.id }} .apgo-trust-card:hover {
+      transform: translateY(-15px) scale(1.05);
+      box-shadow:
+          0 25px 50px rgba(0, 0, 0, 0.3),
+          0 0 0 1px rgba(240, 132, 24, 0.6),
+          0 8px 32px rgba(240, 132, 24, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      border-color: rgba(240, 132, 24, 0.4);
+      background: var(--apgo-trust-card-bg);
+      z-index: 15;
+  }
+
+  /* 動態邊框光效 */
+  #shopify-section-{{ section.id }} .apgo-trust-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg,
+          #f08418, #ff9a3c, #ffb366, #f08418,
+          #e07315, #ff9a3c, #f08418);
+      background-size: 300% 300%;
+      border-radius: 26px;
+      z-index: -1;
+      opacity: 0.1;
+      transition: opacity 0.4s ease;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-card:hover::before {
+      opacity: 0.1;
+  }
+
+  /* 30天退費 */
+  #shopify-section-{{ section.id }} .apgo-trust-mega-30 {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-combined-display {
+      font-size: 4.2rem;
+      font-weight: 900;
+      font-family: 'Arial Black', 'Helvetica', sans-serif;
+      background: linear-gradient(135deg,
+          var(--apgo-trust-primary-orange) 0%,
+          var(--apgo-trust-secondary-orange) 100%);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: apgo-mega-glow-{{ section.id }} 4s ease-in-out infinite;
+      letter-spacing: -0.02em;
+      line-height: 0.9;
+      position: relative;
+      filter: drop-shadow(0 10px 30px rgba(240, 132, 24, 0.4));
+      text-align: center;
+  }
+
+  @keyframes apgo-mega-glow-{{ section.id }} {
+      0%, 100% {
+          background-position: 0% 50%;
+          transform: scale(1);
+      }
+      50% {
+          transform: scale(1.05);
+      }
+  }
+
+  /* 圖標容器 */
+  #shopify-section-{{ section.id }} .apgo-trust-super-icon {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 25px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.5s ease;
+      border-radius: 24px;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--apgo-trust-primary-orange), var(--apgo-trust-secondary-orange));
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-card:hover .apgo-trust-super-icon {
+      transform: scale(1.2) rotate(5deg);
+  }
+
+  /* 圖標樣式 */
+  #shopify-section-{{ section.id }} .apgo-support-icon::after,
+  #shopify-section-{{ section.id }} .apgo-tutorial-icon::after,
+  #shopify-section-{{ section.id }} .apgo-store-icon::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2.5rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: bold;
+      transition: all 0.3s ease;
+      z-index: 2;
+      font-family: 'Arial', sans-serif;
+      line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-card:hover .apgo-support-icon::after,
+  #shopify-section-{{ section.id }} .apgo-trust-card:hover .apgo-tutorial-icon::after,
+  #shopify-section-{{ section.id }} .apgo-trust-card:hover .apgo-store-icon::after {
+      color: var(--apgo-trust-text-white);
+      transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  #shopify-section-{{ section.id }} .apgo-support-icon::after {
+      content: 'i';
+      font-size: 3rem;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-tutorial-icon::after {
+      content: '▶';
+      font-size: 2.8rem;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-store-icon::after {
+      content: '⦿';
+      font-size: 3rem;
+  }
+
+  /* 圖標背景光效 */
+  #shopify-section-{{ section.id }} .apgo-support-icon::before,
+  #shopify-section-{{ section.id }} .apgo-tutorial-icon::before,
+  #shopify-section-{{ section.id }} .apgo-store-icon::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      z-index: 1;
+  }
+
+  /* 標題樣式 */
+  #shopify-section-{{ section.id }} .apgo-trust-card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--apgo-trust-text-white);
+      margin-bottom: 10px;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+      line-height: 1.3;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-card:hover .apgo-trust-card-title {
+      color: var(--apgo-trust-primary-orange);
+      text-shadow: 0 2px 8px rgba(240, 132, 24, 0.4);
+      transform: translateY(-2px);
+  }
+
+  /* 描述文字 */
+  #shopify-section-{{ section.id }} .apgo-trust-card-desc {
+      font-size: 0.9rem;
+      color: var(--apgo-trust-text-light-gray);
+      line-height: 1.5;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-card:hover .apgo-trust-card-desc {
+      color: #f0f0f0;
+      transform: translateY(-2px);
+  }
+
+  /* 點擊提示 */
+  #shopify-section-{{ section.id }} .apgo-trust-click-prompt {
+      font-size: 0.8rem;
+      color: var(--apgo-trust-text-light-gray);
+      margin-top: 15px;
+      opacity: 0.8;
+      transform: translateY(0);
+      transition: all 0.3s ease;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-card:hover .apgo-trust-click-prompt {
+      opacity: 1;
+      color: var(--apgo-trust-secondary-orange);
+      transform: translateY(-2px);
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-card:active .apgo-trust-click-prompt {
+      transform: translateY(0px) scale(0.98);
+      color: var(--apgo-trust-primary-orange);
+  }
+
+  /* 底部 CTA 區域 */
+  #shopify-section-{{ section.id }} .apgo-trust-cta-section {
+      text-align: center;
+      margin-top: 60px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: apgo-trust-fadeInUp-{{ section.id }} 0.8s ease 0.6s forwards;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-cta-text {
+      font-size: 1.2rem;
+      color: var(--apgo-trust-text-white);
+      margin-bottom: 25px;
+      line-height: 1.6;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-cta-button {
+      display: inline-block;
+      padding: 18px 50px;
+      background: linear-gradient(45deg, var(--apgo-trust-primary-orange), var(--apgo-trust-secondary-orange));
+      color: var(--apgo-trust-text-white);
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(240, 132, 24, 0.3);
+      letter-spacing: 1px;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-cta-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(240, 132, 24, 0.4);
+  }
+
+  #shopify-section-{{ section.id }} .apgo-trust-cta-button:hover::before {
+      width: 300px;
+      height: 300px;
+  }
+
+  /* 彈窗樣式 */
+  #shopify-section-{{ section.id }} .apgo-trust-modal{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.85);
+      backdrop-filter:blur(10px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:10000;
+      opacity:0;
+      visibility:hidden;
+      transition:opacity 0.3s ease, visibility 0.3s ease;
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-modal.apgo-trust-show{
+      display:flex;
+      opacity:1;
+      visibility:visible;
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-modal-content{
+      background:linear-gradient(145deg,#1a1a1a,#2a2a2a);
+      border-radius:20px;
+      border:2px solid rgba(240,132,24,0.4);
+      box-shadow:0 25px 50px rgba(0,0,0,0.8),0 0 0 1px rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.1);
+      max-width:550px;
+      width:90%;
+      padding:40px;
+      text-align:center;
+      transform:scale(0.8);
+      transition:transform 0.4s ease;
+      position:relative;
+      overflow-y:auto;
+      max-height:90vh
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-modal.apgo-trust-show .apgo-trust-modal-content{
+      transform:scale(1)
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-close-modal{
+      position:absolute;
+      top:15px;
+      right:15px;
+      background:rgba(255,255,255,0.1);
+      border:none;
+      color:var(--apgo-trust-text-gray);
+      font-size:1.5rem;
+      width:35px;
+      height:35px;
+      border-radius:50%;
+      cursor:pointer;
+      transition:all 0.3s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-close-modal:hover{
+      background:var(--apgo-trust-primary-orange);
+      color:white;
+      transform:rotate(90deg)
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-modal-header{
+      margin-bottom:25px;
+      text-align:center
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-modal-title{
+      font-size:1.5rem;
+      color:var(--apgo-trust-primary-orange);
+      margin-bottom:10px;
+      font-weight:600
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-modal-subtitle{
+      font-size:0.9rem;
+      color:var(--apgo-trust-text-gray)
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-modal-list{
+      background:rgba(255,255,255,0.05);
+      border-radius:15px;
+      padding:20px;
+      margin-bottom:20px;
+      text-align:left
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-modal-item{
+      padding:10px 0;
+      border-bottom:1px solid rgba(255,255,255,0.1);
+      color:var(--apgo-trust-text-white);
+      font-size:0.95rem;
+      display:flex;
+      align-items:flex-start;
+      gap:10px
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-modal-item:last-child{
+      border-bottom:none
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-modal-item::before{
+      content:'✓';
+      color:var(--apgo-trust-primary-orange);
+      font-weight:bold;
+      flex-shrink:0
+  }
+  #shopify-section-{{ section.id }} .apgo-trust-modal-note{
+      background:rgba(240,132,24,0.1);
+      border:1px solid rgba(240,132,24,0.3);
+      border-radius:10px;
+      padding:15px;
+      font-size:0.85rem;
+      color:var(--apgo-trust-text-gray);
+      line-height:1.5;
+      text-align:left
+  }
+
+  /* 彈窗圖片樣式 */
+  #shopify-section-{{ section.id }} .apgo-modal-image-container {
+      margin-bottom: 25px;
+      text-align: center;
+  }
+  #shopify-section-{{ section.id }} .apgo-modal-image {
+      max-width: 150px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* 客服彈窗專用按鈕區塊 */
+  #shopify-section-{{ section.id }} .apgo-support-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-support-button-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-support-button {
+      display: inline-block;
+      padding: 12px 25px;
+      background: linear-gradient(45deg, var(--apgo-trust-primary-orange), var(--apgo-trust-secondary-orange));
+      color: var(--apgo-trust-text-white);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(240, 132, 24, 0.3);
+      width: fit-content;
+      margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .apgo-support-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(240, 132, 24, 0.4);
+  }
+
+  #shopify-section-{{ section.id }} .apgo-support-info-text {
+      font-size: 0.85rem;
+      color: var(--apgo-trust-text-gray);
+      line-height: 1.4;
+      max-width: 80%;
+      margin: 0 auto;
+  }
+
+  /* 響應式設計 */
+  @media (max-width: 1200px) {
+      #shopify-section-{{ section.id }} .apgo-trust-cards {
+          gap: 20px;
+          padding: 15px;
+          padding-bottom: 30px;
+      }
+      #shopify-section-{{ section.id }} .apgo-trust-card {
+          width: 280px;
+          height: 280px;
+      }
+  }
+
+  @media (max-width: 768px) {
+      #shopify-section-{{ section.id }} .apgo-trust-section {
+          padding: 60px 0;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-container {
+          padding: 0 20px;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-logo img {
+          height: 45px;
+          max-width: 160px;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-title {
+          font-size: 1.5rem;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-subtitle {
+          font-size: 0.85rem;
+          padding: 0 10px;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-cards {
+          gap: 15px;
+          padding: 10px;
+          padding-bottom: 25px;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-card {
+          width: 260px;
+          height: 260px;
+          padding: 30px 15px;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-mega-30 {
+          font-size: 3.2rem;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-super-icon {
+          width: 80px;
+          height: 80px;
+          margin-bottom: 20px;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-support-icon::after,
+      #shopify-section-{{ section.id }} .apgo-tutorial-icon::after,
+      #shopify-section-{{ section.id }} .apgo-store-icon::after {
+          font-size: 2rem;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-card-title {
+          font-size: 1.1rem;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-card-desc {
+          font-size: 0.8rem;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-cta-text {
+          font-size: 1rem;
+          margin-bottom: 20px;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-cta-button {
+          padding: 15px 40px;
+          font-size: 1rem;
+      }
+  }
+
+  @media (max-width: 480px) {
+      #shopify-section-{{ section.id }} .apgo-trust-header {
+          gap: 12px;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-logo img {
+          height: 40px;
+          max-width: 140px;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-card {
+          width: 240px;
+          height: 240px;
+          padding: 25px 15px;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-mega-30 {
+          font-size: 2.8rem;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-super-icon {
+          width: 70px;
+          height: 70px;
+          margin-bottom: 15px;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-support-icon::after,
+      #shopify-section-{{ section.id }} .apgo-tutorial-icon::after,
+      #shopify-section-{{ section.id }} .apgo-store-icon::after {
+          font-size: 1.8rem;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-card-title {
+          font-size: 1rem;
+      }
+
+      #shopify-section-{{ section.id }} .apgo-trust-card-desc {
+          font-size: 0.75rem;
+      }
+  }
+
+  /* 螢幕閱讀器專用樣式 */
+  #shopify-section-{{ section.id }} .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+  }
+{% endstyle %}
+
+<section class="apgo-trust-section" id="apgo-trust-guarantee">
+  <div class="apgo-trust-container">
+    <div class="apgo-trust-header">
+      {% if section.settings.logo_image != blank %}
+        <div class="apgo-trust-logo">
+          <img
+            src="{{ section.settings.logo_image | img_url: '360x' }}"
+            alt="{{ section.settings.logo_alt_text | default: 'APGO 專業鍍膜專家' }}"
+          >
+        </div>
+      {% else %}
+        <div class="apgo-trust-logo">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0760/8002/1755/files/logo.png?v=1749123901"
+            alt="APGO Logo Default"
+          >
+        </div>
+      {% endif %}
+      <div class="apgo-trust-text-content">
+        <h2 class="apgo-trust-title">{{ section.settings.main_title }}</h2>
+        <p class="apgo-trust-subtitle">{{ section.settings.subtitle }}</p>
+      </div>
+    </div>
+
+    <div class="apgo-trust-cards">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'refund_card' %}
+            <div class="apgo-trust-card" onclick="handleTrustCardClick_{{ section.id }}('refund')">
+              <div class="apgo-trust-mega-30">
+                <div class="apgo-trust-combined-display">{{ block.settings.refund_days }}</div>
+              </div>
+              <h3 class="apgo-trust-card-title">{{ block.settings.card_title }}</h3>
+              <p class="apgo-trust-card-desc">{{ block.settings.card_description }}</p>
+              <span class="apgo-trust-click-prompt">{{ block.settings.click_prompt }}</span>
+            </div>
+          {% when 'support_card' %}
+            <div class="apgo-trust-card" onclick="handleTrustCardClick_{{ section.id }}('support')">
+              <div class="apgo-trust-super-icon apgo-support-icon"></div>
+              <h3 class="apgo-trust-card-title">{{ block.settings.card_title }}</h3>
+              <p class="apgo-trust-card-desc">{{ block.settings.card_description }}</p>
+              <span class="apgo-trust-click-prompt">{{ block.settings.click_prompt }}</span>
+            </div>
+          {% when 'tutorial_card' %}
+            <div class="apgo-trust-card" onclick="handleTrustCardClick_{{ section.id }}('tutorial')">
+              <div class="apgo-trust-super-icon apgo-tutorial-icon"></div>
+              <h3 class="apgo-trust-card-title">{{ block.settings.card_title }}</h3>
+              <p class="apgo-trust-card-desc">{{ block.settings.card_description }}</p>
+              <span class="apgo-trust-click-prompt">{{ block.settings.click_prompt }}</span>
+            </div>
+          {% when 'store_card' %}
+            <div class="apgo-trust-card" onclick="handleTrustCardClick_{{ section.id }}('stores')">
+              <div class="apgo-trust-super-icon apgo-store-icon"></div>
+              <h3 class="apgo-trust-card-title">{{ block.settings.card_title }}</h3>
+              <p class="apgo-trust-card-desc">{{ block.settings.card_description }}</p>
+              <span class="apgo-trust-click-prompt">{{ block.settings.click_prompt }}</span>
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+    {% if section.settings.show_cta %}
+      <div class="apgo-trust-cta-section">
+        <p class="apgo-trust-cta-text">
+          {{ section.settings.cta_text }}
+        </p>
+        <a href="{{ section.settings.cta_button_link }}" class="apgo-trust-cta-button">
+          {{- section.settings.cta_button_text -}}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<div class="apgo-trust-modal" id="apgoTrustModal_{{ section.id }}">
+  <div class="apgo-trust-modal-content">
+    <button class="apgo-trust-close-modal" onclick="closeTrustModal_{{ section.id | replace: '-', '_' }}()">×</button>
+    <div class="apgo-trust-modal-header">
+      <h3 class="apgo-trust-modal-title" id="modalTitle_{{ section.id }}">{{ 'apgo_trust.modal_title' | t }}</h3>
+      <p class="apgo-trust-modal-subtitle" id="modalSubtitle_{{ section.id }}">{{ 'apgo_trust.modal_subtitle' | t }}</p>
+    </div>
+
+    <div class="apgo-modal-image-container">
+      <img id="modalImage_{{ section.id }}" src="" alt="彈窗視覺圖片" class="apgo-modal-image">
+    </div>
+
+    <div class="apgo-trust-modal-list" id="modalList_{{ section.id }}"></div>
+
+    <div class="apgo-trust-modal-note" id="modalNote_{{ section.id }}" style="display: none;"></div>
+
+    <div class="apgo-support-buttons" id="supportButtonsContainer_{{ section.id }}" style="display: none;"></div>
+  </div>
+</div>
+
+<script>
+  (function() {
+      'use strict';
+
+      // 立即输出调试信息
+      console.log('APGO Trust Section Script Loading - Section ID: {{ section.id }}');
+
+      // 彈窗數據與內容
+      var trustDetailsData_{{ section.id | replace: '-', '_' }} = {
+          refund: {
+              title: {{ section.settings.refund_modal_title | json }},
+              subtitle: {{ section.settings.refund_modal_subtitle | json }},
+              modalImage: null,
+              items: {{ section.settings.refund_modal_items | newline_to_br | split: '<br />' | json }},
+              note: null,
+              buttons: null
+          },
+          support: {
+              title: {{ section.settings.support_modal_title | json }},
+              subtitle: {{ section.settings.support_modal_subtitle | json }},
+              modalImage: null,
+              items: {{ section.settings.support_modal_items | newline_to_br | split: '<br />' | json }},
+              note: null,
+              buttons: [
+                  {
+                      type: 'line',
+                      text: {{ section.settings.support_line_text | json }},
+                      link: {{ section.settings.support_line_link | json }},
+                      info: {{ section.settings.support_line_info | json }}
+                  },
+                  {
+                      type: 'phone',
+                      text: {{ section.settings.support_phone_text | json }},
+                      link: {{ section.settings.support_phone_link | json }},
+                      info: {{ section.settings.support_phone_info | json }}
+                  },
+                  {
+                      type: 'form',
+                      text: {{ section.settings.support_form_text | json }},
+                      link: {{ section.settings.support_form_link | json }},
+                      info: {{ section.settings.support_form_info | json }}
+                  }
+              ]
+          },
+          tutorial: {
+              title: {{ section.settings.tutorial_modal_title | json }},
+              subtitle: {{ section.settings.tutorial_modal_subtitle | json }},
+              modalImage: null,
+              items: {{ section.settings.tutorial_modal_items | newline_to_br | split: '<br />' | json }},
+              note: null,
+              buttons: null
+          },
+          stores: {
+              title: {{ section.settings.stores_modal_title | json }},
+              subtitle: {{ section.settings.stores_modal_subtitle | json }},
+              modalImage: null,
+              items: {{ section.settings.stores_modal_items | newline_to_br | split: '<br />' | json }},
+              note: {{ section.settings.stores_modal_note | json }},
+              buttons: null
+          }
+      };
+
+      // 處理信任卡片點擊事件
+      window.handleTrustCardClick_{{ section.id | replace: '-', '_' }} = function(type) {
+          console.log('卡片被點擊, 類型:', type);
+          console.log('當前數據:', trustDetailsData_{{ section.id | replace: '-', '_' }});
+
+          var details = trustDetailsData_{{ section.id | replace: '-', '_' }}[type];
+          if (!details) {
+              console.error('找不到對應的信任詳情:', type);
+              return;
+          }
+
+          showTrustDetails_{{ section.id | replace: '-', '_' }}(
+              details.title,
+              details.subtitle,
+              details.items,
+              details.note,
+              details.modalImage,
+              details.buttons
+          );
+      };
+
+      // 顯示信任詳情彈窗
+      window.showTrustDetails_{{ section.id | replace: '-', '_' }} = function(title, subtitle, items, note, modalImageUrl, buttonsData) {
+
+
+          var modal = document.getElementById('apgoTrustModal_{{ section.id }}');
+          if (!modal) {
+              console.error('找不到彈窗元素: apgoTrustModal_{{ section.id }}');
+              // 列出所有可能的元素
+              console.log('頁面上的彈窗元素:', document.querySelectorAll('[id*="apgoTrustModal"]'));
+              return;
+          }
+
+          var modalTitle = document.getElementById('modalTitle_{{ section.id }}');
+          var modalSubtitle = document.getElementById('modalSubtitle_{{ section.id }}');
+          var modalImage = document.getElementById('modalImage_{{ section.id }}');
+          var modalList = document.getElementById('modalList_{{ section.id }}');
+          var modalNote = document.getElementById('modalNote_{{ section.id }}');
+          var supportButtonsContainer = document.getElementById('supportButtonsContainer_{{ section.id }}');
+
+          if (modalTitle) {
+              modalTitle.textContent = title || '';
+          }
+          if (modalSubtitle) {
+              modalSubtitle.textContent = subtitle || '';
+          }
+
+          if (modalImage) {
+              if (modalImageUrl) {
+                  modalImage.src = modalImageUrl;
+                  modalImage.alt = title + ' 視覺圖';
+                  modalImage.style.display = 'block';
+              } else {
+                  modalImage.style.display = 'none';
+              }
+          }
+
+          if (modalList) {
+              var itemsHtml = '';
+              if (items && Array.isArray(items)) {
+                  items.forEach(function(item) {
+                      if (item && item.trim() !== '') {
+                          itemsHtml += '<div class="apgo-trust-modal-item">' + item + '</div>';
+                      }
+                  });
+              }
+              modalList.innerHTML = itemsHtml;
+          }
+
+          if (modalNote) {
+              if (note && note.trim && note.trim() !== '') {
+                  modalNote.innerHTML = note;
+                  modalNote.style.display = 'block';
+              } else {
+                  modalNote.style.display = 'none';
+              }
+          }
+
+          if (supportButtonsContainer) {
+              if (buttonsData && buttonsData.length > 0) {
+                  supportButtonsContainer.innerHTML = '';
+                  buttonsData.forEach(function(button) {
+                      if (button.text && button.link) {
+                          var buttonItem = document.createElement('div');
+                          buttonItem.className = 'apgo-support-button-item';
+                          var target = (button.type === 'line' || button.type === 'form') ? 'target="_blank"' : '';
+                          var infoHtml = button.info ? '<p class="apgo-support-info-text">' + button.info + '</p>' : '';
+                          buttonItem.innerHTML = '<a href="' + button.link + '" ' + target + ' class="apgo-support-button">' + button.text + '</a>' + infoHtml;
+                          supportButtonsContainer.appendChild(buttonItem);
+                      }
+                  });
+                  supportButtonsContainer.style.display = 'flex';
+              } else {
+                  supportButtonsContainer.style.display = 'none';
+              }
+          }
+
+          // 顯示彈窗
+          modal.classList.add('apgo-trust-show');
+          document.body.style.overflow = 'hidden';
+          console.log('彈窗已添加 show class');
+
+          // 滾動到頂部
+          var modalContent = modal.querySelector('.apgo-trust-modal-content');
+          if (modalContent) {
+              modalContent.scrollTop = 0;
+          }
+      };
+
+      // 關閉彈窗
+      window.closeTrustModal_{{ section.id | replace: '-', '_' }} = function() {
+          console.log('關閉彈窗被調用');
+          var modal = document.getElementById('apgoTrustModal_{{ section.id }}');
+          if (modal) {
+              modal.classList.remove('apgo-trust-show');
+              document.body.style.overflow = 'auto';
+              console.log('彈窗已關閉');
+          } else {
+              console.error('找不到彈窗元素');
+          }
+      };
+
+      // 確保函數可全局訪問 - 使用簡化的函數名
+      window.handleTrustCardClick_{{ section.id | replace: '-', '_' }} = window.handleTrustCardClick_{{ section.id | replace: '-', '_' }};
+      window.closeTrustModal_{{ section.id | replace: '-', '_' }} = window.closeTrustModal_{{ section.id | replace: '-', '_' }};
+
+      // 初始化
+      function initTrustSection() {
+          console.log('初始化安心保證區塊 - Section {{ section.id }}');
+
+          // 檢查所有卡片
+          var cards = document.querySelectorAll('#shopify-section-{{ section.id }} .apgo-trust-card');
+          console.log('找到卡片數量:', cards.length);
+
+          // 手動為每個卡片添加點擊事件（作為備用方案）
+          cards.forEach(function(card, index) {
+              console.log('卡片 ' + index + ' onclick:', card.getAttribute('onclick'));
+
+              // 添加備用點擊事件
+              card.addEventListener('click', function(e) {
+                  console.log('卡片點擊事件觸發（addEventListener）');
+                  var cardType = null;
+
+                  // 根據卡片內容判斷類型
+                  if (card.querySelector('.apgo-trust-mega-30')) {
+                      cardType = 'refund';
+                  } else if (card.querySelector('.apgo-support-icon')) {
+                      cardType = 'support';
+                  } else if (card.querySelector('.apgo-tutorial-icon')) {
+                      cardType = 'tutorial';
+                  } else if (card.querySelector('.apgo-store-icon')) {
+                      cardType = 'stores';
+                  }
+
+                  if (cardType) {
+                      console.log('觸發類型:', cardType);
+                      window.handleTrustCardClick_{{ section.id | replace: '-', '_' }}(cardType);
+                  }
+              });
+          });
+
+          // 動畫觀察器
+          var observerOptions = {
+              threshold: 0.1,
+              rootMargin: '0px 0px -100px 0px'
+          };
+
+          if (typeof IntersectionObserver !== 'undefined') {
+              var observer = new IntersectionObserver(function(entries) {
+                  entries.forEach(function(entry) {
+                      if (entry.isIntersecting) {
+                          var cards = entry.target.querySelectorAll('.apgo-trust-card');
+                          cards.forEach(function(card, index) {
+                              setTimeout(function() {
+                                  card.style.opacity = '1';
+                                  card.style.transform = 'translateY(0) scale(1)';
+                              }, index * 150);
+                          });
+
+                          var header = entry.target.querySelector('.apgo-trust-header');
+                          if (header) {
+                              header.style.opacity = '1';
+                              header.style.transform = 'translateY(0)';
+                          }
+
+                          var ctaSection = entry.target.querySelector('.apgo-trust-cta-section');
+                          if (ctaSection) {
+                              ctaSection.style.opacity = '1';
+                              ctaSection.style.transform = 'translateY(0)';
+                          }
+
+                          observer.unobserve(entry.target);
+                      }
+                  });
+              }, observerOptions);
+
+              var section = document.querySelector('#shopify-section-{{ section.id }} .apgo-trust-section');
+              if (section) {
+                  observer.observe(section);
+              }
+          }
+
+          // 點擊彈窗外部關閉
+          var modal = document.getElementById('apgoTrustModal_{{ section.id }}');
+          if (modal) {
+              modal.addEventListener('click', function(e) {
+                  if (e.target === modal) {
+                      window.closeTrustModal_{{ section.id | replace: '-', '_' }}();
+                  }
+              });
+          }
+
+          // ESC 鍵關閉彈窗
+          document.addEventListener('keydown', function(e) {
+              if (e.key === 'Escape') {
+                  var modal = document.getElementById('apgoTrustModal_{{ section.id }}');
+                  if (modal && modal.classList.contains('apgo-trust-show')) {
+                      window.closeTrustModal_{{ section.id | replace: '-', '_' }}();
+                  }
+              }
+          });
+      }
+
+      // 確保 DOM 完全加載後執行
+      if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initTrustSection);
+      } else {
+          // DOM 已經加載完成
+          initTrustSection();
+      }
+
+      // 額外的安全措施：延遲執行
+      setTimeout(function() {
+          console.log('延遲檢查初始化');
+          if (document.querySelectorAll('#shopify-section-{{ section.id }} .apgo-trust-card').length > 0) {
+              console.log('卡片存在，確保初始化');
+              initTrustSection();
+          }
+      }, 1000);
+
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "APGO 安心保證區塊",
+  "settings": [
+    {
+      "type": "header",
+      "content": "基本設定"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo 圖片"
+    },
+    {
+      "type": "text",
+      "id": "logo_alt_text",
+      "label": "Logo 替代文字",
+      "default": "APGO 專業鍍膜專家"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "label": "主標題",
+      "default": "安心購物保障"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "副標題",
+      "default": "您的每一次選擇，APGO 都將提供最堅實的承諾與支援"
+    },
+    {
+      "type": "header",
+      "content": "顏色設定"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "主要顏色",
+      "default": "#f08418"
+    },
+    {
+      "type": "color",
+      "id": "secondary_color",
+      "label": "次要顏色",
+      "default": "#ff9a3c"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "背景顏色",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "CTA 設定"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "顯示 CTA 區塊",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "cta_text",
+      "label": "CTA 文字",
+      "default": "我們深信，提供最優質的產品與最完善的服務，才是品牌長久經營的基石。<br>選擇 APGO，讓您的愛車，從此無懼挑戰！"
+    },
+    {
+      "type": "text",
+      "id": "cta_button_text",
+      "label": "CTA 按鈕文字",
+      "default": "立即選購，親身體驗 APGO 承諾！"
+    },
+    {
+      "type": "url",
+      "id": "cta_button_link",
+      "label": "CTA 按鈕連結"
+    },
+    {
+      "type": "header",
+      "content": "間距設定"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "上間距",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "下間距",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "退費彈窗內容"
+    },
+    {
+      "type": "text",
+      "id": "refund_modal_title",
+      "label": "退費彈窗標題",
+      "default": "30天無憂退費承諾"
+    },
+    {
+      "type": "text",
+      "id": "refund_modal_subtitle",
+      "label": "退費彈窗副標題",
+      "default": "業界良心保證，讓您零風險試用"
+    },
+    {
+      "type": "textarea",
+      "id": "refund_modal_items",
+      "label": "退費彈窗項目（每行一個）",
+      "default": "在您收到APGO產品後的**30天內，不管有沒有使用**，皆可申請退費。\n**未開封**商品：享**全額退費**，確保您零風險體驗。\n**已使用**商品：仍可退**全額**，讓您安心試用。\n**專人協助**：全程由專業客服引導，退費過程簡單透明，無需擔心繁瑣流程。"
+    },
+    {
+      "type": "header",
+      "content": "客服彈窗內容"
+    },
+    {
+      "type": "text",
+      "id": "support_modal_title",
+      "label": "客服彈窗標題",
+      "default": "24h全天候線上客服"
+    },
+    {
+      "type": "text",
+      "id": "support_modal_subtitle",
+      "label": "客服彈窗副標題",
+      "default": "專業團隊即時支援，問題隨時解答"
+    },
+    {
+      "type": "textarea",
+      "id": "support_modal_items",
+      "label": "客服彈窗項目（每行一個）",
+      "default": "我們的專業客服團隊，全年無休，為您提供**7天24小時**的即時線上支援，確保您的問題隨時被解答。\n**多管道支援**：透過LINE、電話 或線上表單，隨時聯繫。"
+    },
+    {
+      "type": "text",
+      "id": "support_line_text",
+      "label": "LINE 按鈕文字",
+      "default": "官方LINE"
+    },
+    {
+      "type": "text",
+      "id": "support_line_link",
+      "label": "LINE 連結"
+    },
+    {
+      "type": "text",
+      "id": "support_line_info",
+      "label": "LINE 資訊文字",
+      "default": "如果無法連結請直接輸入ID @APGO"
+    },
+    {
+      "type": "text",
+      "id": "support_phone_text",
+      "label": "電話按鈕文字",
+      "default": "電話"
+    },
+    {
+      "type": "text",
+      "id": "support_phone_link",
+      "label": "電話連結",
+      "default": "tel:0229030101"
+    },
+    {
+      "type": "text",
+      "id": "support_phone_info",
+      "label": "電話資訊文字",
+      "default": "02-29030101 工作日09:00-18:00回覆"
+    },
+    {
+      "type": "text",
+      "id": "support_form_text",
+      "label": "表單按鈕文字",
+      "default": "線上表單"
+    },
+    {
+      "type": "url",
+      "id": "support_form_link",
+      "label": "表單連結"
+    },
+    {
+      "type": "text",
+      "id": "support_form_info",
+      "label": "表單資訊文字",
+      "default": "在工作日會盡快回覆"
+    },
+    {
+      "type": "header",
+      "content": "教學彈窗內容"
+    },
+    {
+      "type": "text",
+      "id": "tutorial_modal_title",
+      "label": "教學彈窗標題",
+      "default": "手把手教學，新手也能變專家"
+    },
+    {
+      "type": "text",
+      "id": "tutorial_modal_subtitle",
+      "label": "教學彈窗副標題",
+      "default": "最完整、最詳細的施工教學影片系列"
+    },
+    {
+      "type": "textarea",
+      "id": "tutorial_modal_items",
+      "label": "教學彈窗項目（每行一個）",
+      "default": "APGO提供從**零基礎到進階**，最完整、最詳細的**施工教學影片系列**。\n**步驟分解**：每段影片都將複雜的施工流程拆解為簡單步驟，讓您一看就懂、一學就會。\n**實境操作示範**：由APGO專業技師親自示範，涵蓋各種車款與材質的施工技巧。\n**常見問題Q&A**：針對新手常犯錯誤與疑慮，提供即時解決方案。"
+    },
+    {
+      "type": "header",
+      "content": "門市彈窗內容"
+    },
+    {
+      "type": "text",
+      "id": "stores_modal_title",
+      "label": "門市彈窗標題",
+      "default": "全台服務據點，近距離體驗專業"
+    },
+    {
+      "type": "text",
+      "id": "stores_modal_subtitle",
+      "label": "門市彈窗副標題",
+      "default": "便利的實體服務據點，提供面對面服務"
+    },
+    {
+      "type": "textarea",
+      "id": "stores_modal_items",
+      "label": "門市彈窗項目（每行一個）",
+      "default": "APGO目前在**新北市新莊區鳳山街56巷3號**設有服務門市，為您提供面對面的專業諮詢與服務。\n未來我們將持續拓展更多服務據點，為全台車主提供更便捷的服務。\n您可在此體驗產品、獲得專業技師的現場指導，並享受完善的售後服務。"
+    },
+    {
+      "type": "text",
+      "id": "stores_modal_note",
+      "label": "門市彈窗備註",
+      "default": "請注意門市營業時間，建議前往前先致電確認。"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "refund_card",
+      "name": "退費保證卡片",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "refund_days",
+          "label": "退費天數",
+          "default": "30天"
+        },
+        {
+          "type": "text",
+          "id": "card_title",
+          "label": "卡片標題",
+          "default": "無憂退費承諾"
+        },
+        {
+          "type": "text",
+          "id": "card_description",
+          "label": "卡片描述",
+          "default": "業界良心保證，讓您零風險試用"
+        },
+        {
+          "type": "text",
+          "id": "click_prompt",
+          "label": "點擊提示",
+          "default": "點擊查看詳情"
+        }
+      ]
+    },
+    {
+      "type": "support_card",
+      "name": "客服支援卡片",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "card_title",
+          "label": "卡片標題",
+          "default": "24h全天候線上客服"
+        },
+        {
+          "type": "text",
+          "id": "card_description",
+          "label": "卡片描述",
+          "default": "專業團隊即時支援，問題隨時解答"
+        },
+        {
+          "type": "text",
+          "id": "click_prompt",
+          "label": "點擊提示",
+          "default": "點擊查看詳情"
+        }
+      ]
+    },
+    {
+      "type": "tutorial_card",
+      "name": "教學影片卡片",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "card_title",
+          "label": "卡片標題",
+          "default": "手把手教學影片"
+        },
+        {
+          "type": "text",
+          "id": "card_description",
+          "label": "卡片描述",
+          "default": "新手也能變專家，輕鬆打造完美效果"
+        },
+        {
+          "type": "text",
+          "id": "click_prompt",
+          "label": "點擊提示",
+          "default": "點擊查看詳情"
+        }
+      ]
+    },
+    {
+      "type": "store_card",
+      "name": "門市據點卡片",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "card_title",
+          "label": "卡片標題",
+          "default": "全台服務據點"
+        },
+        {
+          "type": "text",
+          "id": "card_description",
+          "label": "卡片描述",
+          "default": "近距離體驗專業，售後服務更安心"
+        },
+        {
+          "type": "text",
+          "id": "click_prompt",
+          "label": "點擊提示",
+          "default": "點擊查看詳情"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO 安心保證區塊",
+      "settings": {
+        "logo_alt_text": "APGO 專業鍍膜專家",
+        "main_title": "安心購物保障",
+        "subtitle": "您的每一次選擇，APGO 都將提供最堅實的承諾與支援",
+        "primary_color": "#f08418",
+        "secondary_color": "#ff9a3c",
+        "background_color": "#000000",
+        "show_cta": true,
+        "cta_text": "我們深信，提供最優質的產品與最完善的服務，才是品牌長久經營的基石。<br>選擇 APGO，讓您的愛車，從此無懼挑戰！",
+        "cta_button_text": "立即選購，親身體驗 APGO 承諾！",
+        "cta_button_link": "/collections/all",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "refund_modal_title": "30天無憂退費承諾",
+        "refund_modal_subtitle": "業界良心保證，讓您零風險試用",
+        "refund_modal_items": "在您收到APGO產品後的**30天內，不管有沒有使用**，皆可申請退費。\n**未開封**商品：享**全額退費**，確保您零風險體驗。\n**已使用**商品：仍可退**全額**，讓您安心試用。\n**專人協助**：全程由專業客服引導，退費過程簡單透明，無需擔心繁瑣流程。",
+        "support_modal_title": "24h全天候線上客服",
+        "support_modal_subtitle": "專業團隊即時支援，問題隨時解答",
+        "support_modal_items": "我們的專業客服團隊，全年無休，為您提供**7天24小時**的即時線上支援，確保您的問題隨時被解答。\n**多管道支援**：透過LINE、電話 或線上表單，隨時聯繫。",
+        "support_line_text": "官方LINE",
+        "support_line_info": "如果無法連結請直接輸入ID @APGO",
+        "support_phone_text": "電話",
+        "support_phone_link": "tel:0229030101",
+        "support_phone_info": "02-29030101 工作日09:00-18:00回覆",
+        "support_form_text": "線上表單",
+        "support_form_link": "/contact",
+        "support_form_info": "在工作日會盡快回覆",
+        "tutorial_modal_title": "手把手教學，新手也能變專家",
+        "tutorial_modal_subtitle": "最完整、最詳細的施工教學影片系列",
+        "tutorial_modal_items": "APGO提供從**零基礎到進階**，最完整、最詳細的**施工教學影片系列**。\n**步驟分解**：每段影片都將複雜的施工流程拆解為簡單步驟，讓您一看就懂、一學就會。\n**實境操作示範**：由APGO專業技師親自示範，涵蓋各種車款與材質的施工技巧。\n**常見問題Q&A**：針對新手常犯錯誤與疑慮，提供即時解決方案。",
+        "stores_modal_title": "全台服務據點，近距離體驗專業",
+        "stores_modal_subtitle": "便利的實體服務據點，提供面對面服務",
+        "stores_modal_items": "APGO目前在**新北市新莊區鳳山街56巷3號**設有服務門市，為您提供面對面的專業諮詢與服務。\n未來我們將持續拓展更多服務據點，為全台車主提供更便捷的服務。\n您可在此體驗產品、獲得專業技師的現場指導，並享受完善的售後服務。",
+        "stores_modal_note": "請注意門市營業時間，建議前往前先致電確認。"
+      },
+      "blocks": [
+        {
+          "type": "refund_card",
+          "settings": {
+            "refund_days": "30天",
+            "card_title": "無憂退費承諾",
+            "card_description": "業界良心保證，讓您零風險試用",
+            "click_prompt": "點擊查看詳情"
+          }
+        },
+        {
+          "type": "support_card",
+          "settings": {
+            "card_title": "24h全天候線上客服",
+            "card_description": "專業團隊即時支援，問題隨時解答",
+            "click_prompt": "點擊查看詳情"
+          }
+        },
+        {
+          "type": "tutorial_card",
+          "settings": {
+            "card_title": "手把手教學影片",
+            "card_description": "新手也能變專家，輕鬆打造完美效果",
+            "click_prompt": "點擊查看詳情"
+          }
+        },
+        {
+          "type": "store_card",
+          "settings": {
+            "card_title": "全台服務據點",
+            "card_description": "近距離體驗專業，售後服務更安心",
+            "click_prompt": "點擊查看詳情"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

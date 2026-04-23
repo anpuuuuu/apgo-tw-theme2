@@ -1,0 +1,537 @@
+{% comment %} sections/warmup-selected-products.liquid {% endcomment %}
+
+<div
+  class="warmup-selected"
+  id="{{ section.settings.section_id }}"
+  data-section-id="{{ section.settings.section_id }}"
+>
+  <div class="selected-header">
+    {% if section.settings.selected_header_image_desktop %}
+      <img
+        src="{{ section.settings.selected_header_image_desktop | img_url}}"
+        srcset="{{ section.settings.selected_header_image_desktop | img_url: '1536x' }} 1x,
+                {{ section.settings.selected_header_image_desktop | img_url: '3072x' }} 2x"
+        alt="Selected Header Background"
+        class="selected-header-image selected-header-image-desktop"
+        loading="lazy"
+      >
+    {% endif %}
+
+    {% if section.settings.selected_header_image_mobile %}
+      <img
+        src="{{ section.settings.selected_header_image_mobile | img_url }}"
+        srcset="{{ section.settings.selected_header_image_mobile | img_url: '686x' }} 1x,
+                {{ section.settings.selected_header_image_mobile | img_url: '3000x' }} 2x"
+        alt="Selected Header Background"
+        class="selected-header-image selected-header-image-mobile"
+        loading="lazy"
+      >
+    {% endif %}
+  </div>
+
+  <div class="selected-carousel-wrapper">
+    <div class="selected-products-grid" id="selectedProductsGrid">
+      {% for block in section.blocks %}
+        {% if block.type == 'selected_product' %}
+          <a href="{{ block.settings.product_link }}" class="selected-product-card-link">
+            <div class="selected-product-card">
+              <div class="selected-product-image-wrapper">
+                {% if block.settings.product_image %}
+                  <img
+                    src="{{ block.settings.product_image | img_url }}"
+                    srcset="{{ block.settings.product_image | img_url: '500x' }} 1x,
+                            {{ block.settings.product_image | img_url: '2000x' }} 2x"
+                    alt="{{ block.settings.product_name }}"
+                    class="selected-product-image"
+                  >
+                {% else %}
+                  <div class="selected-product-image-placeholder"></div>
+                {% endif %}
+              </div>
+              <div class="selected-product-info">
+                <h4 class="selected-product-name">{{ block.settings.product_name }}</h4>
+                <p class="selected-product-desc">{{ block.settings.product_desc }}</p>
+                <div class="selected-product-price">
+                  <span class="original-price">{{ block.settings.product_original_price }}</span>
+                  <span class="sale-price">{{ block.settings.product_sale_price }}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="carousel-controls">
+    <button class="carousel-btn carousel-prev" aria-label="上一頁" id="carouselPrev">
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+        <path opacity="0.6" d="M52.5 28C52.5 41.531 41.531 52.5 28 52.5C14.469 52.5 3.5 41.531 3.5 28C3.5 14.469 14.469 3.5 28 3.5C41.531 3.5 52.5 14.469 52.5 28Z" fill="black"/>
+        <path d="M30.8599 16.5239C31.3128 16.2249 31.9287 16.2756 32.3274 16.6743C32.7261 17.073 32.7768 17.6889 32.4778 18.1418L32.3274 18.3241L22.6523 27.9992L32.3274 37.6743L32.4778 37.8566C32.7768 38.3095 32.7261 38.9254 32.3274 39.324C31.9287 39.7227 31.3128 39.7735 30.8599 39.4744L30.6776 39.324L20.1776 28.8241C19.722 28.3684 19.722 27.6299 20.1776 27.1743L30.6776 16.6743L30.8599 16.5239Z" fill="white"/>
+      </svg>
+    </button>
+    <button class="carousel-btn carousel-next" aria-label="下一頁" id="carouselNext">
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+        <path opacity="0.6" d="M3.5 28C3.5 41.531 14.469 52.5 28 52.5C41.531 52.5 52.5 41.531 52.5 28C52.5 14.469 41.531 3.5 28 3.5C14.469 3.5 3.5 14.469 3.5 28Z" fill="black"/>
+        <path d="M25.1401 16.5239C24.6872 16.2249 24.0713 16.2756 23.6726 16.6743C23.2739 17.073 23.2232 17.6889 23.5222 18.1418L23.6726 18.3241L33.3477 27.9992L23.6726 37.6743L23.5222 37.8566C23.2232 38.3095 23.2739 38.9254 23.6726 39.324C24.0713 39.7227 24.6872 39.7735 25.1401 39.4744L25.3224 39.324L35.8224 28.8241C36.278 28.3684 36.278 27.6299 35.8224 27.1743L25.3224 16.6743L25.1401 16.5239Z" fill="white"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  .warmup-selected {
+    background: #020303;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 980px;
+    margin: 0 190px;
+  }
+
+  .warmup-selected::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(
+        120% 85% at 50% 115%,
+        rgba(222, 88, 54, 0.95) 0%,
+        rgba(160, 66, 39, 0.9) 35%,
+        rgba(66, 20, 9, 0.95) 62%,
+        rgba(0, 0, 0, 1) 82%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.15) 0%,
+        rgba(0, 0, 0, 0.75) 40%,
+        rgba(0, 0, 0, 0.95) 55%,
+        rgba(0, 0, 0, 1) 70%
+      );
+  }
+
+  .selected-header {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 366px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    padding: 32px;
+    overflow: hidden;
+  }
+
+  .selected-header-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .selected-header-image-desktop {
+    display: block;
+  }
+
+  .selected-header-image-mobile {
+    display: none;
+  }
+
+  .selected-carousel-wrapper {
+    position: relative;
+    z-index: 20;
+    padding: 16px 32px 0px 32px;
+    overflow: hidden;
+  }
+
+  .selected-products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(280px, 1fr));
+    gap: 24px;
+    position: relative;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-wrap: wrap;
+    align-content: flex-start;
+  }
+
+  .selected-products-grid.slide-left {
+    animation: slideLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .selected-products-grid.slide-right {
+    animation: slideRight 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes slideLeft {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes slideRight {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(100%);
+    }
+  }
+
+  .selected-product-card {
+    background: #18181b;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 446px;
+  }
+
+  .selected-product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .selected-product-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: transparent;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .selected-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .selected-product-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+  }
+
+  .selected-product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .selected-product-name {
+    font-size: 20px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 24px;
+    color: white;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .selected-product-desc {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    color: #e4e4e7;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  .selected-product-price {
+    text-align: center;
+    width: 100%;
+    margin: 0;
+  }
+
+  .selected-product-price .original-price {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    color: #a1a1aa;
+    text-decoration: line-through;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  .selected-product-price .sale-price {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    color: #ff9d00;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  .carousel-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    margin-top: 24px;
+    padding: 0 32px 32px 32px;
+    z-index: 20;
+  }
+
+  .carousel-btn {
+    width: 56px;
+    height: 56px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    padding: 0;
+  }
+
+  .carousel-btn:hover {
+    transform: scale(1.1);
+  }
+
+  .carousel-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .carousel-btn svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* 手機響應式 */
+  @media (max-width: 450px) {
+    .warmup-selected {
+      margin: 0 8px;
+      min-height: 940px;
+      border-radius: 12px;
+    }
+    .selected-header-image-desktop {
+      display: none;
+    }
+
+    .selected-header-image-mobile {
+      display: block;
+    }
+
+    .selected-header {
+      height: 100%;
+      aspect-ratio: 1 / 1;
+      padding: 0px;
+    }
+
+    .selected-carousel-wrapper {
+      padding: 24px 8px 0px 8px;
+    }
+
+    .selected-products-grid {
+      grid-template-columns: repeat(2, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .selected-product-card {
+      padding: 0px 0px 8px 0px;
+      min-height: 255px;
+    }
+
+    .selected-product-image-wrapper {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      margin-bottom: 8px;
+    }
+
+    .selected-product-name {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .selected-product-desc {
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .selected-product-price .original-price,
+    .selected-product-price .sale-price {
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .carousel-controls {
+      margin-top: 16px;
+      padding: 0 8px 8px 8px;
+      justify-content: center;
+    }
+
+    .carousel-btn {
+      width: 40px;
+      height: 40px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const selectedGrid = document.getElementById('selectedProductsGrid');
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+
+    if (!selectedGrid || !prevBtn || !nextBtn) return;
+
+    const allCards = Array.from(selectedGrid.querySelectorAll('.selected-product-card'));
+    const totalCards = allCards.length;
+    const itemsPerPage = 4;
+    let currentIndex = 0;
+
+    function updateButtonStates() {
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex + itemsPerPage >= totalCards;
+    }
+
+    function showPage(index) {
+      // 計算最多能顯示的頁數
+      const maxStartIndex = Math.max(0, totalCards - itemsPerPage);
+      currentIndex = Math.max(0, Math.min(index, maxStartIndex));
+
+      // 計算這一頁應該顯示多少個商品
+      const itemsToShow = Math.min(itemsPerPage, totalCards - currentIndex);
+      console.log('itemsToShow', itemsToShow);
+      console.log('currentIndex', currentIndex);
+      allCards.forEach((card, idx) => {
+        const shouldShow = idx >= currentIndex && idx < currentIndex + itemsToShow;
+        card.style.display = shouldShow ? 'flex' : 'none';
+        card.style.visibility = shouldShow ? 'visible' : 'hidden';
+      });
+
+      updateButtonStates();
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        selectedGrid.classList.add('slide-right');
+        setTimeout(() => {
+          showPage(currentIndex - itemsPerPage);
+          selectedGrid.classList.remove('slide-right');
+        }, 300);
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex + itemsPerPage < totalCards) {
+        selectedGrid.classList.add('slide-left');
+        setTimeout(() => {
+          showPage(currentIndex + itemsPerPage);
+          selectedGrid.classList.remove('slide-left');
+        }, 300);
+      }
+    });
+
+    selectedGrid.style.display = 'grid';
+    showPage(0);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "精選商品現省11%",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "selected_header_image_desktop",
+      "label": "精選商品 Header 背景圖 - 電腦端"
+    },
+    {
+      "type": "image_picker",
+      "id": "selected_header_image_mobile",
+      "label": "精選商品 Header 背景圖 - 手機端"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "info": "用於導航欄，不能有空格或特殊字符",
+      "default": "section-selected-products",
+      "placeholder": "例如: section-hero"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "selected_product",
+      "name": "精選商品",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "商品图片"
+        },
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "商品名称",
+          "default": "产品名称"
+        },
+        {
+          "type": "text",
+          "id": "product_desc",
+          "label": "商品描述",
+          "default": "产品描述文本"
+        },
+        {
+          "type": "text",
+          "id": "product_original_price",
+          "label": "商品原价",
+          "default": "NT$5,995"
+        },
+        {
+          "type": "text",
+          "id": "product_sale_price",
+          "label": "商品现价",
+          "default": "特價 NT$1,998"
+        },
+        {
+          "type": "url",
+          "id": "product_link",
+          "label": "商品鏈接"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "活動模板 - 精選商品現省11%"
+    }
+  ]
+}
+{% endschema %}

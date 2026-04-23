@@ -1,0 +1,1387 @@
+{% comment %}
+  APGO 直播時程表 Section - 優化重構版
+  檔案位置: sections/apgo-live-schedule-optimized.liquid
+  命名規範: 直播時程頁-[區塊名稱]
+  
+  主要改進：
+  1. 移除 overflow-y 相關設定，改用 overflow: hidden
+  2. 固定容器高度，避免動態計算
+  3. 簡化觸控事件處理
+  4. 優化 CSS 層級結構
+  5. 使用 transform 替代 scroll 實現滑動
+{% endcomment %}
+
+<section class="apgo-live-schedule-section" data-section-id="{{ section.id }}">
+  <style>
+    #shopify-section-{{ section.id }} {
+      --primary-orange: {{ section.settings.primary_color }};
+      --primary-orange-light: {{ section.settings.primary_color_light }};
+      --text-white: {{ section.settings.text_white }};
+      --text-gray: {{ section.settings.text_gray }};
+      --text-light-gray: {{ section.settings.text_light_gray }};
+      --dark-bg: {{ section.settings.dark_bg }};
+      --card-bg: {{ section.settings.card_bg }};
+      --card-hover: {{ section.settings.card_hover }};
+      --border-color: {{ section.settings.border_color }};
+      --card-width: {{ section.settings.card_width }}px;
+      --card-gap: {{ section.settings.card_gap }}px;
+      --card-padding: {{ section.settings.card_padding }}px;
+      --border-radius: {{ section.settings.border_radius }}px;
+      --animation-speed: {{ section.settings.animation_speed }}s;
+    }
+
+    #shopify-section-{{ section.id }} * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    #shopify-section-{{ section.id }} .apgo-live-schedule-section {
+      font-family: {{ section.settings.font_family }};
+      background: var(--dark-bg);
+      color: var(--text-white);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: visible; /* 允許卡片 hover 超出容器顯示 */
+    }
+
+    #shopify-section-{{ section.id }} {
+      overflow: visible; /* 確保最外層 section 不裁切卡片 */
+    }
+
+    /* 背景裝飾 */
+    {% if section.settings.show_bg_decoration %}
+    #shopify-section-{{ section.id }} .bg-decoration {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .bg-decoration::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(240, 132, 24, {{ section.settings.bg_decoration_opacity | divided_by: 100.0 }}) 0%, transparent 70%);
+      animation: float {{ section.settings.bg_animation_duration }}s ease-in-out infinite;
+    }
+
+    #shopify-section-{{ section.id }} .bg-decoration::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(240, 132, 24, {{ section.settings.bg_decoration_opacity | divided_by: 100.0 | times: 0.67 }}) 0%, transparent 70%);
+      animation: float {{ section.settings.bg_animation_duration | times: 0.83 }}s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(30px, -20px) rotate(180deg); }
+    }
+    {% endif %}
+
+    /* 主容器 */
+    #shopify-section-{{ section.id }} .container {
+      max-width: {{ section.settings.container_width }}px;
+      margin: 0 auto;
+      padding: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_horizontal }}px {{ section.settings.section_padding_bottom }}px;
+      position: relative;
+      z-index: 1;
+      overflow: visible; /* 確保卡片 hover 不被裁切 */
+    }
+
+    /* 標題區 */
+    #shopify-section-{{ section.id }} .header-section {
+      text-align: {{ section.settings.header_alignment }};
+      margin-bottom: {{ section.settings.header_margin_bottom }}px;
+    }
+
+    #shopify-section-{{ section.id }} .main-title {
+    #shopify-section-{{ section.id }} .team-dynamic-title {
+      font-size: 1.5rem;
+      font-weight: 300;
+      margin-left: 12px;
+      color: var(--primary-orange);
+      display: inline-block;
+      vertical-align: middle;
+    }
+      font-size: {{ section.settings.title_font_size_desktop }}rem;
+      font-weight: {{ section.settings.title_font_weight }};
+      letter-spacing: {{ section.settings.title_letter_spacing }}px;
+      margin-bottom: 20px;
+      {% if section.settings.title_gradient %}
+      background: linear-gradient(135deg, var(--text-white) 0%, var(--primary-orange) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      {% else %}
+      color: var(--text-white);
+      {% endif %}
+      position: relative;
+      display: inline-block;
+    }
+
+    {% if section.settings.show_title_badge %}
+    #shopify-section-{{ section.id }} .main-title::after {
+      content: '{{ section.settings.title_badge_text }}';
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      letter-spacing: 5px;
+      color: var(--primary-orange);
+      opacity: 0.5;
+      font-weight: 400;
+    }
+    {% endif %}
+
+    #shopify-section-{{ section.id }} .subtitle {
+      font-size: {{ section.settings.subtitle_font_size }}rem;
+      color: var(--text-gray);
+      font-weight: 300;
+      letter-spacing: 1px;
+      opacity: 0.8;
+    }
+
+    /* 分頁標籤 */
+    #shopify-section-{{ section.id }} .tab-navigation {
+      display: flex;
+      justify-content: center;
+      margin-bottom: {{ section.settings.tab_margin_bottom }}px;
+      gap: 5px;
+      background: var(--card-bg);
+      padding: 8px;
+      border-radius: 50px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #shopify-section-{{ section.id }} .tab-btn {
+      flex: 1;
+      padding: {{ section.settings.tab_padding_vertical }}px {{ section.settings.tab_padding_horizontal }}px;
+      background: transparent;
+      border: none;
+      color: var(--text-gray);
+      cursor: pointer;
+      border-radius: 40px;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: all var(--animation-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-orange-light) 100%);
+      color: var(--text-white);
+      box-shadow: 0 8px 25px rgba(240, 132, 24, 0.3);
+    }
+
+    #shopify-section-{{ section.id }} .tab-btn:not(.active):hover {
+      color: var(--text-white);
+      background: rgba(240, 132, 24, 0.1);
+    }
+
+    /* 時程內容區 */
+    #shopify-section-{{ section.id }} .schedule-content {
+      display: none;
+      animation: fadeInUp 0.6s ease;
+    }
+
+    #shopify-section-{{ section.id }} .schedule-content.active {
+      display: block;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+    /* 重新設計的滑動容器 */
+    #shopify-section-{{ section.id }} .carousel-wrapper {
+      position: relative;
+      width: 100%;
+      margin-bottom: 40px;
+      padding: 80px 0 40px 0; /* 再加大上方 padding，避免 hover 上移被裁切 */
+      overflow-x: hidden;
+      overflow-y: visible;
+    }
+
+    #shopify-section-{{ section.id }} .carousel-viewport {
+      position: relative;
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: visible; /* 允許卡片 hover/點擊上移顯示 */
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x; /* 只允許水平觸控 */
+    }
+
+    #shopify-section-{{ section.id }} .carousel-track {
+      display: flex;
+      align-items: stretch;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+
+    /* 日期卡片 - 簡化版 */
+    #shopify-section-{{ section.id }} .day-card {
+      flex: 0 0 var(--card-width);
+      margin-right: var(--card-gap);
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: var(--card-padding);
+      transition: all var(--animation-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .day-card:last-child {
+      margin-right: 0;
+    }
+
+    /* 今日卡片特殊樣式 */
+    #shopify-section-{{ section.id }} .day-card.today {
+      border-color: var(--primary-orange);
+      background: linear-gradient(135deg, var(--card-bg) 0%, rgba(240, 132, 24, 0.05) 100%);
+    }
+
+    #shopify-section-{{ section.id }} .day-card.today .day-status {
+      background: rgba(240, 132, 24, 0.2);
+      border-color: var(--primary-orange);
+    }
+
+    #shopify-section-{{ section.id }} .day-card.today .today-badge {
+      display: inline-block;
+      color: var(--primary-orange);
+      font-size: 0.8rem;
+      margin-left: 8px;
+    }
+
+
+    #shopify-section-{{ section.id }} .day-card:hover {
+      background: var(--card-hover);
+      border-color: var(--primary-orange);
+      box-shadow: 0 20px 40px rgba(240, 132, 24, {{ section.settings.card_hover_shadow_opacity | divided_by: 100.0 }});
+    }
+
+    #shopify-section-{{ section.id }} .day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    #shopify-section-{{ section.id }} .day-name {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--text-white);
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+    }
+
+    #shopify-section-{{ section.id }} .day-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: rgba(240, 132, 24, 0.1);
+      border: 1px solid rgba(240, 132, 24, 0.3);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: var(--primary-orange);
+      flex-shrink: 0;
+    }
+
+    #shopify-section-{{ section.id }} .status-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--primary-orange);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* 時段列表 - 固定高度 */
+    #shopify-section-{{ section.id }} .time-slots {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: {{ section.settings.slot_gap }}px;
+      min-height: 200px;
+      justify-content: flex-start;
+    }
+
+    #shopify-section-{{ section.id }} .time-slot {
+      padding: {{ section.settings.slot_padding }}px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .time-slot::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -100%;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary-orange), transparent);
+      transform: translateY(-50%);
+      transition: left 0.8s ease;
+    }
+
+    #shopify-section-{{ section.id }} .time-slot:hover::after {
+      left: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .time-slot:hover {
+      background: rgba(240, 132, 24, 0.05);
+      border-color: rgba(240, 132, 24, 0.2);
+      transform: translateX(5px);
+    }
+
+    #shopify-section-{{ section.id }} .slot-time {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--primary-orange);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    {% if section.settings.show_time_icon %}
+    #shopify-section-{{ section.id }} .slot-time::before {
+      content: '{{ section.settings.time_icon }}';
+      font-size: 1rem;
+    }
+    {% endif %}
+
+    #shopify-section-{{ section.id }} .slot-platform {
+      font-size: 0.95rem;
+      color: var(--text-gray);
+      font-weight: 300;
+      {% if section.settings.show_time_icon %}
+      padding-left: 26px;
+      {% endif %}
+    }
+
+    /* 導航按鈕 - 新設計 */
+    #shopify-section-{{ section.id }} .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    #shopify-section-{{ section.id }} .carousel-btn {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      color: var(--text-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: all;
+      transition: all 0.3s ease;
+      opacity: 0;
+      font-size: 20px;
+    }
+
+    #shopify-section-{{ section.id }} .carousel-wrapper:hover .carousel-btn {
+      opacity: 1;
+    }
+
+    #shopify-section-{{ section.id }} .carousel-btn:hover {
+      background: var(--primary-orange);
+      border-color: var(--primary-orange);
+      transform: scale(1.1);
+    }
+
+    #shopify-section-{{ section.id }} .carousel-btn.prev {
+      left: -60px;
+    }
+
+    #shopify-section-{{ section.id }} .carousel-btn.next {
+      right: -60px;
+    }
+
+    #shopify-section-{{ section.id }} .carousel-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* 引導點樣式 */
+    #shopify-section-{{ section.id }} .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    
+    #shopify-section-{{ section.id }} .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.25);
+      border: 1px solid rgba(255,255,255,.35);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    #shopify-section-{{ section.id }} .carousel-dot.active {
+      background: var(--primary-orange);
+      transform: scale(1.2);
+      box-shadow: 0 0 0 4px rgba(240,132,24,.15);
+    }
+
+    /* 無直播提示 */
+    #shopify-section-{{ section.id }} .no-stream {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-gray);
+      font-size: 1rem;
+      opacity: 0.7;
+    }
+
+    /* 響應式設計 */
+    @media (max-width: 1200px) {
+      #shopify-section-{{ section.id }} .carousel-btn.prev {
+        left: 10px;
+      }
+      #shopify-section-{{ section.id }} .carousel-btn.next {
+        right: 10px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #shopify-section-{{ section.id }} {
+        --card-width: {{ section.settings.card_width | times: 0.875 }}px;
+      }
+      
+      #shopify-section-{{ section.id }} .container {
+        padding: {{ section.settings.section_padding_top | times: 0.67 }}px {{ section.settings.section_padding_horizontal | times: 0.75 }}px {{ section.settings.section_padding_bottom | times: 0.67 }}px;
+      }
+
+      #shopify-section-{{ section.id }} .main-title {
+        font-size: {{ section.settings.title_font_size_mobile }}rem;
+      }
+
+      #shopify-section-{{ section.id }} .day-card {
+        padding: {{ section.settings.card_padding | times: 0.71 }}px;
+      }
+
+      #shopify-section-{{ section.id }} .carousel-btn {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #shopify-section-{{ section.id }} {
+        --card-width: {{ section.settings.card_width_mobile }}px;
+      }
+      
+      #shopify-section-{{ section.id }} .main-title {
+        font-size: {{ section.settings.title_font_size_mobile | times: 0.8 }}rem;
+      }
+
+      #shopify-section-{{ section.id }} .tab-navigation {
+        gap: 3px;
+        padding: 5px;
+      }
+
+      #shopify-section-{{ section.id }} .tab-btn {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+      }
+
+      #shopify-section-{{ section.id }} .day-card {
+        padding: {{ section.settings.card_padding | times: 0.57 }}px;
+      }
+    }
+  </style>
+
+  <!-- 背景裝飾 -->
+  {% if section.settings.show_bg_decoration %}
+  <div class="bg-decoration"></div>
+  {% endif %}
+
+  <!-- 主容器 -->
+  <div class="container">
+    <!-- 標題區 -->
+    {% if section.settings.show_header %}
+    <div class="header-section">
+      <h1 class="main-title">
+        <span class="team-dynamic-title">{{ section.settings.taiwan_team_title }}</span>
+        {{ section.settings.main_title }}
+      </h1>
+      {% if section.settings.subtitle != blank %}
+      <p class="subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- 台灣團隊時程 -->
+    <div id="taiwan-{{ section.id }}" class="schedule-content active" data-team="taiwan">
+      <div class="tab-navigation">
+        <button class="tab-btn active" data-tab="taiwan">{{ section.settings.taiwan_tab_text }}</button>
+        <button class="tab-btn" data-tab="singapore">{{ section.settings.singapore_tab_text }}</button>
+      </div>
+      <div class="carousel-wrapper">
+        <div class="carousel-viewport" id="taiwan-carousel-{{ section.id }}">
+          <div class="carousel-track">
+            {% for day in section.blocks %}
+              {% if day.settings.team == 'taiwan' %}
+                <div class="day-card" data-day="{{ day.settings.day_name }}" data-index="{{ forloop.index0 }}">
+                  <div class="day-header">
+                    <span class="day-name">
+                      {{ day.settings.day_name }}
+                      <span class="today-badge" style="display: none;">({{ 'fields.today' | t }})</span>
+                    </span>
+                    {% if day.settings.has_stream %}
+                    <span class="day-status">
+                      <span class="status-dot"></span>
+                      {{ day.settings.status_text | default: '直播日' }}
+                    </span>
+                    {% endif %}
+                  </div>
+                  <div class="time-slots">
+                    {% if day.settings.has_stream %}
+                      {% if day.settings.slot1_time != blank %}
+                      <div class="time-slot">
+                        <div class="slot-time">{{ day.settings.slot1_time }}</div>
+                        <div class="slot-platform">{{ day.settings.slot1_platform }}</div>
+                      </div>
+                      {% endif %}
+                      
+                      {% if day.settings.slot2_time != blank %}
+                      <div class="time-slot">
+                        <div class="slot-time">{{ day.settings.slot2_time }}</div>
+                        <div class="slot-platform">{{ day.settings.slot2_platform }}</div>
+                      </div>
+                      {% endif %}
+                      
+                      {% if day.settings.slot3_time != blank %}
+                      <div class="time-slot">
+                        <div class="slot-time">{{ day.settings.slot3_time }}</div>
+                        <div class="slot-platform">{{ day.settings.slot3_platform }}</div>
+                      </div>
+                      {% endif %}
+                    {% else %}
+                      <div class="no-stream">{{ day.settings.no_stream_text | default: '本日無直播安排' }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <div class="carousel-nav">
+          <button class="carousel-btn prev" data-carousel="taiwan-carousel-{{ section.id }}">‹</button>
+          <button class="carousel-btn next" data-carousel="taiwan-carousel-{{ section.id }}">›</button>
+        </div>
+        <div class="carousel-dots" data-dots-for="taiwan-carousel-{{ section.id }}"></div>
+      </div>
+    </div>
+
+    <!-- 新馬團隊時程 -->
+    <div id="singapore-{{ section.id }}" class="schedule-content" data-team="singapore">
+      <div class="tab-navigation">
+        <button class="tab-btn" data-tab="taiwan">{{ section.settings.taiwan_tab_text }}</button>
+        <button class="tab-btn active" data-tab="singapore">{{ section.settings.singapore_tab_text }}</button>
+      </div>
+      <div class="carousel-wrapper">
+        <div class="carousel-viewport" id="singapore-carousel-{{ section.id }}">
+          <div class="carousel-track">
+            {% for day in section.blocks %}
+              {% if day.settings.team == 'singapore' %}
+                <div class="day-card" data-day="{{ day.settings.day_name }}" data-index="{{ forloop.index0 }}">
+                  <div class="day-header">
+                    <span class="day-name">
+                      {{ day.settings.day_name }}
+                      <span class="today-badge" style="display: none;">({{ 'fields.today' | t }})</span>
+                    </span>
+                    {% if day.settings.has_stream %}
+                    <span class="day-status">
+                      <span class="status-dot"></span>
+                      {{ day.settings.status_text | default: '直播日' }}
+                    </span>
+                    {% endif %}
+                  </div>
+                  <div class="time-slots">
+                    {% if day.settings.has_stream %}
+                      {% if day.settings.slot1_time != blank %}
+                      <div class="time-slot">
+                        <div class="slot-time">{{ day.settings.slot1_time }}</div>
+                        <div class="slot-platform">{{ day.settings.slot1_platform }}</div>
+                      </div>
+                      {% endif %}
+                      
+                      {% if day.settings.slot2_time != blank %}
+                      <div class="time-slot">
+                        <div class="slot-time">{{ day.settings.slot2_time }}</div>
+                        <div class="slot-platform">{{ day.settings.slot2_platform }}</div>
+                      </div>
+                      {% endif %}
+                      
+                      {% if day.settings.slot3_time != blank %}
+                      <div class="time-slot">
+                        <div class="slot-time">{{ day.settings.slot3_time }}</div>
+                        <div class="slot-platform">{{ day.settings.slot3_platform }}</div>
+                      </div>
+                      {% endif %}
+                    {% else %}
+                      <div class="no-stream">{{ day.settings.no_stream_text | default: '本日無直播安排' }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <div class="carousel-nav">
+          <button class="carousel-btn prev" data-carousel="singapore-carousel-{{ section.id }}">‹</button>
+          <button class="carousel-btn next" data-carousel="singapore-carousel-{{ section.id }}">›</button>
+        </div>
+        <div class="carousel-dots" data-dots-for="singapore-carousel-{{ section.id }}"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const sectionId = '{{ section.id }}';
+      const section = document.querySelector(`#shopify-section-${sectionId}`);
+      
+      class CarouselManager {
+        constructor(carouselId) {
+          this.viewport = section.querySelector(`#${carouselId}`);
+          this.track = this.viewport.querySelector('.carousel-track');
+          this.cards = this.track.querySelectorAll('.day-card');
+          this.hasCenteredToday = false;
+          this.init();
+        }
+
+        centerCard(card) {
+          const targetCenter = card.offsetLeft + card.offsetWidth / 2;
+          const screenCenter = window.innerWidth / 2;
+          const scrollLeft = targetCenter - screenCenter;
+          this.viewport.scrollTo({
+            left: scrollLeft,
+            behavior: 'smooth'
+          });
+        }
+
+        init() {
+          this.markToday();
+          this.cards.forEach(card => {
+            card.addEventListener('click', () => {
+              this.centerCard(card);
+            });
+          });
+        }
+
+        markToday() {
+          const today = new Date().getDay();
+          const dayNames = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+          const todayName = dayNames[today];
+
+          this.cards.forEach((card, index) => {
+            const badge = card.querySelector('.today-badge');
+            if (card.dataset.day === todayName) {
+              card.classList.add('today');
+              if (badge) badge.style.display = 'inline-block';
+              // 嚴格置中今日卡片，只在尚未置中時執行
+              if (!this.hasCenteredToday) {
+                this.centerCard(card);
+                this.hasCenteredToday = true;
+              }
+            } else {
+              card.classList.remove('today');
+              if (badge) badge.style.display = 'none';
+            }
+          });
+        }
+      }
+      
+      // 初始化所有輪播
+      const taiwanCarousel = new CarouselManager(`taiwan-carousel-${sectionId}`);
+      const singaporeCarousel = new CarouselManager(`singapore-carousel-${sectionId}`);
+      
+      // 分頁切換
+      const tabBtns = section.querySelectorAll('.tab-btn');
+      const dynamicTitle = section.querySelector('.team-dynamic-title');
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const targetTab = this.dataset.tab;
+          // 清除所有按鈕的 active 狀態
+          tabBtns.forEach(b => b.classList.remove('active'));
+          // 讓所有對應 targetTab 的按鈕亮燈
+          section.querySelectorAll(`.tab-btn[data-tab="${targetTab}"]`).forEach(b => {
+            b.classList.add('active');
+          });
+          // 更新內容顯示
+          section.querySelectorAll('.schedule-content').forEach(content => {
+            content.classList.remove('active');
+          });
+          const targetContent = section.querySelector(`#${targetTab}-${sectionId}`);
+          if (targetContent) {
+            targetContent.classList.add('active');
+          }
+          // 切換團隊標題文字
+          if (dynamicTitle) {
+            if (targetTab === 'taiwan') {
+              dynamicTitle.textContent = '{{ section.settings.taiwan_team_title }}';
+            } else {
+              dynamicTitle.textContent = '{{ section.settings.singapore_team_title }}';
+            }
+          }
+        });
+      });
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "APGO 直播時程表",
+  "tag": "section",
+  "class": "apgo-live-schedule",
+  "settings": [
+    {
+      "type": "header",
+      "content": "🎨 顏色設定"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "主要顏色",
+      "default": "#f08418"
+    },
+    {
+      "type": "color",
+      "id": "primary_color_light",
+      "label": "主要顏色 (淺)",
+      "default": "#ff9a3c"
+    },
+    {
+      "type": "color",
+      "id": "text_white",
+      "label": "白色文字",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_gray",
+      "label": "灰色文字",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "text_light_gray",
+      "label": "淺灰色文字",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "dark_bg",
+      "label": "深色背景",
+      "default": "#0a0a0a"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "卡片背景",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "card_hover",
+      "label": "卡片懸停背景",
+      "default": "#242424"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "邊框顏色",
+      "default": "rgba(255, 255, 255, 0.1)"
+    },
+    {
+      "type": "header",
+      "content": "📐 版面設定"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "容器最大寬度",
+      "min": 1000,
+      "max": 1600,
+      "step": 100,
+      "default": 1400,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "區塊上間距",
+      "min": 20,
+      "max": 120,
+      "step": 10,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "區塊下間距",
+      "min": 20,
+      "max": 120,
+      "step": 10,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_horizontal",
+      "label": "區塊水平間距",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "📝 標題設定"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "顯示標題區",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "label": "主標題",
+      "default": "APGO 直播時程"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "副標題",
+      "default": "與專業團隊即時互動 · 掌握第一手產品資訊"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "標題對齊",
+      "options": [
+        { "value": "left", "label": "靠左" },
+        { "value": "center", "label": "置中" },
+        { "value": "right", "label": "靠右" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_desktop",
+      "label": "標題文字大小 (桌面)",
+      "min": 2,
+      "max": 5,
+      "step": 0.5,
+      "default": 3.5,
+      "unit": "rem"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_mobile",
+      "label": "標題文字大小 (手機)",
+      "min": 1.5,
+      "max": 3,
+      "step": 0.5,
+      "default": 2.5,
+      "unit": "rem"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_font_size",
+      "label": "副標題文字大小",
+      "min": 0.8,
+      "max": 1.5,
+      "step": 0.1,
+      "default": 1.1,
+      "unit": "rem"
+    },
+    {
+      "type": "range",
+      "id": "title_font_weight",
+      "label": "標題文字粗細",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "title_letter_spacing",
+      "label": "標題字間距",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 3,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "title_gradient",
+      "label": "標題漸層效果",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title_badge",
+      "label": "顯示標題徽章",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title_badge_text",
+      "label": "標題徽章文字",
+      "default": "LIVE SCHEDULE"
+    },
+    {
+      "type": "range",
+      "id": "header_margin_bottom",
+      "label": "標題區下邊距",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "🏷️ 分頁設定"
+    },
+    {
+      "type": "text",
+      "id": "taiwan_tab_text",
+      "label": "台灣團隊標籤文字",
+      "default": "台灣團隊"
+    },
+    {
+      "type": "text",
+      "id": "singapore_tab_text",
+      "label": "新馬團隊標籤文字",
+      "default": "新馬團隊"
+    },
+    {
+      "type": "text",
+      "id": "taiwan_team_title",
+      "label": "台灣團隊標題",
+      "default": "台灣團隊"
+    }, 
+    {
+      "type": "text",
+      "id": "singapore_team_title",
+      "label": "新馬團隊標題",
+      "default": "新馬團隊"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_team_title_underline",
+      "label": "顯示團隊標題底線",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "tab_padding_vertical",
+      "label": "標籤垂直內距",
+      "min": 10,
+      "max": 25,
+      "step": 1,
+      "default": 15,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "tab_padding_horizontal",
+      "label": "標籤水平內距",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "tab_margin_bottom",
+      "label": "標籤區下邊距",
+      "min": 30,
+      "max": 100,
+      "step": 10,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "💳 卡片設定"
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "label": "卡片寬度",
+      "min": 250,
+      "max": 400,
+      "step": 10,
+      "default": 320,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_width_mobile",
+      "label": "卡片寬度 (手機)",
+      "min": 200,
+      "max": 320,
+      "step": 10,
+      "default": 260,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "卡片間距",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 25,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "卡片內距",
+      "min": 20,
+      "max": 50,
+      "step": 5,
+      "default": 35,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "卡片圓角",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_hover_lift",
+      "label": "懸停上升距離",
+      "min": -20,
+      "max": 0,
+      "step": 2,
+      "default": -10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_hover_shadow_opacity",
+      "label": "懸停陰影透明度",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 15,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "⏰ 時段設定"
+    },
+    {
+      "type": "range",
+      "id": "slot_gap",
+      "label": "時段間距",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "slot_padding",
+      "label": "時段內距",
+      "min": 12,
+      "max": 25,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_time_icon",
+      "label": "顯示時間圖標",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "time_icon",
+      "label": "時間圖標",
+      "default": "⏰"
+    },
+    {
+      "type": "header",
+      "content": "🎠 滑動設定"
+    },
+    {
+      "type": "range",
+      "id": "scroll_cards_count",
+      "label": "每次滑動卡片數",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "drag_speed",
+      "label": "拖曳速度",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "touch_sensitivity",
+      "label": "觸控靈敏度",
+      "min": 10,
+      "max": 100,
+      "step": 10,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "✨ 動畫設定"
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "label": "動畫速度",
+      "min": 0.2,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.4,
+      "unit": "s"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bg_decoration",
+      "label": "顯示背景裝飾",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "bg_decoration_opacity",
+      "label": "背景裝飾透明度",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 3,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "bg_animation_duration",
+      "label": "背景動畫持續時間",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "unit": "s"
+    },
+    {
+      "type": "header",
+      "content": "🔤 字體設定"
+    },
+    {
+      "type": "text",
+      "id": "font_family",
+      "label": "字體系列",
+      "default": "'Inter', 'Arial', 'Microsoft JhengHei', sans-serif",
+      "info": "輸入 CSS 字體名稱，多個字體用逗號分隔"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "day",
+      "name": "📅 每日時段",
+      "settings": [
+        {
+          "type": "select",
+          "id": "team",
+          "label": "所屬團隊",
+          "options": [
+            { "value": "taiwan", "label": "台灣團隊" },
+            { "value": "singapore", "label": "新馬團隊" }
+          ],
+          "default": "taiwan"
+        },
+        {
+          "type": "text",
+          "id": "day_name",
+          "label": "星期名稱",
+          "default": "週一"
+        },
+        {
+          "type": "checkbox",
+          "id": "has_stream",
+          "label": "當天有直播",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "status_text",
+          "label": "狀態文字",
+          "default": "直播日"
+        },
+        {
+          "type": "text",
+          "id": "no_stream_text",
+          "label": "無直播提示文字",
+          "default": "本日無直播安排"
+        },
+        {
+          "type": "header",
+          "content": "時段 1"
+        },
+        {
+          "type": "text",
+          "id": "slot1_time",
+          "label": "時間",
+          "default": "14:00 - 16:00"
+        },
+        {
+          "type": "text",
+          "id": "slot1_platform",
+          "label": "平台",
+          "default": "蝦皮購物 & Facebook"
+        },
+        {
+          "type": "header",
+          "content": "時段 2"
+        },
+        {
+          "type": "text",
+          "id": "slot2_time",
+          "label": "時間",
+          "default": "18:00 - 20:00"
+        },
+        {
+          "type": "text",
+          "id": "slot2_platform",
+          "label": "平台",
+          "default": "TikTok Shop"
+        },
+        {
+          "type": "header",
+          "content": "時段 3"
+        },
+        {
+          "type": "text",
+          "id": "slot3_time",
+          "label": "時間",
+          "default": "20:00 - 22:00"
+        },
+        {
+          "type": "text",
+          "id": "slot3_platform",
+          "label": "平台",
+          "default": "YouTube & Instagram"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO 直播時程",
+      "blocks": [
+        {
+          "type": "day",
+          "settings": {
+            "team": "taiwan",
+            "day_name": "週一",
+            "has_stream": true
+          }
+        },
+        {
+          "type": "day",
+          "settings": {
+            "team": "taiwan",
+            "day_name": "週二",
+            "has_stream": true
+          }
+        },
+        {
+          "type": "day",
+          "settings": {
+            "team": "singapore",
+            "day_name": "週一",
+            "has_stream": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

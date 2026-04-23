@@ -1,0 +1,160 @@
+{% comment %}
+  Collection Hero Section - 選購原子系列鍍膜頁-主視覺區塊
+  保持原始 HTML/CSS/JS，不新增功能
+  只將文字改為可在自訂介面維護的設定
+{% endcomment %}
+
+<!-- 結構化資料 (麵包屑導航) -->
+<nav class="breadcrumb container" aria-label="麵包屑導航">
+  <a href="/">{{ section.settings.breadcrumb_home | default: "首頁" }}</a> &gt; 
+  <span>{{ section.settings.breadcrumb_current | default: "選購原子系列鍍膜" }}</span>
+</nav>
+
+<!-- 主視覺區塊 -->
+<section class="main-visual-section" role="banner">
+  <div class="container">
+    <div class="main-visual-content">
+      <!-- 頁面標題區域 -->
+      <header class="page-title-area">
+        <!-- H1 主標題 -->
+        <h1 class="page-title fade-in-up">{{ section.settings.page_title | default: "選購原子系列鍍膜" }}</h1>
+        {%- comment -%}
+        當使用圖片替代文字時，保留文字版本給 SEO
+        <h1 class="page-title image-title fade-in-up">選購原子系列鍍膜</h1>
+        <span class="sr-only">選購原子系列鍍膜 - APGO專業汽車鍍膜</span>
+        {%- endcomment -%}
+      </header>
+    </div>
+  </div>
+</section>
+
+<!-- 購物協助區塊 -->
+<section class="shopping-assistance-section" role="complementary">
+  <div class="container">
+    <div class="assistance-options">
+      <!-- 諮詢專員 -->
+      <div class="assistance-card fade-in-left">
+        <div class="card-subtitle text-small">{{ section.settings.assist1_subtitle | default: "需要專業建議？" }}</div>
+        <a href="#" class="card-link link-text" onclick="handleConsultClick()" role="button">
+          <span class="card-icon" aria-hidden="true">{{ section.settings.assist1_icon | default: "💬" }}</span>
+          {{ section.settings.assist1_link_text | default: "洽詢專員" }}
+        </a>
+      </div>
+
+      <!-- 找門市 -->
+      <div class="assistance-card fade-in-left">
+        <div class="card-subtitle text-small">{{ section.settings.assist2_subtitle | default: "想要實體體驗？" }}</div>
+        <a href="#" class="card-link link-text" onclick="handleStoreClick()" role="button">
+          <span class="card-icon" aria-hidden="true">{{ section.settings.assist2_icon | default: "📍" }}</span>
+          {{ section.settings.assist2_link_text | default: "尋找門市" }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --primary-orange:#f08418; --secondary-orange:#ff9a3c; --text-white:#fff; --text-gray:#ccc; --text-light-gray:#b0b0b0; --dark-bg:#000; --card-bg:rgba(255,255,255,.03); }
+body { font-family:'Arial','Microsoft JhengHei',sans-serif; background:var(--dark-bg); color:var(--text-white); }
+.container { max-width:1200px; margin:0 auto; padding:0 20px; }
+/* H1 */
+h1,.h1{font-size:2.5rem;font-weight:700;color:var(--primary-orange);line-height:1.2;margin:0;}
+.text-secondary{font-size:.9rem;color:var(--text-gray);line-height:1.5;font-weight:400;}
+.link-text{font-size:.9rem;font-weight:600;color:var(--primary-orange);text-decoration:none;transition:all .3s ease;display:inline-flex;align-items:center;gap:6px;}
+.link-text:hover{color:var(--secondary-orange);text-decoration:underline;}
+.text-small{font-size:.8rem;color:var(--text-gray);line-height:1.4;font-weight:400;}
+.main-visual-section{background:var(--dark-bg);padding:40px 0 30px;position:relative;overflow:hidden;}
+.main-visual-section::before{content:'';position:absolute;inset:0;z-index:0;}
+.main-visual-content{position:relative;z-index:2;}
+.page-title-area{margin-bottom:25px;}
+.page-title{margin-bottom:12px;position:relative;}
+.page-title.image-title{text-indent:-9999px;background-size:contain;background-repeat:no-repeat;background-position:left center;height:80px;width:100%;max-width:600px;}
+.page-subtitle{opacity:.9;}
+.shopping-assistance-section{background:var(--dark-bg);padding:20px 0 30px;}
+.assistance-options{display:flex;justify-content:flex-start;gap:20px;flex-direction:column;align-items:flex-start;}
+.assistance-card{background:transparent;border:none;padding:0;text-align:left;transition:all .3s ease;width:auto;display:block;}
+.assistance-card:hover .card-link{color:var(--secondary-orange);text-decoration:underline;}
+.card-subtitle{margin-bottom:4px;}
+.card-icon{font-size:.9rem;opacity:.9;transition:transform .3s ease;}
+.assistance-card:hover .card-icon{transform:scale(1.1);}
+@media (max-width:768px){
+  h1,.h1{font-size:2rem;}
+  .text-secondary{font-size:.85rem;}
+  .link-text{font-size:.85rem;}
+  .text-small{font-size:.75rem;}
+  .main-visual-section{padding:30px 0 20px;}
+  .container{padding:0 15px;}
+  .page-title-area{margin-bottom:20px;}
+  .shopping-assistance-section{padding:15px 0 25px;}
+  .assistance-options{gap:15px;}
+  .page-title.image-title{height:60px;max-width:100%;}
+}
+@media (max-width:480px){
+  h1,.h1{font-size:1.8rem;}
+  .text-secondary{font-size:.8rem;}
+  .link-text{font-size:.8rem;}
+  .text-small{font-size:.7rem;}
+  .page-title.image-title{height:50px;}
+}
+/* 動畫 */
+.fade-in-up{opacity:0;transform:translateY(30px);transition:all .8s ease;}
+.fade-in-up.animate{opacity:1;transform:translateY(0);}
+.fade-in-left{opacity:0;transform:translateX(-30px);transition:all .6s ease;}
+.fade-in-left.animate{opacity:1;transform:translateX(0);}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.breadcrumb{font-size:.75rem;color:var(--text-light-gray);margin-bottom:15px; text-align: center;}
+.breadcrumb a{color:var(--text-light-gray);text-decoration:none;}
+.breadcrumb a:hover{color:var(--primary-orange);}
+{% endstyle %}
+
+{% javascript %}
+function handleConsultClick(){
+  console.log('開啟專員諮詢服務');
+  alert('即將為您開啟專員諮詢服務！');
+}
+function handleStoreClick(){
+  console.log('開啟店鋪查詢功能');
+  alert('即將為您開啟店鋪查詢功能！');
+}
+document.addEventListener('DOMContentLoaded',function(){
+  const titleElements=document.querySelectorAll('.fade-in-up');
+  titleElements.forEach((el,i)=>{setTimeout(()=>{el.classList.add('animate');},200+i*150);});
+  const assistanceCards=document.querySelectorAll('.fade-in-left');
+  assistanceCards.forEach((card,i)=>{setTimeout(()=>{card.classList.add('animate');},600+i*200);});
+});
+function switchToImageTitle(imagePath){
+  const title=document.querySelector('.page-title');
+  title.classList.add('image-title');
+  title.style.backgroundImage=`url('${imagePath}')`;
+  if(!document.querySelector('.sr-only')){
+    const srText=document.createElement('span');
+    srText.className='sr-only';
+    srText.textContent=title.textContent+' - APGO專業汽車鍍膜';
+    title.parentNode.appendChild(srText);
+  }
+}
+window.addEventListener('resize',function(){});
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "選購原子系列鍍膜 - 主視覺區塊",
+  "settings": [
+    { "type": "text", "id": "breadcrumb_home", "label": "麵包屑 - 首頁文字", "default": "首頁" },
+    { "type": "text", "id": "breadcrumb_current", "label": "麵包屑 - 當前頁面", "default": "選購原子系列鍍膜" },
+    { "type": "text", "id": "page_title", "label": "頁面標題", "default": "選購原子系列鍍膜" },
+
+    { "type": "text", "id": "assist1_subtitle", "label": "卡片1 - 副標題", "default": "需要專業建議？" },
+    { "type": "text", "id": "assist1_link_text", "label": "卡片1 - 連結文字", "default": "洽詢專員" },
+    { "type": "text", "id": "assist1_icon", "label": "卡片1 - 圖標(emoji)", "default": "💬" },
+
+    { "type": "text", "id": "assist2_subtitle", "label": "卡片2 - 副標題", "default": "想要實體體驗？" },
+    { "type": "text", "id": "assist2_link_text", "label": "卡片2 - 連結文字", "default": "尋找門市" },
+    { "type": "text", "id": "assist2_icon", "label": "卡片2 - 圖標(emoji)", "default": "📍" }
+  ],
+  "presets": [
+    { "name": "選購原子系列鍍膜 - 主視覺區塊" }
+  ]
+}
+{% endschema %}

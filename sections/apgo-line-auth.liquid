@@ -1,0 +1,332 @@
+{%- comment -%}
+  APGO 會員登入引導 - 與購物車 UI 樣式一致 (cv-card / cv-label / 設計變數)
+  結構與 cart-shell-v2、購物車UI預覽 對齊：全黑底、表面卡、橘色標籤、主 CTA 按鈕。
+{%- endcomment -%}
+
+{% unless customer %}
+  <style>
+    .apgo-line-auth-{{ section.id }} {
+      --dt-bg-screen: #050505;
+      --dt-bg-surface: #121212;
+      --dt-bg-input: #1a1a1a;
+      --dt-border: #333333;
+      --dt-signal-orange: {{ section.settings.accent_color }};
+      --dt-text-primary: {{ section.settings.text_color }};
+      --dt-text-secondary: {{ section.settings.desc_color }};
+      --dt-space: 16px;
+      --dt-radius: 12px;
+      --auth-gap-top: {{ section.settings.margin_top }}px;
+      --auth-gap-bottom: {{ section.settings.margin_bottom }}px;
+      box-sizing: border-box;
+      margin: 0;
+      padding-top: max(var(--auth-gap-top), 12px);
+      padding-bottom: max(var(--auth-gap-bottom), 12px);
+      background: var(--dt-bg-screen);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Microsoft JhengHei", sans-serif;
+    }
+
+    .apgo-line-auth-{{ section.id }} .apgo-line-auth-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 24px;
+      box-sizing: border-box;
+    }
+
+    .apgo-line-auth-{{ section.id }} .cv-card {
+      background: var(--dt-bg-surface);
+      border: 1px solid var(--dt-border);
+      border-radius: var(--dt-radius);
+      padding: 20px;
+    }
+
+    .apgo-line-auth-{{ section.id }} .cv-label {
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--dt-text-secondary);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      display: inline-block;
+    }
+
+    .apgo-line-auth-{{ section.id }} .cv-label--accent {
+      color: var(--dt-signal-orange);
+    }
+
+    .apgo-line-auth-{{ section.id }} .auth-header {
+      margin-bottom: 12px;
+    }
+
+    .apgo-line-auth-{{ section.id }} .auth-body {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--dt-space);
+    }
+
+    .apgo-line-auth-{{ section.id }} .auth-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .apgo-line-auth-{{ section.id }} .auth-highlight {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dt-text-primary);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .apgo-line-auth-{{ section.id }} .auth-detail {
+      font-size: 12px;
+      color: var(--dt-text-secondary);
+      line-height: 1.5;
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    .apgo-line-auth-{{ section.id }} .auth-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .apgo-line-auth-{{ section.id }} .auth-tag {
+      font-size: 10px;
+      letter-spacing: 0.3px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(240, 132, 24, 0.35);
+      background: rgba(240, 132, 24, 0.08);
+      color: #f6c38d;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    .apgo-line-auth-{{ section.id }} .auth-action {
+      flex-shrink: 0;
+    }
+
+    .apgo-line-auth-{{ section.id }} .auth-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 8px;
+      background: var(--dt-signal-orange);
+      color: #000;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.1s ease;
+    }
+
+    .apgo-line-auth-{{ section.id }} .auth-btn:active {
+      transform: scale(0.98);
+    }
+
+    .apgo-line-auth-{{ section.id }} .auth-btn span {
+      position: relative;
+      z-index: 2;
+      color: #000;
+    }
+
+    .apgo-line-auth-{{ section.id }} .auth-btn .scan-line {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      animation: apgo-line-auth-scan-{{ section.id }} 5s infinite linear;
+      z-index: 1;
+    }
+
+    @keyframes apgo-line-auth-scan-{{ section.id }} {
+      0% { left: -100%; }
+      15% { left: 100%; }
+      100% { left: 100%; }
+    }
+
+    .apgo-line-auth-{{ section.id }} .auth-divider {
+      height: 1px;
+      background: var(--dt-border);
+      margin-top: var(--dt-space);
+      opacity: 0.5;
+      border: none;
+    }
+
+    @media screen and (max-width: 480px) {
+      .apgo-line-auth-{{ section.id }} .apgo-line-auth-inner { padding: 0 16px; }
+      .apgo-line-auth-{{ section.id }} .auth-body {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .apgo-line-auth-{{ section.id }} .auth-btn {
+        width: 100%;
+        min-height: 44px;
+      }
+    }
+  </style>
+
+  <div class="apgo-line-auth-{{ section.id }}">
+    <div class="apgo-line-auth-inner">
+    <div class="cv-card">
+      <div class="auth-header">
+        <span class="cv-label cv-label--accent">▶ {{ section.settings.login_title | escape }}</span>
+      </div>
+      <div class="auth-body">
+        <div class="auth-content">
+          <span class="auth-highlight">{{ section.settings.login_highlight | escape }}</span>
+          <p class="auth-detail">{{ section.settings.login_detail | escape }}</p>
+          <div class="auth-tags">
+            {% if section.settings.tag_1 != blank %}<span class="auth-tag"># {{ section.settings.tag_1 | escape }}</span>{% endif %}
+            {% if section.settings.tag_2 != blank %}<span class="auth-tag"># {{ section.settings.tag_2 | escape }}</span>{% endif %}
+            {% if section.settings.tag_3 != blank %}<span class="auth-tag"># {{ section.settings.tag_3 | escape }}</span>{% endif %}
+          </div>
+        </div>
+        <div class="auth-action">
+          <a href="{{ section.settings.login_url }}" class="auth-btn" id="apgoLineBtn-{{ section.id }}" target="_self">
+            <span>{{ section.settings.button_text | escape }}</span>
+            <div class="scan-line" aria-hidden="true"></div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    {% if section.settings.show_divider %}
+      <div class="auth-divider"></div>
+    {% endif %}
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const btn = document.getElementById('apgoLineBtn-{{ section.id }}');
+      if (btn) {
+        btn.addEventListener('click', function() {
+          if ('vibrate' in navigator) navigator.vibrate(10);
+        });
+      }
+    })();
+  </script>
+{% endunless %}
+
+{% schema %}
+{
+  "name": "APGO 會員登入引導",
+  "settings": [
+    {
+      "type": "header",
+      "content": "文字內容設定"
+    },
+    {
+      "type": "text",
+      "id": "login_title",
+      "label": "區塊標題",
+      "default": "會員服務"
+    },
+    {
+      "type": "text",
+      "id": "login_highlight",
+      "label": "重點標題",
+      "default": "即時掌握訂單物流動態"
+    },
+    {
+      "type": "textarea",
+      "id": "login_detail",
+      "label": "描述內容",
+      "default": "登入後可同步追蹤進度，並享有當筆消費之點數回饋。"
+    },
+    {
+      "type": "text",
+      "id": "tag_1",
+      "label": "標籤 1",
+      "default": "訂單追蹤"
+    },
+    {
+      "type": "text",
+      "id": "tag_2",
+      "label": "標籤 2",
+      "default": "點數回饋"
+    },
+    {
+      "type": "text",
+      "id": "tag_3",
+      "label": "標籤 3",
+      "default": "紀錄備份"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "按鈕文字",
+      "default": "LINE 快速登入"
+    },
+    {
+      "type": "text",
+      "id": "login_url",
+      "label": "登入連結路徑",
+      "default": "/account/login?return_to=/cart"
+    },
+    {
+      "type": "header",
+      "content": "視覺與樣式設定"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "品牌強調色 (橘色)",
+      "default": "#f08418"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "主文字顏色",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "描述文字顏色",
+      "default": "#999999"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "顯示底部線條",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "上方間距",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "下方間距",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO 會員登入引導"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,1013 @@
+{% comment %}
+  專業鍍膜產品系列 Section
+  CSS/JS 完全保留，只將內容改為可配置的 blocks
+{% endcomment %}
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary-orange:#f08418;--secondary-orange:#ff9a3c;--text-white:#ffffff;--text-gray:#cccccc;--text-light-gray:#b0b0b0;--dark-bg:#000000;--card-bg:#1a1a1a}
+body{font-family:'Arial','Microsoft JhengHei',sans-serif;background:var(--dark-bg);color:var(--text-white);overflow-x:hidden}
+h2,.h2{font-size:2rem;font-weight:600;color:var(--text-white);line-height:1.3;margin:0}
+h3,.h3{font-size:1.5rem;font-weight:600;color:var(--primary-orange);line-height:1.3;margin:0}
+.text-secondary{font-size:0.9rem;color:var(--text-gray);line-height:1.5;font-weight:400}
+.text-small{font-size:0.8rem;color:var(--text-light-gray);line-height:1.4;font-weight:400}
+.text-tiny{font-size:0.75rem;color:var(--text-light-gray);line-height:1.3;font-weight:400}
+.button-text{font-size:1rem;font-weight:600;color:var(--text-white)}
+.products-header{text-align:left;padding:40px 20px 20px 20px;max-width:1200px;margin:0 auto;width:100%}
+.products-title{margin-bottom:12px;color:var(--primary-orange)}
+.products-subtitle{max-width:700px}
+.products-container{padding:20px 20px 60px 20px;position:relative;width:100%;max-width:100vw}
+.carousel-wrapper{display:flex;gap:25px;overflow-x:auto;overflow-y:hidden;padding:15px 0 25px 0;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--primary-orange) rgba(255,255,255,0.1)}
+.carousel-wrapper::-webkit-scrollbar{height:8px;display:block}
+.carousel-wrapper::-webkit-scrollbar-track{background:rgba(255,255,255,0.1);border-radius:4px}
+.carousel-wrapper::-webkit-scrollbar-thumb{background:var(--primary-orange);border-radius:4px;transition:background 0.3s ease}
+.carousel-wrapper::-webkit-scrollbar-thumb:hover{background:var(--secondary-orange)}
+.products-container::after{content:'';position:absolute;top:20px;right:0;width:30px;height:calc(100% - 80px);background:linear-gradient(90deg,transparent 0%,rgba(0,0,0,0.8) 100%);pointer-events:none;z-index:5}
+.product-item{flex:0 0 auto;width:380px;height:480px;position:relative;display:flex;align-items:center;justify-content:center}
+.product-card{position:relative;width:100%;height:100%;background:var(--card-bg);border-radius:16px;padding:18px;border:1px solid #333;box-shadow:0 8px 24px rgba(0,0,0,0.5);transition:all 0.3s ease;display:flex;flex-direction:column}
+.product-card:hover{box-shadow:0 12px 32px rgba(240,132,24,0.3);transform:translateY(-4px)}
+.top-accent{position:absolute;top:0;left:50%;transform:translateX(-50%);width:85%;height:4px;background:linear-gradient(90deg,var(--primary-orange),var(--secondary-orange));border-radius:16px;z-index:1}
+.product-label{position:absolute;top:18px;right:18px;background:var(--primary-orange);color:var(--text-white);padding:2px 12px;border-radius:15px;font-weight:700;z-index:10}
+.main-content{display:flex;flex-direction:row;align-items:flex-start;flex:1;min-height:0;margin-bottom:18px}
+.visual-area{width:150px;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.visual-area img{width:auto;height:95%;max-width:100%;object-fit:contain;display:block;filter:drop-shadow(0 8px 16px rgba(0,0,0,0.4))}
+.info-section{flex:1;display:flex;flex-direction:column;padding-left:15px;padding-top:35px;height:100%;position:relative}
+.title-area{height:70px;display:flex;flex-direction:column;justify-content:flex-start;margin-bottom:20px;flex-shrink:0}
+.product-title{margin-bottom:8px;height:30px;display:flex;align-items:flex-start}
+.product-intro{height:32px;display:flex;align-items:flex-start}
+.specs-section{flex:1;display:flex;flex-direction:column;gap:12px;margin-bottom:0}
+.spec-item{margin-bottom:0;position:relative}
+.spec-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;position:relative;z-index:2}
+.spec-label{color:#aaa;font-weight:400;text-transform:uppercase;letter-spacing:0.5px}
+.spec-data{font-weight:700;color:var(--text-white);background:linear-gradient(45deg,var(--primary-orange),var(--secondary-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.meter-bg{height:6px;background:#0a0a0a;border-radius:6px;overflow:visible;position:relative;box-shadow:inset 0 1px 3px rgba(0,0,0,0.8),0 1px 0 rgba(255,255,255,0.05)}
+.meter-fill{height:100%;border-radius:6px;position:relative;overflow:hidden;transition:width 1s cubic-bezier(0.4,0,0.2,1);box-shadow:0 2px 6px rgba(240,132,24,0.4),inset 0 1px 0 rgba(255,255,255,0.3)}
+.spec-item:nth-child(1) .meter-fill{background:linear-gradient(90deg,var(--primary-orange) 0%,var(--secondary-orange) 100%)}
+.spec-item:nth-child(2) .meter-fill{background:linear-gradient(90deg,var(--primary-orange) 0%,#ffa847 100%)}
+.spec-item:nth-child(3) .meter-fill{background:linear-gradient(90deg,#ff7a18 0%,#ffaa3c 100%)}
+.spec-item:nth-child(4) .meter-fill{background:linear-gradient(90deg,var(--primary-orange) 0%,#ff8f3c 100%)}
+.meter-fill::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.4) 50%,transparent 100%);animation:shine 3s ease-in-out infinite}
+@keyframes shine{0%{left:-100%}100%{left:200%}}
+.cta-section{width:100%;height:110px;padding:15px;background:rgba(240,132,24,0.08);border:1px solid rgba(240,132,24,0.2);border-radius:12px;backdrop-filter:blur(10px);margin-top:auto;flex-shrink:0;display:flex;flex-direction:column;gap:10px}
+.simple-cta{display:flex;flex-direction:column;gap:12px;height:100%;justify-content:center}
+.price-display{text-align:center}
+.price-range{color:var(--primary-orange);font-weight:600}
+.add-to-cart-btn{background:linear-gradient(45deg,var(--primary-orange),var(--secondary-orange));color:var(--text-white);border:none;border-radius:8px;padding:12px 18px;cursor:pointer;transition:all 0.3s ease;text-transform:none;letter-spacing:0.5px;position:relative;overflow:hidden}
+.add-to-cart-btn:hover{background:linear-gradient(45deg,var(--secondary-orange),var(--primary-orange));transform:translateY(-1px);box-shadow:0 4px 12px rgba(240,132,24,0.3)}
+.add-to-cart-btn:disabled{background:#666;cursor:not-allowed;transform:none;box-shadow:none}
+.titanium-style .product-title{background:linear-gradient(45deg,#4FC3F7,#81E6F3,#4DD0E1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:titanium-glow 3s ease-in-out infinite}
+@keyframes titanium-glow{0%,100%{background:linear-gradient(45deg,#4FC3F7,#81E6F3,#4DD0E1);-webkit-background-clip:text;background-clip:text}50%{background:linear-gradient(45deg,#81E6F3,#4DD0E1,#4FC3F7);-webkit-background-clip:text;background-clip:text}}
+.aurora-style .product-title{color:#4DD0E1 !important;position:relative}
+.aurora-style .product-title::before{content:'✦';position:absolute;top:-5px;right:-8px;font-size:0.7rem;color:#4DD0E1;animation:star-sparkle 2s ease-in-out infinite}
+@keyframes star-sparkle{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
+.glaze-style .product-title{color:#66BB6A !important;position:relative;overflow:hidden}
+.glaze-style .product-title::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);animation:glaze-shine 4s ease-in-out infinite}
+@keyframes glaze-shine{0%{left:-100%}20%{left:100%}100%{left:100%}}
+.crystal-style .product-title{color:#81C784 !important}
+.sealant-style .product-title{color:#D4AF37 !important}
+.basic-style .product-title{color:var(--primary-orange) !important}
+.apgo-variant-modal{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;opacity:0;visibility:hidden;transition:all 0.3s ease}
+.apgo-variant-modal.show{opacity:1;visibility:visible}
+.apgo-modal-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(4px)}
+.apgo-modal-content{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a1a;border-radius:16px;border:1px solid rgba(240,132,24,0.3);box-shadow:0 20px 60px rgba(0,0,0,0.7);max-width:450px;width:90%;overflow:hidden}
+.apgo-modal-header{padding:20px 20px 15px;border-bottom:1px solid rgba(240,132,24,0.2);display:flex;justify-content:space-between;align-items:center}
+.apgo-modal-header h3{color:var(--primary-orange);font-size:1.2rem;font-weight:600;margin:0}
+.apgo-modal-close{background:transparent;border:none;color:#ccc;font-size:1.5rem;cursor:pointer;padding:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all 0.3s ease}
+.apgo-modal-close:hover{background:rgba(240,132,24,0.1);color:var(--primary-orange)}
+.apgo-modal-body{padding:20px}
+.apgo-variant-options{display:flex;flex-direction:column;gap:15px}
+.apgo-variant-choice{display:flex;align-items:center;justify-content:space-between;padding:16px;background:rgba(240,132,24,0.05);border:2px solid rgba(240,132,24,0.2);border-radius:12px;cursor:pointer;transition:all 0.3s ease;position:relative;overflow:hidden}
+.apgo-variant-choice:hover{background:rgba(240,132,24,0.1);border-color:rgba(240,132,24,0.4);transform:translateY(-2px)}
+.apgo-variant-choice.loading{cursor:not-allowed;opacity:0.7}
+.apgo-choice-info h4{color:var(--primary-orange);font-size:1rem;font-weight:600;margin-bottom:4px}
+.apgo-choice-info p{color:#b0b0b0;font-size:0.85rem;margin:0;line-height:1.4}
+.apgo-choice-price{color:var(--text-white);font-size:1.1rem;font-weight:700;background:linear-gradient(45deg,var(--primary-orange),var(--secondary-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.apgo-notification{position:fixed;top:80px;right:20px;max-width:350px;padding:16px 18px;border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,0.6),0 4px 16px rgba(0,0,0,0.4);z-index:99999;transform:translateX(120%);transition:all 0.3s cubic-bezier(0.16,1,0.3,1);background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);border:1px solid rgba(240,132,24,0.3);display:flex;align-items:flex-start;gap:12px;opacity:0}
+.apgo-notification.show{transform:translateX(0);opacity:1}
+.apgo-notification-content{flex:1;display:flex;flex-direction:column;gap:8px}
+.apgo-notification-message{color:var(--text-white);font-size:0.9rem;font-weight:500;line-height:1.4}
+.apgo-notification-link{background:linear-gradient(45deg,var(--primary-orange),var(--secondary-orange));color:var(--text-white);text-decoration:none;padding:8px 16px;border-radius:6px;font-size:0.85rem;font-weight:600;text-align:center;transition:all 0.3s ease;display:inline-block}
+.apgo-notification-link:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(240,132,24,0.3)}
+.apgo-notification-close{background:transparent;border:none;color:inherit;font-size:1.2rem;cursor:pointer;padding:0;opacity:0.7;transition:opacity 0.3s ease;width:20px;height:20px;display:flex;align-items:center;justify-content:center}
+.apgo-notification-close:hover{opacity:1}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media (max-width:768px){
+h2,.h2{font-size:1.6rem}
+h3,.h3{font-size:1.3rem}
+.text-secondary{font-size:0.85rem}
+.text-small{font-size:0.75rem}
+.text-tiny{font-size:0.7rem}
+.button-text{font-size:0.9rem}
+.products-header{padding:30px 20px 15px 20px;margin:0 auto;width:100%}
+.products-container{padding:15px 20px 50px 20px}
+.carousel-wrapper{scrollbar-width:thin;scrollbar-color:var(--primary-orange) rgba(255,255,255,0.2);padding-bottom:15px}
+.carousel-wrapper::-webkit-scrollbar{height:6px;-webkit-appearance:none}
+.carousel-wrapper::-webkit-scrollbar-track{background:rgba(255,255,255,0.2);border-radius:3px}
+.carousel-wrapper::-webkit-scrollbar-thumb{background:var(--primary-orange);border-radius:3px;min-width:30px}
+.products-container::after{width:20px;background:linear-gradient(90deg,transparent 0%,rgba(0,0,0,0.9) 100%)}
+.product-item{width:350px;height:420px}
+.product-card{padding:14px;border-radius:12px}
+.main-content{margin-bottom:12px}
+.visual-area{width:140px}
+.info-section{padding-left:10px}
+.title-area{height:55px;margin-bottom:25px}
+.product-title{font-size:1.1rem;height:24px;margin-bottom:6px}
+.product-intro{font-size:0.65rem;height:24px}
+.specs-section{gap:8px}
+.spec-label,.spec-data{font-size:0.65rem}
+.meter-bg{height:5px}
+.cta-section{height:90px;padding:6px;gap:4px}
+.price-range{font-size:0.8rem}
+.add-to-cart-btn{padding:10px 14px;font-size:0.8rem}
+.apgo-modal-content{width:95%;max-width:none}
+.apgo-modal-header{padding:15px}
+.apgo-modal-body{padding:15px}
+.apgo-variant-choice{padding:12px}
+.apgo-notification{top:70px;right:15px;left:15px;max-width:calc(100vw - 30px);padding:14px 16px;gap:10px}
+.apgo-notification-message{font-size:0.85rem}
+.apgo-notification-link{padding:10px 16px;font-size:0.82rem;justify-content:center}
+.apgo-notification-close{width:22px;height:22px;font-size:1rem}
+}
+@media (max-width:480px){
+h2,.h2{font-size:1.4rem}
+h3,.h3{font-size:1.2rem}
+.text-secondary{font-size:0.8rem}
+.text-small{font-size:0.7rem}
+.text-tiny{font-size:0.65rem}
+.button-text{font-size:0.85rem}
+}
+.add-to-cart-btn:focus{outline:2px solid var(--primary-orange);outline-offset:2px}
+@media (prefers-contrast:high){
+.product-card{border:2px solid var(--text-gray)}
+.product-card:hover{border-color:var(--primary-orange)}
+}
+@media (prefers-reduced-motion:reduce){
+.product-card,.add-to-cart-btn,.meter-fill,.meter-fill::before{transition:none;animation:none}
+.product-card:hover{transform:none}
+}
+.carousel-wrapper {
+  cursor: grab;
+}
+.carousel-wrapper:active {
+  cursor: grabbing;
+}
+</style>
+
+<header class="products-header">
+  <h2 class="products-title">{{ section.settings.title }}</h2>
+  <p class="products-subtitle text-secondary">{{ section.settings.subtitle }}</p>
+</header>
+
+<section class="products-container" role="region" id="coating-products_-2">
+  <div class="carousel-wrapper" role="group">
+    {% assign variants = section.blocks | where: "type", "variant" %}
+    
+    {% for block in section.blocks %}
+      {% if block.type == 'product_card' %}
+      <article class="product-item" {{ block.shopify_attributes }}>
+        <div class="product-card {{ block.settings.style }}">
+          <div class="top-accent"></div>
+          {% if block.settings.label != blank %}
+            <div class="product-label text-tiny">{{ block.settings.label }}</div>
+          {% endif %}
+          
+          <div class="main-content">
+            <div class="visual-area">
+              {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}產品圖片" />
+              {% else %}
+                <img src="{{ block.settings.image_url }}" alt="{{ block.settings.title }}產品圖片" />
+              {% endif %}
+            </div>
+            
+            <div class="info-section">
+              <div class="title-area">
+                <h3 class="product-title">{{ block.settings.title }}</h3>
+                <p class="product-intro text-small">{{ block.settings.intro }}</p>
+              </div>
+              
+              <div class="specs-section">
+                {% if block.settings.spec1_label != blank %}
+                <div class="spec-item">
+                  <div class="spec-row">
+                    <span class="spec-label text-tiny">{{ block.settings.spec1_label }}</span>
+                    <span class="spec-data text-small">{{ block.settings.spec1_value }}</span>
+                  </div>
+                  <div class="meter-bg">
+                    <div class="meter-fill" style="width: {{ block.settings.spec1_percent }}%"></div>
+                  </div>
+                </div>
+                {% endif %}
+                
+                {% if block.settings.spec2_label != blank %}
+                <div class="spec-item">
+                  <div class="spec-row">
+                    <span class="spec-label text-tiny">{{ block.settings.spec2_label }}</span>
+                    <span class="spec-data text-small">{{ block.settings.spec2_value }}</span>
+                  </div>
+                  <div class="meter-bg">
+                    <div class="meter-fill" style="width: {{ block.settings.spec2_percent }}%"></div>
+                  </div>
+                </div>
+                {% endif %}
+                
+                {% if block.settings.spec3_label != blank %}
+                <div class="spec-item">
+                  <div class="spec-row">
+                    <span class="spec-label text-tiny">{{ block.settings.spec3_label }}</span>
+                    <span class="spec-data text-small">{{ block.settings.spec3_value }}</span>
+                  </div>
+                  <div class="meter-bg">
+                    <div class="meter-fill" style="width: {{ block.settings.spec3_percent }}%"></div>
+                  </div>
+                </div>
+                {% endif %}
+                
+                {% if block.settings.spec4_label != blank %}
+                <div class="spec-item">
+                  <div class="spec-row">
+                    <span class="spec-label text-tiny">{{ block.settings.spec4_label }}</span>
+                    <span class="spec-data text-small">{{ block.settings.spec4_value }}</span>
+                  </div>
+                  <div class="meter-bg">
+                    <div class="meter-fill" style="width: {{ block.settings.spec4_percent }}%"></div>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          
+          <div class="cta-section">
+            <div class="simple-cta">
+              <div class="price-display">
+                <span class="price-range text-secondary">{{ block.settings.price }}</span>
+              </div>
+              <button class="add-to-cart-btn button-text" onclick="showModal_{{ section.id | replace: '-', '_' }}('{{ block.id }}')">{{ block.settings.button_text }}</button>
+            </div>
+          </div>
+        </div>
+      </article>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+<!-- 彈窗 -->
+{% for block in section.blocks %}
+  {% if block.type == 'product_card' %}
+  <div class="apgo-variant-modal" id="modal-{{ block.id }}">
+    <div class="apgo-modal-overlay" onclick="closeModal_{{ section.id | replace: '-', '_' }}('{{ block.id }}')"></div>
+    <div class="apgo-modal-content">
+      <div class="apgo-modal-header">
+        <h3>{{ 'coating.title_before' | t }}{{ block.settings.title }}{{ 'coating.title_after' | t }}</h3>
+        <button class="apgo-modal-close" onclick="closeModal_{{ section.id | replace: '-', '_' }}('{{ block.id }}')">&times;</button>
+      </div>
+      <div class="apgo-modal-body">
+        <div class="apgo-variant-options">
+          {% for variant in variants %}
+            {% if variant.settings.parent_key == block.settings.product_key %}
+            <div class="apgo-variant-choice" onclick='addToCartFromModal({{ variant.settings.variant_id }},1,"{{ variant.settings.title }}")'>
+              <div class="apgo-choice-info">
+                <h4>{{ variant.settings.title }}</h4>
+                <p>{{ variant.settings.desc }}</p>
+              </div>
+              <div class="apgo-choice-price">{{ variant.settings.price }}</div>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+{% endfor %}
+
+<script>
+// ===== 購物車管理類別 =====
+class APGOCartManager {
+  constructor() {
+    this.isAdding = false;
+    this.cartRoute = '/cart/add.js';
+    this.cartInfoRoute = '/cart.js';
+  }
+
+  async addToCart(variantId, quantity = 1, productName = '商品', properties = {}) {
+    if (this.isAdding) return;
+    
+    this.isAdding = true;
+    
+    const cartData = {
+      id: parseInt(variantId),
+      quantity: quantity,
+      properties: {
+        '_source': '商品卡片',
+        '_timestamp': new Date().toISOString(),
+        ...properties
+      }
+    };
+
+    try {
+      const response = await fetch(this.cartRoute, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(cartData)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        
+        this.showNotification(productName + ' 已成功加入購物車！', 'success');
+        this.updateCartUI(true);
+        
+        document.dispatchEvent(new CustomEvent('cart:item-added', {
+          detail: { item: data, product: productName }
+        }));
+        
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'add_to_cart', {
+            'currency': 'TWD',
+            'value': data.price / 100,
+            'items': [{
+              'item_id': variantId,
+              'item_name': productName,
+              'quantity': quantity
+            }]
+          });
+        }
+        
+        return { success: true, data: data };
+      } else {
+        const error = await response.json();
+        throw new Error(this.parseErrorMessage(error));
+      }
+      
+    } catch (error) {
+      console.error('Add to cart error:', error);
+      this.showNotification(error.message || '加入購物車失敗，請稍後再試', 'error');
+      return { success: false, error: error.message };
+    } finally {
+      this.isAdding = false;
+    }
+  }
+
+  parseErrorMessage(errorData) {
+    const message = errorData.description || '';
+    
+    if (message.includes('out of stock') || message.includes('sold out')) {
+      return '商品庫存不足，無法加入購物車';
+    } else if (message.includes('invalid')) {
+      return '商品選項無效，請重新選擇';
+    } else if (message.includes('limit')) {
+      return '超出購買數量限制';
+    }
+    
+    return message || '加入購物車失敗';
+  }
+
+  showNotification(message, type = 'info', autoShow = true) {
+    if (!autoShow) return;
+    
+    const existingNotification = document.querySelector('.apgo-notification');
+    if (existingNotification) {
+      existingNotification.remove();
+    }
+
+    const notification = document.createElement('div');
+    notification.className = 'apgo-notification ' + type;
+    
+    const isSuccess = type === 'success';
+    notification.innerHTML = `
+      <div class="apgo-notification-content">
+        <div class="apgo-notification-message">${message}</div>
+        ${isSuccess ? `<a href="/cart" class="apgo-notification-link">查看購物車</a>` : ''}
+      </div>
+      <button class="apgo-notification-close" onclick="this.parentNode.remove()">&times;</button>
+    `;
+
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.classList.add('show');
+    }, 100);
+    
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.remove();
+          }
+        }, 300);
+      }
+    }, 5000);
+  }
+
+  async updateCartUI(showNotifications = false) {
+    try {
+      const cart = await fetch(this.cartInfoRoute).then(response => response.json());
+      
+      const cartCountElements = document.querySelectorAll('.cart-count, [data-cart-count]');
+      cartCountElements.forEach(element => {
+        element.textContent = cart.item_count;
+        element.style.display = cart.item_count > 0 ? 'block' : 'none';
+      });
+      
+      document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+      
+    } catch (error) {
+      console.error('Failed to update cart UI:', error);
+      if (showNotifications) {
+        this.showNotification('購物車更新失敗', 'error');
+      }
+    }
+  }
+}
+
+const cartManager = new APGOCartManager();
+
+// ===== 彈窗控制函數 =====
+function showModal_{{ section.id | replace: '-', '_' }}(blockId) {
+  document.getElementById('modal-' + blockId).classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal_{{ section.id | replace: '-', '_' }}(blockId) {
+  document.getElementById('modal-' + blockId).classList.remove('show');
+  document.body.style.overflow = 'auto';
+}
+
+function closeAllModals() {
+  document.querySelectorAll('.apgo-variant-modal').forEach(modal => {
+    modal.classList.remove('show');
+  });
+  document.body.style.overflow = 'auto';
+}
+
+// ===== 從彈窗加入購物車函數 =====
+async function addToCartFromModal(variantId, quantity, productName) {
+  const clickedChoice = event.currentTarget;
+  const originalContent = clickedChoice.innerHTML;
+  
+  if (clickedChoice.classList.contains('loading')) {
+    return;
+  }
+  
+  clickedChoice.classList.add('loading');
+  clickedChoice.style.opacity = '0.7';
+  clickedChoice.style.cursor = 'not-allowed';
+  clickedChoice.innerHTML = '<div>正在加入購物車...</div>';
+  
+  try {
+    const result = await cartManager.addToCart(variantId, quantity, productName);
+    
+    if (result.success) {
+      closeAllModals();
+    }
+    
+  } catch (error) {
+    console.error('Modal add to cart error:', error);
+  } finally {
+    clickedChoice.classList.remove('loading');
+    clickedChoice.style.opacity = '1';
+    clickedChoice.style.cursor = 'pointer';
+    clickedChoice.innerHTML = originalContent;
+  }
+}
+
+// ===== 滾動控制 =====
+function setupScrollControls() {
+  const carousel = document.querySelector('.carousel-wrapper');
+  if (!carousel) return;
+
+  carousel.addEventListener('wheel', function(e) {
+    if (e.deltaY !== 0) {
+      e.preventDefault();
+      carousel.scrollLeft += e.deltaY;
+    }
+  });
+
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  carousel.addEventListener('mousedown', (e) => {
+    isDown = true;
+    carousel.style.cursor = 'grabbing';
+    startX = e.pageX - carousel.offsetLeft;
+    scrollLeft = carousel.scrollLeft;
+  });
+
+  carousel.addEventListener('mouseleave', () => {
+    isDown = false;
+    carousel.style.cursor = 'grab';
+  });
+
+  carousel.addEventListener('mouseup', () => {
+    isDown = false;
+    carousel.style.cursor = 'grab';
+  });
+
+  carousel.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - carousel.offsetLeft;
+    const walk = (x - startX) * 2;
+    carousel.scrollLeft = scrollLeft - walk;
+  });
+}
+
+// ===== 事件監聽設置 =====
+function setupEventListeners() {
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeAllModals();
+    }
+  });
+
+  document.querySelectorAll('.apgo-modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', closeAllModals);
+  });
+}
+
+// ===== 初始化 =====
+document.addEventListener('DOMContentLoaded', function() {
+  setupScrollControls();
+  setupEventListeners();
+  
+  setTimeout(() => {
+    const meterFills = document.querySelectorAll('.meter-fill');
+    meterFills.forEach(fill => {
+      const width = fill.style.width;
+      fill.style.width = '0%';
+      setTimeout(() => {
+        fill.style.width = width;
+      }, 100);
+    });
+  }, 500);
+
+  cartManager.updateCartUI(false);
+});
+</script>
+
+{% schema %}
+{
+  "name": "鍍膜產品系列展示",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "主標題",
+      "default": "專業鍍膜產品系列"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "副標題",
+      "default": "APGO研發的鍍膜皆不分任何車色、不分任何材質，開始挑選專屬自己的鍍膜吧"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_card",
+      "name": "產品卡片",
+      "settings": [
+        {
+          "type": "text",
+          "id": "product_key",
+          "label": "產品識別碼",
+          "info": "用於關聯變體，需唯一"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "產品名稱"
+        },
+        {
+          "type": "text",
+          "id": "intro",
+          "label": "產品描述"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "標籤文字"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "樣式類型",
+          "options": [
+            {"value": "titanium-style", "label": "鈦晶樣式"},
+            {"value": "aurora-style", "label": "極光樣式"},
+            {"value": "glaze-style", "label": "釉樣式"},
+            {"value": "crystal-style", "label": "微晶樣式"},
+            {"value": "sealant-style", "label": "封體樣式"},
+            {"value": "basic-style", "label": "基礎樣式"}
+          ],
+          "default": "basic-style"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "產品圖片"
+        },
+        {
+          "type": "text",
+          "id": "image_url",
+          "label": "圖片網址（如果沒上傳圖片）"
+        },
+        {
+          "type": "header",
+          "content": "規格設置"
+        },
+        {
+          "type": "text",
+          "id": "spec1_label",
+          "label": "規格1標籤"
+        },
+        {
+          "type": "text",
+          "id": "spec1_value",
+          "label": "規格1數值"
+        },
+        {
+          "type": "range",
+          "id": "spec1_percent",
+          "label": "規格1百分比",
+          "min": 0,
+          "max": 100,
+          "default": 100
+        },
+        {
+          "type": "text",
+          "id": "spec2_label",
+          "label": "規格2標籤"
+        },
+        {
+          "type": "text",
+          "id": "spec2_value",
+          "label": "規格2數值"
+        },
+        {
+          "type": "range",
+          "id": "spec2_percent",
+          "label": "規格2百分比",
+          "min": 0,
+          "max": 100,
+          "default": 80
+        },
+        {
+          "type": "text",
+          "id": "spec3_label",
+          "label": "規格3標籤"
+        },
+        {
+          "type": "text",
+          "id": "spec3_value",
+          "label": "規格3數值"
+        },
+        {
+          "type": "range",
+          "id": "spec3_percent",
+          "label": "規格3百分比",
+          "min": 0,
+          "max": 100,
+          "default": 80
+        },
+        {
+          "type": "text",
+          "id": "spec4_label",
+          "label": "規格4標籤"
+        },
+        {
+          "type": "text",
+          "id": "spec4_value",
+          "label": "規格4數值"
+        },
+        {
+          "type": "range",
+          "id": "spec4_percent",
+          "label": "規格4百分比",
+          "min": 0,
+          "max": 100,
+          "default": 80
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "價格顯示"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "按鈕文字",
+          "default": "挑選"
+        }
+      ]
+    },
+    {
+      "type": "variant",
+      "name": "產品變體",
+      "settings": [
+        {
+          "type": "text",
+          "id": "parent_key",
+          "label": "所屬產品識別碼",
+          "info": "必須與產品卡片的識別碼相同"
+        },
+        {
+          "type": "text",
+          "id": "variant_id",
+          "label": "變體ID (Shopify)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "變體名稱"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "變體價格"
+        },
+        {
+          "type": "textarea",
+          "id": "desc",
+          "label": "變體描述"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO 鍍膜產品系列展示-2",
+      "blocks": [
+        {
+          "type": "product_card",
+          "settings": {
+            "product_key": "titanium",
+            "title": "鈦晶鍍膜",
+            "intro": "高硬度鈦晶結構，極致防護與持久光澤。",
+            "label": "頂規",
+            "style": "titanium-style",
+            "image_url": "https://cdn.shopify.com/s/files/1/0760/8002/1755/files/0_895dd8bc-acff-4324-859d-5d3466502d8a.png?v=1750764774",
+            "spec1_label": "持久度",
+            "spec1_value": "180天",
+            "spec1_percent": 100,
+            "spec2_label": "疏水度",
+            "spec2_value": "95%",
+            "spec2_percent": 95,
+            "spec3_label": "耐洗度",
+            "spec3_value": "30+次",
+            "spec3_percent": 100,
+            "spec4_label": "光澤度",
+            "spec4_value": "98%",
+            "spec4_percent": 98,
+            "price": "NT$0 （全通路停售）",
+            "button_text": "挑選"
+          }
+        },
+        {
+          "type": "variant",
+          "settings": {
+            "parent_key": "titanium",
+            "variant_id": "47298258206971",
+            "title": "鈦晶鍍膜 300ml",
+            "price": "NT$200",
+            "desc": "適合完整車輛施工，提供全面保護"
+          }
+        },
+        {
+          "type": "variant",
+          "settings": {
+            "parent_key": "titanium",
+            "variant_id": "47325922918651",
+            "title": "鈦晶鍍膜 30ml 試用組",
+            "price": "NT$388",
+            "desc": "體驗產品效果，適合小範圍測試"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "product_key": "aurora",
+            "title": "原子極光鍍膜",
+            "intro": "極光般亮澤，強化表面防護，提升美觀。",
+            "label": "乾濕兩用",
+            "style": "aurora-style",
+            "image_url": "https://cdn.shopify.com/s/files/1/0760/8002/1755/files/0_99266a1c-3a81-4c37-90c4-54c56bed2d5e.png?v=1750764774",
+            "spec1_label": "持久度",
+            "spec1_value": "150天",
+            "spec1_percent": 83,
+            "spec2_label": "疏水度",
+            "spec2_value": "80%",
+            "spec2_percent": 80,
+            "spec3_label": "耐洗度",
+            "spec3_value": "20+次",
+            "spec3_percent": 70,
+            "spec4_label": "光澤度",
+            "spec4_value": "80分",
+            "spec4_percent": 80,
+            "price": "NT$1,480",
+            "button_text": "挑選"
+          }
+        },
+        {
+          "type": "variant",
+          "settings": {
+            "parent_key": "aurora",
+            "variant_id": "47326502322427",
+            "title": "原子極光鍍膜",
+            "price": "NT$1,480",
+            "desc": "極光般亮澤，強化表面防護，提升美觀"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "product_key": "glaze",
+            "title": "原子釉鍍膜",
+            "intro": "釉面質感，提升表面滑順與抗污能力。",
+            "label": "濕上",
+            "style": "glaze-style",
+            "image_url": "https://cdn.shopify.com/s/files/1/0760/8002/1755/files/0_9acc880f-5aaf-4783-918f-c4f9d3e2e2b1.png?v=1750764774",
+            "spec1_label": "持久度",
+            "spec1_value": "120天",
+            "spec1_percent": 66,
+            "spec2_label": "疏水度",
+            "spec2_value": "80%",
+            "spec2_percent": 80,
+            "spec3_label": "耐洗次數",
+            "spec3_value": "20+次",
+            "spec3_percent": 66,
+            "spec4_label": "光澤度",
+            "spec4_value": "80分",
+            "spec4_percent": 80,
+            "price": "NT$600~880",
+            "button_text": "挑選"
+          }
+        },
+        {
+          "type": "variant",
+          "settings": {
+            "parent_key": "glaze",
+            "variant_id": "47326489936123",
+            "title": "原子釉鍍膜 200ml",
+            "price": "NT$880",
+            "desc": "標準容量，適合一般車輛使用"
+          }
+        },
+        {
+          "type": "variant",
+          "settings": {
+            "parent_key": "glaze",
+            "variant_id": "47326489968891",
+            "title": "原子釉鍍膜補充包 300ml",
+            "price": "NT$600",
+            "desc": "大容量補充包，更經濟實惠"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "product_key": "crystal",
+            "title": "原子微晶鍍膜",
+            "intro": "微晶結構，細緻保護，提升表面細膩度。",
+            "label": "濕上",
+            "style": "crystal-style",
+            "image_url": "https://cdn.shopify.com/s/files/1/0760/8002/1755/files/0.png?v=1750764774",
+            "spec1_label": "持久度",
+            "spec1_value": "70天",
+            "spec1_percent": 38,
+            "spec2_label": "疏水度",
+            "spec2_value": "70%",
+            "spec2_percent": 70,
+            "spec3_label": "耐洗次數",
+            "spec3_value": "15+次",
+            "spec3_percent": 50,
+            "spec4_label": "光澤度",
+            "spec4_value": "70分",
+            "spec4_percent": 70,
+            "price": "NT$450~550",
+            "button_text": "挑選"
+          }
+        },
+        {
+          "type": "variant",
+          "settings": {
+            "parent_key": "crystal",
+            "variant_id": "47326480040187",
+            "title": "原子微晶鍍膜 300ml",
+            "price": "NT$550",
+            "desc": "標準容量，提供細緻保護效果"
+          }
+        },
+        {
+          "type": "variant",
+          "settings": {
+            "parent_key": "crystal",
+            "variant_id": "47326480072955",
+            "title": "原子微晶鍍膜補充包 300ml",
+            "price": "NT$450",
+            "desc": "補充包裝，持續享受微晶保護"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "product_key": "sealant",
+            "title": "原子封體鍍膜",
+            "intro": "封體技術，長效保護車漆，防止氧化。",
+            "label": "濕上",
+            "style": "sealant-style",
+            "image_url": "https://cdn.shopify.com/s/files/1/0760/8002/1755/files/0_55123166-7e3a-4d9a-ba89-c74055380a83.png?v=1750764774",
+            "spec1_label": "持久度",
+            "spec1_value": "70天",
+            "spec1_percent": 38,
+            "spec2_label": "疏水度",
+            "spec2_value": "65%",
+            "spec2_percent": 65,
+            "spec3_label": "耐洗次數",
+            "spec3_value": "10+次",
+            "spec3_percent": 33,
+            "spec4_label": "光澤度",
+            "spec4_value": "80分",
+            "spec4_percent": 80,
+            "price": "NT$450~550",
+            "button_text": "挑選"
+          }
+        },
+        {
+          "type": "variant",
+          "settings": {
+            "parent_key": "sealant",
+            "variant_id": "47326468931835",
+            "title": "原子封體鍍膜 300ml",
+            "price": "NT$550",
+            "desc": "標準容量，長效保護車漆"
+          }
+        },
+        {
+          "type": "variant",
+          "settings": {
+            "parent_key": "sealant",
+            "variant_id": "47310568325371",
+            "title": "原子封體鍍膜補充包 300ml",
+            "price": "NT$450",
+            "desc": "補充包裝，持續長效保護"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "product_key": "basic",
+            "title": "原子鍍膜",
+            "intro": "經典原子鍍膜，基礎防護與亮澤效果。",
+            "label": "濕上",
+            "style": "basic-style",
+            "image_url": "https://cdn.shopify.com/s/files/1/0760/8002/1755/files/0_6be40b97-0127-463c-aa3f-22644fe177e4.png?v=1750764774",
+            "spec1_label": "持久度",
+            "spec1_value": "30天",
+            "spec1_percent": 16,
+            "spec2_label": "疏水度",
+            "spec2_value": "40%",
+            "spec2_percent": 40,
+            "spec3_label": "耐洗次數",
+            "spec3_value": "8+次",
+            "spec3_percent": 26,
+            "spec4_label": "光澤度",
+            "spec4_value": "60分",
+            "spec4_percent": 60,
+            "price": "NT$199",
+            "button_text": "挑選"
+          }
+        },
+        {
+          "type": "variant",
+          "settings": {
+            "parent_key": "basic",
+            "variant_id": "47326476206331",
+            "title": "原子鍍膜 300ml",
+            "price": "NT$199",
+            "desc": "經典原子鍍膜，基礎防護與亮澤效果"
+          }
+        },
+        {
+          "type": "variant",
+          "settings": {
+            "parent_key": "basic",
+            "variant_id": "47326476239099",
+            "title": "原子鍍膜補充包 300ml",
+            "price": "NT$199",
+            "desc": "補充包裝，持續擁有鍍膜保護"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

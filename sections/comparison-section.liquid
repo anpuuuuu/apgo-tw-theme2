@@ -1,0 +1,478 @@
+{% comment %}
+  Comparison Section - APGO 鍍膜 vs 打蠟 對比
+  放置位置：/sections/comparison-section.liquid
+{% endcomment %}
+
+<section class="comparison-section">
+  <div class="container">
+    <!-- 標題 -->
+    <div class="section-header">
+      <h2 class="section-title">{{ section.settings.title | default: "鍍膜 VS 打蠟" }}</h2>
+      <p class="section-subtitle">{{ section.settings.subtitle | default: "數據會說話，讓您一目瞭然" }}</p>
+    </div>
+ 
+    <!-- 對比表格 -->
+    <div class="comparison-wrapper">
+      <!-- 桌面版 -->
+      <div class="desktop-table">
+        <div class="table-header">
+          <div class="header-cell">{{ 'apgo_comparison.feature_header' | t }}</div>
+          <div class="header-cell">{{ 'apgo_comparison.wax' | t }}</div>
+          <div class="header-cell" style="color: var(--primary-orange);">{{ 'apgo_comparison.coating' | t }}</div>
+        </div>
+
+        {% for feature in section.blocks %}
+        <div class="table-row">
+          <div class="table-cell">
+            <span class="label-highlight"></span>{{ feature.settings.label }}
+          </div>
+          <div class="table-cell">
+            <span class="value-number wax-value">{{ feature.settings.wax_value }}</span>
+            <div class="comparison-bar">
+              <div class="bar-fill wax-bar" style="width: {{ feature.settings.wax_bar | default: '20%' }}"></div>
+            </div>
+          </div>
+          <div class="table-cell">
+            <span class="value-number coating-value">{{ feature.settings.coating_value }}<span class="winner">✓</span></span>
+            <div class="comparison-bar">
+              <div class="bar-fill coating-bar" style="width: {{ feature.settings.coating_bar | default: '90%' }}"></div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- 手機版卡片 -->
+      <div class="mobile-table">
+        {% for feature in section.blocks %}
+        <div class="mobile-card">
+          <div class="mobile-card-title">{{ feature.settings.label }}</div>
+          <div class="mobile-values">
+            <div class="mobile-value-item">
+              <div class="mobile-value-label">{{ 'apgo_comparison.mobile_wax' | t }}</div>
+               <div class="mobile-value-number wax-value">{{ feature.settings.wax_value }}</div>
+               <div class="comparison-bar">
+                 <div class="bar-fill wax-bar" style="width: {{ feature.settings.wax_bar | default: '20%' }}"></div>
+               </div>
+             </div>
+             <div class="mobile-value-item">
+              <div class="mobile-value-label">{{ 'apgo_comparison.mobile_coating' | t }}</div>
+               <div class="mobile-value-number coating-value">{{ feature.settings.coating_value }}<span class="winner">✓</span></div>
+               <div class="comparison-bar">
+                 <div class="bar-fill coating-bar" style="width: {{ feature.settings.coating_bar | default: '90%' }}"></div>
+               </div>
+             </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-area">
+        <p class="cta-text">{{ section.settings.cta_text | default: "選擇 APGO 鍍膜，給愛車最好的保護" }}</p>
+        <a href="{{ section.settings.cta_link | default: '/pages/buy_atomic_coating' }}" class="cta-button">
+          {{ section.settings.cta_button | default: "立即體驗 APGO 鍍膜" }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-orange: #f08418;
+            --secondary-orange: #ff9a3c;
+            --bg-black: #000000;
+            --text-white: #ffffff;
+            --text-gray: #cccccc;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Arial', 'Microsoft JhengHei', sans-serif;
+            background: var(--bg-black);
+            color: var(--text-white);
+        }
+
+        /* 對比區塊 */
+        .comparison-section {
+            background: var(--bg-black);
+            padding: 60px 0;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* 標題區域 */
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary-orange), var(--secondary-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+        }
+
+        /* 對比容器 */
+        .comparison-wrapper {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(240, 132, 24, 0.2);
+            overflow: hidden;
+        }
+
+        /* 桌面版表格 */
+        .desktop-table {
+            display: table;
+            width: 100%;
+        }
+
+        .table-header {
+            display: table-row;
+            background: rgba(240, 132, 24, 0.1);
+        }
+
+        .header-cell {
+            display: table-cell;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-bottom: 2px solid rgba(240, 132, 24, 0.3);
+        }
+
+        .header-cell:first-child {
+            text-align: left;
+            width: 40%;
+        }
+
+        .table-row {
+            display: table-row;
+            transition: background 0.3s ease;
+        }
+
+        .table-row:hover {
+            background: rgba(240, 132, 24, 0.05);
+        }
+
+        .table-cell {
+            display: table-cell;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+
+        .table-cell:first-child {
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .label-highlight {
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background: var(--primary-orange);
+            border-radius: 2px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        /* 數值樣式 */
+        .value-number {
+            font-size: 1.3rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .wax-value {
+            color: var(--text-gray);
+        }
+
+        .coating-value {
+            color: var(--primary-orange);
+        }
+
+        /* 進度條 */
+        .comparison-bar {
+            width: 100%;
+            max-width: 120px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 1.5s ease;
+        }
+
+        .wax-bar {
+            background: #666666;
+        }
+
+        .coating-bar {
+            background: linear-gradient(90deg, var(--primary-orange), var(--secondary-orange));
+        }
+
+        /* 手機版表格 */
+        .mobile-table {
+            display: none;
+        }
+
+        .mobile-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .mobile-card-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .mobile-values {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .mobile-value-item {
+            flex: 1;
+            text-align: center;
+            padding: 12px 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .mobile-value-label {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            margin-bottom: 6px;
+        }
+
+        .mobile-value-number {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        /* CTA 區域 */
+        .cta-area {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(240, 132, 24, 0.05);
+        }
+
+        .cta-text {
+            font-size: 1rem;
+            color: var(--text-gray);
+            margin-bottom: 16px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 14px 36px;
+            background: linear-gradient(45deg, var(--primary-orange), var(--secondary-orange));
+            color: var(--text-white);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .comparison-section {
+                padding: 40px 0;
+            }
+
+            .container {
+                padding: 0 12px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .section-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .desktop-table {
+                display: none;
+            }
+
+            .mobile-table {
+                display: block;
+                padding: 16px;
+            }
+
+            .comparison-wrapper {
+                border-radius: 16px;
+            }
+
+            .mobile-value-number {
+                font-size: 0.9rem;
+            }
+
+            .comparison-bar {
+                max-width: 80px;
+                height: 4px;
+            }
+
+            .cta-area {
+                padding: 24px 16px;
+            }
+
+            .cta-button {
+                padding: 12px 28px;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .mobile-card {
+                padding: 12px;
+            }
+
+            .mobile-values {
+                gap: 8px;
+            }
+
+            .mobile-value-item {
+                padding: 10px 6px;
+            }
+
+            .mobile-value-label {
+                font-size: 0.75rem;
+            }
+
+            .mobile-value-number {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* 勝利標記 */
+        .winner {
+            color: var(--primary-orange);
+            font-size: 0.9rem;
+            margin-left: 4px;
+        }
+
+        /* 動畫 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header,
+        .comparison-wrapper {
+            animation: fadeIn 0.8s ease;
+        }
+{% endstyle %}
+
+{% javascript %}
+  // 進度條進場動畫
+  document.addEventListener('DOMContentLoaded',function(){
+    const bars=document.querySelectorAll('.bar-fill');
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          bars.forEach((bar,i)=>{
+            const width=bar.style.width;
+            bar.style.width='0';
+            setTimeout(()=>{bar.style.width=width;},100+i*100);
+          });
+          observer.disconnect();
+        }
+      });
+    });
+    const section=document.querySelector('.comparison-section');
+    if(section)observer.observe(section);
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "APGO 鍍膜 vs 打蠟對比",
+  "settings": [
+    { "type": "text", "id": "title", "label": "標題" },
+    { "type": "text", "id": "subtitle", "label": "副標題" },
+    { "type": "text", "id": "cta_text", "label": "CTA 說明文字" },
+    { "type": "text", "id": "cta_button", "label": "CTA 按鈕文字" },
+    { "type": "url", "id": "cta_link", "label": "CTA 按鈕連結" }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "對比項目",
+      "settings": [
+        { "type": "text", "id": "label", "label": "比較項目名稱" },
+        { "type": "text", "id": "wax_value", "label": "打蠟數值" },
+        { "type": "text", "id": "wax_bar", "label": "打蠟條長度 (%)", "default": "20%" },
+        { "type": "text", "id": "coating_value", "label": "鍍膜數值" },
+        { "type": "text", "id": "coating_bar", "label": "鍍膜條長度 (%)", "default": "90%" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "APGO 鍍膜 vs 打蠟對比", "blocks": [
+      { "type": "feature", "settings": { "label": "施作時間", "wax_value": "3小時", "wax_bar": "20%", "coating_value": "30-60 分鐘", "coating_bar": "90%" }},
+      { "type": "feature", "settings": { "label": "持久度", "wax_value": "1-2 個月", "wax_bar": "15%", "coating_value": "2-3 年", "coating_bar": "95%" }},
+      { "type": "feature", "settings": { "label": "耐高溫", "wax_value": "60°C", "wax_bar": "30%", "coating_value": "200°C+", "coating_bar": "98%" }},
+      { "type": "feature", "settings": { "label": "耐洗次數", "wax_value": "5-10 次", "wax_bar": "10%", "coating_value": "300+ 次", "coating_bar": "95%" }},
+      { "type": "feature", "settings": { "label": "疏水效果", "wax_value": "一般", "wax_bar": "40%", "coating_value": "極佳", "coating_bar": "98%" }},
+      { "type": "feature", "settings": { "label": "光澤度", "wax_value": "85%", "wax_bar": "85%", "coating_value": "98%", "coating_bar": "98%" }}
+    ]}
+  ]
+}
+{% endschema %}

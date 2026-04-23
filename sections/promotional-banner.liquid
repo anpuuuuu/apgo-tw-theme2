@@ -1,0 +1,153 @@
+{% comment %} sections/promotional-banner.liquid {% endcomment %}
+
+<div class="header-promo-banner-wrapper">
+  <div class="header-promo-banner">
+    <div class="header-promo-content">
+      <div class="header-promo-text">{{ section.settings.promo_text }}</div>
+      <div class="header-promo-tag">{{ section.settings.promo_tag }}</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .header-promo-banner-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+  }
+
+  .header-promo-banner {
+    justify-content: center;
+    align-items: center;
+    display: inline-flex;
+  }
+
+  .header-promo-content {
+    height: 48px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    display: flex;
+  }
+
+  .header-promo-text {
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    color: #FF9D00;
+    font-size: 22px;
+    font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 22px;
+    word-wrap: break-word;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .header-promo-text:hover {
+    color: #ffb84d;
+  }
+
+  .header-promo-tag {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background: #F52424;
+    border-top-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+    color: black;
+    font-size: 16px;
+    font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    line-height: 16px;
+    word-wrap: break-word;
+  }
+
+  /* 手機響應式 */
+  @media (max-width: 450px) {
+    .header-promo-banner-wrapper {
+      padding: 12px 0;
+    }
+
+    .header-promo-content {
+      height: 40px;
+      padding-left: 8px;
+      padding-right: 8px;
+      gap: 8px;
+    }
+
+    .header-promo-text {
+      font-size: 20px;
+      line-height: 20px;
+    }
+
+    .header-promo-tag {
+      padding-left: 6px;
+      padding-right: 6px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      font-size: 14px;
+      line-height: 14px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const promoBanner = document.querySelector('.header-promo-banner');
+    
+    if (promoBanner) {
+      promoBanner.addEventListener('click', function() {
+        const linkUrl = '{{ section.settings.promo_link }}';
+        
+        if (linkUrl) {
+          window.location.href = linkUrl;
+        }
+      });
+
+      // 添加鼠標指針樣式
+      promoBanner.style.cursor = 'pointer';
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "促銷橫幅",
+  "settings": [
+    {
+      "type": "text",
+      "id": "promo_text",
+      "label": "促銷文字",
+      "default": "雙11瘋狂購物節"
+    },
+    {
+      "type": "text",
+      "id": "promo_tag",
+      "label": "標籤文字",
+      "default": "Hot"
+    },
+    {
+      "type": "url",
+      "id": "promo_link",
+      "label": "跳轉鏈接",
+      "info": "點擊橫幅跳轉的頁面或外部鏈接"
+    }
+  ],
+  "presets": [
+    {
+      "name": "促銷橫幅"
+    }
+  ]
+}
+{% endschema %}

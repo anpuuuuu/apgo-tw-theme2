@@ -1,0 +1,422 @@
+{% comment %} sections/shopping-guarantee.liquid {% endcomment %}
+<section class="shopping-guarantee">
+  <div class="guarantee-container">
+    <div class="guarantee-header">
+      <h2 class="guarantee-title">{{ section.settings.guarantee_main_title }}</h2>
+      <p class="guarantee-subtitle">{{ section.settings.guarantee_subtitle }}</p>
+    </div>
+
+    <div class="guarantee-cards-wrapper">
+      {% for block in section.blocks %}
+        {% if block.type == 'guarantee_item' %}
+          <div class="guarantee-card">
+            <div class="guarantee-card-content">
+              {% if block.settings.card_type == 'refund' %}
+                <div class="refund-number">
+                  <span class="refund-days">{{ block.settings.refund_days }}</span>
+                  <span class="refund-unit">{{ block.settings.refund_unit }}</span>
+                </div>
+              {% else %}
+                <div class="guarantee-icon" data-svg-type="{{ block.settings.card_type }}">
+                  {% if block.settings.card_type == 'customer_service' %}
+                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M36.5002 33.125C39.2692 33.125 41.4588 33.1239 43.2202 33.2678C45.0035 33.4135 46.5128 33.7171 47.8906 34.4189L48.3057 34.6411C50.3502 35.787 52.0138 37.5148 53.0811 39.6094L53.208 39.8694C53.8202 41.1769 54.0956 42.608 54.2322 44.2798C54.3761 46.0412 54.375 48.2308 54.375 50.9998V52.5C54.375 53.5355 53.5355 54.375 52.5 54.375H7.5C6.46447 54.375 5.625 53.5355 5.625 52.5V50.9998C5.625 48.2308 5.62393 46.0412 5.76782 44.2798C5.91352 42.4965 6.21704 40.9872 6.91895 39.6094L7.14111 39.1943C8.28696 37.1498 10.0148 35.4862 12.1094 34.4189L12.3694 34.292C13.6769 33.6798 15.108 33.4044 16.7798 33.2678C18.5412 33.1239 20.7308 33.125 23.4998 33.125H36.5002ZM23.4998 36.875C20.6688 36.875 18.6583 36.8771 17.085 37.0056C15.7271 37.1166 14.8215 37.3143 14.1064 37.6221L13.811 37.76C12.3779 38.4902 11.1966 39.6289 10.4126 41.0278L10.26 41.311C9.87217 42.0722 9.63238 43.0334 9.50562 44.585C9.38282 46.088 9.37537 47.9899 9.375 50.625H50.625C50.6246 47.9899 50.6172 46.088 50.4944 44.585C50.3834 43.2271 50.1857 42.3215 49.8779 41.6064L49.74 41.311C49.0097 39.8778 47.8713 38.6954 46.4722 37.9114L46.189 37.76C45.4278 37.3722 44.4666 37.1324 42.915 37.0056C41.3417 36.8771 39.3312 36.875 36.5002 36.875H23.4998Z" fill="#FF9D00"/>
+                      <path d="M42.53 20.6492C42.53 18.5789 40.8556 16.8992 38.7874 16.8906L38.7715 16.2656C41.1922 16.2656 43.155 18.2284 43.155 20.6492L43.1489 20.8738C43.0356 23.1152 41.2386 24.9129 38.9973 25.0266L38.9802 24.3992C40.9585 24.2908 42.5298 22.6545 42.53 20.6492Z" fill="#FF9D00"/>
+                      <path d="M38.7715 25.0319C41.1922 25.0319 43.1546 23.0695 43.1546 20.6488C43.1546 18.228 41.1922 16.2656 38.7715 16.2656" fill="#FF9D00"/>
+                      <path d="M41.28 20.6492C41.28 19.264 40.1567 18.1406 38.7715 18.1406V14.3906C42.2278 14.3906 45.03 17.1929 45.03 20.6492C45.0298 24.1053 42.2276 26.9065 38.7715 26.9065V23.1565C40.1566 23.1565 41.2798 22.0342 41.28 20.6492Z" fill="#FF9D00"/>
+                      <path d="M16.8574 20.646C16.8574 18.3009 18.6992 16.3859 21.0151 16.2686L21.031 16.8923C19.0529 17.001 17.4824 18.6407 17.4824 20.646C17.4826 22.7158 19.1561 24.3931 21.2239 24.4021L21.241 25.0283C18.8957 25.0283 16.9807 23.1868 16.8635 20.8706L16.8574 20.646Z" fill="#FF9D00"/>
+                      <path d="M21.2406 16.2656C18.8198 16.2656 16.8574 18.228 16.8574 20.6488C16.8574 23.0695 18.8198 25.0319 21.2406 25.0319" fill="#FF9D00"/>
+                      <path d="M14.9824 20.6492C14.9824 17.1929 17.7847 14.3906 21.241 14.3906V18.1406C19.8558 18.1406 18.7324 19.264 18.7324 20.6492C18.7326 22.0342 19.8559 23.1565 21.241 23.1565V26.9065C17.7848 26.9065 14.9826 24.1053 14.9824 20.6492Z" fill="#FF9D00"/>
+                      <path d="M36.8865 24.0344V15.3894C36.8863 12.2486 33.9909 9.375 29.9944 9.375C25.9981 9.3752 23.1037 12.2487 23.1035 15.3894V25.0391C23.1035 26.0746 22.264 26.9141 21.2285 26.9141C20.193 26.9141 19.3535 26.0746 19.3535 25.0391V15.3894C19.3537 9.81585 24.3083 5.6252 29.9944 5.625C35.6806 5.625 40.6363 9.81572 40.6365 15.3894V24.0344C40.6364 25.6655 39.9105 27.3704 38.377 28.3557L38.0583 28.5425C36.3391 29.4701 33.3987 30.7275 29.9944 30.7275C28.959 30.7273 28.1194 29.8879 28.1194 28.8525C28.1197 27.8174 28.9592 26.9778 29.9944 26.9775C32.5211 26.9775 34.825 26.0272 36.2786 25.2429L36.3982 25.166C36.6706 24.9609 36.8864 24.5774 36.8865 24.0344Z" fill="#FF9D00"/>
+                    </svg>
+                  {% elsif block.settings.card_type == 'tutorial' %}
+                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12.5 55H47.5C48.8807 55 50 53.8807 50 52.5V17.5H37.5V5H12.5C11.1193 5 10 6.11929 10 7.5V52.5C10 53.8807 11.1193 55 12.5 55Z" stroke="#FF9D00" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M37.5 5L50 17.5" stroke="#FF9D00" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M17.5 26.25H34.366V30.625L42.5 27.5V41.25L34.366 38.125V42.5H17.5V26.25Z" stroke="#FF9D00" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  {% elsif block.settings.card_type == 'location' %}
+                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M22.5 29.9215V12.5C22.5 8.35786 25.8579 5 30 5C34.1421 5 37.5 8.35786 37.5 12.5V15.0071" stroke="#FF9D00" stroke-width="4" stroke-linecap="round"/>
+                      <path d="M37.5 30.0049V47.5005C37.5 51.6426 34.1421 55.0005 30 55.0005C25.8579 55.0005 22.5 51.6426 22.5 47.5005V44.963" stroke="#FF9D00" stroke-width="4" stroke-linecap="round"/>
+                      <path d="M30 37.5H12.4802C8.34899 37.5 5 34.1421 5 30C5 25.8579 8.34899 22.5 12.4802 22.5H14.9857" stroke="#FF9D00" stroke-width="4" stroke-linecap="round"/>
+                      <path d="M30 22.5H47.486C51.6359 22.5 55 25.8579 55 30C55 34.1421 51.6359 37.5 47.486 37.5H45.0829" stroke="#FF9D00" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                  {% endif %}
+                </div>
+              {% endif %}
+
+              <div class="guarantee-card-info">
+                <h3 class="guarantee-card-title">{{ block.settings.card_title }}</h3>
+                <p class="guarantee-card-description">{{ block.settings.card_description }}</p>
+              </div>
+
+              <div class="guarantee-card-link">
+                {{ block.settings.card_link_text }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .shopping-guarantee {
+    width: 100%;
+    padding: 40px 0;
+    background-color: black;
+  }
+
+  .guarantee-container {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  .guarantee-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .guarantee-title {
+    height: 36px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #ff9d00;
+    font-size: 32px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    line-height: 44px;
+    word-wrap: break-word;
+    margin: 0;
+  }
+
+  .guarantee-subtitle {
+    height: 28px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #e4e4e7;
+    font-size: 20px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    line-height: 24px;
+    word-wrap: break-word;
+    margin: 0;
+  }
+
+  .guarantee-cards-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .guarantee-card {
+    width: 391px;
+    padding: 20px;
+    background: #312107;
+    border-radius: 20px;
+    border: 1px solid #62420e;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .guarantee-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+  }
+
+.refund-number {
+  width: auto;
+  height: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.refund-days {
+  display: inline;
+  color: #ff9d00;
+  font-size: 56px;
+  font-family: 'OPPO Sans 4.0', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 700;
+  line-height: 56px;
+}
+
+.refund-unit {
+  display: inline;
+  color: #ff9d00;
+  font-size: 24px;
+  font-family: 'OPPO Sans 4.0', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+  .guarantee-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .guarantee-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .guarantee-card-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+  }
+
+  .guarantee-card-title {
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 20px;
+    word-wrap: break-word;
+    margin: 0;
+  }
+
+  .guarantee-card-description {
+    text-align: center;
+    color: #e4e4e7;
+    font-size: 16px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    line-height: 18px;
+    word-wrap: break-word;
+    margin: 0;
+  }
+
+  .guarantee-card-link {
+    text-align: center;
+    color: #ff9d00;
+    font-size: 16px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    line-height: 18px;
+    word-wrap: break-word;
+    cursor: pointer;
+  }
+
+  /* ===== 手机响应式 ===== */
+  @media (max-width: 450px) {
+    .guarantee-container {
+      padding: 0 12px;
+      gap: 24px;
+    }
+
+    .guarantee-title {
+      font-size: 20px;
+      line-height: 28px;
+      height: auto;
+    }
+
+    .guarantee-subtitle {
+      font-size: 14px;
+      line-height: 20px;
+      height: auto;
+    }
+
+.guarantee-cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+    .guarantee-card {
+      width: 100%;
+      min-height: 230px;
+    }
+
+
+    .guarantee-card-title {
+      font-size: 16px;
+      line-height: 20px;
+      min-height: 40px;
+    }
+
+    .guarantee-card-description {
+      font-size: 14px;
+      line-height: 16px;
+    }
+
+    .guarantee-card-link {
+      font-size: 14px;
+      line-height: 16px;
+    }
+
+    .refund-number {
+      width: auto;
+      height: auto;
+    }
+
+    .refund-days {
+      font-size: 55px;
+      line-height: 58px;
+    }
+
+    .refund-unit {
+      font-size: 18px;
+      line-height: 18px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "安全保障",
+  "settings": [
+    {
+      "type": "text",
+      "id": "guarantee_main_title",
+      "label": "主标题",
+      "default": "安心購物保障"
+    },
+    {
+      "type": "text",
+      "id": "guarantee_subtitle",
+      "label": "副标题",
+      "default": "您的每一次選擇，APGO 都將提供最堅實的承諾與支持"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "guarantee_item",
+      "name": "保障項目",
+      "settings": [
+        {
+          "type": "select",
+          "id": "card_type",
+          "label": "卡片類型",
+          "options": [
+            {
+              "value": "refund",
+              "label": "退款保證"
+            },
+            {
+              "value": "customer_service",
+              "label": "24小時客服"
+            },
+            {
+              "value": "tutorial",
+              "label": "教學影片"
+            },
+            {
+              "value": "location",
+              "label": "服務據點"
+            }
+          ],
+          "default": "refund"
+        },
+        {
+          "type": "text",
+          "id": "refund_days",
+          "label": "退款天數（退款保證類型使用）",
+          "default": "30"
+        },
+        {
+          "type": "text",
+          "id": "refund_unit",
+          "label": "退款單位（退款保證類型使用）",
+          "default": "天"
+        },
+        {
+          "type": "text",
+          "id": "card_title",
+          "label": "卡片標題",
+          "default": "無憂退費承諾"
+        },
+        {
+          "type": "text",
+          "id": "card_description",
+          "label": "卡片描述",
+          "default": "業界良心保證，讓您零風險試用"
+        },
+        {
+          "type": "text",
+          "id": "card_link_text",
+          "label": "連結文字",
+          "default": "點擊查看詳情"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "安全保障",
+      "blocks": [
+        {
+          "type": "guarantee_item",
+          "settings": {
+            "card_type": "refund",
+            "refund_days": "30",
+            "refund_unit": "天",
+            "card_title": "無憂退費承諾",
+            "card_description": "業界良心保證，讓您零風險試用",
+            "card_link_text": "點擊查看詳情"
+          }
+        },
+        {
+          "type": "guarantee_item",
+          "settings": {
+            "card_type": "customer_service",
+            "card_title": "24H 全天候線上客服",
+            "card_description": "專業團隊即時支持，問題隨時解答",
+            "card_link_text": "點擊查看詳情"
+          }
+        },
+        {
+          "type": "guarantee_item",
+          "settings": {
+            "card_type": "tutorial",
+            "card_title": "手把手教學影片",
+            "card_description": "新手也能變專家，輕鬆打造完美效果",
+            "card_link_text": "點擊查看詳情"
+          }
+        },
+        {
+          "type": "guarantee_item",
+          "settings": {
+            "card_type": "location",
+            "card_title": "全台服務據點",
+            "card_description": "近距離體驗專業，售後服務更安心",
+            "card_link_text": "點擊查看詳情"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

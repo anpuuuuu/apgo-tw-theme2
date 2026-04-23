@@ -1,0 +1,705 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "double_eleven_main": {
+      "type": "double-eleven",
+      "settings": {
+        "hero_banner_image_desktop": "shopify://shop_images/banner_6.png",
+        "hero_banner_image_mobile": "shopify://shop_images/banner_5.png",
+        "section_id": "section-hero"
+      }
+    },
+    "custom_navigation_hymj9Q": {
+      "type": "custom-navigation",
+      "blocks": {
+        "nav_item_9RdtWU": {
+          "type": "nav_item",
+          "name": "琺瑯晶· 買多送多",
+          "disabled": true,
+          "settings": {
+            "nav_label": "琺瑯晶·買多送多",
+            "nav_section_id": "warmup-activity"
+          }
+        },
+        "nav_item_FcxyjE": {
+          "type": "nav_item",
+          "settings": {
+            "nav_label": "最後三天倒數",
+            "nav_section_id": "section-final-rush"
+          }
+        },
+        "nav_item_R4WWRk": {
+          "type": "nav_item",
+          "name": "琉璃釉·買一送一",
+          "settings": {
+            "nav_label": "琉璃釉·買一送一",
+            "nav_section_id": "section-main-sale"
+          }
+        },
+        "nav_item_pcnBdk": {
+          "type": "nav_item",
+          "name": "G11 · 買一送二",
+          "settings": {
+            "nav_label": "G11 · 買一送二",
+            "nav_section_id": "section-main-sale"
+          }
+        },
+        "nav_item_AyGPP6": {
+          "type": "nav_item",
+          "name": "66元·洗車藥劑",
+          "settings": {
+            "nav_label": "66元·洗車藥劑",
+            "nav_section_id": "section-selected-products"
+          }
+        },
+        "nav_item_jtcYkN": {
+          "type": "nav_item",
+          "name": "精選商品· 現省11%",
+          "settings": {
+            "nav_label": "精選商品·現省11%",
+            "nav_section_id": "other-selected"
+          }
+        },
+        "nav_item_MeRV73": {
+          "type": "nav_item",
+          "name": "限量優惠券·先搶先贏 ",
+          "settings": {
+            "nav_label": "限量優惠券·先搶先贏 ",
+            "nav_section_id": "flash-discount"
+          }
+        },
+        "nav_item_YeJGUQ": {
+          "type": "nav_item",
+          "name": "限量·滿額贈",
+          "settings": {
+            "nav_label": "限量·滿額贈",
+            "nav_section_id": "gift-promo"
+          }
+        },
+        "nav_item_VMD9cj": {
+          "type": "nav_item",
+          "name": "下單即贈 · 全站滿額贈",
+          "disabled": true,
+          "settings": {
+            "nav_label": "下單即贈·全站滿額贈",
+            "nav_section_id": "section-1"
+          }
+        }
+      },
+      "block_order": [
+        "nav_item_9RdtWU",
+        "nav_item_FcxyjE",
+        "nav_item_R4WWRk",
+        "nav_item_pcnBdk",
+        "nav_item_AyGPP6",
+        "nav_item_jtcYkN",
+        "nav_item_MeRV73",
+        "nav_item_YeJGUQ",
+        "nav_item_VMD9cj"
+      ],
+      "name": "活動模板 - 自定義導航欄",
+      "settings": {}
+    },
+    "final_rush_LaPtt4": {
+      "type": "final-rush",
+      "name": "活動模板 - 最後3天加單狂歡",
+      "settings": {
+        "final_rush_background_image_mobile": "shopify://shop_images/Section.png",
+        "final_rush_title": "最後3天加單狂歡",
+        "final_rush_subtitle": "11/12 - 11/14 限時加碼 同上11/1-11/11所有活動",
+        "countdown_end_time": "2025-11-14T23:59:59",
+        "countdown_label_days": "Days",
+        "countdown_label_hours": "Hrs",
+        "countdown_label_minutes": "Mins",
+        "countdown_label_seconds": "Secs",
+        "final_rush_notes_title": "",
+        "final_rush_notes_content": "<p> </p>",
+        "final_rush_cta_text": "把握最後機會",
+        "section_id": "section-final-rush"
+      }
+    },
+    "main_sale_section_xCy8AL": {
+      "type": "main-sale-section",
+      "blocks": {
+        "sub_product_XR4dtd": {
+          "type": "sub_product",
+          "name": "G11測速器",
+          "settings": {
+            "sub_product_image": "shopify://shop_images/1928.png",
+            "sub_product_name": "G11測速器",
+            "sub_product_promo": "買就送  ·車內清潔＋車內鍍膜",
+            "sub_product_original_price": "$2588",
+            "sub_product_sale_price": "$1888",
+            "sub_product_link": "shopify://products/apgo-g11-plus"
+          }
+        },
+        "sub_product_GkmDV9": {
+          "type": "sub_product",
+          "name": "電動噴壺組",
+          "settings": {
+            "sub_product_image": "shopify://shop_images/1929_2.png",
+            "sub_product_name": "電動噴壺組",
+            "sub_product_promo": "買就送 高泡洗車液+毛絨手套+一次性九合一磁土",
+            "sub_product_original_price": "$2588",
+            "sub_product_sale_price": "$1700",
+            "sub_product_link": "shopify://products/apgo-pressure-foam-sprayer"
+          }
+        }
+      },
+      "block_order": [
+        "sub_product_XR4dtd",
+        "sub_product_GkmDV9"
+      ],
+      "name": "活動模板 - 活動主軸日",
+      "settings": {
+        "main_sale_title": "雙11活動主軸日",
+        "main_sale_subtitle": "主要活動 (11/8 - 11/11)",
+        "main_product_date": "11.11",
+        "main_product_name": "琉璃釉鍍膜",
+        "main_product_original_price": "NT$3,998",
+        "main_product_sale_price": "NT$1,999",
+        "main_product_promo": "買一送一，限量111組",
+        "main_product_discount": "售完不補",
+        "main_product_image": "shopify://shop_images/731cbf9884d8bb22f836acee111b8344.png",
+        "main_product_image_mobile": "shopify://shop_images/70780169.png",
+        "main_product_link": "shopify://products/apgo-atomic-colored-glaze",
+        "section_id": "section-main-sale"
+      }
+    },
+    "warmup_selected_products_NrXzen": {
+      "type": "warmup-selected-products",
+      "blocks": {
+        "selected_product_gzhRba": {
+          "type": "selected_product",
+          "name": "鐵粉去除劑",
+          "settings": {
+            "product_image": "shopify://shop_images/522eb0c16ecf85591cc4b3190fa81238_eb282738-9231-483b-9530-8fcd622cae3a.png",
+            "product_name": "鐵粉去除劑",
+            "product_desc": "中性配方，紫爆反應立即見效",
+            "product_original_price": "NT$130",
+            "product_sale_price": "特價 NT$66",
+            "product_link": "shopify://products/66-1111"
+          }
+        },
+        "selected_product_dYnXyM": {
+          "type": "selected_product",
+          "name": "萬用清潔劑",
+          "settings": {
+            "product_image": "shopify://shop_images/500_549752cd-a6a9-469b-a357-86fb65ac3736.png",
+            "product_name": "萬用清潔劑",
+            "product_desc": "車用、家用、萬用",
+            "product_original_price": "NT$130",
+            "product_sale_price": "特價 NT$66",
+            "product_link": "shopify://products/66-1111"
+          }
+        },
+        "selected_product_NrdYkn": {
+          "type": "selected_product",
+          "name": "高泡洗車精",
+          "settings": {
+            "product_image": "shopify://shop_images/1_3a0737c4-d47e-4485-802a-5e71b2c02b9b.png",
+            "product_name": "高泡洗車精",
+            "product_desc": "中行配方，深層去污",
+            "product_original_price": "NT$130",
+            "product_sale_price": "特價 NT$66",
+            "product_link": "shopify://products/66-1111"
+          }
+        },
+        "selected_product_PY4bp9": {
+          "type": "selected_product",
+          "name": "塑膠保護劑",
+          "settings": {
+            "product_image": "shopify://shop_images/1_4fcd303c-66c5-4061-bae8-61ad4903a754.png",
+            "product_name": "塑膠保護劑",
+            "product_desc": "還原白化塑膠件，抗氧化",
+            "product_original_price": "NT$130",
+            "product_sale_price": "特價 NT$66",
+            "product_link": "shopify://products/66-1111"
+          }
+        },
+        "selected_product_a9yVHN": {
+          "type": "selected_product",
+          "name": "鋁圈光亮劑",
+          "settings": {
+            "product_image": "shopify://shop_images/1_60c8e09e-7dd2-48b1-821a-a826d7ece332.png",
+            "product_name": "鋁圈光亮劑",
+            "product_desc": "可除鐵粉的鋁圈光亮劑",
+            "product_original_price": "NT$130",
+            "product_sale_price": "特價 NT$66",
+            "product_link": "shopify://products/66-1111"
+          }
+        },
+        "selected_product_Y4KKnD": {
+          "type": "selected_product",
+          "name": "玻璃雨刷精",
+          "settings": {
+            "product_image": "shopify://shop_images/1_d3001d49-74f7-4fbe-b1ac-1d8478e73505.png",
+            "product_name": "玻璃雨刷精",
+            "product_desc": "雨刷不跳動的秘密",
+            "product_original_price": "NT$130",
+            "product_sale_price": "特價 NT$66",
+            "product_link": "shopify://products/66-1111"
+          }
+        },
+        "selected_product_PkHAWi": {
+          "type": "selected_product",
+          "name": "玻璃清潔劑",
+          "settings": {
+            "product_image": "shopify://shop_images/1_cd8705a6-c414-4d78-a1fc-458e0aaa45eb.png",
+            "product_name": "玻璃清潔劑",
+            "product_desc": "還你全新行車視野",
+            "product_original_price": "NT$130",
+            "product_sale_price": "特價 NT$66",
+            "product_link": "shopify://products/66-1111"
+          }
+        },
+        "selected_product_GCQeTG": {
+          "type": "selected_product",
+          "name": "車內清潔劑",
+          "settings": {
+            "product_image": "shopify://shop_images/1_a6e1518e-ea5e-4a0b-a182-481d8d574b85.png",
+            "product_name": "車內清潔劑",
+            "product_desc": "皮椅污漬輕鬆去除",
+            "product_original_price": "NT$130",
+            "product_sale_price": "特價 NT$66",
+            "product_link": "shopify://products/66-1111"
+          }
+        },
+        "selected_product_VFRhBq": {
+          "type": "selected_product",
+          "name": "車內鍍膜",
+          "settings": {
+            "product_image": "shopify://shop_images/1_9cda678a-d604-49d7-a40f-af68392e593c.png",
+            "product_name": "車內鍍膜",
+            "product_desc": "皮革滋潤神器，滑而不黏",
+            "product_original_price": "NT$130",
+            "product_sale_price": "特價 NT$66",
+            "product_link": "shopify://products/66-1111"
+          }
+        }
+      },
+      "block_order": [
+        "selected_product_gzhRba",
+        "selected_product_dYnXyM",
+        "selected_product_NrdYkn",
+        "selected_product_PY4bp9",
+        "selected_product_a9yVHN",
+        "selected_product_Y4KKnD",
+        "selected_product_PkHAWi",
+        "selected_product_GCQeTG",
+        "selected_product_VFRhBq"
+      ],
+      "name": "活動模板 - 清潔劑66元",
+      "settings": {
+        "selected_header_image_desktop": "shopify://shop_images/70780162.png",
+        "selected_header_image_mobile": "shopify://shop_images/Frame_2147203845.png",
+        "section_id": "section-selected-products"
+      }
+    },
+    "gifts_section_KwQJ9Q": {
+      "type": "gifts-section",
+      "blocks": {
+        "gift_item_RVDq8h": {
+          "type": "gift_item",
+          "settings": {
+            "gift_image": "shopify://shop_images/tw-11134207-7ra0i-mbz5w7ov57c9a2.webp",
+            "gift_name": "下單立即送水漬去除劑X1",
+            "gift_limit": "限量100位",
+            "gift_remaining": "100份",
+            "gift_link": ""
+          }
+        },
+        "gift_item_arQR4z": {
+          "type": "gift_item",
+          "settings": {
+            "gift_image": "shopify://shop_images/991249ed1a44ad6cf9fe44334ee77115.png",
+            "gift_name": "下單立即送水蠟一罐",
+            "gift_limit": "限量100位",
+            "gift_remaining": "100份",
+            "gift_link": ""
+          }
+        },
+        "gift_item_pQ8H3z": {
+          "type": "gift_item",
+          "settings": {
+            "gift_image": "shopify://shop_images/4ca16a35b6440c08574960bc2c33ff0f.png",
+            "gift_name": "下單立即送水蠟一罐",
+            "gift_limit": "限量100位",
+            "gift_remaining": "100份",
+            "gift_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "gift_item_RVDq8h",
+        "gift_item_arQR4z",
+        "gift_item_pQ8H3z"
+      ],
+      "disabled": true,
+      "name": "活動模板 - 滿額贈禮",
+      "settings": {
+        "header_title": "",
+        "header_description": "",
+        "gifts_header_image_desktop": "shopify://shop_images/slider-component_List.png",
+        "gifts_header_image_mobile": "shopify://shop_images/Frame_2147203847.png",
+        "section_id": "section-gifts"
+      }
+    },
+    "warmup_other_selected_F6VwhR": {
+      "type": "warmup-other-selected",
+      "blocks": {
+        "other_selected_product_8XMHPL": {
+          "type": "other_selected_product",
+          "name": "電動打氣機",
+          "settings": {
+            "other_product_image": "shopify://shop_images/a621fe38c3970c5298b4478b4c94c527_eedba19d-4d81-4c9a-8838-596ac6c6555c.png",
+            "other_product_name": "電動打氣機",
+            "other_product_desc": "汽車、機車、腳踏車通用",
+            "other_product_discount": "現省11%",
+            "other_product_original_price": "$1499",
+            "other_product_sale_price": "$1349",
+            "other_product_link": "shopify://products/apgo-wireless-inflator"
+          }
+        },
+        "other_selected_product_x6chjy": {
+          "type": "other_selected_product",
+          "name": "玻璃鍍膜",
+          "settings": {
+            "other_product_image": "shopify://shop_images/c443434e40a5a1d4be13069f93b519c3.png",
+            "other_product_name": "玻璃鍍膜",
+            "other_product_desc": "兩年期 - 硬式結晶鍍膜",
+            "other_product_discount": "現省11%",
+            "other_product_original_price": "$990",
+            "other_product_sale_price": "$859",
+            "other_product_link": "shopify://products/glass-coating"
+          }
+        },
+        "other_selected_product_CFRQwQ": {
+          "type": "other_selected_product",
+          "name": "美白劑",
+          "settings": {
+            "other_product_image": "shopify://shop_images/11.png",
+            "other_product_name": "車體美白劑",
+            "other_product_desc": "抗氧化、泛黃車反白首推",
+            "other_product_discount": "現省11%",
+            "other_product_original_price": "$250",
+            "other_product_sale_price": "$222",
+            "other_product_link": "shopify://products/apgo-car-whitener"
+          }
+        },
+        "other_selected_product_dxwKqE": {
+          "type": "other_selected_product",
+          "name": "輪胎光亮劑",
+          "settings": {
+            "other_product_image": "shopify://shop_images/2024_786f05d5-c30d-47ac-9265-5c0d39173486.png",
+            "other_product_name": "輪胎光亮劑",
+            "other_product_desc": "",
+            "other_product_discount": "售罄",
+            "other_product_original_price": "$230",
+            "other_product_sale_price": "$204",
+            "other_product_link": "shopify://products/apgo-tire-shine-high-gloss"
+          }
+        },
+        "other_selected_product_GdcfxC": {
+          "type": "other_selected_product",
+          "name": "大燈還原劑",
+          "settings": {
+            "other_product_image": "shopify://shop_images/cb86c47672e4558cf2c4010ce57eaf7a.png",
+            "other_product_name": "大燈還原劑",
+            "other_product_desc": "泛黃大燈復活 一瓶搞定",
+            "other_product_discount": "現省11%",
+            "other_product_original_price": "$250",
+            "other_product_sale_price": "$222",
+            "other_product_link": "shopify://products/apgo-headlight-restorer"
+          }
+        },
+        "other_selected_product_xAFehz": {
+          "type": "other_selected_product",
+          "name": "洗車手套",
+          "settings": {
+            "other_product_image": "shopify://shop_images/APGO_3779c34a-ed68-48fe-bfd9-62724d79b5e1.png",
+            "other_product_name": "洗車手套",
+            "other_product_desc": "超強吸附 灰塵細沙秒帶走",
+            "other_product_discount": "現省11%",
+            "other_product_original_price": "$69",
+            "other_product_sale_price": "$61",
+            "other_product_link": "shopify://products/apgo-car-wash-mitt"
+          }
+        },
+        "other_selected_product_KDMnXi": {
+          "type": "other_selected_product",
+          "name": "毛絨手套",
+          "settings": {
+            "other_product_image": "shopify://shop_images/APGO_6a9e5ace-68de-47f0-94c6-52972b20cf84.png",
+            "other_product_name": "毛絨手套",
+            "other_product_desc": "柔洗護漆 專為細緻車身",
+            "other_product_discount": "現省11%",
+            "other_product_original_price": "$69",
+            "other_product_sale_price": "$61",
+            "other_product_link": "shopify://products/apgo-plush-wash-glove"
+          }
+        }
+      },
+      "block_order": [
+        "other_selected_product_8XMHPL",
+        "other_selected_product_x6chjy",
+        "other_selected_product_CFRQwQ",
+        "other_selected_product_dxwKqE",
+        "other_selected_product_GdcfxC",
+        "other_selected_product_xAFehz",
+        "other_selected_product_KDMnXi"
+      ],
+      "name": "活動模板 - 其他精選商品",
+      "settings": {
+        "other_selected_header_image_desktop": "shopify://shop_images/2_d56766d7-af36-478e-81c3-8db73131fe03.png",
+        "other_selected_header_image_mobile": "shopify://shop_images/Frame_2147203846.png",
+        "other_selected_title": "精選商品現省11%",
+        "section_id": "other-selected"
+      }
+    },
+    "flash_discount_wdJxJM": {
+      "type": "flash-discount",
+      "blocks": {
+        "flash_discount_item_LAjH43": {
+          "type": "flash_discount_item",
+          "name": "滿$111折$11",
+          "settings": {
+            "discount_title": "滿$111折$11",
+            "discount_limit": "限量100位"
+          }
+        },
+        "flash_discount_item_nJ4yDw": {
+          "type": "flash_discount_item",
+          "name": "滿$1111折$111",
+          "settings": {
+            "discount_title": "滿$1111折$111",
+            "discount_limit": "限量50位"
+          }
+        },
+        "flash_discount_item_LNUFBW": {
+          "type": "flash_discount_item",
+          "name": "滿$3600折$600",
+          "settings": {
+            "discount_title": "滿$3600折$600",
+            "discount_limit": "限量30位"
+          }
+        },
+        "flash_discount_item_KTBp3E": {
+          "type": "flash_discount_item",
+          "name": "滿$5555折$1111",
+          "settings": {
+            "discount_title": "滿$5555折$1111",
+            "discount_limit": "限量10位"
+          }
+        }
+      },
+      "block_order": [
+        "flash_discount_item_LAjH43",
+        "flash_discount_item_nJ4yDw",
+        "flash_discount_item_LNUFBW",
+        "flash_discount_item_KTBp3E"
+      ],
+      "name": "活動模板 - 全站滿額折扣優惠",
+      "settings": {
+        "flash_discount_title_image_desktop": "shopify://shop_images/Frame_2147203787_fa4da4b5-b5c0-4d51-a0c0-7c9fe59dd1a9.png",
+        "flash_discount_title_image_mobile": "shopify://shop_images/2x.png",
+        "flash_sale_promo_title": "",
+        "section_id": "flash-discount"
+      }
+    },
+    "gift_promo_nNDLJX": {
+      "type": "gift-promo",
+      "blocks": {
+        "gift_promo_item_rB8pRz": {
+          "type": "gift_promo_item",
+          "name": "滿3600送原子系列3件組",
+          "settings": {
+            "promo_image": "shopify://shop_images/70780164.png",
+            "promo_title": ""
+          }
+        },
+        "gift_promo_item_NyFWcc": {
+          "type": "gift_promo_item",
+          "name": "下單立即送水漬1罐",
+          "settings": {
+            "promo_image": "shopify://shop_images/1bfde2525c58e1a409ba7f92abca5713.png",
+            "promo_title": ""
+          }
+        },
+        "gift_promo_item_JJ4aCj": {
+          "type": "gift_promo_item",
+          "name": "買1800送九合一磁土",
+          "settings": {
+            "promo_image": "shopify://shop_images/70780163_085fb464-ea18-4e31-b1a7-b1847c44d968.png",
+            "promo_title": ""
+          }
+        }
+      },
+      "block_order": [
+        "gift_promo_item_rB8pRz",
+        "gift_promo_item_NyFWcc",
+        "gift_promo_item_JJ4aCj"
+      ],
+      "name": "活動模板 - 下單即贈、全站滿額贈",
+      "settings": {
+        "gift_promo_main_title": "全站下單即贈、限量滿額贈",
+        "gift_promo_subtitle": "活動時間 (11/1 - 11/11)",
+        "section_id": "gift-promo"
+      }
+    },
+    "warmup_activity_yTw9R3": {
+      "type": "warmup-activity",
+      "blocks": {
+        "enamel_combo_m8nXaW": {
+          "type": "enamel_combo",
+          "name": "買1送1",
+          "settings": {
+            "combo_image": "shopify://shop_images/1927_1.png",
+            "combo_name": "買1送1",
+            "combo_price": "NT$998",
+            "combo_tag": "全罐裝",
+            "combo_link": "shopify://products/apgo-enamel-crystal-coating"
+          }
+        },
+        "enamel_combo_X6gQ9G": {
+          "type": "enamel_combo",
+          "name": "買2送1",
+          "settings": {
+            "combo_image": "shopify://shop_images/1926.png",
+            "combo_name": "買2送1",
+            "combo_price": "NT$1298",
+            "combo_tag": "送補充包",
+            "combo_link": "shopify://products/apgo-enamel-crystal-coating"
+          }
+        },
+        "enamel_combo_hCCNNp": {
+          "type": "enamel_combo",
+          "name": "買3送2",
+          "settings": {
+            "combo_image": "shopify://shop_images/1925.png",
+            "combo_name": "買3送2",
+            "combo_price": "NT$1598",
+            "combo_tag": "送補充包",
+            "combo_link": "shopify://products/apgo-enamel-crystal-coating"
+          }
+        },
+        "enamel_combo_tRHzm3": {
+          "type": "enamel_combo",
+          "name": "買4送3",
+          "settings": {
+            "combo_image": "shopify://shop_images/1924_1.png",
+            "combo_name": "買4送3",
+            "combo_price": "NT$1798",
+            "combo_tag": "全罐裝",
+            "combo_link": "shopify://products/apgo-enamel-crystal-coating"
+          }
+        }
+      },
+      "block_order": [
+        "enamel_combo_m8nXaW",
+        "enamel_combo_X6gQ9G",
+        "enamel_combo_hCCNNp",
+        "enamel_combo_tRHzm3"
+      ],
+      "disabled": true,
+      "name": "活動模板 - 活動暖場搶先開跑",
+      "settings": {
+        "warmup_title": "雙11活動暖場搶先開跑·買越多送越多",
+        "warmup_title_mobile": "雙11活動暖場搶先開跑·買越多送越多",
+        "warmup_subtitle": "活動期間 (11/1 - 11/7)",
+        "enamel_section_title": "原子琺瑯晶鍍膜活動",
+        "enamel_main_name": "買5送4 超值組合",
+        "enamel_main_price": "NT$1,998",
+        "enamel_main_desc": "相當於每瓶只要 NT$222！史上最低價！",
+        "enamel_main_tag": "買罐裝送補充包",
+        "enamel_main_image": "shopify://shop_images/Frame_2147203777_2.png",
+        "enamel_main_image_mobile": "shopify://shop_images/70780165_1.png",
+        "enamel_main_link": "shopify://products/apgo-enamel-crystal-coating",
+        "enamel_background_image_desktop": "shopify://shop_images/Container.png",
+        "enamel_background_image_mobile": "shopify://shop_images/Frame_2147203777_6cd26ce1-6114-4e58-ba64-d627658d4d73.png",
+        "section_id": "warmup-activity"
+      }
+    },
+    "shopping_guarantee_3Uwwfq": {
+      "type": "shopping-guarantee",
+      "blocks": {
+        "guarantee_item_ePrW3z": {
+          "type": "guarantee_item",
+          "settings": {
+            "card_type": "refund",
+            "refund_days": "30",
+            "refund_unit": "天",
+            "card_title": "無憂退費承諾",
+            "card_description": "業界良心保證，讓您零風險試用",
+            "card_link_text": "點擊查看詳情"
+          }
+        },
+        "guarantee_item_EGYUcR": {
+          "type": "guarantee_item",
+          "settings": {
+            "card_type": "customer_service",
+            "refund_days": "30",
+            "refund_unit": "天",
+            "card_title": "24H 全天候線上客服",
+            "card_description": "專業團隊即時支持，問題隨時解答",
+            "card_link_text": "點擊查看詳情"
+          }
+        },
+        "guarantee_item_66VD6m": {
+          "type": "guarantee_item",
+          "settings": {
+            "card_type": "tutorial",
+            "refund_days": "30",
+            "refund_unit": "天",
+            "card_title": "手把手教學影片",
+            "card_description": "新手也能變專家，輕鬆打造完美效果",
+            "card_link_text": "點擊查看詳情"
+          }
+        },
+        "guarantee_item_idV6YC": {
+          "type": "guarantee_item",
+          "settings": {
+            "card_type": "location",
+            "refund_days": "30",
+            "refund_unit": "天",
+            "card_title": "全台服務據點",
+            "card_description": "近距離體驗專業，售後服務更安心",
+            "card_link_text": "點擊查看詳情"
+          }
+        }
+      },
+      "block_order": [
+        "guarantee_item_ePrW3z",
+        "guarantee_item_EGYUcR",
+        "guarantee_item_66VD6m",
+        "guarantee_item_idV6YC"
+      ],
+      "name": "安全保障",
+      "settings": {
+        "guarantee_main_title": "安心購物保障",
+        "guarantee_subtitle": "您的每一次選擇，APGO 都將提供最堅實的承諾與支持"
+      }
+    }
+  },
+  "order": [
+    "double_eleven_main",
+    "custom_navigation_hymj9Q",
+    "final_rush_LaPtt4",
+    "main_sale_section_xCy8AL",
+    "warmup_selected_products_NrXzen",
+    "gifts_section_KwQJ9Q",
+    "warmup_other_selected_F6VwhR",
+    "flash_discount_wdJxJM",
+    "gift_promo_nNDLJX",
+    "warmup_activity_yTw9R3",
+    "shopping_guarantee_3Uwwfq"
+  ]
+}

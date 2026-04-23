@@ -1,0 +1,1569 @@
+{% comment %}
+  購物車頁-隨箱附贈滿額達成禮區塊
+  檔案位置: sections/shopping-cart-gift-tiers.liquid
+  主要功能: 顯示滿額階級達成禮物，並調用其他區塊參數判斷是否解鎖
+{% endcomment %}
+
+<!-- 內聯關鍵樣式防止閃爍 -->
+<style>
+  /* 防止白色閃爍 */
+  .shopify-section,
+  .gift-tiers-wrapper {
+    position: relative;
+    background: transparent !important;
+  }
+
+  .gift-tiers-section {
+    position: relative;
+    background-color: {{ section.settings.loading_bg_color }} !important;
+    min-height: 140px;
+  }
+</style>
+
+<style>
+    /* ========================================
+       購物車-隨箱附贈滿額達成禮區塊
+       ======================================== */
+
+    :root {
+      --gt-accent: {% if section.settings.use_accent_gradient %}
+        linear-gradient(135deg, {{ section.settings.accent_color_start }}, {{ section.settings.accent_color_end }})
+      {% else %}
+        {{ section.settings.accent_color_start }}
+      {% endif %};
+      --gt-accent-color: {{ section.settings.accent_color_start }};
+      --gt-text: {{ section.settings.text_color }};
+      --gt-text-secondary: {{ section.settings.text_secondary_color }};
+      --gt-bg: linear-gradient(145deg, #2d2d2d, #1a1a1a);
+      --gt-border: #404040;
+    }
+
+    /* 通用樣式 */
+    .section-title {
+      font-weight: 600;
+      color: var(--gt-text) !important;
+      margin: 24px 0 16px 0;
+      position: relative;
+      padding-left: 12px;
+      font-size: 18px;
+    }
+
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 20px;
+      background: var(--gt-accent) !important;
+      border-radius: 2px;
+    }
+
+  .gift-tiers-wrapper {
+      max-width: 1200px;
+      width: 100%;
+      margin: 20px auto 0;
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (min-width: 768px) {
+      .gift-tiers-wrapper {
+        padding: 0 24px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .gift-tiers-wrapper {
+        padding: 0;
+      }
+    }
+
+    .gift-tiers-section {
+      background: var(--gt-bg) !important;
+      border: 1px solid var(--gt-border) !important;
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .gift-tiers-section:hover {
+      border-color: var(--gt-accent-color) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 107, 53, 0.2);
+    }
+
+    .gift-tiers-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gt-accent) !important;
+    }
+
+    /* 禮物階層容器 */
+    .gift-tiers-container {
+      margin-bottom: 0;
+    }
+
+    .tiers-title {
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gt-text) !important;
+      margin: 0 0 12px 0;
+      padding-left: 0;
+    }
+
+    .tiers-title::before {
+      content: '🎁';
+      font-size: 16px;
+    }
+
+    /* 滾動容器通用樣式 */
+    .gift-tiers-scroll {
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gt-accent-color) #333333;
+    }
+
+    .gift-tiers-scroll::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .gift-tiers-scroll::-webkit-scrollbar-track {
+      background: #333333 !important;
+      border-radius: 2px;
+    }
+
+    .gift-tiers-scroll::-webkit-scrollbar-thumb {
+      background: var(--gt-accent) !important;
+      border-radius: 2px;
+    }
+
+    .gift-tiers {
+      display: flex;
+      gap: 12px;
+      padding: 4px 0;
+      min-width: max-content;
+    }
+
+    /* 禮物階層卡片 */
+    .gift-tier {
+      background: var(--gt-bg) !important;
+      border: 1px solid var(--gt-border) !important;
+      border-radius: 8px;
+      padding: 12px;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      flex: 0 0 220px;
+    }
+
+    .gift-tier::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--gt-accent) !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 階層狀態樣式 */
+    .gift-tier.unlocked {
+      border-color: #4caf50 !important;
+    }
+
+    .gift-tier.unlocked::before {
+      background: linear-gradient(180deg, #4caf50, #45a049) !important;
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+    }
+
+    .gift-tier.locked {
+      border-color: var(--gt-border) !important;
+      opacity: 0.7;
+    }
+
+    .gift-tier.locked::before {
+      background: #666666 !important;
+    }
+
+    .gift-tier.next {
+      border-color: var(--gt-accent-color) !important;
+      transform: translateX(4px);
+    }
+
+    .gift-tier.next::before {
+      background: var(--gt-accent) !important;
+      box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+    }
+
+    .tier-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-left: 8px;
+    }
+
+    .tier-left {
+      flex: 1;
+    }
+
+    .tier-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gt-text) !important;
+      margin: 0 0 4px 0;
+      line-height: 1.3;
+    }
+
+    .tier-description {
+      font-size: 10px;
+      color: var(--gt-text-secondary) !important;
+      margin: 0;
+      opacity: 0.8;
+      line-height: 1.3;
+    }
+
+    .tier-amount {
+      font-size: 11px;
+      color: var(--gt-text-secondary) !important;
+      margin: 4px 0 0 0;
+    }
+
+    .tier-status {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      min-width: 60px;
+    }
+
+    .tier-status-badge {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .tier-status-badge.unlocked {
+      background: rgba(76, 175, 80, 0.15);
+      color: #4caf50 !important;
+    }
+
+    .tier-status-badge.locked {
+      background: rgba(102, 102, 102, 0.15);
+      color: var(--gt-text-secondary) !important;
+    }
+
+    .tier-status-badge.next {
+      background: rgba(255, 107, 53, 0.15);
+      color: var(--gt-accent-color) !important;
+    }
+
+    .tier-status-icon {
+      display: none;
+    }
+
+    .tier-amount-required {
+      font-size: 10px;
+      color: var(--gt-text-secondary) !important;
+      text-align: right;
+    }
+
+    .tier-amount-required.is-hidden {
+      display: none;
+    }
+
+    /* 響應式設計 */
+    @media (max-width: 768px) {
+      .gift-tiers-section {
+        padding: 16px;
+      }
+
+      .gift-tier {
+        padding: 10px;
+      }
+
+      .section-title {
+        font-size: 16px;
+        margin: 16px 0 12px 0;
+      }
+
+      .tiers-title {
+        font-size: 13px;
+      }
+
+      .tier-name {
+        font-size: 12px;
+      }
+
+      .tier-description {
+        font-size: 9px;
+      }
+
+      .tier-status-badge {
+        font-size: 10px;
+        padding: 2px 6px;
+      }
+    }
+
+
+    /* 載入狀態 */
+    .gift-tiers-section.loading .gift-tiers {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .gift-tiers-section.loading::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 30px;
+      height: 30px;
+      border: 3px solid transparent;
+      border-top-color: var(--gt-accent-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* 變體解析錯誤訊息 */
+    .tier-variant-error {
+      color: #ff5252 !important;
+      font-size: 10px;
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+</style>
+
+<div
+  class="gift-tiers-wrapper"
+  data-section-id="{{ section.id }}"
+  data-auto-add="{{ section.settings.auto_add_gift | default: true }}"
+  data-lock-qty="{{ section.settings.lock_gift_qty | default: true }}"
+  data-block-direct="{{ section.settings.block_direct_atc | default: true }}"
+>
+  {% if section.settings.gift_title != blank %}
+    <h3 class="section-title">{{ section.settings.gift_title }}</h3>
+  {% endif %}
+
+  <div
+    class="gift-tiers-section"
+    data-preview-total="{{ section.settings.preview_cart_total | default: 0 }}"
+  >
+    {% if section.settings.tiers_subtitle != blank %}
+      <div class="tiers-title">{{ section.settings.tiers_subtitle }}</div>
+    {% endif %}
+
+    <div class="gift-tiers-container">
+      <div class="gift-tiers-scroll">
+        <div class="gift-tiers">
+          {% for block in section.blocks %}
+            {% if block.type == 'gift_tier' %}
+              {% assign gift_product = all_products[block.settings.gift_product] %}
+              {% assign variant_id = '' %}
+              {% assign variant_sku = '' %}
+              {% assign variant_title = '' %}
+              {% assign variant_error = false %}
+              {% assign variant_error_message = '⚠️ 變體解析失敗：請檢查設定' %}
+
+              {% if gift_product %}
+                {% comment %} 嘗試解析變體 {% endcomment %}
+                {% assign override = block.settings.gift_variant_id_override %}
+                {% assign override_clean = override | strip %}
+
+                {% if override_clean != blank %}
+                  {% comment %} 先嘗試當作變體 ID {% endcomment %}
+                  {% for v in gift_product.variants %}
+                    {% assign v_id_str = v.id | append: '' %}
+                    {% if v_id_str == override_clean %}
+                      {% assign variant_id = v.id %}
+                      {% assign variant_sku = v.sku %}
+                      {% assign variant_title = v.title %}
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+
+                  {% comment %} 若沒找到，嘗試 SKU 比對{% endcomment %}
+                  {% if variant_id == '' %}
+                    {% for v in gift_product.variants %}
+                      {% if v.sku == override_clean %}
+                        {% assign variant_id = v.id %}
+                        {% assign variant_sku = v.sku %}
+                        {% assign variant_title = v.title %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+
+                  {% comment %} 若沒找到，嘗試標題比對{% endcomment %}
+                  {% if variant_id == '' %}
+                    {% for v in gift_product.variants %}
+                      {% if v.title == override_clean %}
+                        {% assign variant_id = v.id %}
+                        {% assign variant_sku = v.sku %}
+                        {% assign variant_title = v.title %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+
+                  {% comment %} 都沒找到，標記錯誤{% endcomment %}
+                  {% if variant_id == '' %}
+                    {% assign variant_error = true %}
+                  {% endif %}
+                {% else %}
+                  {% comment %} 沒有填寫，使用第一個可售變體{% endcomment %}
+                  {% for v in gift_product.variants %}
+                    {% if v.available %}
+                      {% assign variant_id = v.id %}
+                      {% assign variant_sku = v.sku %}
+                      {% assign variant_title = v.title %}
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+
+                  {% comment %} 沒有可售變體，使用第一個{% endcomment %}
+                  {% if variant_id == '' and gift_product.variants.size > 0 %}
+                    {% assign variant_id = gift_product.variants.first.id %}
+                    {% assign variant_sku = gift_product.variants.first.sku %}
+                    {% assign variant_title = gift_product.variants.first.title %}
+                  {% endif %}
+                {% endif %}
+
+                {% if variant_id == '' %}
+                  {% assign variant_error = true %}
+                {% elsif gift_product.available == false %}
+                  {% comment %} 商品存在但全數缺貨，提示需要補貨或開啟持續販售 {% endcomment %}
+                  {% assign variant_error = true %}
+                  {% assign variant_error_message = '⚠️ 贈品商品庫存不足：請補貨或啟用「允許售完仍可繼續銷售」' %}
+                {% endif %}
+              {% else %}
+                {% assign variant_error = true %}
+                {% assign variant_error_message = '⚠️ 未選擇贈品商品：請在區塊設定裡選擇贈品' %}
+              {% endif %}
+
+              <div
+                class="gift-tier {% if block.settings.is_unlocked %}unlocked{% else %}locked{% endif %}"
+                data-tier-amount="{{ block.settings.amount | default: 0 }}"
+                data-tier-variant-id="{{ variant_id }}"
+                data-tier-variant-sku="{{ variant_sku }}"
+                data-tier-variant-title="{{ variant_title | escape }}"
+                data-tier-gift-note="{{ block.settings.gift_note | escape }}"
+                data-tier-block-id="{{ block.id }}"
+                data-has-error="{{ variant_error }}"
+                {{ block.shopify_attributes }}
+              >
+                <div class="tier-content">
+                  <div class="tier-left">
+                    <div class="tier-name">{{ block.settings.gift_name | default: '贈品' }}</div>
+                    {% if block.settings.gift_description != blank %}
+                      <p class="tier-description">{{ block.settings.gift_description }}</p>
+                    {% endif %}
+                    <div class="tier-amount">滿 ${{ block.settings.amount | default: 0 }} 贈送</div>
+
+                    {% if variant_error %}
+                      <div class="tier-variant-error">
+                        {{ variant_error_message }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="tier-status">
+                    <div class="tier-status-badge {% if block.settings.is_unlocked %}unlocked{% else %}locked{% endif %}">
+                      <span class="tier-status-icon"></span>
+                      <span>
+                        {% if block.settings.is_unlocked %}
+                          已贈送
+                        {% else %}
+                          未贈送
+                        {% endif %}
+                      </span>
+                    </div>
+
+                    {% unless block.settings.is_unlocked %}
+                      {% if block.settings.remaining_amount > 0 %}
+                        <div class="tier-amount-required">還差 ${{ block.settings.remaining_amount }}</div>
+                      {% endif %}
+                    {% endunless %}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const SECTION_SELECTOR = '.gift-tiers-wrapper';
+    const TIER_SELECTOR = '.gift-tier';
+    const CART_CACHE_KEY = '__giftCartCache';
+    const CART_CACHE_TTL = 2000;
+    const DEBUG_FLAG = '__giftTiersDebug';
+    const DEBUG_PREFIX = '[Gift Tiers]';
+
+    function isDebugEnabled() {
+      try {
+        return Boolean(window[DEBUG_FLAG]);
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function formatForLog(payload) {
+      if (!payload) return payload;
+      if (payload instanceof Response) {
+        return { status: payload.status, statusText: payload.statusText };
+      }
+      return payload;
+    }
+
+    function debugLog(scope, payload, level = 'log') {
+      if (!isDebugEnabled()) return;
+      const fn = console[level] || console.log;
+      if (payload === undefined) {
+        fn.call(console, `${DEBUG_PREFIX}[${scope}]`);
+      } else {
+        fn.call(console, `${DEBUG_PREFIX}[${scope}]`, formatForLog(payload));
+      }
+    }
+
+    function debugGroup(scope, payload) {
+      if (!isDebugEnabled()) return;
+      console.groupCollapsed(`${DEBUG_PREFIX}[${scope}]`);
+      if (Array.isArray(payload)) {
+        console.table(payload);
+      } else if (payload !== undefined) {
+        console.log(payload);
+      }
+      console.groupEnd();
+    }
+
+    function emitCartUpdate(detail = {}) {
+      const payload = {
+        data: null,
+        source: 'gift-tiers',
+        timestamp: Date.now(),
+        ...detail,
+      };
+      if (payload.cart === undefined) {
+        payload.cart = payload.data;
+      }
+      if (payload.sections === undefined) {
+        payload.sections = {};
+      }
+      if (payload.sectionsToRender === undefined) {
+        payload.sectionsToRender = [];
+      }
+
+      let event;
+      try {
+        event = new CustomEvent('cart:update', { detail: payload });
+      } catch (error) {
+        try {
+          event = document.createEvent('CustomEvent');
+          event.initCustomEvent('cart:update', true, false, payload);
+        } catch (_) {
+          event = new Event('cart:update');
+        }
+      }
+      try {
+        event.detail = payload;
+      } catch (_) {
+        event.detail = payload;
+      }
+      document.dispatchEvent(event);
+    }
+
+    function collectTierSnapshot() {
+      return Array.from(document.querySelectorAll(TIER_SELECTOR)).map((tierEl) => ({
+        blockId: tierEl.dataset.tierBlockId,
+        variantId: tierEl.dataset.tierVariantId,
+        amount: parseFloat(tierEl.dataset.tierAmount || 0),
+        unlocked: tierEl.classList.contains('unlocked'),
+        hasError: tierEl.dataset.hasError === 'true',
+        error: tierEl.dataset.hasError === 'true',
+      }));
+    }
+
+    class CartGiftTiers {
+      constructor(sectionEl) {
+        this.sectionEl = sectionEl;
+        this.autoAdd = this.sectionEl.dataset.autoAdd === 'true';
+        this.lockQty = this.sectionEl.dataset.lockQty === 'true';
+        this.blockDirect = this.sectionEl.dataset.blockDirect === 'true';
+        this.isPreview = window.Shopify && window.Shopify.designMode;
+        this.previewTotal = parseFloat(this.sectionEl.querySelector('.gift-tiers-section')?.dataset.previewTotal || 0);
+
+        this.cartCache = null;
+        this.cartCacheTime = 0;
+        this.updateInProgress = false;
+        this.debounceTimer = null;
+        this.sectionId = this.sectionEl.dataset.sectionId || '(unknown)';
+
+        debugLog('init', {
+          sectionId: this.sectionId,
+          autoAdd: this.autoAdd,
+          lockQty: this.lockQty,
+          blockDirect: this.blockDirect,
+          isPreview: this.isPreview,
+        });
+
+        this.init();
+      }
+
+      init() {
+        this.refreshCartAmount(true);
+        this.bindEvents();
+      }
+
+      bindEvents() {
+        if (this.isPreview) {
+          document.addEventListener('shopify:section:select', (event) => {
+            if (event.detail.sectionId === this.sectionEl.dataset.sectionId) {
+              this.refreshCartAmount(true);
+            }
+          });
+        }
+
+        // 監聽購物車更新事件
+        document.addEventListener('cart:update', () => {
+          this.refreshCartAmount();
+        });
+      }
+
+      async getCart() {
+        const now = Date.now();
+
+        debugLog('getCart:enter', {
+          cached: Boolean(this.cartCache),
+          age: now - this.cartCacheTime,
+        });
+
+        // 使用快取避免過多請求
+        if (this.cartCache && now - this.cartCacheTime < CART_CACHE_TTL) {
+          debugLog('getCart:cache-hit', {
+            total_price: this.cartCache.total_price,
+            items_count: (this.cartCache.items || []).length,
+          });
+          return this.cartCache;
+        }
+
+        try {
+          const response = await fetch('/cart.js', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`Failed to fetch cart: ${response.status}`);
+          }
+
+          const cart = await response.json();
+          debugLog('getCart:success', {
+            total_price: cart.total_price,
+            item_count: cart.item_count,
+            items: (cart.items || []).map((item) => ({
+              id: item.id,
+              variant_id: item.variant_id,
+              sku: item.sku,
+              qty: item.quantity,
+              price: item.price,
+            })),
+          });
+          this.cartCache = cart;
+          this.cartCacheTime = now;
+          return cart;
+        } catch (error) {
+          console.error('[Gift Tiers] Error fetching cart:', error);
+          return null;
+        }
+      }
+
+      async refreshCartAmount(immediate = false) {
+        // 防抖處理
+        if (!immediate) {
+          clearTimeout(this.debounceTimer);
+          this.debounceTimer = setTimeout(() => {
+            this.refreshCartAmount(true);
+          }, 300);
+          return;
+        }
+
+        // 避免重複執行
+        if (this.updateInProgress) {
+          return;
+        }
+
+        this.updateInProgress = true;
+
+        try {
+          debugLog('refresh:start', { immediate });
+          let cartTotal = 0;
+          let cartItems = [];
+
+          if (this.isPreview) {
+            cartTotal = this.previewTotal;
+          } else {
+            const cart = await this.getCart();
+            if (!cart) {
+              this.updateInProgress = false;
+              return;
+            }
+
+            cartTotal = (cart.total_price || 0) / 100;
+            cartItems = cart.items || [];
+            debugLog('refresh:cart', {
+              cartTotal,
+              items: cartItems.map((item) => ({
+                key: item.key,
+                variant_id: item.variant_id,
+                title: item.title,
+                quantity: item.quantity,
+                sku: item.sku,
+              })),
+            });
+          }
+
+          // 更新 UI
+          this.updateTiersUI(cartTotal);
+
+          // 同步購物車贈品（非預覽模式）
+          if (!this.isPreview && this.autoAdd) {
+            await this.syncCartGifts(cartTotal, cartItems);
+          }
+        } catch (error) {
+          console.error('[Gift Tiers] Error refreshing cart:', error);
+        } finally {
+          this.updateInProgress = false;
+        }
+      }
+
+      updateTiersUI(cartTotal) {
+        const tierEls = this.sectionEl.querySelectorAll(TIER_SELECTOR);
+        let nextTierAmount = null;
+        let highestUnlockedAmount = 0;
+
+        tierEls.forEach((tierEl) => {
+          const tierAmount = parseFloat(tierEl.dataset.tierAmount || 0);
+          const isUnlocked = cartTotal >= tierAmount;
+
+          // 更新狀態
+          tierEl.classList.toggle('unlocked', isUnlocked);
+          tierEl.classList.toggle('locked', !isUnlocked);
+          tierEl.classList.remove('next');
+
+          // 找出最高已達成階級
+          if (isUnlocked && tierAmount > highestUnlockedAmount) {
+            highestUnlockedAmount = tierAmount;
+          }
+
+          // 找出下一階級
+          if (!isUnlocked && (nextTierAmount === null || tierAmount < nextTierAmount)) {
+            nextTierAmount = tierAmount;
+          }
+
+          // 更新徽章
+          const badge = tierEl.querySelector('.tier-status-badge');
+          const statusText = badge?.querySelector('span:last-child');
+
+          if (badge) {
+            badge.classList.toggle('unlocked', isUnlocked);
+            badge.classList.toggle('locked', !isUnlocked);
+            badge.classList.remove('next');
+          }
+
+          if (statusText) {
+            statusText.textContent = isUnlocked ? '已贈送' : '未贈送';
+          }
+
+          // 更新差額
+          const amountRequired = tierEl.querySelector('.tier-amount-required');
+          if (amountRequired) {
+            if (!isUnlocked) {
+              const remaining = Math.ceil(tierAmount - cartTotal);
+              amountRequired.textContent = `還差 $${remaining}`;
+              amountRequired.classList.remove('is-hidden');
+            } else {
+              amountRequired.classList.add('is-hidden');
+            }
+          }
+        });
+
+        // 標記下一階級
+        if (nextTierAmount !== null) {
+          tierEls.forEach((tierEl) => {
+            const tierAmount = parseFloat(tierEl.dataset.tierAmount || 0);
+            if (tierAmount === nextTierAmount) {
+              tierEl.classList.add('next');
+              const badge = tierEl.querySelector('.tier-status-badge');
+              if (badge) {
+                badge.classList.add('next');
+                const statusText = badge.querySelector('span:last-child');
+                if (statusText) {
+                  statusText.textContent = '即將達成';
+                }
+              }
+            }
+          });
+        }
+      }
+
+      async syncCartGifts(cartTotal, cartItems) {
+        debugLog('sync:enter', { cartTotal, cartItemCount: cartItems.length });
+        const tierEls = this.sectionEl.querySelectorAll(TIER_SELECTOR);
+        const cartItemsWithMeta = cartItems.map((item, index) => {
+          return Object.assign({}, item, {
+            __index: index,
+            __line: index + 1,
+          });
+        });
+        debugGroup(
+          'sync:cart-items',
+          cartItemsWithMeta.map((item) => ({
+            key: item.key,
+            line: item.__line,
+            variant_id: item.variant_id,
+            quantity: item.quantity,
+            properties: item.properties || {},
+          }))
+        );
+
+        const tierData = [];
+
+        tierEls.forEach((tierEl) => {
+          const variantId = tierEl.dataset.tierVariantId;
+          const tierAmount = parseFloat(tierEl.dataset.tierAmount || 0);
+          const hasError = tierEl.dataset.hasError === 'true';
+
+          if (!variantId || hasError) {
+            return;
+          }
+
+          tierData.push({
+            variantId: String(variantId),
+            tierAmount,
+            unlocked: cartTotal >= tierAmount,
+          });
+        });
+
+        debugLog('sync:tiers-info', tierData);
+
+        const allGiftVariantIds = tierData.map((t) => t.variantId);
+        const unlockedTiers = tierData.filter((t) => t.unlocked);
+        const unlockedVariantIds = unlockedTiers.map((t) => t.variantId);
+
+        const giftItemsInCart = cartItemsWithMeta.filter((item) => allGiftVariantIds.includes(String(item.variant_id)));
+
+        const itemsToRemove = giftItemsInCart.filter((item) => !unlockedVariantIds.includes(String(item.variant_id)));
+
+        if (itemsToRemove.length > 0) {
+          debugLog(
+            'sync:remove',
+            itemsToRemove.map((item) => ({
+              key: item.key,
+              line: item.__line,
+              variant_id: item.variant_id,
+              qty: item.quantity,
+            }))
+          );
+        }
+
+        for (const item of itemsToRemove) {
+          await this.removeFromCart(item);
+        }
+
+        const groupedByVariant = giftItemsInCart.reduce((acc, item) => {
+          const variantId = String(item.variant_id);
+          if (!acc.has(variantId)) {
+            acc.set(variantId, []);
+          }
+          acc.get(variantId).push(item);
+          return acc;
+        }, new Map());
+
+        for (const tier of unlockedTiers) {
+          const variantId = tier.variantId;
+          const existingItems = groupedByVariant.get(variantId) || [];
+          const primaryItem = existingItems[0];
+
+          if (!primaryItem) {
+            await this.addToCart(variantId);
+            continue;
+          }
+
+          if (this.lockQty && primaryItem.quantity !== 1) {
+            debugLog('sync:adjust-qty', {
+              key: primaryItem.key,
+              line: primaryItem.__line,
+              currentQty: primaryItem.quantity,
+              targetQty: 1,
+            });
+            await this.updateCartQuantity(primaryItem, 1);
+          }
+
+          if (existingItems.length > 1) {
+            const extras = existingItems.slice(1);
+            debugLog(
+              'sync:dedupe',
+              extras.map((item) => ({
+                key: item.key,
+                line: item.__line,
+                variant_id: item.variant_id,
+                qty: item.quantity,
+              }))
+            );
+            for (const extra of extras) {
+              await this.removeFromCart(extra);
+            }
+          }
+        }
+      }
+
+      async addToCart(variantId) {
+        try {
+          console.log('[Gift Tiers] Adding gift to cart:', variantId);
+          debugLog('addToCart:request', { variantId });
+
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              items: [
+                {
+                  id: parseInt(variantId),
+                  quantity: 1,
+                  properties: {
+                    _gift_auto: 'true',
+                  },
+                },
+              ],
+            }),
+          });
+
+          if (!response.ok) {
+            let errorData = {};
+            try {
+              errorData = await response.json();
+            } catch (_) {}
+            console.error('[Gift Tiers] Failed to add gift:', errorData);
+            debugLog('addToCart:failed', { status: response.status, error: errorData }, 'error');
+            return false;
+          }
+
+          const data = await response.json();
+          console.log('[Gift Tiers] Gift added successfully:', data);
+          debugLog('addToCart:success', data);
+
+          // 清除快取
+          this.cartCache = null;
+
+          // 觸發購物車更新事件
+          setTimeout(async () => {
+            const latestCart = await this.getCart();
+            emitCartUpdate({ data: latestCart || data, cart: latestCart || data, source: 'gift-tiers:add' });
+          }, 100);
+
+          return true;
+        } catch (error) {
+          console.error('[Gift Tiers] Error adding gift to cart:', error);
+          return false;
+        }
+      }
+
+      async removeFromCart(item) {
+        const itemKey = item?.key;
+        if (!itemKey) {
+          console.error('[Gift Tiers] removeFromCart missing item key', item);
+          debugLog('remove:error', { reason: 'missing-key', item }, 'error');
+          return false;
+        }
+
+        const requestPayload = {
+          id: itemKey,
+          quantity: 0,
+        };
+
+        debugLog('remove:request', {
+          key: itemKey,
+          line: item?.__line,
+          variant_id: item?.variant_id,
+          quantity: item?.quantity,
+          payload: requestPayload,
+        });
+
+        try {
+          console.log('[Gift Tiers] Removing gift from cart:', itemKey, `(line: ${item?.__line || 'n/a'})`);
+
+          let response = await fetch('/cart/change.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestPayload),
+          });
+
+          if (!response.ok) {
+            const rawText = await response.text();
+            let errorPayload = rawText;
+            try {
+              errorPayload = JSON.parse(rawText);
+            } catch (_) {}
+            console.error('[Gift Tiers] Failed to remove gift', errorPayload);
+            debugLog('remove:failed', { status: response.status, body: errorPayload }, 'error');
+
+            if (item?.__line) {
+              debugLog('remove:retry-line', { line: item.__line });
+              response = await fetch('/cart/change.js', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  line: item.__line,
+                  quantity: 0,
+                }),
+              });
+
+              if (!response.ok) {
+                const retryText = await response.text();
+                let retryPayload = retryText;
+                try {
+                  retryPayload = JSON.parse(retryText);
+                } catch (_) {}
+                console.error('[Gift Tiers] Retry remove (line) failed', retryPayload);
+                debugLog('remove:retry-failed', { status: response.status, body: retryPayload }, 'error');
+                return false;
+              }
+            } else {
+              return false;
+            }
+          }
+
+          let data = {};
+          try {
+            data = await response.json();
+          } catch (_) {}
+
+          console.log('[Gift Tiers] Gift removed successfully', { key: itemKey, line: item?.__line });
+          debugLog('remove:success', data);
+
+          // 清除快取
+          this.cartCache = null;
+
+          emitCartUpdate({ data, source: 'gift-tiers:remove' });
+
+          return true;
+        } catch (error) {
+          console.error('[Gift Tiers] Error removing gift from cart:', error);
+          debugLog('remove:exception', { error: String(error) }, 'error');
+          return false;
+        }
+      }
+
+      async updateCartQuantity(item, quantity) {
+        const itemKey = item?.key;
+        if (!itemKey) {
+          console.error('[Gift Tiers] updateCartQuantity missing item key', item);
+          debugLog('update:error', { reason: 'missing-key', item }, 'error');
+          return false;
+        }
+
+        const requestPayload = {
+          id: itemKey,
+          quantity: quantity,
+        };
+
+        debugLog('update:request', {
+          key: itemKey,
+          line: item?.__line,
+          variant_id: item?.variant_id,
+          currentQty: item?.quantity,
+          targetQty: quantity,
+          payload: requestPayload,
+        });
+
+        try {
+          console.log(
+            '[Gift Tiers] Updating gift quantity:',
+            itemKey,
+            `-> ${quantity}`,
+            `(line: ${item?.__line || 'n/a'})`
+          );
+
+          const response = await fetch('/cart/change.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestPayload),
+          });
+
+          if (!response.ok) {
+            const rawText = await response.text();
+            let errorPayload = rawText;
+            try {
+              errorPayload = JSON.parse(rawText);
+            } catch (_) {}
+            console.error('[Gift Tiers] Failed to update gift quantity', errorPayload);
+            debugLog('update:failed', { status: response.status, body: errorPayload }, 'error');
+            return false;
+          }
+
+          let data = {};
+          try {
+            data = await response.json();
+          } catch (_) {}
+
+          console.log('[Gift Tiers] Gift quantity updated successfully', { key: itemKey, quantity });
+          debugLog('update:success', data);
+
+          // 清除快取
+          this.cartCache = null;
+
+          emitCartUpdate({ data, source: 'gift-tiers:update' });
+
+          return true;
+        } catch (error) {
+          console.error('[Gift Tiers] Error updating gift quantity:', error);
+          debugLog('update:exception', { error: String(error) }, 'error');
+          return false;
+        }
+      }
+    }
+
+    // 贈品攔截器
+    function installGiftATCBlocker() {
+      try {
+        const sectionEl = document.querySelector(SECTION_SELECTOR);
+        if (!sectionEl || sectionEl.dataset.blockDirect !== 'true') {
+          return;
+        }
+
+        // 收集所有贈品變體 ID
+        const GIFT_BLOCKLIST = [];
+        document.querySelectorAll(TIER_SELECTOR).forEach((tierEl) => {
+          const variantId = tierEl.dataset.tierVariantId;
+          if (variantId && tierEl.dataset.hasError !== 'true') {
+            GIFT_BLOCKLIST.push(variantId);
+          }
+        });
+        debugLog('blocker:init', { blocklist: GIFT_BLOCKLIST });
+
+        if (GIFT_BLOCKLIST.length === 0) {
+          return;
+        }
+
+        // 攔截表單提交
+        document.addEventListener(
+          'submit',
+          function (e) {
+            const form = e.target;
+            if (!form || !form.action || !form.action.includes('/cart/add')) return;
+
+            const fd = new FormData(form);
+            const variantId = String(fd.get('id') || '');
+            if (variantId && GIFT_BLOCKLIST.includes(variantId)) {
+              e.preventDefault();
+              alert('此商品為活動贈品，無法直接加入購物車');
+            }
+          },
+          true
+        );
+
+        // Proxy fetch for /cart/add(.js)
+        const _fetch = window.fetch;
+        window.fetch = async function (...args) {
+          try {
+            const req = args[0];
+            const url = typeof req === 'string' ? req : (req && req.url) || '';
+            if (typeof url === 'string' && /\/cart\/add(\.js)?/.test(url)) {
+              let body = args[1] && args[1].body;
+              if (body && typeof body === 'string') {
+                try {
+                  const parsed = JSON.parse(body);
+                  const items =
+                    parsed.items ||
+                    (parsed.id
+                      ? [
+                          {
+                            id: parsed.id,
+                            properties: parsed.properties || {},
+                          },
+                        ]
+                      : []);
+                  const hasGift = items.some((it) => GIFT_BLOCKLIST.includes(String(it.id)));
+                  const hasAutoFlag = items.some((it) => {
+                    const props = it.properties || {};
+                    const flag = props._gift_auto;
+                    return flag === true || flag === 'true';
+                  });
+
+                  if (hasGift && !hasAutoFlag) {
+                    emitCartUpdate({ source: 'gift-tiers:blocker', reason: 'blocked-direct-atc', data: null });
+                    return new Response(JSON.stringify({ status: 422, message: 'gift blocked' }), { status: 422 });
+                  }
+                } catch (_) {}
+              }
+            }
+          } catch (_) {}
+          return _fetch.apply(this, args);
+        };
+      } catch (_) {}
+    }
+
+    // install blocker early
+    installGiftATCBlocker();
+
+    const instances = new Map();
+    window[DEBUG_FLAG] = window[DEBUG_FLAG] || false;
+
+    function initSection(sectionEl) {
+      if (!sectionEl) return;
+
+      const sectionId = sectionEl.dataset.sectionId || sectionEl.id || `gift-${Date.now()}`;
+
+      if (instances.has(sectionId)) {
+        const existingInstance = instances.get(sectionId);
+        existingInstance.refreshCartAmount(true);
+        return;
+      }
+
+      const instance = new CartGiftTiers(sectionEl);
+      instances.set(sectionId, instance);
+    }
+
+    function removeSection(sectionId) {
+      if (instances.has(sectionId)) {
+        instances.delete(sectionId);
+      }
+    }
+
+    function patchCartRequests() {
+      if (window.__giftCartPatched) return;
+      window.__giftCartPatched = true;
+
+      const originalFetch = window.fetch;
+      if (typeof originalFetch === 'function') {
+        window.fetch = async function (...args) {
+          const response = await originalFetch.apply(this, args);
+
+          try {
+            const url = (args[0] && (args[0].url || args[0])) || '';
+
+            if (typeof url === 'string' && /\/cart\/(add|change|update|clear)/.test(url)) {
+              setTimeout(() => emitCartUpdate({ source: 'gift-tiers:patch-fetch' }), 200);
+            }
+          } catch (error) {}
+
+          return response;
+        };
+      }
+
+      if (!window.__giftXhrPatched && typeof XMLHttpRequest !== 'undefined') {
+        window.__giftXhrPatched = true;
+        const originalOpen = XMLHttpRequest.prototype.open;
+
+        XMLHttpRequest.prototype.open = function (method, url, ...rest) {
+          this.addEventListener('loadend', () => {
+            try {
+              if (typeof url === 'string' && /\/cart\/(add|change|update|clear)/.test(url)) {
+                setTimeout(() => emitCartUpdate({ source: 'gift-tiers:patch-xhr' }), 200);
+              }
+            } catch (error) {}
+          });
+
+          return originalOpen.call(this, method, url, ...rest);
+        };
+      }
+    }
+
+    function onDOMContentLoaded() {
+      document.querySelectorAll(SECTION_SELECTOR).forEach(initSection);
+      debugGroup('dom:snapshot', collectTierSnapshot());
+    }
+
+    patchCartRequests();
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', onDOMContentLoaded);
+    } else {
+      onDOMContentLoaded();
+    }
+
+    document.addEventListener('shopify:section:load', (event) => {
+      if (!event || !event.detail || !event.detail.sectionId) return;
+      const sectionEl = document.querySelector(`${SECTION_SELECTOR}[data-section-id="${event.detail.sectionId}"]`);
+      if (sectionEl) {
+        initSection(sectionEl);
+      }
+    });
+
+    document.addEventListener('shopify:section:unload', (event) => {
+      if (!event || !event.detail || !event.detail.sectionId) return;
+      removeSection(event.detail.sectionId);
+    });
+
+    document.addEventListener('cart:update', () => {
+      instances.forEach((instance) => instance.refreshCartAmount());
+    });
+
+    window.GiftTiersDebug = {
+      enable() {
+        window[DEBUG_FLAG] = true;
+        console.info(`${DEBUG_PREFIX} Debug mode enabled`);
+        debugGroup('tiers:snapshot', collectTierSnapshot());
+        instances.forEach((instance) => instance.refreshCartAmount(true));
+      },
+      disable() {
+        window[DEBUG_FLAG] = false;
+        console.info(`${DEBUG_PREFIX} Debug mode disabled`);
+      },
+      snapshot() {
+        const tiers = collectTierSnapshot();
+        console.group(`${DEBUG_PREFIX} Snapshot`);
+        console.table(tiers);
+        try {
+          fetch('/cart.js')
+            .then((res) => res.json())
+            .then((cart) => {
+              console.groupCollapsed('cart.js');
+              console.log({
+                total_price: cart.total_price,
+                item_count: cart.item_count,
+                items: (cart.items || []).map((item) => ({
+                  key: item.key,
+                  variant_id: item.variant_id,
+                  quantity: item.quantity,
+                  title: item.title,
+                  sku: item.sku,
+                })),
+              });
+              console.groupEnd();
+            })
+            .catch((error) => {
+              console.error(`${DEBUG_PREFIX} snapshot cart fetch failed`, error);
+            });
+        } catch (error) {
+          console.error(`${DEBUG_PREFIX} snapshot cart fetch failed`, error);
+        }
+        console.groupEnd();
+      },
+      instances,
+    };
+  })();
+</script>
+{% schema %}
+{
+  "name": "購物車頁-隨箱附贈滿額達成禮",
+  "class": "section-cart-gift-tiers",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "gift_title",
+      "label": "禮物區塊標題",
+      "default": "隨箱附贈"
+    },
+    {
+      "type": "text",
+      "id": "tiers_subtitle",
+      "label": "內框標題",
+      "default": "滿額贈禮階層",
+      "info": "顯示在外框內、禮物列表上方的小標題，可留空隱藏"
+    },
+    {
+      "type": "number",
+      "id": "preview_cart_total",
+      "label": "編輯器預覽購物車金額",
+      "default": 0,
+      "info": "主題編輯器中用於模擬購物車金額（單位：TWD）"
+    },
+    {
+      "type": "header",
+      "content": "顏色設定"
+    },
+    {
+      "type": "color",
+      "id": "loading_bg_color",
+      "label": "載入背景色",
+      "default": "#1a1a1a",
+      "info": "防止載入時白色閃爍的預設背景色"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_accent_gradient",
+      "label": "使用強調色漸變",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "accent_color_start",
+      "label": "強調色（起始）",
+      "default": "#ff6b35"
+    },
+    {
+      "type": "color",
+      "id": "accent_color_end",
+      "label": "強調色（結束）",
+      "default": "#f7931e"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "主要文字顏色",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_secondary_color",
+      "label": "次要文字顏色",
+      "default": "#cccccc"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_add_gift",
+      "label": "達標自動加入贈品",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "lock_gift_qty",
+      "label": "鎖定贈品數量為 1",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "block_direct_atc",
+      "label": "阻擋贈品直接加入購物車（商品頁/集合頁）",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gift_tier",
+      "name": "滿額達成禮",
+      "settings": [
+        {
+          "type": "text",
+          "id": "gift_name",
+          "label": "禮物名稱",
+          "default": "精細刷 (2入裝)"
+        },
+        {
+          "type": "textarea",
+          "id": "gift_description",
+          "label": "禮物描述",
+          "default": "精細刷毛深入清潔"
+        },
+        {
+          "type": "number",
+          "id": "amount",
+          "label": "消費達標金額",
+          "default": 1000,
+          "info": "達到此金額即可獲得該禮物"
+        },
+        {
+          "type": "product",
+          "id": "gift_product",
+          "label": "贈品商品",
+          "info": "選擇對應的 0 元贈品商品，達標時將自動加入購物車"
+        },
+        {
+          "type": "text",
+          "id": "gift_variant_id_override",
+          "label": "贈品變體（ID / SKU / 變體標題皆可）",
+          "info": "若此商品有多個變體，請填要送的那一個（可填變體ID、SKU、或變體標題，例如：黑色 / 500ml）"
+        },
+        {
+          "type": "text",
+          "id": "gift_note",
+          "label": "贈品活動說明",
+          "info": "會顯示在購物車商品名稱下方，例如：滿額贈禮 - 滿2000送毛巾"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_unlocked",
+          "label": "已贈送",
+          "default": false,
+          "info": "僅供備援顯示，前端會依據實際購物車金額覆寫狀態"
+        },
+        {
+          "type": "number",
+          "id": "remaining_amount",
+          "label": "還差金額",
+          "default": 0,
+          "info": "僅供備援顯示，前端會依據實際購物車金額計算差額"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "購物車-隨箱附贈",
+      "category": "銷售功能",
+      "blocks": [
+        {
+          "type": "gift_tier",
+          "settings": {
+            "gift_name": "精細刷 (2入裝)",
+            "gift_description": "精細刷毛深入清潔",
+            "amount": 1000,
+            "is_unlocked": true
+          }
+        },
+        {
+          "type": "gift_tier",
+          "settings": {
+            "gift_name": "50x150加厚毛巾",
+            "gift_description": "柔軟吸水性強",
+            "amount": 2000,
+            "is_unlocked": true
+          }
+        },
+        {
+          "type": "gift_tier",
+          "settings": {
+            "gift_name": "60x160加厚洗車巾",
+            "gift_description": "大尺寸專用洗車",
+            "amount": 3000,
+            "is_unlocked": false,
+            "remaining_amount": 500
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

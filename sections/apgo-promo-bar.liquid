@@ -1,0 +1,339 @@
+{% comment %}
+  APGO 全站戰術廣播條 (Tactical Promo Bar)
+  Version: 2.1 (With Visibility Control & Exclude Logic)
+{% endcomment %}
+
+{% assign show_bar = true %}
+
+{% if section.settings.homepage_only and request.page_type != 'index' %}
+  {% assign show_bar = false %}
+{% endif %}
+
+{% if section.settings.exclude_handles != blank %}
+  {% assign current_handle = page.handle | default: handle %}
+  {% assign current_template = template.name %}
+  {% assign exclusion_list = section.settings.exclude_handles | split: ',' %}
+  
+  {% for item in exclusion_list %}
+    {% assign clean_item = item | strip %}
+    {% if clean_item == current_handle or clean_item == current_template or request.path contains clean_item %}
+      {% assign show_bar = false %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if show_bar %}
+
+<script src="https://cdn.tailwindcss.com" defer></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script>
+    window.tailwindConfigPromo = {
+        prefix: 'tw-', 
+        theme: {
+            extend: {
+                colors: {
+                    dt: { orange: '#f08418', red: '#DC2626', gold: '#C5A572' }
+                },
+                animation: {
+                    'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    'shimmer-sweep': 'shimmer 4s ease-in-out infinite',
+                },
+                keyframes: {
+                    shimmer: {
+                        '0%': { transform: 'translateX(-150%) skewX(-20deg)' },
+                        '20%': { transform: 'translateX(150%) skewX(-20deg)' }, 
+                        '100%': { transform: 'translateX(150%) skewX(-20deg)' }
+                    }
+                }
+            }
+        }
+    }
+</script>
+<script src="https://cdn.tailwindcss.com" defer onload="tailwind.config = window.tailwindConfigPromo"></script>
+
+<style>
+    #apgo-promo-bar {
+        font-family: "Noto Sans TC", sans-serif;
+        line-height: 1.5;
+    }
+    #apgo-promo-bar a { text-decoration: none; }
+
+    /* 進站先隱藏，等 JS / Tailwind 準備好再淡入，避免 FOUC */
+    .apgo-promo--hidden {
+        opacity: 0;
+        transform: translateY(-4px);
+        pointer-events: none;
+    }
+    .apgo-promo--ready {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+        transition:
+          opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+          transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* --- 垂直翻滾核心樣式 --- */
+    .flip-wrapper {
+        height: 24px; /* 固定高度，確保只顯示一行 */
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: bottom;
+        position: relative;
+    }
+    .flip-track {
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .flip-item {
+        height: 24px; /* 必須與 wrapper 高度一致 */
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        font-weight: 800;
+    }
+</style>
+
+<div id="apgo-promo-bar" class="apgo-promo--hidden">
+    <a href="{{ section.settings.link_url }}" class="tw-block tw-relative tw-w-full tw-bg-black tw-overflow-hidden tw-group tw-border-b-2" style="background-color: {{ section.settings.bg_color }}; border-color: {{ section.settings.border_color }};">
+        
+        {% if section.settings.enable_shimmer %}
+        <div class="tw-absolute tw-inset-0 tw-w-full tw-h-full tw-pointer-events-none">
+            <div class="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-bg-gradient-to-r tw-from-transparent tw-via-white/10 tw-to-transparent tw-animate-shimmer-sweep"></div>
+        </div>
+        {% endif %}
+
+        <div class="tw-relative tw-z-10 tw-max-w-[1200px] tw-mx-auto tw-py-3 tw-px-4 tw-flex tw-items-center tw-justify-between md:tw-justify-center md:tw-gap-6">
+            
+            <div class="tw-flex tw-items-center tw-gap-2">
+                <div class="tw-relative tw-flex tw-items-center tw-justify-center">
+                    <div class="tw-w-2.5 tw-h-2.5 tw-rounded-full tw-animate-pulse-fast" style="background-color: {{ section.settings.status_color }};"></div>
+                    <div class="tw-absolute tw-w-4 tw-h-4 tw-rounded-full tw-animate-ping tw-opacity-50" style="background-color: {{ section.settings.status_color }};"></div>
+                </div>
+                <span class="tw-font-mono tw-text-xs tw-font-bold tw-tracking-wider" style="color: {{ section.settings.status_color }};">
+                    {{ section.settings.status_text }}
+                </span>
+            </div>
+
+            <div class="tw-flex-1 tw-text-center tw-px-2 tw-truncate tw-text-sm md:tw-text-base tw-font-bold tw-tracking-wide tw-text-white tw-flex tw-items-center tw-justify-center">
+                
+                <span class="tw-mr-2">{{ section.settings.text_prefix }} <span class="tw-text-gray-500 tw-mx-1">|</span></span>
+                
+                <div class="flip-wrapper">
+                    <div class="flip-track" id="promo-flip-track">
+                        {% for block in section.blocks %}
+                            <div class="flip-item" style="color: {{ block.settings.text_color }};">
+                                {{ block.settings.text }}
+                            </div>
+                        {% endfor %}
+                        {% if section.blocks.size > 0 %}
+                            <div class="flip-item" style="color: {{ section.blocks.first.settings.text_color }};">
+                                {{ section.blocks.first.settings.text }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if section.settings.text_suffix != blank %}
+                    <span class="tw-hidden md:tw-inline tw-ml-2">{{ section.settings.text_suffix }}</span>
+                {% endif %}
+            </div>
+
+            <div class="tw-flex tw-items-center" style="color: {{ section.settings.cta_color }};">
+                <span class="tw-hidden md:tw-block tw-text-xs tw-font-bold tw-mr-2 group-hover:tw-underline">{{ section.settings.cta_text }}</span>
+                <i class="fas fa-chevron-right tw-text-xs tw-transition-transform group-hover:tw-translate-x-1"></i>
+            </div>
+        </div>
+    </a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const bar = document.getElementById('apgo-promo-bar');
+        if (bar) {
+            // Tailwind 的 defer script 會在 DOMContentLoaded 前執行完
+            // 這時候 tw- 類別已經有樣式，我們再把廣播條顯示出來
+            bar.classList.remove('apgo-promo--hidden');
+            bar.classList.add('apgo-promo--ready');
+        }
+
+        const track = document.getElementById('promo-flip-track');
+        if (!track) return;
+        
+        const items = track.querySelectorAll('.flip-item');
+        if (items.length <= 1) return; // 如果只有一個或沒有區塊，就不動
+
+        const itemHeight = 24; // 對應 CSS 高度
+        let currentIndex = 0;
+        const totalItems = items.length; // 包含複製的那一項
+
+        setInterval(() => {
+            currentIndex++;
+            
+            // 執行翻滾動畫
+            track.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            track.style.transform = `translateY(-${currentIndex * itemHeight}px)`;
+
+            // 無縫循環檢查 (最後一項是第一項的複製)
+            if (currentIndex === totalItems - 1) {
+                setTimeout(() => {
+                    // 瞬間跳回開頭 (關閉動畫)
+                    track.style.transition = 'none'; 
+                    currentIndex = 0; 
+                    track.style.transform = `translateY(0)`; 
+                }, 500); // 等待動畫結束後執行
+            }
+
+        }, 3000); // 每 3 秒翻一次
+    });
+</script>
+
+{% endif %}
+
+{% schema %}
+{
+  "name": "APGO 戰術廣播條 (翻滾版)",
+  "settings": [
+    {
+      "type": "header",
+      "content": "顯示設定 (Visibility)"
+    },
+    {
+      "type": "checkbox",
+      "id": "homepage_only",
+      "label": "僅在首頁顯示",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "exclude_handles",
+      "label": "排除特定頁面 (Handles)",
+      "info": "輸入要隱藏此廣播條的頁面 Handle 或 Template 名稱，用逗號分隔。例如: 'cart, login, account, about-us'。"
+    },
+    {
+      "type": "header",
+      "content": "連結設定"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "跳轉連結 (活動頁面)"
+    },
+    {
+      "type": "header",
+      "content": "樣式設定"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "背景顏色",
+      "default": "#050505"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "底部邊框顏色",
+      "default": "#f08418"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_shimmer",
+      "label": "啟用光流掃描特效",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "左側狀態 (Status)"
+    },
+    {
+      "type": "text",
+      "id": "status_text",
+      "label": "狀態文字",
+      "default": "LIVE"
+    },
+    {
+      "type": "color",
+      "id": "status_color",
+      "label": "狀態燈顏色",
+      "default": "#DC2626"
+    },
+    {
+      "type": "header",
+      "content": "固定文字 (Fixed Text)"
+    },
+    {
+      "type": "text",
+      "id": "text_prefix",
+      "label": "前綴文字 (一直顯示)",
+      "default": "馬年情報"
+    },
+    {
+      "type": "text",
+      "id": "text_suffix",
+      "label": "後綴文字 (手機隱藏)",
+      "default": "- 限時搶購中"
+    },
+    {
+      "type": "header",
+      "content": "右側引導 (CTA)"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "按鈕文字",
+      "default": "立即前往"
+    },
+    {
+      "type": "color",
+      "id": "cta_color",
+      "label": "按鈕顏色",
+      "default": "#f08418"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "flip_text",
+      "name": "輪播訊息",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "訊息內容",
+          "default": "全館 $88 起"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "文字顏色",
+          "default": "#f08418"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO 戰術廣播條 (翻滾版)",
+      "category": "Promotional",
+      "blocks": [
+        {
+            "type": "flip_text",
+            "settings": {
+                "text": "全館 $88 戰術補給起",
+                "text_color": "#f08418"
+            }
+        },
+        {
+            "type": "flip_text",
+            "settings": {
+                "text": "滿額贈黃金刮刮卡",
+                "text_color": "#C5A572"
+            }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

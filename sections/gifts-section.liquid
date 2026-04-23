@@ -1,0 +1,430 @@
+{% comment %} sections/gifts-section.liquid {% endcomment %}
+
+<section
+  class="double-eleven-gifts"
+  id="{{ section.settings.section_id }}"
+  data-section-id="{{ section.settings.section_id }}"
+>
+  <div class="gifts-container">
+    <div class="gifts-header gifts-header-desktop">
+      {% if section.settings.gifts_header_image_desktop %}
+        <img
+          src="{{ section.settings.gifts_header_image_desktop | img_url}}"
+          srcset="{{ section.settings.gifts_header_image_desktop | img_url: '1536x' }} 1x,
+                  {{ section.settings.gifts_header_image_desktop | img_url: '3072x' }} 2x"
+          alt="Gifts Header"
+          class="gifts-header-image"
+          loading="lazy"
+        >
+      {% endif %}
+      <div class="gifts-header-content">
+        <h2 class="gifts-title">{{ section.settings.header_title }}</h2>
+        <p class="gifts-description">{{ section.settings.header_description }}</p>
+      </div>
+    </div>
+
+    <div class="gifts-header gifts-header-mobile">
+      {% if section.settings.gifts_header_image_mobile %}
+        <img
+          src="{{ section.settings.gifts_header_image_mobile | img_url}}"
+          srcset="{{ section.settings.gifts_header_image_mobile | img_url: '750x' }} 1x,
+                  {{ section.settings.gifts_header_image_mobile | img_url: '2000x' }} 2x"
+          alt="Gifts Header"
+          class="gifts-header-image"
+          loading="lazy"
+        >
+      {% endif %}
+      <div class="gifts-header-content">
+        <h2 class="gifts-title">{{ section.settings.header_title }}</h2>
+        <p class="gifts-description">{{ section.settings.header_description }}</p>
+      </div>
+    </div>
+
+    <div class="gifts-carousel-wrapper">
+      <div class="gifts-grid" id="giftsGrid">
+        {% for block in section.blocks %}
+          {% if block.type == 'gift_item' %}
+            <a href="{{ block.settings.gift_link }}" class="gift-card">
+              <div class="gift-image-wrapper">
+                {% if block.settings.gift_image %}
+                  <img
+                    src="{{ block.settings.gift_image | img_url}}"
+                    srcset="{{ block.settings.gift_image | img_url: '864x' }} 1x,
+                          {{ block.settings.gift_image | img_url: '2000x' }} 2x"
+                    alt="{{ block.settings.gift_name }}"
+                    class="gift-image"
+                  >
+                {% else %}
+                  <div class="gift-image-placeholder">
+                    <p>添加图片</p>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="gift-info">
+                <h3 class="gift-name">{{ block.settings.gift_name }}</h3>
+                <div class="gift-quantity">
+                  <span class="quantity-text">
+                    {{- block.settings.gift_limit }} | 剩餘：{{ block.settings.gift_remaining -}}
+                  </span>
+                </div>
+              </div>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ===== 第二块 满额赠礼样式 ===== */
+  .double-eleven-gifts {
+    width: 100%;
+    padding: 40px 0;
+  }
+
+  .gifts-container {
+    margin: 0 auto;
+    padding: 0 188px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gifts-header {
+    width: 100%;
+    height: 288px;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 32px;
+    position: relative;
+  }
+
+  .gifts-header-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .gifts-header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+  }
+
+  .gifts-header-desktop {
+    display: flex;
+  }
+
+  .gifts-header-mobile {
+    display: none;
+  }
+
+  .gifts-title {
+    font-size: 44px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 62px;
+    color: white;
+    word-break: break-word;
+  }
+
+  .gifts-description {
+    max-width: 492px;
+    font-size: 24px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 32px;
+    color: #e4e4e7;
+    word-break: break-word;
+  }
+  .gifts-carousel-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: auto;
+    scrollbar-color: #ff651d #3f3f46;
+  }
+
+  .gifts-carousel-wrapper::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .gifts-carousel-wrapper::-webkit-scrollbar-track {
+    background: #3f3f46;
+  }
+
+  .gifts-carousel-wrapper::-webkit-scrollbar-thumb {
+    background: #ff651d;
+    border-radius: 3px;
+  }
+
+  /* iOS Safari 特殊處理 */
+  @supports (-webkit-touch-callout: none) {
+    .gifts-carousel-wrapper {
+      -webkit-appearance: none;
+      scrollbar-color: #ff651d #3f3f46;
+    }
+  }
+  .gifts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 24px 0px 0px 0px;
+  }
+
+  .gift-card {
+    background-color: #18181b;
+    border-radius: 24px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none; /* ← 添加 */
+    color: inherit; /* ← 添加 */
+  }
+
+  .gift-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .gift-image-wrapper {
+    width: 432px;
+    height: 432px;
+    background-color: #18181b;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+  }
+
+  .gift-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gift-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #27272a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 16px;
+  }
+
+  .gift-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .gift-name {
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 32px;
+    color: white;
+    word-break: break-word;
+  }
+
+  .gift-quantity {
+    width: 100%;
+    text-align: center;
+  }
+
+  .quantity-text {
+    font-size: 20px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 24px;
+    color: #ff9d00;
+  }
+
+  /* ===== 手機響應式 ===== */
+  @media (max-width: 450px) {
+    .gifts-container {
+      padding: 0;
+    }
+    .gifts-header {
+      border-radius: 0px;
+      aspect-ratio: 2000 / 1536;
+      height: 100%;
+    }
+    .gifts-header-desktop {
+      display: none;
+    }
+
+    .gifts-header-mobile {
+      display: flex;
+      padding: 16px;
+      align-items: flex-end;
+    }
+
+    .gifts-header-content {
+      gap: 5px;
+    }
+
+    .gifts-title {
+      font-size: 24px;
+      line-height: 24px;
+    }
+
+    .gifts-description {
+      font-size: 16px;
+      line-height: 22px;
+    }
+
+    .gifts-carousel-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scroll-behavior: smooth;
+    }
+
+    .gifts-carousel-wrapper::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .gifts-carousel-wrapper::-webkit-scrollbar-track {
+      background: #3f3f46;
+    }
+
+    .gifts-carousel-wrapper::-webkit-scrollbar-thumb {
+      background: #ff651d;
+      border-radius: 3px;
+    }
+
+    .gifts-carousel-wrapper {
+      scrollbar-color: #ff651d #3f3f46;
+    }
+
+    .gifts-grid {
+      grid-template-columns: repeat(3, minmax(168px, 168px));
+      gap: 12px;
+      padding: 12px;
+      width: fit-content;
+    }
+
+    .gift-card {
+      padding: 0px;
+      gap: 8px;
+      width: 168px;
+      flex-shrink: 0;
+      border-radius: 12px;
+    }
+
+    .gift-image-wrapper {
+      height: 168px;
+      width: 168px;
+    }
+
+    .gift-name {
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .quantity-text {
+      font-size: 10px;
+      line-height: 14px;
+      color: #ff651d;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "滿額贈禮",
+  "settings": [
+    {
+      "type": "text",
+      "id": "header_title",
+      "label": "滿額贈禮標題",
+      "default": "限量滿額贈"
+    },
+    {
+      "type": "text",
+      "id": "header_description",
+      "label": "滿額贈禮描述",
+      "default": "活動期間：11/1 - 11/11 數量有限，送完為止！"
+    },
+    {
+      "type": "image_picker",
+      "id": "gifts_header_image_desktop",
+      "label": "滿額贈禮 Header 背景圖 - 電腦端"
+    },
+    {
+      "type": "image_picker",
+      "id": "gifts_header_image_mobile",
+      "label": "滿額贈禮 Header 背景圖 - 手機端"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "info": "用於導航欄，不能有空格或特殊字符",
+      "default": "section-gifts",
+      "placeholder": "例如: section-hero"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gift_item",
+      "name": "贈禮項目",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "gift_image",
+          "label": "贈禮圖片"
+        },
+        {
+          "type": "text",
+          "id": "gift_name",
+          "label": "贈禮名稱",
+          "default": "下單立即送水蠟一罐"
+        },
+        {
+          "type": "text",
+          "id": "gift_limit",
+          "label": "限量數量",
+          "default": "限量100位"
+        },
+        {
+          "type": "text",
+          "id": "gift_remaining",
+          "label": "剩餘數量",
+          "default": "100份"
+        },
+        {
+          "type": "url",
+          "id": "gift_link",
+          "label": "贈禮商品鏈接",
+          "info": "點擊 card 跳轉的商品頁面鏈接"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "活動模板 - 滿額贈禮"
+    }
+  ]
+}
+{% endschema %}

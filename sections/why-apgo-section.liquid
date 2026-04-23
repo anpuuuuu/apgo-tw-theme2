@@ -1,0 +1,229 @@
+{% comment %}
+  Why APGO Section - 為什麼選擇APGO
+  放置位置：/sections/why-apgo-section.liquid
+  改造後：支持 Feature 背景 = 背景漸變色、圖片/GIF、影片
+{% endcomment %}
+
+<section class="why-apgo-section">
+  <div class="container">
+    <!-- 標題區 -->
+    <div class="section-header">
+      <h2 class="main-title">{{ section.settings.title | default: "為什麼選擇 APGO？" }}</h2>
+      <p class="subtitle">{{ section.settings.subtitle | default: "17年本土品牌，從研發到生產一條龍把控，獨家技術熱銷東南亞" }}</p>
+    </div>
+
+    <!-- 核心特色 - 卡片 -->
+    <div class="core-features">
+      {% for block in section.blocks %}
+        {% if block.type == 'feature' %}
+          <div class="feature-card">
+            {% if block.settings.bg_type == 'image' and block.settings.bg_image != blank %}
+              <div class="feature-bg" style="background:url('{{ block.settings.bg_image | img_url: 'master' }}') center/cover no-repeat;"></div>
+            {% elsif block.settings.bg_type == 'video' and block.settings.bg_video != blank %}
+              <video class="feature-bg" autoplay muted loop playsinline>
+                <source src="{{ block.settings.bg_video }}" type="video/mp4">
+              </video>
+            {% else %}
+              <div class="feature-bg {{ block.settings.bg_class }}"></div>
+            {% endif %}
+
+            <div class="feature-content">
+              <div class="feature-icon">{{ block.settings.icon }}</div>
+              <h3 class="feature-title">{{ block.settings.feature_title }}</h3>
+              <p class="feature-desc">{{ block.settings.feature_desc }}</p>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <p class="cta-text">{{ section.settings.cta_text | default: "選擇APGO，選擇品質與信任" }}</p>
+      <a href="{{ section.settings.cta_link | default: '#' }}" class="cta-button">{{ section.settings.cta_button_text | default: "立即體驗" }}</a>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  * {margin:0;padding:0;box-sizing:border-box}
+
+  :root {
+    --primary-orange: #f08418;
+    --secondary-orange: #ff9a3c;
+    --text-white: #ffffff;
+    --text-gray: #cccccc;
+    --dark-bg: #000000;
+  }
+
+  .why-apgo-section {
+    background: #000;
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .container {max-width:1200px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+
+  /* 標題 */
+  .section-header {text-align:center;margin-bottom:80px;opacity:0;transform:translateY(30px);animation:fadeInUp 0.8s ease forwards}
+  @keyframes fadeInUp {to{opacity:1;transform:translateY(0)}}
+  .main-title {font-size:3rem;font-weight:bold;margin-bottom:20px;background:linear-gradient(45deg,var(--primary-orange),var(--secondary-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .subtitle {font-size:1.3rem;color:var(--text-gray);max-width:700px;margin:0 auto;line-height:1.6}
+
+  /* Grid */
+  .core-features {display:grid;grid-template-columns:repeat(2,1fr);gap:30px;margin-bottom:80px}
+  .feature-card {position:relative;height:400px;border-radius:20px;overflow:hidden;cursor:pointer;opacity:0;transform:translateY(50px);animation:slideUp 0.8s ease forwards}
+  .feature-card:nth-child(1){animation-delay:0.1s}
+  .feature-card:nth-child(2){animation-delay:0.2s}
+  .feature-card:nth-child(3){animation-delay:0.3s}
+  .feature-card:nth-child(4){animation-delay:0.4s}
+  @keyframes slideUp {to{opacity:1;transform:translateY(0)}}
+
+  /* 背景 */
+  .feature-bg {position:absolute;top:0;left:0;width:100%;height:100%;transition:transform 0.5s ease;object-fit:cover}
+  .feature-card:hover .feature-bg {transform:scale(1.1)}
+  .lab-bg {background:linear-gradient(135deg,#1a237e,#3949ab)}
+  .factory-bg {background:linear-gradient(135deg,#b71c1c,#e53935)}
+  .tech-bg {background:linear-gradient(135deg,#f57c00,#ff9800)}
+  .quality-bg {background:linear-gradient(135deg,#2e7d32,#43a047)}
+
+  /* 内容覆盖层 */
+  .feature-content {position:absolute;bottom:0;left:0;right:0;padding:40px 30px;background:linear-gradient(to top,rgba(0,0,0,0.95),rgba(0,0,0,0.7) 70%,transparent 100%);transform:translateY(20px);transition:transform 0.3s ease;z-index:2}
+  .feature-card:hover .feature-content{transform:translateY(0)}
+  .feature-icon {font-size:3rem;margin-bottom:15px;color:var(--primary-orange)}
+  .feature-title {font-size:1.5rem;font-weight:bold;margin-bottom:10px;color:var(--text-white)}
+  .feature-desc {font-size:0.95rem;color:var(--text-gray);line-height:1.5}
+
+  /* CTA */
+  .cta-section{text-align:center;padding:40px 0}
+  .cta-text{font-size:1.5rem;margin-bottom:30px;color:var(--text-white)}
+  .cta-button{display:inline-block;padding:18px 50px;background:linear-gradient(45deg,var(--primary-orange),var(--secondary-orange));color:var(--text-white);text-decoration:none;font-size:1.2rem;font-weight:bold;border-radius:50px;transition:all 0.3s ease;box-shadow:0 4px 15px rgba(240,132,24,0.3)}
+  .cta-button:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(240,132,24,0.4)}
+
+  /* 響應式 */
+  @media(max-width:1024px){.core-features{grid-template-columns:1fr;gap:20px}.feature-card{height:300px}}
+  @media(max-width:768px){.why-apgo-section{padding:60px 0}.main-title{font-size:2rem}.subtitle{font-size:1.1rem}.section-header{margin-bottom:50px}.core-features{margin-bottom:50px}.feature-content{padding:30px 20px}.feature-title{font-size:1.3rem}.cta-text{font-size:1.2rem}.cta-button{padding:15px 40px;font-size:1rem}}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "為什麼選擇APGO",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "標題",
+      "default": "為什麼選擇 APGO？"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "副標題",
+      "default": "17年本土品牌，從研發到生產一條龍把控，獨家技術熱銷東南亞"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA文字",
+      "default": "選擇APGO，選擇品質與信任"
+    },
+    {
+      "type": "text",
+      "id": "cta_button_text",
+      "label": "按鈕文字",
+      "default": "立即體驗"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "按鈕連結"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "特色卡片",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "圖標 (emoji)",
+          "default": "🔬"
+        },
+        {
+          "type": "text",
+          "id": "feature_title",
+          "label": "特色標題",
+          "default": "自主研發實驗室"
+        },
+        {
+          "type": "textarea",
+          "id": "feature_desc",
+          "label": "特色描述",
+          "default": "擁有專業研發實驗室，所有產品配方由創辦人親自研發把控，確保每一瓶都是獨家技術結晶"
+        },
+        {
+          "type": "select",
+          "id": "bg_type",
+          "label": "背景類型",
+          "options": [
+            { "value": "color", "label": "純色漸層" },
+            { "value": "image", "label": "圖片 / GIF" },
+            { "value": "video", "label": "影片" }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "image_picker",
+          "id": "bg_image",
+          "label": "背景圖片 (可上傳 JPG/PNG/GIF)"
+        },
+        {
+          "type": "url",
+          "id": "bg_video",
+          "label": "影片連結 (MP4)"
+        },
+        {
+          "type": "select",
+          "id": "bg_class",
+          "label": "背景樣式 (僅 bg_type=color 使用)",
+          "options": [
+            {"value": "lab-bg", "label": "實驗室 (藍色)"},
+            {"value": "factory-bg", "label": "工廠 (紅色)"},
+            {"value": "tech-bg", "label": "技術 (橘色)"},
+            {"value": "quality-bg", "label": "品質 (綠色)"}
+          ],
+          "default": "lab-bg"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "為什麼選擇APGO",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "🔬",
+            "feature_title": "自主研發實驗室",
+            "feature_desc": "擁有專業研發實驗室，所有產品配方由創辦人親自研發把控，確保每一瓶都是獨家技術結晶",
+            "bg_type": "color",
+            "bg_class": "lab-bg"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "🏭",
+            "feature_title": "一條龍生產工廠",
+            "feature_desc": "從原料採購到成品包裝，全程在自有工廠完成，嚴格品質控管",
+            "bg_type": "image"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

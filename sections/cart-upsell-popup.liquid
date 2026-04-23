@@ -1,0 +1,458 @@
+{%- liquid
+  assign visible_tab_count = 0
+  for block in section.blocks
+    if block.settings.show_in_popup and block.settings.collection != blank
+      assign visible_tab_count = visible_tab_count | plus: 1
+    endif
+  endfor
+-%}
+
+<section
+  id="CartUpsellPopup-{{ section.id }}"
+  class="cart-upsell-popup"
+  data-section-id="{{ section.id }}"
+>
+  <div class="cart-upsell-popup__overlay" data-close-popup></div>
+  <div class="cart-upsell-popup__sheet">
+    <div class="cart-upsell-popup__head">
+      <div>
+        <strong>{{ section.settings.title | escape }}</strong>
+      </div>
+      <button type="button" class="cart-upsell-popup__close" data-close-popup>×</button>
+    </div>
+
+    <div class="cart-upsell-popup__tabs">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.show_in_popup and block.settings.collection != blank -%}
+          {%- assign collection_handle = block.settings.collection.handle -%}
+          <button
+            type="button"
+            class="cart-upsell-popup__tab{% if forloop.first %} is-active{% endif %}"
+            data-tab-handle="{{ collection_handle }}"
+            {{ block.shopify_attributes }}
+          >
+            {{ block.settings.label | escape }}
+          </button>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="cart-upsell-popup__body">
+      {%- if section.settings.show_collection_note -%}
+        <div class="cart-upsell-popup__note" data-popup-note></div>
+      {%- endif -%}
+      <div class="cart-upsell-popup__grid" data-popup-grid>
+        {%- if visible_tab_count == 0 -%}
+          <div class="cart-upsell-popup__empty">
+            請先在主題編輯器為 popup tab 指定 Shopify collection。
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- if block.settings.show_in_popup and block.settings.collection != blank -%}
+          {%- assign popup_collection = block.settings.collection -%}
+          <template data-popup-template="{{ popup_collection.handle }}">
+            {%- for product in popup_collection.products limit: section.settings.products_limit -%}
+              {%- assign current_variant = product.selected_or_first_available_variant -%}
+              <article class="cart-upsell-popup__card">
+                <a href="{{ product.url }}" class="cart-upsell-popup__thumb">
+                  {%- if product.featured_image != blank -%}
+                    {{
+                      product.featured_image
+                      | image_url: width: 480
+                      | image_tag: loading: 'lazy', alt: product.title, class: 'cart-upsell-popup__thumb-image'
+                    }}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'cart-upsell-popup__thumb-image' }}
+                  {%- endif -%}
+                </a>
+                <div class="cart-upsell-popup__info">
+                  <a href="{{ product.url }}" class="cart-upsell-popup__title">{{ product.title }}</a>
+                  <div class="cart-upsell-popup__price">{{ current_variant.price | money }}</div>
+                  <button
+                    type="button"
+                    class="cart-upsell-popup__add"
+                    data-variant-id="{{ current_variant.id }}"
+                  >
+                    加入購物車
+                  </button>
+                </div>
+              </article>
+            {%- endfor -%}
+          </template>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cart-upsell-popup {
+    position: relative;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  .cart-upsell-popup.is-open {
+    pointer-events: auto;
+  }
+
+  .cart-upsell-popup__overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.25s;
+  }
+
+  .cart-upsell-popup__sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: min(82vh, 760px);
+    background: #111111;
+    border-top: 1px solid #f08418;
+    border-radius: 20px 20px 0 0;
+    transform: translateY(100%);
+    transition: 0.25s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cart-upsell-popup.is-open .cart-upsell-popup__overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .cart-upsell-popup.is-open .cart-upsell-popup__sheet {
+    transform: translateY(0);
+  }
+
+  .cart-upsell-popup__head {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid #333333;
+    background: #111111;
+  }
+
+  .cart-upsell-popup__close {
+    border: 0;
+    background: transparent;
+    color: #999999;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .cart-upsell-popup__tabs {
+    position: sticky;
+    top: 53px;
+    z-index: 1;
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    padding: 0 20px;
+    border-bottom: 1px solid #333333;
+    background: #111111;
+    scrollbar-width: none;
+  }
+
+  .cart-upsell-popup__tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cart-upsell-popup__tab {
+    border: 0;
+    background: none;
+    color: #999999;
+    padding: 12px 0;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .cart-upsell-popup__tab.is-active {
+    color: #ffffff;
+    border-bottom-color: #f08418;
+  }
+
+  .cart-upsell-popup__body {
+    overflow-y: auto;
+    padding: 18px;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom, 20px));
+  }
+
+  .cart-upsell-popup__note {
+    color: #888888;
+    font-size: 11px;
+    margin-bottom: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .cart-upsell-popup__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .cart-upsell-popup__empty {
+    grid-column: 1 / -1;
+    border: 1px dashed #444444;
+    border-radius: 10px;
+    padding: 24px;
+    text-align: center;
+    color: #9a9a9a;
+  }
+
+  .cart-upsell-popup__card {
+    border: 1px solid #333333;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    overflow: hidden;
+  }
+
+  .cart-upsell-popup__thumb {
+    width: 100%;
+    aspect-ratio: 1;
+    display: block;
+    background: #0c0c0c;
+  }
+
+  .cart-upsell-popup__thumb-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .cart-upsell-popup__info {
+    padding: 10px;
+  }
+
+  .cart-upsell-popup__title {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    min-height: 36px;
+  }
+
+  .cart-upsell-popup__price {
+    margin-top: 6px;
+    color: #f08418;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: 800;
+  }
+
+  .cart-upsell-popup__add {
+    margin-top: 8px;
+    width: 100%;
+    min-height: 38px;
+    border-radius: 6px;
+    border: 1px solid #f08418;
+    background: transparent;
+    color: #f08418;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .cart-upsell-popup__add.is-loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .cart-upsell-popup__sheet {
+      left: 50%;
+      right: auto;
+      width: min(1180px, calc(100vw - 48px));
+      height: min(86vh, 860px);
+      border-left: 1px solid #333333;
+      border-right: 1px solid #333333;
+      transform: translate(-50%, 100%);
+    }
+
+    .cart-upsell-popup.is-open .cart-upsell-popup__sheet {
+      transform: translate(-50%, 0);
+    }
+
+    .cart-upsell-popup__body {
+      padding: 20px 24px 24px;
+    }
+
+    .cart-upsell-popup__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    if (!window.apgoCartAddUpsell) {
+      window.apgoCartAddUpsell = function(variantId, button) {
+        if (!variantId) return;
+        if (button) button.classList.add('is-loading');
+
+        fetch(window.Shopify.routes.root + 'cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify({
+            items: [{ id: Number(variantId), quantity: 1 }]
+          })
+        })
+          .then(function(response) {
+            if (!response.ok) throw new Error('add failed');
+            return fetch(window.Shopify.routes.root + 'cart.js');
+          })
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(cart) {
+            document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: cart } }));
+            document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: cart } }));
+          })
+          .catch(function() {})
+          .finally(function() {
+            if (!button) return;
+            button.classList.remove('is-loading');
+          });
+      };
+    }
+
+    const popup = document.getElementById('CartUpsellPopup-{{ section.id }}');
+    if (!popup) return;
+
+    const grid = popup.querySelector('[data-popup-grid]');
+    const note = popup.querySelector('[data-popup-note]');
+
+    function renderTab(handle, label) {
+      const template = popup.querySelector('[data-popup-template="' + handle + '"]');
+      if (!template || !grid) return;
+      grid.innerHTML = template.innerHTML;
+      if (note) note.textContent = 'COLLECTION: ' + handle;
+
+      popup.querySelectorAll('[data-tab-handle]').forEach(function(tab) {
+        tab.classList.toggle('is-active', tab.dataset.tabHandle === handle);
+      });
+    }
+
+    function openPopup() {
+      popup.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      const active = popup.querySelector('.cart-upsell-popup__tab.is-active');
+      if (active) renderTab(active.dataset.tabHandle, active.textContent.trim());
+    }
+
+    function closePopup() {
+      popup.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    popup.addEventListener('click', function(event) {
+      const closeButton = event.target.closest('[data-close-popup]');
+      if (closeButton) {
+        closePopup();
+        return;
+      }
+
+      const tab = event.target.closest('[data-tab-handle]');
+      if (tab) {
+        renderTab(tab.dataset.tabHandle, tab.textContent.trim());
+        return;
+      }
+
+      const addButton = event.target.closest('[data-variant-id]');
+      if (addButton) {
+        event.preventDefault();
+        window.apgoCartAddUpsell(addButton.dataset.variantId, addButton);
+      }
+    });
+
+    document.addEventListener('cart-upsell-popup:open', openPopup);
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') closePopup();
+    });
+
+    const firstTab = popup.querySelector('[data-tab-handle]');
+    if (firstTab) renderTab(firstTab.dataset.tabHandle, firstTab.textContent.trim());
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Cart Upsell Popup",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "戰術裝備庫"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_note",
+      "label": "Show collection note",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Products per tab",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "default": 8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "全部商品"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_in_popup",
+          "label": "Show in popup",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart Upsell Popup",
+      "blocks": [
+        { "type": "tab", "settings": { "label": "全部商品" } },
+        { "type": "tab", "settings": { "label": "清潔藥劑系列" } },
+        { "type": "tab", "settings": { "label": "鍍膜維護系列" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

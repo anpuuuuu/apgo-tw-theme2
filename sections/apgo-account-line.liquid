@@ -1,0 +1,280 @@
+{{ 'apgo-account-line.css' | asset_url | stylesheet_tag }}
+
+ <div class="apgo-account-line-section">
+     <div class="page-width-content">
+       <div class="apgo-account-line-container">
+         <h1 class="apgo-account-line-title">{{ section.settings.title | default: 'APGO Account Line' }}</h1>
+
+         <!-- Loading State -->
+         <div id="apgo-loading" class="apgo-loading">
+           <p>正在验证登录状态...</p>
+         </div>
+
+         <!-- Success State - User Logged In -->
+         <div id="apgo-success" class="apgo-success" style="display: none;">
+           <div class="apgo-success-icon">✓</div>
+           <h2>登录成功！</h2>
+           <div class="apgo-success-message">
+             <p>正在为您自动登录到 Shopify 账户...</p>
+             <p class="apgo-redirect-notice">3秒后自动跳转到账户页面</p>
+           </div>
+           <div class="apgo-member-info">
+             <div class="apgo-info-item">
+               <span class="apgo-info-label">会员ID:</span>
+               <span id="member-id" class="apgo-info-value">-</span>
+             </div>
+             <div class="apgo-info-item">
+               <span class="apgo-info-label">LINE用户ID:</span>
+               <span id="line-user-id" class="apgo-info-value">-</span>
+             </div>
+             <div class="apgo-info-item">
+               <span class="apgo-info-label">Shopify客户ID:</span>
+               <span id="shopify-customer-id" class="apgo-info-value">-</span>
+             </div>
+             <div class="apgo-info-item">
+               <span class="apgo-info-label">过期时间:</span>
+               <span id="exp-time" class="apgo-info-value">-</span>
+             </div>
+           </div>
+           <button id="apgo-logout-btn" class="apgo-btn apgo-btn-secondary">取消自动登录</button>
+         </div>
+
+         <!-- Error State - No Cookie or Invalid -->
+         <div id="apgo-error" class="apgo-error" style="display: none;">
+           <div class="apgo-error-icon">⚠</div>
+           <h2>未检测到有效的登录信息</h2>
+           <p>请从APGO中台重新登录</p>
+           <a href="https://shopiy-center.apgo.tw" class="apgo-btn apgo-btn-primary">前往中台登录</a>
+         </div>
+       </div>
+     </div>
+   </div>
+
+   <script>
+   (function() {
+     'use strict';
+
+     // Cookie读取函数
+     function getCookie(name) {
+       console.log('=== getCookie 函数开始 ===');
+       console.log('name:', name);
+
+       const value = `; ${document.cookie}`;
+       console.log('document.cookie:', document.cookie);
+
+       const parts = value.split(`; ${name}=`);
+       console.log('split 后 parts:', parts);
+       console.log('parts 数量:', parts.length);
+
+       if (parts.length === 2) {
+         const result = parts.pop().split(';').shift();
+         console.log('getCookie 返回:', result);
+         console.log('=== getCookie 函数结束 ===');
+         return result;
+       }
+
+       console.log('未找到 Cookie，返回 null');
+       console.log('=== getCookie 函数结束 ===');
+       return null;
+     }
+
+     // 解析Cookie数据 - 简化版
+     function parseAuthToken(token) {
+       console.log('=== parseAuthToken 函数开始 ===');
+       console.log('token:', token);
+       console.log('token 类型:', typeof token);
+
+       try {
+         console.log('开始 URL 解码...');
+         token = decodeURIComponent(token);
+         console.log('URL 解码后:', token);
+
+         console.log('开始 JSON 解析...');
+         const data = JSON.parse(token);
+         console.log('JSON 解析成功:', data);
+         console.log('=== parseAuthToken 函数结束 ===');
+         return data;
+
+       } catch (e) {
+         console.error('解析失败，错误信息:', e.message);
+         console.error('解析失败，错误堆栈:', e.stack);
+         console.log('=== parseAuthToken 函数结束 ===');
+         return null;
+       }
+     }
+
+     // 格式化时间
+     function formatTimestamp(timestamp) {
+       const date = new Date(timestamp * 1000);
+       const year = date.getFullYear();
+       const month = String(date.getMonth() + 1).padStart(2, '0');
+       const day = String(date.getDate()).padStart(2, '0');
+       const hours = String(date.getHours()).padStart(2, '0');
+       const minutes = String(date.getMinutes()).padStart(2, '0');
+       const seconds = String(date.getSeconds()).padStart(2, '0');
+       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+     }
+
+     // 检查token是否过期
+     function isTokenExpired(exp) {
+       return Date.now() >= exp * 1000;
+     }
+
+     // 主初始化函数
+     function initAccountLine() {
+       console.log('\n\n######## initAccountLine 开始 ########');
+       const loadingEl = document.getElementById('apgo-loading');
+       const successEl = document.getElementById('apgo-success');
+       const errorEl = document.getElementById('apgo-error');
+
+       // 读取Cookie
+       const authCookie = getCookie('apgo_auth');
+
+       if (!authCookie) {
+         console.log('未找到apgo_auth Cookie');
+         loadingEl.style.display = 'none';
+         errorEl.style.display = 'block';
+         return;
+       }
+
+       console.log('\n开始解析 Cookie...');
+       // 解析Cookie数据
+       const memberData = parseAuthToken(authCookie);
+
+       if (!memberData) {
+         console.error('Cookie解析失败');
+         loadingEl.style.display = 'none';
+         errorEl.style.display = 'block';
+         return;
+       }
+
+       // 检查是否过期
+       if (memberData.exp && isTokenExpired(memberData.exp)) {
+         console.log('Token已过期');
+         loadingEl.style.display = 'none';
+         errorEl.style.display = 'block';
+         errorEl.querySelector('p').textContent = '登录已过期，请重新登录';
+         return;
+       }
+
+       // 显示成功状态并填充数据
+       console.log('登录数据:', memberData);
+       loadingEl.style.display = 'none';
+       successEl.style.display = 'block';
+
+       // 填充用户信息
+       if (memberData.member_id) {
+         document.getElementById('member-id').textContent = memberData.member_id;
+       }
+       if (memberData.line_user_id) {
+         document.getElementById('line-user-id').textContent = memberData.line_user_id;
+       }
+       if (memberData.shopify_customer_id) {
+         document.getElementById('shopify-customer-id').textContent = memberData.shopify_customer_id;
+       }
+       if (memberData.exp) {
+         document.getElementById('exp-time').textContent = formatTimestamp(memberData.exp);
+       }
+
+       // 检查是否启用自动登录
+       {% if section.settings.auto_login %}
+       console.log('自动登录已启用，正在处理登录...');
+
+       let countdown = 3;
+       const noticeEl = document.querySelector('.apgo-redirect-notice');
+       const redirectTimer = setInterval(function() {
+         countdown--;
+         if (countdown > 0) {
+           noticeEl.textContent = countdown + '秒后自动跳转到账户页面';
+         } else {
+           clearInterval(redirectTimer);
+           // 构建重定向URL，携带认证信息
+           const redirectUrl = '/account?apgo_auth=' + encodeURIComponent(authCookie);
+           console.log('正在跳转到:', redirectUrl);
+           window.location.href = redirectUrl;
+         }
+       }, 1000);
+
+       // 存储 timer 引用以便取消
+       window.apgoRedirectTimer = redirectTimer;
+       {% endif %}
+
+       console.log('######## initAccountLine 结束 ########\n\n');
+     }
+
+     // 取消自动登录函数
+     function cancelAutoLogin() {
+       if (window.apgoRedirectTimer) {
+         clearInterval(window.apgoRedirectTimer);
+         window.apgoRedirectTimer = null;
+       }
+       const noticeEl = document.querySelector('.apgo-redirect-notice');
+       if (noticeEl) {
+         noticeEl.textContent = '已取消自动登录';
+       }
+       // 更新按钮文字
+       const logoutBtn = document.getElementById('apgo-logout-btn');
+       if (logoutBtn) {
+         logoutBtn.textContent = '登出';
+         logoutBtn.onclick = logout;
+       }
+     }
+
+     // 登出函数
+     function logout() {
+       document.cookie = 'apgo_auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.apgo.tw;';
+       document.cookie = 'apgo_auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=apgo.tw;';
+       alert('已成功登出');
+       window.location.reload();
+     }
+
+     // 页面加载完成后初始化
+     if (document.readyState === 'loading') {
+       document.addEventListener('DOMContentLoaded', initAccountLine);
+     } else {
+       initAccountLine();
+     }
+
+     // 为登出按钮绑定事件
+     document.addEventListener('DOMContentLoaded', function() {
+       const logoutBtn = document.getElementById('apgo-logout-btn');
+       if (logoutBtn) {
+         logoutBtn.addEventListener('click', cancelAutoLogin);
+       }
+     });
+
+   })();
+   </script>
+
+   {% schema %}
+   {
+     "name": "APGO Account Line",
+     "class": "apgo-account-line-wrapper",
+     "settings": [
+       {
+         "type": "text",
+         "id": "title",
+         "label": "页面标题",
+         "default": "APGO Account Line"
+       },
+       {
+         "type": "checkbox",
+         "id": "show_member_info",
+         "label": "显示会员信息",
+         "default": true
+       },
+       {
+         "type": "checkbox",
+         "id": "auto_login",
+         "label": "启用自动登录",
+         "default": true,
+         "info": "启用后会自动处理登录逻辑"
+       }
+     ],
+     "presets": [
+       {
+         "name": "APGO Account Line"
+       }
+     ]
+   }
+   {% endschema %}

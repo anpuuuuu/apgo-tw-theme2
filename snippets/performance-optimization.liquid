@@ -1,0 +1,124 @@
+{% comment %}
+  性能优化 - 资源预加载提示
+  自动添加到 <head> 中以提升页面加载速度
+{% endcomment %}
+
+{%- comment -%} DNS 预解析 - 提前解析第三方域名 {%- endcomment -%}
+<link rel="dns-prefetch" href="https://cdn.shopify.com">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+{%- comment -%} 预连接关键资源 {%- endcomment -%}
+<link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+{%- comment -%} 预加载关键字体 {%- endcomment -%}
+{%- if settings.type_body_font -%}
+  <link
+    rel="preload"
+    as="font"
+    href="{{ settings.type_body_font | font_url }}"
+    type="font/woff2"
+    crossorigin
+  >
+{%- endif -%}
+
+{%- if settings.type_heading_font -%}
+  <link
+    rel="preload"
+    as="font"
+    href="{{ settings.type_heading_font | font_url }}"
+    type="font/woff2"
+    crossorigin
+  >
+{%- endif -%}
+
+{%- comment -%} 预加载首屏关键图片 {%- endcomment -%}
+{%- if request.page_type == 'index' -%}
+  {%- for section in sections -%}
+    {%- if forloop.index <= 2 -%}
+      {%- comment -%} 只预加载前两个section的图片 {%- endcomment -%}
+      {%- if section.settings.image -%}
+        <link
+          rel="preload"
+          as="image"
+          href="{{ section.settings.image | image_url: width: 1200 }}"
+          imagesrcset="
+            {{ section.settings.image | image_url: width: 400 }} 400w,
+            {{ section.settings.image | image_url: width: 800 }} 800w,
+            {{ section.settings.image | image_url: width: 1200 }} 1200w
+          "
+          imagesizes="100vw"
+        >
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- elsif request.page_type == 'product' -%}
+  {%- comment -%} 产品页预加载首图 {%- endcomment -%}
+  {%- if product.featured_image -%}
+    <link
+      rel="preload"
+      as="image"
+      href="{{ product.featured_image | image_url: width: 1200 }}"
+      imagesrcset="
+        {{ product.featured_image | image_url: width: 400 }} 400w,
+        {{ product.featured_image | image_url: width: 800 }} 800w,
+        {{ product.featured_image | image_url: width: 1200 }} 1200w
+      "
+      imagesizes="(min-width: 768px) 50vw, 100vw"
+    >
+  {%- endif -%}
+{%- endif -%}
+
+{%- comment -%} 预加载关键CSS {%- endcomment -%}
+<link rel="preload" href="{{ 'base.css' | asset_url }}" as="style">
+<link rel="preload" href="{{ 'critical.js' | asset_url }}" as="script">
+
+{%- comment -%} 资源提示 - 预取下一页可能需要的资源 {%- endcomment -%}
+{%- if request.page_type == 'collection' and paginate.next -%}
+  <link rel="prefetch" href="{{ paginate.next.url }}">
+{%- endif -%}
+
+{%- comment -%} Service Worker 注册 (如果需要PWA功能) {%- endcomment -%}
+{%- if settings.enable_pwa -%}
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+      .then(reg => console.log('SW registered:', reg))
+      .catch(err => console.log('SW registration failed:', err));
+  }
+</script>
+{%- endif -%}
+
+{%- comment -%} 性能监控 - Web Vitals {%- endcomment -%}
+<script type="module">
+  // 监控核心性能指标
+  if ('PerformanceObserver' in window) {
+    // LCP - Largest Contentful Paint
+    const lcpObserver = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      const lastEntry = entries[entries.length - 1];
+      console.log('LCP:', lastEntry.renderTime || lastEntry.loadTime);
+    });
+    lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
+
+    // FID - First Input Delay
+    const fidObserver = new PerformanceObserver((list) => {
+      list.getEntries().forEach((entry) => {
+        console.log('FID:', entry.processingStart - entry.startTime);
+      });
+    });
+    fidObserver.observe({ type: 'first-input', buffered: true });
+
+    // CLS - Cumulative Layout Shift
+    let clsScore = 0;
+    const clsObserver = new PerformanceObserver((list) => {
+      list.getEntries().forEach((entry) => {
+        if (!entry.hadRecentInput) {
+          clsScore += entry.value;
+        }
+      });
+    });
+    clsObserver.observe({ type: 'layout-shift', buffered: true });
+  }
+</script>

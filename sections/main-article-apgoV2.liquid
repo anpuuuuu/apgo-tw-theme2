@@ -1,0 +1,135 @@
+{% comment %}
+  Apgo.tw 專用文章模板 (Make 自動化版 v3.0 - 圖文註記 + 自由插入)
+{% endcomment %}
+
+{% schema %}
+{
+  "name": "Apgo Article (Pro Table)",
+  "settings": [
+    { "type": "color", "id": "accent_color", "label": "強調色", "default": "#FF6B00" },
+    { "type": "checkbox", "id": "show_debug", "label": "除錯模式", "default": false }
+  ],
+  "presets": [{ "name": "Apgo Article Pro" }]
+}
+{% endschema %}
+
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+{% style %}
+  /* 基礎設定 */
+  .apgo-section { background-color: #050505; color: #E5E5E5; font-family: 'Noto Sans TC', sans-serif; padding-bottom: 6rem; }
+  .apgo-container { max-width: 800px; margin: 0 auto; padding: 0 1.25rem; }
+  
+  /* 文章樣式 */
+  .article-content { line-height: 1.8; font-size: 1.05rem; color: #d4d4d4; }
+  .article-content h2 { color: white; font-size: 1.5rem; margin-top: 3rem; margin-bottom: 1.5rem; display: flex; align-items: center; }
+  .article-content h2::before { content: ''; width: 6px; height: 24px; background-color: {{ section.settings.accent_color }}; margin-right: 12px; border-radius: 2px; }
+  .article-content h3 { color: {{ section.settings.accent_color }}; font-size: 1.25rem; margin-top: 2rem; }
+  .article-content ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; }
+  .article-content blockquote { border-left: 4px solid {{ section.settings.accent_color }}; background: rgba(255, 107, 0, 0.05); padding: 1rem 1.5rem; margin: 2rem 0; font-style: italic; color: #fff; }
+  .article-content img { width: 100%; border-radius: 12px; border: 1px solid #2A2A2A; margin: 2rem 0; }
+
+  /* === Apgo 表格模組核心樣式 (整合您的 HTML) === */
+  .tech-table-wrapper { margin: 3rem 0; border: 1px solid #2A2A2A; border-radius: 12px; overflow: hidden; background: #141414; position: relative; }
+  .tech-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  .tech-table th { background: #1A1A1A; color: #9CA3AF; padding: 1rem; text-align: left; font-size: 0.85rem; letter-spacing: 0.05em; border-bottom: 1px solid #2A2A2A; white-space: nowrap; }
+  .tech-table td { padding: 1rem; border-bottom: 1px solid #2A2A2A; vertical-align: middle; color: #E5E5E5; }
+  .tech-table tr:last-child td { border-bottom: none; }
+
+  /* 重點欄位背景 (Highlight Box) */
+  .highlight-col { background-color: rgba(255, 107, 0, 0.03); border-left: 1px solid #2A2A2A; border-right: 1px solid #2A2A2A; }
+  .highlight-header { color: {{ section.settings.accent_color }} !important; border-top: 2px solid {{ section.settings.accent_color }}; background: #1E1E1E !important; }
+
+  /* 圖文強調樣式 (Icon Inline) */
+  .icon-text-apgo { display: flex; align-items: center; gap: 6px; color: {{ section.settings.accent_color }}; font-weight: 700; }
+  .icon-text-white { display: flex; align-items: center; gap: 6px; color: #fff; font-weight: 700; }
+  .icon-text-muted { display: flex; align-items: center; gap: 6px; color: #9CA3AF; font-size: 0.9rem; }
+  .icon-text-red { display: flex; align-items: center; gap: 6px; color: #EF4444; font-weight: 700; }
+
+  /* CTA 卡片樣式 */
+  .cta-card { background: linear-gradient(135deg, #1E1E1E 0%, #000000 100%); border: 1px solid rgba(255, 107, 0, 0.3); border-radius: 16px; padding: 2rem; text-align: center; margin: 4rem 0; }
+  .cta-btn { display: inline-flex; align-items: center; gap: 8px; background-color: {{ section.settings.accent_color }}; color: #000; font-weight: 700; padding: 12px 24px; border-radius: 8px; text-decoration: none; margin-top: 1rem; }
+  .cta-btn:hover { transform: scale(1.02); }
+{% endstyle %}
+
+{% comment %} --- 1. 準備表格 HTML (Pre-render Table) --- {% endcomment %}
+{% capture rendered_table %}
+  {% assign table_json = article.metafields.custom.make_specs_table_json.value %}
+  {% if table_json %}
+    <div class="tech-table-wrapper">
+      <div style="overflow-x: auto;">
+        <table class="tech-table">
+          <thead>
+            <tr>
+              {% for header in table_json.headers %}
+                {% comment %} 自動判斷: 如果是第二欄 (index 1) 或是標題含 'APGO'，加上高亮樣式 {% endcomment %}
+                <th class="{% if forloop.index0 == 1 or header contains 'APGO' %}highlight-header highlight-col{% endif %}">
+                  {{ header }}
+                </th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table_json.rows %}
+              <tr>
+                {% for cell in row.cells %}
+                  {% comment %} 自動判斷: 第二欄內容加背景色，且使用 raw filter 允許輸出 HTML Icon {% endcomment %}
+                  <td class="{% if forloop.index0 == 1 %}highlight-col{% endif %}">
+                    {{ cell | raw }} 
+                  </td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% if table_json.footer_note %}
+        <div style="padding: 0.75rem 1rem; font-size: 0.8rem; color: #6B7280; background: #0f0f0f; border-top: 1px solid #2A2A2A;">
+          {{ table_json.footer_note }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endcapture %}
+
+<div class="apgo-section pt-10">
+  
+  {% comment %} --- 封面與標題 --- {% endcomment %}
+  {% if article.image %}
+    <div class="apgo-container mb-10">
+      <img src="{{ article.image | image_url: width: 1200 }}" alt="{{ article.title }}" style="width:100%; aspect-ratio:16/9; object-fit:cover;">
+    </div>
+  {% endif %}
+  
+  <div class="apgo-container">
+    <h1 style="color: white; font-size: 2rem; font-weight: 700; margin-bottom: 1rem;">{{ article.title }}</h1>
+    <p style="color: #9CA3AF; font-size: 0.875rem;">{{ article.published_at | date: "%Y.%m.%d" }} · {{ article.author }}</p>
+  </div>
+
+  {% comment %} --- 2. 文章內容與替換邏輯 (Content Replacement) --- {% endcomment %}
+  <article class="apgo-container article-content">
+    {% if article.content contains '[[SPECS_TABLE]]' %}
+      {{ article.content | replace: '[[SPECS_TABLE]]', rendered_table }}
+    {% else %}
+      {{ article.content }}
+      {% comment %} 防呆: 如果 AI 沒寫標記，就把表格補在最後面 {% endcomment %}
+      {{ rendered_table }}
+    {% endif %}
+  </article>
+
+  {% comment %} --- CTA 卡片 --- {% endcomment %}
+  {% assign cta_url_val = article.metafields.custom.make_cta_target_url.value %}
+  {% assign cta_url = cta_url_val.url | default: cta_url_val %}
+  {% assign cta_title = article.metafields.custom.make_cta_title.value %}
+  {% assign cta_desc = article.metafields.custom.make_cta_description.value %}
+
+  {% if cta_url != blank %}
+    <div class="apgo-container">
+      <div class="cta-card">
+        <h3 style="color: white; margin-bottom: 0.5rem;">{{ cta_title }}</h3>
+        <p style="color: #9CA3AF; margin-bottom: 1.5rem;">{{ cta_desc }}</p>
+        <a href="{{ cta_url }}" class="cta-btn">立即購買 <i class="ph-bold ph-arrow-right"></i></a>
+      </div>
+    </div>
+  {% endif %}
+</div>

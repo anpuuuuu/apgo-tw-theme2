@@ -1,0 +1,86 @@
+{%- liquid
+  assign item_count_label = cart.item_count | append: ' ITEMS'
+-%}
+
+<section data-block="equipment" class="cv-card">
+  <div class="e-head">
+    <div>
+      <span class="cv-label">{{ section.settings.equipment_title | escape }}</span>
+    </div>
+    {%- if section.settings.show_item_count -%}
+      <div>
+        <span class="cv-label">{{ item_count_label }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if cart.empty? -%}
+    <div class="cart-shell-v2__empty">
+      <div class="cart-shell-v2__empty-title">{{ section.settings.empty_state_title | escape }}</div>
+      <div class="cart-shell-v2__empty-text">{{ section.settings.empty_state_text | escape }}</div>
+      <a
+        href="{{ section.settings.continue_shopping_url | default: routes.all_products_collection_url }}"
+        class="cart-shell-v2__empty-link"
+      >
+        {{ section.settings.continue_shopping_label | escape }}
+      </a>
+    </div>
+  {%- else -%}
+    {%- for item in cart.items -%}
+      {%- assign is_gift = false -%}
+      {%- if item.properties._gift_auto == 'true' or item.properties._gift_auto == true -%}
+        {%- assign is_gift = true -%}
+      {%- endif -%}
+      <article
+        class="e-item"
+        data-line="{{ forloop.index }}"
+        data-key="{{ item.key }}"
+        {% if is_gift %}data-is-gift="true"{% endif %}
+      >
+        <div class="e-thumb">
+          {%- if item.image -%}
+            {{
+              item.image
+              | image_url: width: 176
+              | image_tag: loading: 'lazy', alt: item.title, class: 'e-thumb-image'
+            }}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'e-thumb-image e-thumb-image--placeholder' }}
+          {%- endif -%}
+        </div>
+        <div class="e-main">
+          <div class="e-top">
+            <div class="e-title-wrap">
+              <div class="e-title">{{ item.product.title }}</div>
+              {%- if item.product.has_only_default_variant == false and item.variant.title != blank -%}
+                <div class="e-variant">{{ item.variant.title }}</div>
+              {%- endif -%}
+              {%- if item.line_level_discount_allocations.size > 0 -%}
+                {%- for discount in item.line_level_discount_allocations -%}
+                  <div class="e-discount">{{ discount.discount_application.title | escape }}</div>
+                {%- endfor -%}
+              {%- endif -%}
+            </div>
+            <button type="button" class="e-remove" data-remove-line="{{ forloop.index }}">
+              移除
+            </button>
+          </div>
+
+          <div class="e-bottom">
+            <div class="qty" aria-label="quantity controls">
+              <button type="button" class="qty-btn" data-quantity-delta="-1" data-line="{{ forloop.index }}">−</button>
+              <div class="qty-val">{{ item.quantity }}</div>
+              <button type="button" class="qty-btn" data-quantity-delta="1" data-line="{{ forloop.index }}">+</button>
+            </div>
+            <div class="e-price-wrap">
+              {%- if item.original_line_price != item.final_line_price -%}
+                <div class="e-price-before">{{ item.original_line_price | money }}</div>
+              {%- endif -%}
+              <div class="e-price">{{ item.final_line_price | money }}</div>
+            </div>
+          </div>
+        </div>
+      </article>
+    {%- endfor -%}
+  {%- endif -%}
+</section>

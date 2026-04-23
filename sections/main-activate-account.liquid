@@ -1,0 +1,97 @@
+{% comment %}
+  APGO Custom Activate Account Page - Dark Tech Style
+{% endcomment %}
+
+<style>
+  .customer-activate-section {
+    padding: 60px 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    color: #ffffff;
+    background-color: #050505;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .activate-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .activate-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .activate-header p { color: #888; font-size: 0.95rem; }
+
+  .form-field { margin-bottom: 20px; }
+  .form-field input {
+    width: 100%; padding: 15px; background-color: #1a1a1a !important; 
+    border: 1px solid #333 !important; border-radius: 8px !important;
+    color: #ffffff !important; font-size: 1rem; box-sizing: border-box; transition: all 0.3s ease;
+  }
+  .form-field input::placeholder { color: #666 !important; }
+  .form-field input:focus { outline: none; border-color: #f08418 !important; box-shadow: 0 0 0 1px #f08418 !important; }
+
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+  }
+
+  .submit-btn {
+    width: 100%; padding: 15px; background-color: #f08418 !important; color: #ffffff !important;
+    font-size: 1.1rem; font-weight: bold; border: none; border-radius: 8px; cursor: pointer;
+    text-transform: uppercase; transition: background-color 0.3s, transform 0.2s;
+  }
+  .submit-btn:hover { background-color: #d66a00 !important; transform: translateY(-2px); }
+
+  .decline-btn {
+    width: 100%; padding: 15px; background-color: transparent !important; color: #ccc !important;
+    font-size: 1rem; border: 1px solid #444 !important; border-radius: 8px; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .decline-btn:hover { border-color: #fff !important; color: #fff !important; background-color: rgba(255,255,255,0.05) !important; }
+
+  .errors ul {
+    list-style: none; padding: 0; margin: 0 0 20px 0; background: rgba(255, 68, 68, 0.1);
+    border: 1px solid #ff4444; border-radius: 8px;
+  }
+  .errors li { padding: 12px; color: #ffcccc; font-size: 0.9rem; text-align: center; }
+</style>
+
+<div class="customer-activate-section">
+  <div class="activate-header">
+    <h1>啟用您的帳號</h1>
+    <p>歡迎來到 APGO！請設定您的密碼以啟用帳號。</p>
+  </div>
+
+  {% form 'activate_customer_password' %}
+    {{ form.errors | default_errors }}
+
+    <div class="form-field">
+      <input type="password" name="customer[password]" id="ActivatePassword" placeholder="設定密碼" required>
+    </div>
+
+    <div class="form-field">
+      <input type="password" name="customer[password_confirmation]" id="ActivatePasswordConfirmation" placeholder="再次確認密碼" required>
+    </div>
+
+    <div class="action-buttons">
+      <button type="submit" class="submit-btn">啟用帳號</button>
+      <button type="submit" name="decline" class="decline-btn">拒絕邀請</button>
+    </div>
+  {% endform %}
+</div>
+
+{% schema %}
+{
+  "name": "Activate Account",
+  "settings": []
+}
+{% endschema %}

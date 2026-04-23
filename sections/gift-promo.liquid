@@ -1,0 +1,285 @@
+{% comment %} sections/double-eleven-gift-promo.liquid {% endcomment %}
+
+<section
+  class="double-eleven-gift-promo"
+  id="{{ section.settings.section_id }}"
+  data-section-id="{{ section.settings.section_id }}"
+>
+  <div class="gift-promo-container">
+    <div class="gift-promo-header">
+      <h2 class="gift-promo-main-title">{{ section.settings.gift_promo_main_title }}</h2>
+      <p class="gift-promo-subtitle">{{ section.settings.gift_promo_subtitle }}</p>
+    </div>
+
+    <div class="gift-promo-grid" id="giftPromoGrid">
+      {% for block in section.blocks %}
+        {% if block.type == 'gift_promo_item' %}
+          <div class="gift-promo-card">
+            <div class="gift-promo-image-wrapper">
+              {% if block.settings.promo_image %}
+                <img
+                  src="{{ block.settings.promo_image | img_url }}"
+                  srcset="{{ block.settings.promo_image | img_url: '864x' }} 1x,
+                          {{ block.settings.promo_image | img_url: '2000x' }} 2x"
+                  alt="{{ block.settings.promo_title }}"
+                  class="gift-promo-image"
+                  loading="lazy"
+                >
+              {% else %}
+                <div class="gift-promo-image-placeholder"></div>
+              {% endif %}
+            </div>
+            <div class="gift-promo-content">
+              <h3 class="gift-promo-title">{{ block.settings.promo_title }}</h3>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ===== 第五块 下單即贈、全站滿額贈 ===== */
+  .double-eleven-gift-promo {
+    width: 100%;
+    padding: 40px 0;
+  }
+
+  .gift-promo-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .gift-promo-header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .gift-promo-main-title {
+    font-size: 44px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 62px;
+    background: linear-gradient(90deg, #f52424 0%, #ff9d00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+    word-break: break-word;
+  }
+
+  .gift-promo-subtitle {
+    font-size: 24px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 32px;
+    color: #e4e4e7;
+    margin: 0;
+    word-break: break-word;
+  }
+
+  .gift-promo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .gift-promo-card {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    height: 540px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gift-promo-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .gift-promo-image-wrapper {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ff4800 0%, #f8b99f 100%);
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .gift-promo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gift-promo-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ff4800 0%, #f8b99f 100%);
+  }
+
+  .gift-promo-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .gift-promo-title {
+    font-size: 24px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 32px;
+    color: white;
+    text-align: center;
+    margin: 0;
+    word-break: break-word;
+  }
+
+  /* ===== 手机响应式 ===== */
+  @media (max-width: 450px) {
+    .double-eleven-gift-promo {
+      width: 100%;
+      padding: 40px 0;
+    }
+
+    .gift-promo-container {
+      padding: 0 12px;
+      gap: 0px;
+    }
+
+    .gift-promo-grid {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      padding: 24px 0px 5px 0px;
+      width: 100%;
+      scrollbar-width: thin;
+      scrollbar-color: #ff651d #3f3f46;
+    }
+
+    .gift-promo-grid::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .gift-promo-grid::-webkit-scrollbar-track {
+      background: #3f3f46;
+    }
+
+    .gift-promo-grid::-webkit-scrollbar-thumb {
+      background: #ff651d;
+      border-radius: 3px;
+    }
+
+    .gift-promo-grid::-webkit-scrollbar-thumb:hover {
+      background: #ff7d3d;
+    }
+
+    .gift-promo-card {
+      height: 244px;
+      width: 244px;
+      min-width: 244px;
+      flex-shrink: 0;
+      border-radius: 12px;
+    }
+    .gift-promo-image-wrapper {
+      border-radius: 12px;
+    }
+    .gift-promo-main-title {
+      font-size: 22px;
+      line-height: 30px;
+    }
+
+    .gift-promo-subtitle {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .gift-promo-title {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "下單即贈、全站滿額贈",
+  "settings": [
+    {
+      "type": "header",
+      "content": "🎉 下單即贈、全站滿額贈"
+    },
+    {
+      "type": "text",
+      "id": "gift_promo_main_title",
+      "label": "主标题",
+      "default": "下單即贈、全站滿額贈"
+    },
+    {
+      "type": "text",
+      "id": "gift_promo_subtitle",
+      "label": "副标题",
+      "default": "主要活動 (11/8 - 11/11)"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "info": "用於導航欄，不能有空格或特殊字符",
+      "default": "gift-promo",
+      "placeholder": "例如: section-hero"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gift_promo_item",
+      "name": "促销赠礼项目",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "promo_image",
+          "label": "促销图片"
+        },
+        {
+          "type": "text",
+          "id": "promo_title",
+          "label": "促销标题",
+          "default": "下單立即送水蠟一罐（lead）"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "活動模板 - 下單即贈、全站滿額贈"
+    }
+  ]
+}
+{% endschema %}

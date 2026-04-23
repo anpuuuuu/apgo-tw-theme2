@@ -1,0 +1,663 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "promotional_banner_PgHgtX": {
+      "type": "promotional-banner",
+      "disabled": true,
+      "name": "促銷橫幅",
+      "settings": {
+        "promo_text": "雙11瘋狂購物節-活動入口",
+        "promo_tag": "Hot",
+        "promo_link": "shopify://pages/11-11"
+      }
+    },
+    "marquee_p8YTpL": {
+      "type": "marquee",
+      "name": "t:names.marquee_section",
+      "settings": {
+        "movement_direction": "normal",
+        "color_scheme": "scheme-a27d2d12-7174-40fe-a01c-a128174b4c26",
+        "padding-block-start": 3,
+        "padding-block-end": 3,
+        "gap_between_elements": 10
+      }
+    },
+    "section_NcGDMK": {
+      "type": "section",
+      "blocks": {
+        "group_LRNCaA": {
+          "type": "group",
+          "name": "Caption",
+          "settings": {
+            "link": "",
+            "open_in_new_tab": false,
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "space-between",
+            "vertical_alignment": "flex-end",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "placeholder": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_hJi3Hj": {
+              "type": "text",
+              "name": "t:names.text",
+              "disabled": true,
+              "settings": {
+                "text": "<p>Take a look behind the scenes of our latest product launch.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "button_Tp6e6R": {
+              "type": "button",
+              "name": "t:names.button",
+              "disabled": true,
+              "settings": {
+                "label": "Discover the collection",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "link",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_hJi3Hj",
+            "button_Tp6e6R"
+          ]
+        }
+      },
+      "block_order": [
+        "group_LRNCaA"
+      ],
+      "name": "t:names.video_section",
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": false,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "hero_section_Rwem9W": {
+      "type": "hero-section",
+      "name": "Hero 區塊",
+      "settings": {
+        "logo": "shopify://shop_images/logo.png",
+        "main_title": "我們專注於 鍍膜",
+        "subtitle": "因為它比打蠟更輕鬆、更持久、更閃亮",
+        "cta_text": "立即挑選適合您的鍍膜",
+        "cta_link": "",
+        "show_scroll_indicator": true,
+        "scroll_text": "探索更多"
+      }
+    },
+    "cinematic_video_section_biatzJ": {
+      "type": "cinematic-video-section",
+      "name": "APGO 品牌影片",
+      "settings": {
+        "video_url": ""
+      }
+    },
+    "livestream_stats_section_yja9KV": {
+      "type": "livestream-stats-section",
+      "name": "APGO 直播實力數據 區塊",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "video_taiwan": "",
+        "video_sgmy": "",
+        "stat_sales": "",
+        "stat_years": "",
+        "stat_hosts": "",
+        "cta_text": "了解更多",
+        "cta_link": ""
+      }
+    },
+    "comparison_section_6jd76U": {
+      "type": "comparison-section",
+      "blocks": {
+        "feature_UXAB8q": {
+          "type": "feature",
+          "settings": {
+            "label": "施作時間",
+            "wax_value": "3小時",
+            "wax_bar": "20%",
+            "coating_value": "30-60 分鐘",
+            "coating_bar": "90%"
+          }
+        },
+        "feature_HUJidP": {
+          "type": "feature",
+          "settings": {
+            "label": "持久度",
+            "wax_value": "1-2 個月",
+            "wax_bar": "15%",
+            "coating_value": "2-3 年",
+            "coating_bar": "95%"
+          }
+        },
+        "feature_zYXdmR": {
+          "type": "feature",
+          "settings": {
+            "label": "耐高溫",
+            "wax_value": "60°C",
+            "wax_bar": "30%",
+            "coating_value": "200°C+",
+            "coating_bar": "98%"
+          }
+        },
+        "feature_3hdU3a": {
+          "type": "feature",
+          "settings": {
+            "label": "耐洗次數",
+            "wax_value": "5-10 次",
+            "wax_bar": "10%",
+            "coating_value": "300+ 次",
+            "coating_bar": "95%"
+          }
+        },
+        "feature_6nMbLG": {
+          "type": "feature",
+          "settings": {
+            "label": "疏水效果",
+            "wax_value": "一般",
+            "wax_bar": "40%",
+            "coating_value": "極佳",
+            "coating_bar": "98%"
+          }
+        },
+        "feature_j8L6AX": {
+          "type": "feature",
+          "settings": {
+            "label": "光澤度",
+            "wax_value": "85%",
+            "wax_bar": "85%",
+            "coating_value": "98%",
+            "coating_bar": "98%"
+          }
+        }
+      },
+      "block_order": [
+        "feature_UXAB8q",
+        "feature_HUJidP",
+        "feature_zYXdmR",
+        "feature_3hdU3a",
+        "feature_6nMbLG",
+        "feature_j8L6AX"
+      ],
+      "name": "APGO 鍍膜 vs 打蠟對比",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "cta_text": "",
+        "cta_button": "",
+        "cta_link": ""
+      }
+    },
+    "coating_products_section_hPmGEa": {
+      "type": "coating-products-section",
+      "blocks": {
+        "product_xW9yzK": {
+          "type": "product",
+          "settings": {
+            "name": "原子琉璃釉",
+            "description": "超越頂規，立即成膜的特性讓它不需等待，加速形成保護。",
+            "badge": "頂規",
+            "effect": "titanium-product",
+            "image": "shopify://shop_images/3fbabc4ea9f2db5a377a8aab6c84f734_29a9d8c8-2833-4c7c-9aa2-9d9fa5765922.png",
+            "duration": "180天",
+            "duration_fill": "100%",
+            "hydrophobic": "99%",
+            "hydrophobic_fill": "99%",
+            "wash": "30+次",
+            "wash_fill": "100%",
+            "gloss": "99%",
+            "gloss_fill": "99%",
+            "product_key": "apgo-atomic-colored-glaze"
+          }
+        },
+        "product_iqTe6R": {
+          "type": "product",
+          "settings": {
+            "name": "鈦晶鍍膜",
+            "description": "高硬度鈦晶結構，極致防護與持久光澤。",
+            "badge": "頂規",
+            "effect": "titanium-product",
+            "image": "shopify://shop_images/0_895dd8bc-acff-4324-859d-5d3466502d8a.png",
+            "duration": "180天",
+            "duration_fill": "100%",
+            "hydrophobic": "95%",
+            "hydrophobic_fill": "95%",
+            "wash": "30+次",
+            "wash_fill": "100%",
+            "gloss": "98%",
+            "gloss_fill": "98%",
+            "product_key": "titanium-coating"
+          }
+        },
+        "product_4JzCxF": {
+          "type": "product",
+          "settings": {
+            "name": "原子極光鍍膜",
+            "description": "極光般亮澤，強化表面防護，提升美觀。",
+            "badge": "光澤加倍",
+            "effect": "aurora-product",
+            "image": "shopify://shop_images/2025_cdc39dda-830a-479d-a08b-deed0ab961bb.png",
+            "duration": "150天",
+            "duration_fill": "83%",
+            "hydrophobic": "80%",
+            "hydrophobic_fill": "80%",
+            "wash": "20+次",
+            "wash_fill": "70%",
+            "gloss": "80分",
+            "gloss_fill": "80%",
+            "product_key": "atomic-aurora"
+          }
+        },
+        "product_Rga9Wg": {
+          "type": "product",
+          "settings": {
+            "name": "原子釉鍍膜",
+            "description": "釉面質感，提升表面滑順與抗污能力。",
+            "badge": "暢銷冠軍",
+            "effect": "glaze-product",
+            "image": "shopify://shop_images/2025_399e6e50-f314-4caf-8167-8bc47cb4d5c3.png",
+            "duration": "120天",
+            "duration_fill": "66%",
+            "hydrophobic": "80%",
+            "hydrophobic_fill": "80%",
+            "wash": "20+次",
+            "wash_fill": "66%",
+            "gloss": "80分",
+            "gloss_fill": "80%",
+            "product_key": "atomic-glaze"
+          }
+        },
+        "product_D7AReT": {
+          "type": "product",
+          "settings": {
+            "name": "琺瑯晶鍍膜",
+            "description": "極致滑順度，結合微晶的疏水及封體的抗洗。",
+            "badge": "雙層感受",
+            "effect": "aurora-product",
+            "image": "shopify://shop_images/5323f490d763f84e4586a4d5768ca674_df4dbfef-b604-45f0-8739-aec97be423c8.png",
+            "duration": "80天",
+            "duration_fill": "55%",
+            "hydrophobic": "70%",
+            "hydrophobic_fill": "70%",
+            "wash": "15+次",
+            "wash_fill": "50%",
+            "gloss": "80",
+            "gloss_fill": "80%",
+            "product_key": ""
+          }
+        },
+        "product_DKAfeq": {
+          "type": "product",
+          "settings": {
+            "name": "原子微晶鍍膜",
+            "description": "微晶結構，細緻保護，提升表面細膩度。",
+            "badge": "滑順加倍",
+            "effect": "microcrystal-product",
+            "image": "shopify://shop_images/2025_85789309-20dc-44b5-8868-69d7965afdde.png",
+            "duration": "70天",
+            "duration_fill": "38%",
+            "hydrophobic": "70%",
+            "hydrophobic_fill": "70%",
+            "wash": "15+次",
+            "wash_fill": "50%",
+            "gloss": "70分",
+            "gloss_fill": "70%",
+            "product_key": "atomic-microcrystal"
+          }
+        },
+        "product_YBVpGB": {
+          "type": "product",
+          "settings": {
+            "name": "原子封體鍍膜",
+            "description": "封體技術，長效保護車漆，防止氧化。",
+            "badge": "光澤加倍",
+            "effect": "sealant-product",
+            "image": "shopify://shop_images/2025_a5234699-4b41-4e23-a775-81a1eac7e89d.png",
+            "duration": "70天",
+            "duration_fill": "38%",
+            "hydrophobic": "65%",
+            "hydrophobic_fill": "65%",
+            "wash": "10+次",
+            "wash_fill": "33%",
+            "gloss": "80分",
+            "gloss_fill": "80%",
+            "product_key": "atomic-sealant"
+          }
+        },
+        "product_JUrjLP": {
+          "type": "product",
+          "settings": {
+            "name": "原子鍍膜",
+            "description": "經典原子鍍膜，基礎防護與亮澤效果。",
+            "badge": "經典",
+            "effect": "basic-product",
+            "image": "shopify://shop_images/2025_0a5839d0-8eed-42e4-b4bd-0b01b0344828.png",
+            "duration": "30天",
+            "duration_fill": "16%",
+            "hydrophobic": "40%",
+            "hydrophobic_fill": "40%",
+            "wash": "8+次",
+            "wash_fill": "26%",
+            "gloss": "60分",
+            "gloss_fill": "60%",
+            "product_key": "atomic-basic"
+          }
+        }
+      },
+      "block_order": [
+        "product_xW9yzK",
+        "product_iqTe6R",
+        "product_4JzCxF",
+        "product_Rga9Wg",
+        "product_D7AReT",
+        "product_DKAfeq",
+        "product_YBVpGB",
+        "product_JUrjLP"
+      ],
+      "name": "APGO 鍍膜產品展示",
+      "settings": {
+        "title": "專業鍍膜產品系列",
+        "subtitle": "APGO研發的鍍膜皆不分任何車色、不分任何材質，開始挑選專屬自己的鍍膜吧"
+      }
+    },
+    "guide_section_L3LyjL": {
+      "type": "guide-section",
+      "blocks": {
+        "guide_option_KpQRKz": {
+          "type": "guide_option",
+          "settings": {
+            "option_title": "新車保護",
+            "option_description": "剛購買的新車，想要最佳保護",
+            "type": "new"
+          }
+        },
+        "guide_option_nPWNq6": {
+          "type": "guide_option",
+          "settings": {
+            "option_title": "舊車翻新",
+            "option_description": "使用一段時間，想要恢復光澤",
+            "type": "old"
+          }
+        },
+        "guide_option_9bLTnF": {
+          "type": "guide_option",
+          "settings": {
+            "option_title": "DIY新手",
+            "option_description": "第一次自己施工，需要簡單易用",
+            "type": "diy"
+          }
+        },
+        "guide_option_KrfVwK": {
+          "type": "guide_option",
+          "settings": {
+            "option_title": "專業需求",
+            "option_description": "追求最高等級的保護效果",
+            "type": "pro"
+          }
+        }
+      },
+      "block_order": [
+        "guide_option_KpQRKz",
+        "guide_option_nPWNq6",
+        "guide_option_9bLTnF",
+        "guide_option_KrfVwK"
+      ],
+      "name": "APGO 快速導購區塊",
+      "settings": {
+        "title": "不知道選哪款？",
+        "subtitle": "讓我們幫您找到最適合的鍍膜產品"
+      }
+    },
+    "why_apgo_section_JTqLUw": {
+      "type": "why-apgo-section",
+      "blocks": {
+        "feature_aeaNdC": {
+          "type": "feature",
+          "settings": {
+            "icon": "🔬",
+            "feature_title": "自主研發實驗室",
+            "feature_desc": "擁有專業研發實驗室，所有產品配方由創辦人親自研發把控，確保每一瓶都是獨家技術結晶",
+            "bg_type": "video",
+            "bg_video": "",
+            "bg_class": "lab-bg"
+          }
+        },
+        "feature_8B6YpE": {
+          "type": "feature",
+          "settings": {
+            "icon": "🏭",
+            "feature_title": "一條龍生產工廠",
+            "feature_desc": "從原料採購到成品包裝，全程在自有工廠完成，嚴格品質控管",
+            "bg_type": "image",
+            "bg_video": "",
+            "bg_class": "factory-bg"
+          }
+        },
+        "feature_xKeMa3": {
+          "type": "feature",
+          "settings": {
+            "icon": "⚡",
+            "feature_title": "獨家鍍膜技術",
+            "feature_desc": "17年技術積累，研發出多項獨家配方，效果超越國際大廠，價格更親民",
+            "bg_type": "image",
+            "bg_video": "",
+            "bg_class": "tech-bg"
+          }
+        },
+        "feature_nFJBYj": {
+          "type": "feature",
+          "settings": {
+            "icon": "🌏",
+            "feature_title": "東南亞市場認證",
+            "feature_desc": "產品熱銷馬來西亞、新加坡等地，經得起熱帶氣候考驗，品質備受肯定",
+            "bg_type": "image",
+            "bg_video": "",
+            "bg_class": "quality-bg"
+          }
+        }
+      },
+      "block_order": [
+        "feature_aeaNdC",
+        "feature_8B6YpE",
+        "feature_xKeMa3",
+        "feature_nFJBYj"
+      ],
+      "name": "為什麼選擇APGO",
+      "settings": {
+        "title": "為什麼選擇 APGO？",
+        "subtitle": "17年本土品牌，從研發到生產一條龍把控，獨家技術熱銷東南亞",
+        "cta_text": "選擇APGO，選擇品質與信任",
+        "cta_button_text": "立即體驗",
+        "cta_link": ""
+      }
+    },
+    "brand_story_section_axtbQR": {
+      "type": "brand-story-section",
+      "blocks": {
+        "timeline_item_qWD8we": {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2007",
+            "icon": "💻",
+            "milestone_title": "電子開發起家",
+            "description": "從電子開發與行車紀錄器代工開始，創辦人累積了十年的研發與製造經驗，成為台灣各大知名品牌的幕後推手，奠定了對品質執著的基因。"
+          }
+        },
+        "timeline_item_x8L7b3": {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2011",
+            "icon": "🏭",
+            "milestone_title": "成立行車紀錄器工廠",
+            "description": "建立專業工廠，通過ISO9001認證，從設計到生產一條龍服務。得到威剛、聲寶、亞旭科技、愛國者等大廠青睞，甚至承接新加坡國防部訂單。"
+          }
+        },
+        "timeline_item_BBrNae": {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2014",
+            "icon": "🚗",
+            "milestone_title": "研發第一代洗車鍍膜",
+            "description": "創辦人以愛車人士的角度，開始研發洗車鍍膜產品。希望讓每個人都能自己照顧愛車，體驗DIY的樂趣，不再花冤枉錢。"
+          }
+        },
+        "timeline_item_B36GA9": {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2017",
+            "icon": "🚀",
+            "milestone_title": "APGO品牌誕生",
+            "description": "APGO以創辦人之名正式誕生！秉持電子工廠的嚴格規格，所有生產原料及製作流程都經過嚴格把關，立志成為全台最大的鍍膜生產工廠。"
+          }
+        },
+        "timeline_item_McT3jW": {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2019",
+            "icon": "🌏",
+            "milestone_title": "進軍國際市場",
+            "description": "第一代水鍍膜正式上市，同時成立馬來西亞公司，開始拓展東南亞市場。從台灣走向世界，讓更多人體驗APGO的優質產品。"
+          }
+        },
+        "timeline_item_drNKJL": {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2021",
+            "icon": "⭐",
+            "milestone_title": "產品全面升級",
+            "description": "第二代原子鍍膜系列全新升級，新增前置作業及車內保養系列。同年成立新加坡公司，並獲得知名KOL酷炫、Joeman大力推薦。"
+          }
+        },
+        "timeline_item_Bm7TKB": {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2022",
+            "icon": "🏆",
+            "milestone_title": "媒體認證肯定",
+            "description": "知名汽車節目主持人廖盈婷大力推薦，知名KOL廖老大聯名推出原子釉。品牌影響力持續擴大，成為汽車美容界的領導品牌。"
+          }
+        },
+        "timeline_item_YiiRri": {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2024",
+            "icon": "🚀",
+            "milestone_title": "銷售里程碑",
+            "description": "年銷售突破5萬組，成為東南亞知名鍍膜品牌。從零基礎的家庭主婦到專業鍍膜玩家，都能輕鬆上手，讓汽車美容走進每個家庭。"
+          }
+        }
+      },
+      "block_order": [
+        "timeline_item_qWD8we",
+        "timeline_item_x8L7b3",
+        "timeline_item_BBrNae",
+        "timeline_item_B36GA9",
+        "timeline_item_McT3jW",
+        "timeline_item_drNKJL",
+        "timeline_item_Bm7TKB",
+        "timeline_item_YiiRri"
+      ],
+      "name": "品牌故事",
+      "settings": {
+        "title": "APGO 品牌故事",
+        "subtitle": "從電子代工龍頭到鍍膜領導品牌，17年創新之路"
+      }
+    }
+  },
+  "order": [
+    "promotional_banner_PgHgtX",
+    "marquee_p8YTpL",
+    "section_NcGDMK",
+    "hero_section_Rwem9W",
+    "cinematic_video_section_biatzJ",
+    "livestream_stats_section_yja9KV",
+    "comparison_section_6jd76U",
+    "coating_products_section_hPmGEa",
+    "guide_section_L3LyjL",
+    "why_apgo_section_JTqLUw",
+    "brand_story_section_axtbQR"
+  ]
+}

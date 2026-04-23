@@ -1,0 +1,92 @@
+<!-- 產品頁專用 header -->
+<header class="header-product" style="
+  position: sticky;
+  top: 0;
+  background: white;
+  border-bottom: 1px solid #e5e5e5;
+  z-index: 100;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+">
+  <!-- 返回按鈕 -->
+  <a href="javascript:history.back()" style="
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(240, 132, 24, 0.1);
+    border: 2px solid #f08418;
+    border-radius: 50%;
+  ">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M15 18L9 12L15 6" stroke="#f08418" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+  
+  <!-- 中間 Logo -->
+  <div style="position: absolute; left: 50%; transform: translateX(-50%);">
+    <img src="{{ shop.brand.logo | image_url: height: 70 }}" alt="{{ shop.name }}" style="height: 35px;">
+  </div>
+  
+  <!-- 右側按鈕（搜索、購物車） -->
+  <div style="display: flex; gap: 8px;">
+    <!-- 搜索按鈕 -->
+    <a href="/search" style="
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    ">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+    </a>
+    
+    <!-- 購物車按鈕 -->
+    <a href="/cart" style="
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    ">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M9 2L6 9H22L19 2H9Z"></path>
+        <path d="M6 9H6.01"></path>
+        <path d="M11 13V17"></path>
+        <path d="M15 13V17"></path>
+        <path d="M19 9V21H5V9"></path>
+      </svg>
+      {% if cart.item_count > 0 %}
+        <span style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          background: #f08418;
+          color: white;
+          border-radius: 50%;
+          width: 18px;
+          height: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 11px;
+        ">{{ cart.item_count }}</span>
+      {% endif %}
+    </a>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Product Header",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,519 @@
+{% comment %} sections/final-rush.liquid - 最後3天加單狂歡 {% endcomment %}
+
+<section class="double-eleven-final-rush"  id="{{ section.settings.section_id }}"
+  data-section-id="{{ section.settings.section_id }}"
+  data-end-time="{{ section.settings.countdown_end_time }}">
+  {% if section.settings.final_rush_background_image_desktop %}
+    <img
+      src="{{ section.settings.final_rush_background_image_desktop | img_url: '1920x543' }}"
+      alt="Final Rush Background Desktop"
+      class="final-rush-background-image final-rush-background-desktop"
+      loading="lazy"
+    >
+  {% endif %}
+
+  {% if section.settings.final_rush_background_image_mobile %}
+    <img
+      src="{{ section.settings.final_rush_background_image_mobile | img_url: '375x299' }}"
+      alt="Final Rush Background Mobile"
+      class="final-rush-background-image final-rush-background-mobile"
+      loading="lazy"
+    >
+  {% endif %}
+
+  <div class="final-rush-wrapper" id="finalRushWrapper">
+    <div class="final-rush-outer">
+      <div class="final-rush-inner">
+        <div class="final-rush-content">
+          <div class="final-rush-title-section">
+            <div class="final-rush-title">{{ section.settings.final_rush_title }}</div>
+            <div class="final-rush-subtitle">{{ section.settings.final_rush_subtitle }}</div>
+          </div>
+
+          <div class="countdown-container">
+            <div class="countdown-unit">
+              <div class="countdown-value" id="countdownDays">00</div>
+              <div class="countdown-label">{{ section.settings.countdown_label_days }}</div>
+            </div>
+
+            <div class="countdown-separator">:</div>
+
+            <div class="countdown-unit">
+              <div class="countdown-value" id="countdownHours">00</div>
+              <div class="countdown-label">{{ section.settings.countdown_label_hours }}</div>
+            </div>
+
+            <div class="countdown-separator">:</div>
+
+            <div class="countdown-unit">
+              <div class="countdown-value" id="countdownMinutes">00</div>
+              <div class="countdown-label">{{ section.settings.countdown_label_minutes }}</div>
+            </div>
+
+            <div class="countdown-separator">:</div>
+
+            <div class="countdown-unit">
+              <div class="countdown-value" id="countdownSeconds">00</div>
+              <div class="countdown-label">{{ section.settings.countdown_label_seconds }}</div>
+            </div>
+          </div>
+
+          <div class="final-rush-notes-section">
+            <div class="final-rush-notes-title">{{ section.settings.final_rush_notes_title }}</div>
+            <div class="final-rush-notes-content">{{ section.settings.final_rush_notes_content }}</div>
+          </div>
+
+          <div class="final-rush-cta">
+            {{ section.settings.final_rush_cta_text }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* =====最後3天加單狂歡 ===== */
+  .double-eleven-final-rush {
+    width: 100%;
+    padding: 40px 0;
+    background-color: black;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .final-rush-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .final-rush-background-desktop {
+    display: block;
+  }
+
+  .final-rush-background-mobile {
+    display: none;
+  }
+
+  .final-rush-wrapper {
+    width: 100%;
+    background-color: transparent;
+    position: relative;
+    z-index: 1;
+  }
+
+  .final-rush-outer {
+    width: 100%;
+    padding: 0 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .final-rush-inner {
+    width: 100%;
+    max-width: 1600px;
+    padding: 0 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .final-rush-content {
+    align-self: stretch;
+    padding: 0px 40px 200px 40px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .final-rush-title-section {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .final-rush-title {
+    align-self: stretch;
+    height: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-size: 44px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    line-height: 62px;
+    word-wrap: break-word;
+  }
+
+  .final-rush-subtitle {
+    align-self: stretch;
+    height: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    line-height: 32px;
+    word-wrap: break-word;
+  }
+
+  .countdown-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .countdown-unit {
+    width: 89px;
+    min-width: 72px;
+    padding: 12px;
+    background: #ff651d;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .countdown-value {
+    align-self: stretch;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-size: 32px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    line-height: 44px;
+    word-wrap: break-word;
+  }
+
+  .countdown-label {
+    align-self: stretch;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fafafa;
+    font-size: 12px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    line-height: 16px;
+    word-wrap: break-word;
+  }
+
+  .countdown-separator {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #ff651d;
+    font-size: 32px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    line-height: 44.8px;
+    word-wrap: break-word;
+  }
+
+  .final-rush-notes-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0;
+    width: 658px;
+    text-align: center;
+  }
+
+  .final-rush-notes-title {
+    color: #a1a1aa;
+    font-size: 14px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    line-height: 20px;
+    word-wrap: break-word;
+    margin-bottom: 16px;
+  }
+
+  .final-rush-notes-content {
+    color: #a1a1aa;
+    font-size: 12px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    line-height: 16px;
+    word-wrap: break-word;
+  }
+
+  .final-rush-cta {
+    width: 200px;
+    padding: 12px;
+    border-radius: 89px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: #ffd591;
+    font-size: 24px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    line-height: 32px;
+    word-wrap: break-word;
+    text-align: center;
+  }
+
+  /* ===== 手机响应式 ===== */
+  @media (max-width: 450px) {
+    .final-rush-background-desktop {
+      display: none;
+    }
+
+    .final-rush-background-mobile {
+      display: block;
+    }
+
+    .double-eleven-final-rush {
+      padding: 20px 0;
+    }
+
+    .final-rush-wrapper {
+      padding: 20px 0;
+    }
+
+    .final-rush-outer {
+      padding: 0;
+    }
+
+    .final-rush-inner {
+      padding: 0 12px;
+    }
+
+    .final-rush-content {
+      padding: 20px;
+      gap: 24px;
+    }
+
+    .final-rush-title {
+      font-size: 20px;
+      line-height: 28px;
+    }
+
+    .final-rush-subtitle {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .countdown-container {
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .countdown-unit {
+      width: 60px;
+      min-width: 60px;
+      padding: 8px;
+    }
+
+    .countdown-value {
+      font-size: 18px;
+      line-height: 24px;
+    }
+
+    .countdown-label {
+      font-size: 10px;
+      line-height: 14px;
+    }
+
+    .countdown-separator {
+      font-size: 18px;
+      line-height: 24px;
+    }
+
+    .final-rush-notes-section {
+      width: 100%;
+      padding: 0 16px;
+    }
+
+    .final-rush-notes-title {
+      font-size: 12px;
+      line-height: 16px;
+      margin-bottom: 8px;
+    }
+
+    .final-rush-notes-content {
+      font-size: 10px;
+      line-height: 14px;
+    }
+
+    .final-rush-cta {
+      width: auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const sectionElement = document.querySelector('[data-section-id="{{ section.settings.section_id }}"]');
+    const endTimeString = sectionElement.dataset.endTime;
+
+    if (!endTimeString) {
+      console.error('Countdown end time is not set.');
+      return;
+    }
+
+    const endTime = new Date(endTimeString);
+
+    startCountdown(endTime);
+
+    function startCountdown(endTime) {
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const timeRemaining = endTime.getTime() - now;
+
+        if (timeRemaining <= 0) {
+          document.getElementById('countdownDays').textContent = '00';
+          document.getElementById('countdownHours').textContent = '00';
+          document.getElementById('countdownMinutes').textContent = '00';
+          document.getElementById('countdownSeconds').textContent = '00';
+          clearInterval(countdownInterval);
+          return;
+        }
+
+        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+        document.getElementById('countdownDays').textContent = String(days).padStart(2, '0');
+        document.getElementById('countdownHours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('countdownMinutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('countdownSeconds').textContent = String(seconds).padStart(2, '0');
+      }
+
+      updateCountdown();
+      const countdownInterval = setInterval(updateCountdown, 1000);
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "最後3天加單狂歡",
+  "settings": [
+    {
+      "type": "header",
+      "content": "最後3天加單狂歡"
+    },
+    {
+      "type": "image_picker",
+      "id": "final_rush_background_image_desktop",
+      "label": "最後加單狂歡 背景圖 - 電腦端 (1920×543)"
+    },
+    {
+      "type": "image_picker",
+      "id": "final_rush_background_image_mobile",
+      "label": "最後加單狂歡 背景圖 - 手機端 (375×299)"
+    },
+    {
+      "type": "text",
+      "id": "final_rush_title",
+      "label": "最後加單狂歡標題",
+      "default": "最後3天加單狂歡"
+    },
+    {
+      "type": "text",
+      "id": "final_rush_subtitle",
+      "label": "最後加單狂歡副標題",
+      "default": "11/12 - 11/14 限時加碼 同上11/1-11/11所有活動"
+    },
+    {
+      "type": "text",
+      "id": "countdown_end_time",
+      "label": "倒計時結束時間",
+      "info": "格式: YYYY-MM-DDTHH:MM:SS, 例如: 2025-12-31T23:59:59",
+      "default": "2025-11-14T23:59:59"
+    },
+    {
+      "type": "text",
+      "id": "countdown_label_days",
+      "label": "倒計時 - 天標籤",
+      "default": "Days"
+    },
+    {
+      "type": "text",
+      "id": "countdown_label_hours",
+      "label": "倒計時 - 小時標籤",
+      "default": "Hrs"
+    },
+    {
+      "type": "text",
+      "id": "countdown_label_minutes",
+      "label": "倒計時 - 分鐘標籤",
+      "default": "Mins"
+    },
+    {
+      "type": "text",
+      "id": "countdown_label_seconds",
+      "label": "倒計時 - 秒標籤",
+      "default": "Secs"
+    },
+    {
+      "type": "text",
+      "id": "final_rush_notes_title",
+      "label": "注意事項標題",
+      "default": "活動注意事項"
+    },
+    {
+      "type": "richtext",
+      "id": "final_rush_notes_content",
+      "label": "注意事項內容",
+      "default": "<p>活動期間：2024年11月12日 00:00 至 11月14日 23:59<br/>所有優惠不可合併使用，每筆訂單限用一種優惠；贈品數量有限，送完為止；部分商品不適用優惠券折扣，請詳見各優惠券說明；活動期間內下單，將於活動結束後7個工作天內出貨；如遇商品缺貨，將另行通知替代方案；APGO保留活動最終解釋；如有任何疑問，請聯繫客服</p>"
+    },
+    {
+      "type": "text",
+      "id": "final_rush_cta_text",
+      "label": "按鈕文字",
+      "default": "把握最後機會"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "info": "用於導航欄，不能有空格或特殊字符",
+      "default": "section-final-rush",
+      "placeholder": "例如: section-hero"
+    }
+  ],
+  "presets": [
+    {
+      "name": "活動模板 - 最後3天加單狂歡"
+    }
+  ]
+}
+{% endschema %}

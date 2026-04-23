@@ -1,0 +1,565 @@
+{% comment %}
+  Brand Story Section - APGO 品牌故事
+  放置位置：/sections/brand-story-section.liquid
+{% endcomment %}
+
+<section class="brand-story-section">
+  <div class="container">
+    <!-- 標題區域 -->
+    <div class="story-header">
+      <h2 class="story-title">{{ section.settings.title | default: "APGO 品牌故事" }}</h2>
+      <p class="story-subtitle">{{ section.settings.subtitle | default: "從電子代工龍頭到鍍膜領導品牌，17年創新之路" }}</p>
+    </div>
+
+    <!-- 時間軸 -->
+    <div class="timeline">
+      {% for block in section.blocks %}
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <span class="timeline-icon">{{ block.settings.icon }}</span>
+            <div class="timeline-year">{{ block.settings.year }}</div>
+            <h3 class="milestone-title">{{ block.settings.milestone_title }}</h3>
+            <p class="timeline-text">{{ block.settings.description }}</p>
+          </div>
+          <div class="timeline-dot"></div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- 裝飾線 -->
+    <div class="decorative-line"></div>
+  </div>
+</section>
+
+{% style %}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --primary-orange: #f08418;
+    --text-white: #ffffff;
+    --text-gray: #cccccc;
+    --dark-bg: #000000;
+  }
+
+  body {
+    font-family: 'Arial', 'Microsoft JhengHei', sans-serif;
+    background: var(--dark-bg);
+    color: var(--text-white);
+  }
+
+  /* 品牌故事主區塊 */
+  .brand-story-section {
+    background: #000000;
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 背景裝飾效果 */
+  .brand-story-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(240, 132, 24, 0.05) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 標題區域 */
+  .story-header {
+    text-align: center;
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease forwards;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .story-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #f08418, #ff9a3c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .story-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-gray);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* 時間軸設計 */
+  .timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 0;
+  }
+
+  /* 中央垂直線 */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to bottom, 
+      transparent 0%, 
+      var(--primary-orange) 20%, 
+      #ff9a3c 80%, 
+      transparent 100%
+    );
+  }
+
+  /* 時間軸項目 */
+  .timeline-item {
+    position: relative;
+    padding: 40px 0;
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+  }
+
+  .timeline-item:nth-child(1) { animation-delay: 0.2s; }
+  .timeline-item:nth-child(2) { animation-delay: 0.3s; }
+  .timeline-item:nth-child(3) { animation-delay: 0.4s; }
+  .timeline-item:nth-child(4) { animation-delay: 0.5s; }
+  .timeline-item:nth-child(5) { animation-delay: 0.6s; }
+  .timeline-item:nth-child(6) { animation-delay: 0.7s; }
+  .timeline-item:nth-child(7) { animation-delay: 0.8s; }
+  .timeline-item:nth-child(8) { animation-delay: 0.9s; }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  /* 內容卡片 */
+  .timeline-content {
+    position: relative;
+    width: 45%;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(240, 132, 24, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  /* 左右交替排列 */
+  .timeline-item:nth-child(odd) .timeline-content {
+    margin-left: auto;
+    transform: translateX(30px);
+    opacity: 0;
+    animation: slideInRight 0.8s ease forwards;
+  }
+
+  .timeline-item:nth-child(even) .timeline-content {
+    transform: translateX(-30px);
+    opacity: 0;
+    animation: slideInLeft 0.8s ease forwards;
+  }
+
+  .timeline-item:nth-child(1) .timeline-content { animation-delay: 0.2s; }
+  .timeline-item:nth-child(2) .timeline-content { animation-delay: 0.3s; }
+  .timeline-item:nth-child(3) .timeline-content { animation-delay: 0.4s; }
+  .timeline-item:nth-child(4) .timeline-content { animation-delay: 0.5s; }
+  .timeline-item:nth-child(5) .timeline-content { animation-delay: 0.6s; }
+  .timeline-item:nth-child(6) .timeline-content { animation-delay: 0.7s; }
+  .timeline-item:nth-child(7) .timeline-content { animation-delay: 0.8s; }
+  .timeline-item:nth-child(8) .timeline-content { animation-delay: 0.9s; }
+
+  @keyframes slideInLeft {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* 懸停效果 */
+  .timeline-content:hover {
+    transform: translateY(-5px);
+    background: rgba(240, 132, 24, 0.1);
+    border-color: var(--primary-orange);
+    box-shadow: 0 10px 30px rgba(240, 132, 24, 0.2);
+  }
+
+  /* 時間點圓圈 */
+  .timeline-dot {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 24px;
+    background: var(--primary-orange);
+    border: 4px solid var(--dark-bg);
+    border-radius: 50%;
+    box-shadow: 0 0 30px rgba(240, 132, 24, 0.6);
+    z-index: 2;
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 30px rgba(240, 132, 24, 0.6); }
+    50% { box-shadow: 0 0 50px rgba(240, 132, 24, 0.9); }
+  }
+
+  /* 連接線 */
+  .timeline-item::after {
+    content: '';
+    position: absolute;
+    top: 62px;
+    width: 50%;
+    height: 2px;
+    background: rgba(240, 132, 24, 0.3);
+  }
+
+  .timeline-item:nth-child(odd)::after {
+    left: 0;
+    right: 50%;
+  }
+
+  .timeline-item:nth-child(even)::after {
+    left: 50%;
+    right: 0;
+  }
+
+  /* 年份標題 */
+  .timeline-year {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-orange);
+    margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+  }
+
+  /* 年份裝飾 */
+  .timeline-year::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-orange), transparent);
+    border-radius: 2px;
+  }
+
+  /* 里程碑標題 */
+  .milestone-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--text-white);
+    margin-bottom: 12px;
+  }
+
+  /* 描述文字 */
+  .timeline-text {
+    color: var(--text-gray);
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+
+  /* 圖標 */
+  .timeline-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 2rem;
+    opacity: 0.3;
+  }
+
+  /* 底部裝飾線 */
+  .decorative-line {
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-orange), transparent);
+    margin: 80px auto 0;
+    opacity: 0;
+    animation: fadeIn 1s ease 1.2s forwards;
+  }
+
+  /* 響應式設計 */
+  @media (max-width: 768px) {
+    .brand-story-section {
+      padding: 60px 0;
+    }
+
+    .story-title {
+      font-size: 2rem;
+    }
+
+    .story-subtitle {
+      font-size: 1rem;
+      padding: 0 20px;
+    }
+
+    .timeline::before {
+      left: 40px;
+    }
+
+    .timeline-item {
+      padding: 30px 0;
+    }
+
+    .timeline-content {
+      width: calc(100% - 80px);
+      margin-left: 80px !important;
+      transform: none !important;
+      padding: 25px;
+    }
+
+    .timeline-dot {
+      left: 40px;
+    }
+
+    .timeline-item::after {
+      display: none;
+    }
+
+    .timeline-year {
+      font-size: 1.5rem;
+    }
+
+    .milestone-title {
+      font-size: 1.1rem;
+    }
+
+    .timeline-text {
+      font-size: 0.9rem;
+    }
+
+    .timeline-icon {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .timeline::before {
+      left: 30px;
+    }
+
+    .timeline-content {
+      width: calc(100% - 60px);
+      margin-left: 60px !important;
+      padding: 20px;
+    }
+
+    .timeline-dot {
+      left: 30px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+{% endstyle %}
+
+{% javascript %}
+  // 滾動觸發動畫
+  const observerOptions = {
+    threshold: 0.2,
+    rootMargin: '0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, observerOptions);
+
+  // 監聽所有需要動畫的元素
+  document.addEventListener('DOMContentLoaded', () => {
+    const animatedElements = document.querySelectorAll('.timeline-item, .story-header');
+    animatedElements.forEach(el => {
+      observer.observe(el);
+    });
+  });
+
+  // 視差滾動效果
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const section = document.querySelector('.brand-story-section');
+    
+    if (section) {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        const parallaxSpeed = 0.3;
+        const yPos = -(scrolled * parallaxSpeed);
+        section.style.backgroundPosition = `center ${yPos}px`;
+      }
+    }
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "品牌故事時間軸",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "標題",
+      "default": "APGO 品牌故事"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "副標題",
+      "default": "從電子代工龍頭到鍍膜領導品牌，17年創新之路"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "timeline_item",
+      "name": "時間軸項目",
+      "settings": [
+        {
+          "type": "text",
+          "id": "year",
+          "label": "年份",
+          "default": "2007"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "圖標 (emoji)",
+          "default": "💻"
+        },
+        {
+          "type": "text",
+          "id": "milestone_title",
+          "label": "里程碑標題",
+          "default": "電子開發起家"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "描述",
+          "default": "從電子開發與行車紀錄器代工開始，創辦人累積了十年的研發與製造經驗，成為台灣各大知名品牌的幕後推手，奠定了對品質執著的基因。"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "品牌故事",
+      "blocks": [
+        {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2007",
+            "icon": "💻",
+            "milestone_title": "電子開發起家",
+            "description": "從電子開發與行車紀錄器代工開始，創辦人累積了十年的研發與製造經驗，成為台灣各大知名品牌的幕後推手，奠定了對品質執著的基因。"
+          }
+        },
+        {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2011",
+            "icon": "🏭",
+            "milestone_title": "成立行車紀錄器工廠",
+            "description": "建立專業工廠，通過ISO9001認證，從設計到生產一條龍服務。得到威剛、聲寶、亞旭科技、愛國者等大廠青睞，甚至承接新加坡國防部訂單。"
+          }
+        },
+        {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2014",
+            "icon": "🚗",
+            "milestone_title": "研發第一代洗車鍍膜",
+            "description": "創辦人以愛車人士的角度，開始研發洗車鍍膜產品。希望讓每個人都能自己照顧愛車，體驗DIY的樂趣，不再花冤枉錢。"
+          }
+        },
+        {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2017",
+            "icon": "🚀",
+            "milestone_title": "APGO品牌誕生",
+            "description": "APGO以創辦人之名正式誕生！秉持電子工廠的嚴格規格，所有生產原料及製作流程都經過嚴格把關，立志成為全台最大的鍍膜生產工廠。"
+          }
+        },
+        {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2019",
+            "icon": "🌏",
+            "milestone_title": "進軍國際市場",
+            "description": "第一代水鍍膜正式上市，同時成立馬來西亞公司，開始拓展東南亞市場。從台灣走向世界，讓更多人體驗APGO的優質產品。"
+          }
+        },
+        {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2021",
+            "icon": "⭐",
+            "milestone_title": "產品全面升級",
+            "description": "第二代原子鍍膜系列全新升級，新增前置作業及車內保養系列。同年成立新加坡公司，並獲得知名KOL酷炫、Joeman大力推薦。"
+          }
+        },
+        {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2022",
+            "icon": "🏆",
+            "milestone_title": "媒體認證肯定",
+            "description": "知名汽車節目主持人廖盈婷大力推薦，知名KOL廖老大聯名推出原子釉。品牌影響力持續擴大，成為汽車美容界的領導品牌。"
+          }
+        },
+        {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2024",
+            "icon": "🚀",
+            "milestone_title": "銷售里程碑",
+            "description": "年銷售突破5萬組，成為東南亞知名鍍膜品牌。從零基礎的家庭主婦到專業鍍膜玩家，都能輕鬆上手，讓汽車美容走進每個家庭。"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

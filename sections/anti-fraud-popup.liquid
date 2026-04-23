@@ -1,0 +1,1040 @@
+{% comment %}
+  反詐騙彈窗 Section - 新版本
+  用於在特定頁面顯示反詐騙警告彈窗
+{% endcomment %}
+
+{%- liquid
+    assign current_page_type = request.page_type
+    assign should_show = false
+    
+    if section.settings.anti_fraud_enable and section.settings.anti_fraud_pages == 'all' or section.settings.anti_fraud_pages == current_page_type
+      assign should_show = true
+    endif
+  -%}
+  
+  {%- if should_show -%}
+  
+  <style>
+    /* 反詐騙彈窗樣式 */
+    .anti-fraud-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+    }
+  
+    .anti-fraud-popup.show {
+      opacity: 1;
+      visibility: visible;
+    }
+  
+    /* 彈窗內容 */
+    .anti-fraud-content {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      border-radius: 20px;
+      padding: 0;
+      max-width: 480px;
+      width: 85%;
+      max-height: 85vh;
+      border: 2px solid rgba(240, 132, 24, 0.3);
+      box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.7),
+        0 0 100px rgba(240, 132, 24, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transform: scale(0.9);
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+  
+    .anti-fraud-popup.show .anti-fraud-content {
+      transform: scale(1);
+    }
+  
+    /* 標題區 */
+    .anti-fraud-header {
+      background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+      padding: 25px 20px;
+      text-align: center;
+      position: relative;
+      border-bottom: 1px solid rgba(240, 132, 24, 0.2);
+    }
+  
+    .anti-fraud-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      display: inline-block;
+      animation: anti-fraud-glow 2s ease-in-out infinite;
+    }
+  
+         @keyframes anti-fraud-glow {
+       0%, 100% { 
+         filter: drop-shadow(0 0 20px rgba(240, 132, 24, 0.5));
+       }
+       50% { 
+         filter: drop-shadow(0 0 30px rgba(240, 132, 24, 0.8));
+       }
+     }
+     
+     /* 游標閃爍動畫 */
+     @keyframes blink {
+       0%, 50% { opacity: 1; }
+       51%, 100% { opacity: 0; }
+     }
+  
+    .anti-fraud-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+  
+    .anti-fraud-subtitle {
+      color: #999;
+      font-size: 0.9rem;
+    }
+  
+    /* 內容區 */
+    .anti-fraud-body {
+      padding: 30px 25px;
+    }
+  
+    .anti-fraud-warning {
+      margin-bottom: 30px;
+    }
+  
+    .anti-fraud-warning-title {
+      color: #f08418;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+  
+    .anti-fraud-warning-text {
+      color: #ddd;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+  
+    /* 官方網址區 */
+    .anti-fraud-urls-section {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+  
+    .anti-fraud-url-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #4CAF50;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+    }
+  
+    .anti-fraud-check-icon {
+      font-size: 1.2rem;
+    }
+  
+    .anti-fraud-urls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+  
+    .anti-fraud-url-item {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      box-shadow: 
+        0 10px 30px rgba(76, 175, 80, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  
+    .anti-fraud-url-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+  
+    .anti-fraud-url-item:hover::before {
+      left: 100%;
+    }
+  
+    /* 提醒文字 */
+    .anti-fraud-reminder {
+      text-align: center;
+      color: #fff;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+  
+    /* 按鈕區 */
+    .anti-fraud-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  
+    .anti-fraud-primary-btn {
+      background: linear-gradient(135deg, #f08418, #e67e22);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 0;
+      flex: 1;
+      min-width: 160px;
+      white-space: nowrap;
+      box-shadow: 
+        0 8px 25px rgba(240, 132, 24, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+  
+    .anti-fraud-primary-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+  
+    .anti-fraud-primary-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 15px 40px rgba(240, 132, 24, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+  
+    .anti-fraud-primary-btn:hover::before {
+      left: 100%;
+    }
+  
+    .anti-fraud-secondary-btn {
+      background: transparent;
+      color: #f08418;
+      border: 2px solid #f08418;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 0;
+      flex: 1;
+      min-width: 140px;
+      white-space: nowrap;
+    }
+  
+    .anti-fraud-secondary-btn:hover {
+      background: #f08418;
+      color: white;
+      transform: translateY(-2px);
+    }
+  
+    /* 關閉按鈕 */
+    .anti-fraud-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: #999;
+      font-size: 1.1rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    .anti-fraud-close-btn:hover {
+      border-color: #f08418;
+      color: #f08418;
+      transform: rotate(90deg);
+    }
+  
+    /* 不再顯示選項 */
+    .anti-fraud-dont-show {
+      text-align: center;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  
+    .anti-fraud-dont-show label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      color: #999;
+      font-size: 0.85rem;
+    }
+  
+    .anti-fraud-dont-show input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: #f08418;
+    }
+  
+    /* 網址教學頁面 */
+    .anti-fraud-guide {
+      display: none;
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  
+    .anti-fraud-guide.show {
+      display: block;
+    }
+  
+    /* 響應式設計 */
+    @media (max-width: 768px) {
+      .anti-fraud-content {
+        width: 92%;
+        max-width: 400px;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+      
+      .anti-fraud-header {
+        padding: 20px 16px;
+      }
+      
+      .anti-fraud-icon {
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+      }
+      
+      .anti-fraud-title {
+        font-size: 1.2rem;
+      }
+      
+      .anti-fraud-subtitle {
+        font-size: 0.85rem;
+      }
+      
+      .anti-fraud-body {
+        padding: 25px 20px;
+      }
+      
+      .anti-fraud-warning {
+        margin-bottom: 25px;
+      }
+      
+      .anti-fraud-warning-title {
+        font-size: 0.95rem;
+      }
+      
+      .anti-fraud-warning-text {
+        font-size: 0.85rem;
+      }
+      
+             /* 第一頁瀏覽器模擬響應式 */
+       #antiFraudMain .anti-fraud-body > div[style*="margin-bottom: 30px"] {
+         margin-bottom: 25px !important;
+       }
+       
+       #antiFraudMain .anti-fraud-body > div[style*="margin-bottom: 30px"] > div[style*="text-align: center"] {
+         margin-bottom: 16px !important;
+       }
+       
+       #antiFraudMain .anti-fraud-body > div[style*="margin-bottom: 30px"] > div[style*="text-align: center"] span:last-child {
+         font-size: 1rem !important;
+       }
+       
+       #antiFraudMain .anti-fraud-body > div[style*="margin-bottom: 30px"] > div[style*="background: #000"] {
+         max-width: 350px !important;
+       }
+      
+      .anti-fraud-reminder {
+        font-size: 0.9rem;
+        margin-bottom: 25px;
+      }
+      
+      .anti-fraud-actions {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .anti-fraud-actions button {
+        width: 100%;
+        min-width: unset;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+      }
+      
+      .anti-fraud-primary-btn {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+      }
+      
+      .anti-fraud-secondary-btn {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+      }
+      
+      .anti-fraud-dont-show {
+        margin-top: 20px;
+        padding-top: 16px;
+      }
+      
+      .anti-fraud-dont-show label {
+        font-size: 0.8rem;
+      }
+      
+      .anti-fraud-dont-show input[type="checkbox"] {
+        width: 14px;
+        height: 14px;
+      }
+      
+      .anti-fraud-close-btn {
+        top: 16px;
+        right: 16px;
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+      }
+    }
+  
+    @media (max-width: 480px) {
+      .anti-fraud-content {
+        width: 95%;
+        max-width: 350px;
+        max-height: 85vh;
+      }
+      
+      .anti-fraud-header {
+        padding: 16px 12px;
+      }
+      
+      .anti-fraud-icon {
+        font-size: 1.6rem;
+        margin-bottom: 6px;
+      }
+      
+      .anti-fraud-title {
+        font-size: 1.1rem;
+      }
+      
+      .anti-fraud-subtitle {
+        font-size: 0.8rem;
+      }
+      
+      .anti-fraud-body {
+        padding: 20px 16px;
+      }
+      
+      .anti-fraud-warning {
+        margin-bottom: 20px;
+      }
+      
+      .anti-fraud-warning-title {
+        font-size: 0.9rem;
+      }
+      
+      .anti-fraud-warning-text {
+        font-size: 0.8rem;
+      }
+      
+             /* 第一頁瀏覽器模擬響應式 */
+       #antiFraudMain .anti-fraud-body > div[style*="margin-bottom: 30px"] {
+         margin-bottom: 20px !important;
+       }
+       
+       #antiFraudMain .anti-fraud-body > div[style*="margin-bottom: 30px"] > div[style*="text-align: center"] {
+         margin-bottom: 12px !important;
+       }
+       
+       #antiFraudMain .anti-fraud-body > div[style*="margin-bottom: 30px"] > div[style*="text-align: center"] span:last-child {
+         font-size: 0.95rem !important;
+       }
+       
+       #antiFraudMain .anti-fraud-body > div[style*="margin-bottom: 30px"] > div[style*="background: #000"] {
+         max-width: 300px !important;
+       }
+      
+      .anti-fraud-reminder {
+        font-size: 0.85rem;
+        margin-bottom: 20px;
+      }
+      
+      .anti-fraud-actions button {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+      }
+      
+      .anti-fraud-primary-btn {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+      }
+      
+      .anti-fraud-secondary-btn {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+      }
+      
+      .anti-fraud-dont-show {
+        margin-top: 16px;
+        padding-top: 12px;
+      }
+      
+      .anti-fraud-dont-show label {
+        font-size: 0.75rem;
+      }
+      
+      .anti-fraud-dont-show input[type="checkbox"] {
+        width: 12px;
+        height: 12px;
+      }
+      
+      .anti-fraud-close-btn {
+        top: 12px;
+        right: 12px;
+        width: 24px;
+        height: 24px;
+        font-size: 0.9rem;
+      }
+      
+      /* 教學頁面響應式調整 */
+      #antiFraudGuide .anti-fraud-body {
+        padding: 16px 12px !important;
+      }
+      
+      #antiFraudGuide .anti-fraud-actions {
+        margin-top: 16px !important;
+      }
+      
+      #antiFraudGuide .anti-fraud-primary-btn {
+        font-size: 0.85rem !important;
+        padding: 10px 20px !important;
+      }
+    }
+  </style>
+  
+  <!-- 反詐騙警告彈窗 -->
+  <div class="anti-fraud-popup" id="antiFraudPopup">
+    <div class="anti-fraud-content" id="antiFraudMain">
+      <!-- 標題區 -->
+      <div class="anti-fraud-header">
+        <button class="anti-fraud-close-btn" onclick="closeAntiFraudPopup()">×</button>
+        <div class="anti-fraud-icon">⚠️</div>
+        <h2 class="anti-fraud-title">{{ section.settings.anti_fraud_title | default: '反詐騙宣導' }}</h2>
+        <p class="anti-fraud-subtitle">{{ section.settings.anti_fraud_subtitle | default: '近期發現詐騙集團盜用我們的影片' }}</p>
+      </div>
+  
+      <!-- 內容區 -->
+      <div class="anti-fraud-body">
+        <!-- 詐騙警告說明 -->
+        <div class="anti-fraud-warning">
+          <p class="anti-fraud-warning-title">{{ section.settings.anti_fraud_warning_title | default: '詐騙手法說明' }}</p>
+          <p class="anti-fraud-warning-text">{{ section.settings.anti_fraud_warning_text | default: '近期有詐騙集團盜用 APGO 短影音平台的影片，在社群媒體投放詐騙廣告，引導消費者至假冒網站進行購物詐騙。請務必認明以下官方網址：' }}</p>
+        </div>
+  
+                 <!-- 官方網址展示 -->
+         <div style="margin-bottom: 30px;">
+           <div style="text-align: center; margin-bottom: 20px;">
+             <span style="color: #4CAF50; font-size: 1.2rem; margin-right: 8px;">✓</span>
+             <span style="color: #4CAF50; font-weight: 600; font-size: 1.1rem;">{{ section.settings.anti_fraud_url_label | default: '唯一官方網址' }}</span>
+           </div>
+           
+           <!-- 瀏覽器模擬 -->
+           <div style="background: #000; border-radius: 12px; overflow: hidden; margin: 0 auto; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+             <!-- 瀏覽器頂部 -->
+             <div style="background: #2a2a2a; padding: 8px; display: flex; align-items: center; gap: 10px;">
+               <div style="display: flex; gap: 6px;">
+                 <div style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f57;"></div>
+                 <div style="width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e;"></div>
+                 <div style="width: 10px; height: 10px; border-radius: 50%; background: #28ca42;"></div>
+               </div>
+             </div>
+             
+             <!-- 正確網址示範 -->
+             <div style="background: #1a1a1a; padding: 15px;">
+               <p style="color: #4CAF50; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem;">✓ {{ 'anti.realUrl' | t }}</p>
+               <div style="background: #2d2d2d; border-radius: 6px; padding: 10px; display: flex; align-items: center; gap: 8px;">
+                 <span style="color: #4CAF50; font-size: 0.9rem;">🔒</span>
+                 <span style="font-family: monospace; color: #999; font-size: 0.85rem;">https://</span>
+                 <span id="typing-animation" style="font-family: monospace; color: #f08418; font-weight: 600; font-size: 0.9rem;"></span>
+                 <span id="typing-cursor" style="font-family: monospace; color: #f08418; font-weight: 600; font-size: 0.9rem; animation: blink 1s infinite;">|</span>
+               </div>
+             </div>
+           </div>
+         </div>
+  
+        <!-- 提醒文字 -->
+        <p class="anti-fraud-reminder">
+          {{ section.settings.anti_fraud_reminder | default: '看到任何優惠廣告，請直接輸入 apgo.tw 進入官網確認' }}<br>
+          <span style="color: #999; font-size: 0.9rem;">{{ section.settings.anti_fraud_reminder_sub | default: '切勿點擊來路不明的廣告連結' }}</span>
+        </p>
+  
+        <!-- 確認按鈕 -->
+        <div class="anti-fraud-actions">
+          <button class="anti-fraud-primary-btn" onclick="closeAntiFraudPopup()">
+            {{ section.settings.anti_fraud_primary_btn | default: '我已了解，進入官網' }}
+          </button>
+          {%- if section.settings.anti_fraud_show_guide -%}
+            <button class="anti-fraud-secondary-btn" onclick="showAntiFraudGuide()">
+              {{ section.settings.anti_fraud_secondary_btn | default: '如何分辨網址 →' }}
+            </button>
+          {%- endif -%}
+        </div>
+        
+        <!-- 不再顯示選項 -->
+        {%- if section.settings.anti_fraud_show_dont_show -%}
+          <div class="anti-fraud-dont-show">
+            <label>
+              <input type="checkbox" id="antiFraudDontShow">
+              <span>{{ section.settings.anti_fraud_dont_show_text | default: '不再顯示此訊息' }}</span>
+            </label>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+    
+    <!-- 網址教學頁面 -->
+    {%- if section.settings.anti_fraud_show_guide -%}
+      <div class="anti-fraud-content anti-fraud-guide" id="antiFraudGuide">
+        <div class="anti-fraud-header">
+          <button class="anti-fraud-close-btn" onclick="backToAntiFraudMain()" style="left: 25px; right: auto;">←</button>
+          <div class="anti-fraud-icon">🔍</div>
+          <h2 class="anti-fraud-title">{{ section.settings.anti_fraud_guide_title | default: '如何分辨正確網址' }}</h2>
+          <p class="anti-fraud-subtitle">{{ section.settings.anti_fraud_guide_subtitle | default: '學會看懂瀏覽器網址列' }}</p>
+        </div>
+        
+        <div class="anti-fraud-body" style="padding: 20px 16px;">
+          <!-- 瀏覽器模擬 -->
+          <div style="background: #000; border-radius: 12px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <!-- 瀏覽器頂部 -->
+            <div style="background: #2a2a2a; padding: 8px; display: flex; align-items: center; gap: 10px;">
+              <div style="display: flex; gap: 6px;">
+                <div style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f57;"></div>
+                <div style="width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e;"></div>
+                <div style="width: 10px; height: 10px; border-radius: 50%; background: #28ca42;"></div>
+              </div>
+            </div>
+            
+            <!-- 正確網址示範 -->
+            <div style="background: #1a1a1a; padding: 15px;">
+              <p style="color: #4CAF50; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem;">✓ {{ 'anti.realUrl' | t }}</p>
+              <div style="background: #2d2d2d; border-radius: 6px; padding: 10px; display: flex; align-items: center; gap: 8px; margin-bottom: 15px;">
+                <span style="color: #4CAF50; font-size: 0.9rem;">🔒</span>
+                <span style="font-family: monospace; color: #999; font-size: 0.85rem;">https://</span>
+                <span style="font-family: monospace; color: #f08418; font-weight: 600; font-size: 0.9rem;">apgo.tw</span>
+              </div>
+              
+              <p style="color: #ff6666; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem;">✗ {{ 'anti.errorUrl' | t }}</p>
+              <div style="background: #2d2d2d; border-radius: 6px; padding: 10px; display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                <span style="color: #999; font-size: 0.9rem;">⚠️</span>
+                <span style="font-family: monospace; color: #999; font-size: 0.85rem;">https://</span>
+                <span style="font-family: monospace; color: #ff6666; font-weight: 600; font-size: 0.9rem;">apgo-tw.com</span>
+                <span style="font-family: monospace; color: #666; font-size: 0.85rem;">/shop</span>
+              </div>
+              <div style="background: #2d2d2d; border-radius: 6px; padding: 10px; display: flex; align-items: center; gap: 8px;">
+                <span style="color: #999; font-size: 0.9rem;">⚠️</span>
+                <span style="font-family: monospace; color: #999; font-size: 0.85rem;">https://</span>
+                <span style="font-family: monospace; color: #ff6666; font-weight: 600; font-size: 0.9rem;">apg0.tw</span>
+                <span style="font-family: monospace; color: #666; font-size: 0.85rem;">/sale</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 重點提醒 -->
+          <div style="background: rgba(240, 132, 24, 0.05); border: 2px solid rgba(240, 132, 24, 0.2); border-radius: 12px; padding: 15px;">
+            <h3 style="color: #f08418; font-size: 1.1rem; margin-bottom: 12px;">{{ section.settings.anti_important_title }}</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 8px;">
+                <span style="color: #f08418; font-size: 0.9rem;">▶</span>
+                <span style="line-height: 1.4; font-size: 0.9rem;">{{ section.settings.anti_important_text_1_before }}
+                   <strong style="color: #f08418;">apgo.tw</strong> {{ section.settings.anti_important_text_1_after }} </span>
+              </li>
+              <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 8px;">
+                <span style="color: #f08418; font-size: 0.9rem;">▶</span>
+                <span style="line-height: 1.4; font-size: 0.9rem;">{{ section.settings.anti_important_text_2 }}</span>
+              </li>
+              <li style="display: flex; align-items: flex-start; gap: 8px;">
+                <span style="color: #f08418; font-size: 0.9rem;">▶</span>
+                <span style="line-height: 1.4; font-size: 0.9rem;">{{ section.settings.anti_important_text_3 }}</span>
+              </li>
+            </ul>
+          </div>
+          
+          <!-- 確認按鈕 -->
+          <div class="anti-fraud-actions" style="margin-top: 20px;">
+            <button class="anti-fraud-primary-btn" onclick="backToAntiFraudMain()" style="font-size: 0.9rem; padding: 12px 24px;">
+              {{ section.settings.anti_fraud_guide_btn | default: '我已了解，進入官網' }}
+            </button>
+          </div>
+          
+          <!-- 不再顯示選項 -->
+          {%- if section.settings.anti_fraud_show_dont_show -%}
+            <div class="anti-fraud-dont-show">
+              <label>
+                <input type="checkbox" id="antiFraudDontShow2">
+                <span>{{ section.settings.anti_fraud_dont_show_text | default: '不再顯示此訊息' }}</span>
+              </label>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+  
+  <script>
+    // 檢查是否已經設定不再顯示
+    function shouldShowAntiFraudPopup() {
+      if (localStorage.getItem('antiFraudDontShow') === 'true') {
+        return false;
+      }
+      return true;
+    }
+  
+    // 顯示彈窗
+    function showAntiFraudPopup() {
+      if (shouldShowAntiFraudPopup()) {
+        const popup = document.getElementById('antiFraudPopup');
+        popup.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+  
+    // 關閉彈窗
+    function closeAntiFraudPopup() {
+      const popup = document.getElementById('antiFraudPopup');
+      const dontShowCheckbox = document.getElementById('antiFraudDontShow');
+      const dontShowCheckbox2 = document.getElementById('antiFraudDontShow2');
+      
+      // 檢查是否勾選不再顯示
+      if ((dontShowCheckbox && dontShowCheckbox.checked) || 
+          (dontShowCheckbox2 && dontShowCheckbox2.checked)) {
+        localStorage.setItem('antiFraudDontShow', 'true');
+      }
+      
+      popup.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+  
+    // 顯示網址教學
+    function showAntiFraudGuide() {
+      var main = document.getElementById('antiFraudMain');
+      var guide = document.getElementById('antiFraudGuide');
+      
+      if (guide) {
+        guide.classList.add('show');
+        
+        setTimeout(function() {
+          main.style.transform = 'translateX(-100%)';
+          guide.style.left = '50%';
+          guide.style.transform = 'translate(-50%, -50%)';
+        }, 10);
+      }
+    }
+  
+    // 返回主頁面
+    function backToAntiFraudMain() {
+      var main = document.getElementById('antiFraudMain');
+      var guide = document.getElementById('antiFraudGuide');
+      
+      if (guide) {
+        main.style.transform = 'translateX(0)';
+        guide.style.left = '100%';
+        guide.style.transform = 'translateY(-50%)';
+        
+        setTimeout(function() {
+          guide.classList.remove('show');
+        }, 400);
+      }
+    }
+  
+         // 打字動畫效果
+     function typeWriter(element, text, speed = 150) {
+       let i = 0;
+       element.innerHTML = '';
+       
+       function type() {
+         if (i < text.length) {
+           element.innerHTML += text.charAt(i);
+           i++;
+           setTimeout(type, speed);
+         }
+       }
+       
+       type();
+     }
+     
+     // 頁面載入後顯示彈窗
+     document.addEventListener('DOMContentLoaded', function() {
+       // 延遲顯示，確保頁面完全載入
+       setTimeout(showAntiFraudPopup, {{ section.settings.anti_fraud_delay | default: 1 }} * 1000);
+       
+       // 當彈窗顯示後，開始打字動畫
+       setTimeout(function() {
+         const typingElement = document.getElementById('typing-animation');
+         if (typingElement) {
+           typeWriter(typingElement, 'apgo.tw', 200);
+         }
+       }, ({{ section.settings.anti_fraud_delay | default: 1 }} + 0.5) * 1000);
+     });
+  
+    // 點擊背景關閉彈窗
+    document.addEventListener('click', function(e) {
+      const popup = document.getElementById('antiFraudPopup');
+      if (e.target === popup) {
+        closeAntiFraudPopup();
+      }
+    });
+  
+    // ESC 鍵關閉彈窗
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeAntiFraudPopup();
+      }
+    });
+  </script>
+  
+  {%- endif -%}
+  
+  {% schema %}
+  {
+    "name": "反詐騙彈窗 - 新版本",
+    "settings": [
+      {
+        "type": "header",
+        "content": "基本設定"
+      },
+      {
+        "type": "checkbox",
+        "id": "anti_fraud_enable",
+        "label": "啟用反詐騙彈窗",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "anti_fraud_delay",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "unit": "秒",
+        "label": "延遲顯示時間",
+        "default": 1
+      },
+      {
+        "type": "select",
+        "id": "anti_fraud_pages",
+        "label": "顯示頁面",
+        "options": [
+          {
+            "value": "all",
+            "label": "所有頁面"
+          },
+          {
+            "value": "index",
+            "label": "首頁"
+          },
+          {
+            "value": "product",
+            "label": "商品頁面"
+          },
+          {
+            "value": "collection",
+            "label": "商品系列頁面"
+          },
+          {
+            "value": "cart",
+            "label": "購物車頁面"
+          },
+          {
+            "value": "page",
+            "label": "一般頁面"
+          }
+        ],
+        "default": "all"
+      },
+      {
+        "type": "header",
+        "content": "內容設定"
+      },
+      {
+        "type": "text",
+        "id": "anti_fraud_title",
+        "label": "標題",
+        "default": "反詐騙宣導"
+      },
+      {
+        "type": "text",
+        "id": "anti_fraud_subtitle",
+        "label": "副標題",
+        "default": "近期發現詐騙集團盜用我們的影片"
+      },
+      {
+        "type": "text",
+        "id": "anti_fraud_warning_title",
+        "label": "警告標題",
+        "default": "詐騙手法說明"
+      },
+      {
+        "type": "textarea",
+        "id": "anti_fraud_warning_text",
+        "label": "警告內容",
+        "default": "近期有詐騙集團盜用 APGO 短影音平台的影片，在社群媒體投放詐騙廣告，引導消費者至假冒網站進行購物詐騙。請務必認明以下官方網址："
+      },
+      {
+        "type": "text",
+        "id": "anti_fraud_url_label",
+        "label": "網址標籤",
+        "default": "唯一官方網址"
+      },
+      {
+        "type": "textarea",
+        "id": "anti_fraud_urls",
+        "label": "官方網址",
+        "default": "apgo.tw",
+        "info": "每行一個網址，用換行分隔"
+      },
+      {
+        "type": "text",
+        "id": "anti_fraud_reminder",
+        "label": "提醒文字",
+        "default": "看到任何優惠廣告，請直接輸入 apgo.tw 進入官網確認"
+      },
+      {
+        "type": "text",
+        "id": "anti_important_title",
+        "label": "重點標題",
+        "default": "檢查重點"
+      },
+      {
+        "type": "text",
+        "id": "anti_important_text_1_before",
+        "label": "第一段重點文本前言",
+        "default": "網域名稱必須是 "
+      },
+      {
+        "type": "text",
+        "id": "anti_important_text_1_after",
+        "label": "第一段重點文本後語",
+        "default": "，沒有其他變化"
+      },
+      {
+        "type": "text",
+        "id": "anti_important_text_2",
+        "label": "第二段重點文本",
+        "default": "注意是否有多餘的橫線、數字或其他字元"
+      },
+      {
+        "type": "text",
+        "id": "anti_important_text_3",
+        "label": "第三段重點文本",
+        "default": "斜線（/）後面的內容是網頁路徑，不影響網站真實性"
+      },
+      {
+        "type": "text",
+        "id": "anti_fraud_reminder_sub",
+        "label": "提醒副文字",
+        "default": "切勿點擊來路不明的廣告連結"
+      },
+      {
+        "type": "header",
+        "content": "按鈕設定"
+      },
+      {
+        "type": "text",
+        "id": "anti_fraud_primary_btn",
+        "label": "主要按鈕文字",
+        "default": "我已了解，進入官網"
+      },
+      {
+        "type": "checkbox",
+        "id": "anti_fraud_show_guide",
+        "label": "顯示「如何分辨網址」按鈕",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "anti_fraud_secondary_btn",
+        "label": "學習更多按鈕文字",
+        "default": "如何分辨網址 →"
+      },
+      {
+        "type": "text",
+        "id": "anti_fraud_guide_title",
+        "label": "教學頁面標題",
+        "default": "如何分辨正確網址"
+      },
+      {
+        "type": "text",
+        "id": "anti_fraud_guide_subtitle",
+        "label": "教學頁面副標題",
+        "default": "學會看懂瀏覽器網址列"
+      },
+      {
+        "type": "text",
+        "id": "anti_fraud_guide_btn",
+        "label": "教學頁面按鈕文字",
+        "default": "我已了解，進入官網"
+      },
+      {
+        "type": "header",
+        "content": "其他設定"
+      },
+      {
+        "type": "checkbox",
+        "id": "anti_fraud_show_dont_show",
+        "label": "顯示「不再顯示」選項",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "anti_fraud_dont_show_text",
+        "label": "不再顯示文字",
+        "default": "不再顯示此訊息"
+      }
+    ],
+    "presets": [
+      {
+        "name": "反詐騙彈窗 - 新版本",
+        "category": "彈窗"
+      }
+    ]
+  }
+  {% endschema %}
+  

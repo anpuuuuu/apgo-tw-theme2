@@ -1,0 +1,842 @@
+{% comment %} sections/warmup-activity.liquid {% endcomment %}
+
+<section
+  class="double-eleven-warmup"
+  id="{{ section.settings.section_id }}"
+  data-section-id="{{ section.settings.section_id }}"
+>
+  <div class="warmup-container">
+    <div class="warmup-header">
+      <h2 class="warmup-title warmup-title-desktop">{{ section.settings.warmup_title }}</h2>
+      <h2 class="warmup-title warmup-title-mobile" id="warmupTitleMobile">
+        {{ section.settings.warmup_title_mobile }}
+      </h2>
+      <p class="warmup-subtitle">{{ section.settings.warmup_subtitle }}</p>
+    </div>
+
+    {% comment %} 第一部分：原子琺瑯晶鍍膜活動 {% endcomment %}
+    <div class="warmup-section warmup-enamel">
+      {% if section.settings.enamel_background_image_desktop %}
+        <img
+          src="{{ section.settings.enamel_background_image_desktop | img_url }}"
+          srcset="{{ section.settings.enamel_background_image_desktop | img_url: '1536x' }} 1x,
+                  {{ section.settings.enamel_background_image_desktop | img_url: '3072x' }} 2x"
+          alt="Enamel Background"
+          class="enamel-background-image enamel-background-desktop"
+          loading="lazy"
+        >
+      {% endif %}
+
+      {% if section.settings.enamel_background_image_mobile %}
+        <img
+          src="{{ section.settings.enamel_background_image_mobile | img_url }}"
+          srcset="{{ section.settings.enamel_background_image_mobile | img_url: '686x' }} 1x,
+                  {{ section.settings.enamel_background_image_mobile | img_url: '2000x' }} 2x"
+          alt="Enamel Background"
+          class="enamel-background-image enamel-background-mobile"
+          loading="lazy"
+        >
+      {% endif %}
+
+      <h3 class="enamel-section-title">{{ section.settings.enamel_section_title }}</h3>
+      <a href="{{ section.settings.enamel_main_link }}" class="enamel-main-card-link">
+        <div class="enamel-main-card">
+          <div class="enamel-main-image-wrapper enamel-main-image-wrapper-mobile">
+            {% if section.settings.enamel_main_image_mobile %}
+              <img
+                src="{{ section.settings.enamel_main_image_mobile | img_url }}"
+                srcset="{{ section.settings.enamel_main_image_mobile | img_url: '686x' }} 1x,
+                      {{ section.settings.enamel_main_image_mobile | img_url: '2000x' }} 2x"
+                alt="{{ section.settings.enamel_main_name }}"
+                class="enamel-main-image"
+              >
+            {% else %}
+              <div class="enamel-main-image-placeholder"></div>
+            {% endif %}
+          </div>
+
+          <div class="enamel-main-info enamel-main-info-desktop">
+            <div class="enamel-main-name">{{ section.settings.enamel_main_name }}</div>
+            <div class="enamel-main-price">{{ section.settings.enamel_main_price }}</div>
+            <div class="enamel-main-desc">{{ section.settings.enamel_main_desc }}</div>
+            <div class="enamel-main-tag">{{ section.settings.enamel_main_tag }}</div>
+          </div>
+
+          <div class="enamel-main-info enamel-main-info-mobile">
+            <div class="enamel-main-name">{{ section.settings.enamel_main_name }}</div>
+            <div class="enamel-main-desc">{{ section.settings.enamel_main_desc }}</div>
+            <div class="enamel-main-price-tag-wrapper">
+              <div class="enamel-main-price">{{ section.settings.enamel_main_price }}</div>
+              <div class="enamel-main-tag">{{ section.settings.enamel_main_tag }}</div>
+            </div>
+          </div>
+
+          <div class="enamel-main-image-wrapper enamel-main-image-wrapper-desktop">
+            {% if section.settings.enamel_main_image %}
+              <img
+                src="{{ section.settings.enamel_main_image | img_url }}"
+                srcset="{{ section.settings.enamel_main_image | img_url: '798x' }} 1x,
+                      {{ section.settings.enamel_main_image | img_url: '2000x' }} 2x"
+                alt="{{ section.settings.enamel_main_name }}"
+                class="enamel-main-image"
+              >
+            {% else %}
+              <div class="enamel-main-image-placeholder"></div>
+            {% endif %}
+          </div>
+        </div>
+      </a>
+      <div class="enamel-sub-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'enamel_combo' %}
+            <a href="{{ block.settings.combo_link }}" class="enamel-combo-card-link">
+              <div class="enamel-combo-card">
+                <div class="enamel-combo-image-wrapper">
+                  {% if block.settings.combo_image %}
+                    <img
+                      src="{{ block.settings.combo_image | img_url }}"
+                      srcset="{{ block.settings.combo_image | img_url: '320x' }} 1x,
+                          {{ block.settings.combo_image | img_url: '2000x' }} 2x"
+                      alt="{{ block.settings.combo_name }}"
+                      class="enamel-combo-image"
+                    >
+                  {% else %}
+                    <div class="enamel-combo-image-placeholder"></div>
+                  {% endif %}
+                </div>
+
+                <div class="enamel-combo-info enamel-combo-info-desktop">
+                  <h4 class="enamel-combo-name">{{ block.settings.combo_name }}</h4>
+                  <div class="enamel-combo-price">
+                    <span class="combo-price">{{ block.settings.combo_price }}</span>
+                    <span class="combo-tag">{{ block.settings.combo_tag }}</span>
+                  </div>
+                </div>
+
+                <div class="enamel-combo-info enamel-combo-info-mobile">
+                  <div class="enamel-combo-name-price-wrapper">
+                    <h4 class="enamel-combo-name">{{ block.settings.combo_name }}</h4>
+                    <span class="combo-price">{{ block.settings.combo_price }}</span>
+                  </div>
+                  <span class="combo-tag">{{ block.settings.combo_tag }}</span>
+                </div>
+              </div>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ===== 第四块 活動暖場搶先開跑样式 ===== */
+  .double-eleven-warmup {
+    width: 100%;
+    padding: 40px 0;
+  }
+
+  .warmup-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .warmup-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .warmup-title {
+    font-size: 44px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 62px;
+    margin-bottom: 12px;
+    background: linear-gradient(90deg, #f52424 0%, #ff9d00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .warmup-title-desktop {
+    display: block;
+  }
+
+  .warmup-title-mobile {
+    display: none;
+    white-space: normal;
+  }
+
+  .warmup-subtitle {
+    font-size: 24px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 32px;
+    color: #e4e4e7;
+  }
+
+  .warmup-section {
+    background: black;
+    border-radius: 24px;
+    overflow: hidden;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: relative;
+    border: 2px solid #5c2212;
+  }
+
+  .warmup-enamel {
+    min-height: 800px;
+    justify-content: flex-start;
+  }
+
+  .enamel-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .enamel-background-desktop {
+    display: block;
+  }
+
+  .enamel-background-mobile {
+    display: none;
+  }
+
+  .enamel-section-title {
+    font-size: 32px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 44px;
+    color: white;
+    margin: 0 0 12px 0;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .enamel-main-card {
+    background: #18181b;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .enamel-main-info-desktop {
+    width: 310px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .enamel-main-info-desktop .enamel-main-name {
+    font-size: 24px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 32px;
+    color: white;
+  }
+
+  .enamel-main-info-desktop .enamel-main-price {
+    font-size: 20px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 24px;
+    color: #ff9d00;
+  }
+
+  .enamel-main-info-desktop .enamel-main-desc {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    color: #c8c8c8;
+  }
+
+  .enamel-main-info-desktop .enamel-main-tag {
+    padding: 2px 8px;
+    background-color: #ff651d;
+    border-top-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    color: black;
+    font-size: 12px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 16px;
+    width: fit-content;
+  }
+
+  .enamel-main-info-mobile {
+    display: none;
+  }
+
+  .enamel-main-info-mobile .enamel-main-name {
+    font-size: 16px;
+    line-height: 22px;
+    color: white;
+  }
+
+  .enamel-main-info-mobile .enamel-main-desc {
+    font-size: 12px;
+    line-height: 16px;
+    color: #c8c8c8;
+  }
+
+  .enamel-main-price-tag-wrapper {
+    display: flex;
+    gap: 5px;
+    width: fit-content;
+    align-items: center;
+  }
+
+  .enamel-main-info-mobile .enamel-main-price {
+    font-size: 16px;
+    line-height: 20px;
+    color: #ff9d00;
+  }
+
+  .enamel-main-info-mobile .enamel-main-tag {
+    font-size: 10px;
+    line-height: 14px;
+    padding: 2px 6px;
+  }
+
+  .enamel-main-image-wrapper {
+    width: 1130px;
+    height: 344px;
+    background-color: #18181b;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .enamel-main-image-wrapper-desktop {
+    display: block;
+    width: 1130px;
+    height: 344px;
+  }
+
+  .enamel-main-image-wrapper-mobile {
+    display: none;
+    width: 100%;
+    height: 343px;
+    padding: 12px;
+  }
+
+  .enamel-main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .enamel-main-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #27272a;
+  }
+
+  .enamel-sub-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .enamel-combo-card {
+    background: #18181b;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .enamel-combo-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .enamel-combo-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #18181b;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .enamel-combo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .enamel-combo-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #27272a;
+  }
+
+  .enamel-combo-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .enamel-combo-name {
+    font-size: 20px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 24px;
+    color: white;
+    text-align: center;
+    margin: 0;
+  }
+
+  .enamel-combo-info-desktop {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .enamel-combo-info-desktop .enamel-combo-name {
+    font-size: 20px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    line-height: 24px;
+    color: white;
+    text-align: center;
+    margin: 0;
+  }
+
+  .enamel-combo-info-desktop .enamel-combo-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .enamel-combo-info-desktop .combo-price {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    color: #ff9d00;
+  }
+
+  .enamel-combo-info-desktop .combo-tag {
+    padding: 2px 8px;
+    background-color: #ff651d;
+    border-top-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    color: black;
+    font-size: 12px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 16px;
+  }
+
+  .enamel-combo-info-mobile {
+    display: none;
+  }
+
+  .enamel-combo-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .combo-price {
+    font-size: 16px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    color: #ff9d00;
+  }
+
+  .combo-tag {
+    padding: 2px 8px;
+    background-color: #ff651d;
+    border-top-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    color: black;
+    font-size: 12px;
+    font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    line-height: 16px;
+  }
+
+  /* ===== 手機響應式 ===== */
+  @media (max-width: 450px) {
+    .warmup-container {
+      padding: 0 8px;
+      gap: 12px;
+    }
+
+    .warmup-title {
+      font-size: 24px;
+      line-height: 28px;
+    }
+
+    .warmup-title-desktop {
+      display: none;
+    }
+
+    .warmup-title-mobile {
+      display: block;
+    }
+
+    .warmup-subtitle {
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .warmup-section {
+      padding: 12px 8px 8px;
+      gap: 12px;
+      border-radius: 12px;
+    }
+
+    .enamel-background-desktop {
+      display: none;
+    }
+
+    .enamel-background-mobile {
+      display: block;
+    }
+
+    .enamel-section-title {
+      font-size: 18px;
+      line-height: 22px;
+      margin-bottom: 0;
+    }
+
+    .enamel-main-card {
+      padding: 0;
+      height: auto;
+      gap: 0;
+      flex-direction: column;
+    }
+
+    .enamel-main-image-wrapper-desktop {
+      display: none;
+    }
+
+    .enamel-main-image-wrapper-mobile {
+      display: block;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 1 / 1;
+      padding: 12px;
+    }
+
+    .enamel-main-info-desktop {
+      display: none;
+    }
+
+    .enamel-main-info-mobile {
+      display: flex;
+      width: 100%;
+      padding: 0 16px 16px 16px;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .enamel-main-info-mobile .enamel-main-name {
+      font-size: 16px;
+      line-height: 22px;
+      order: 1;
+    }
+
+    .enamel-main-info-mobile .enamel-main-desc {
+      font-size: 12px;
+      line-height: 16px;
+      order: 2;
+    }
+
+    .enamel-main-price-tag-wrapper {
+      display: flex;
+      gap: 5px;
+      width: fit-content;
+      align-items: center;
+      order: 3;
+    }
+
+    .enamel-main-info-mobile .enamel-main-price {
+      font-size: 16px;
+      line-height: 20px;
+      color: #ff9d00;
+      font-family: 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 600;
+    }
+
+    .enamel-main-info-mobile .enamel-main-tag {
+      font-size: 10px;
+      line-height: 14px;
+      padding: 2px 6px;
+      background-color: #ff651d;
+      color: black;
+      display: block;
+    }
+
+    .enamel-sub-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .enamel-combo-card {
+      padding: 0;
+      gap: 12px;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+    }
+
+    .enamel-combo-info-desktop {
+      display: none;
+    }
+
+    .enamel-combo-info-mobile {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
+      width: 100%;
+      padding-left: 8px;
+    }
+
+    .enamel-combo-name-price-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .enamel-combo-info-mobile .enamel-combo-name {
+      font-size: 14px;
+      line-height: 18px;
+      color: white;
+      text-align: left;
+      margin: 0;
+      flex: 1;
+      font-weight: 600;
+    }
+
+    .enamel-combo-info-mobile .combo-price {
+      font-size: 14px;
+      line-height: 18px;
+      color: #ff9d00;
+      font-weight: 500;
+    }
+
+    .enamel-combo-info-mobile .combo-tag {
+      font-size: 10px;
+      line-height: 14px;
+      padding: 2px 6px;
+      background-color: #ff651d;
+      color: black;
+      margin-bottom: 8px;
+    }
+
+    .enamel-combo-image-wrapper {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // 更新手機端標題顯示（將 · 轉換為 <br>）
+    function updateMobileTitleDisplay() {
+      const isMobile = window.innerWidth <= 450;
+      const titleMobileElement = document.getElementById('warmupTitleMobile');
+
+      if (titleMobileElement) {
+        const originalText =
+          titleMobileElement.getAttribute('data-original-text') || '{{ section.settings.warmup_title_mobile }}';
+
+        // 儲存原始文字（第一次執行時）
+        if (!titleMobileElement.getAttribute('data-original-text')) {
+          titleMobileElement.setAttribute('data-original-text', originalText);
+        }
+
+        if (isMobile) {
+          // 手機端：轉換 · 為 <br>
+          const parts = originalText.split('·');
+          titleMobileElement.innerHTML = parts.join('<br>');
+        } else {
+          // 電腦端：不轉換，直接顯示
+          titleMobileElement.textContent = originalText;
+        }
+      }
+    }
+
+    // 視窗大小改變時重新計算和更新文字
+    window.addEventListener('resize', function () {
+      updateMobileTitleDisplay();
+    });
+
+    // 初始化
+    updateMobileTitleDisplay();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "活動暖場搶先開跑",
+  "settings": [
+    {
+      "type": "text",
+      "id": "warmup_title",
+      "label": "暖场标题 - 電腦端",
+      "default": "雙11活動暖場搶先開跑 • 買越多送越多"
+    },
+    {
+      "type": "text",
+      "id": "warmup_title_mobile",
+      "label": "暖场标题 - 手機端",
+      "info": "使用 · 符號分隔（手機端會自動換行，電腦端不轉換）",
+      "default": "雙11活動暖場搶先開跑·買越多送越多"
+    },
+    {
+      "type": "text",
+      "id": "warmup_subtitle",
+      "label": "暖场副标题",
+      "default": "活動期間 (11/8 - 11/11)"
+    },
+    {
+      "type": "header",
+      "content": "🏆 第一部分：原子琺瑯晶鍍膜活動"
+    },
+    {
+      "type": "text",
+      "id": "enamel_section_title",
+      "label": "原子琺瑯晶鍍膜活動标题",
+      "default": "原子琺瑯晶鍍膜活動"
+    },
+    {
+      "type": "text",
+      "id": "enamel_main_name",
+      "label": "主要组合名称",
+      "default": "買5送4 超值組合"
+    },
+    {
+      "type": "text",
+      "id": "enamel_main_price",
+      "label": "主要组合价格",
+      "default": "NT$1,998"
+    },
+    {
+      "type": "text",
+      "id": "enamel_main_desc",
+      "label": "主要组合描述",
+      "default": "相當於每瓶只要 NT$222！史上最低價！"
+    },
+    {
+      "type": "text",
+      "id": "enamel_main_tag",
+      "label": "主要组合标签",
+      "default": "買罐裝送補充包"
+    },
+    {
+      "type": "image_picker",
+      "id": "enamel_main_image",
+      "label": "主要组合图片 - 電腦端 "
+    },
+    {
+      "type": "image_picker",
+      "id": "enamel_main_image_mobile",
+      "label": "主要组合图片 - 手機端"
+    },
+    {
+      "type": "url",
+      "id": "enamel_main_link",
+      "label": "主要商品鏈接"
+    },
+    {
+      "type": "image_picker",
+      "id": "enamel_background_image_desktop",
+      "label": "原子琺瑯晶鍍膜 背景圖 - 電腦端"
+    },
+    {
+      "type": "image_picker",
+      "id": "enamel_background_image_mobile",
+      "label": "原子琺瑯晶鍍膜 背景圖 - 手機端"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "info": "用於導航欄，不能有空格或特殊字符",
+      "default": "warmup-activity",
+      "placeholder": "例如: section-hero"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "enamel_combo",
+      "name": "原子琺瑯晶組合",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "combo_image",
+          "label": "组合图片"
+        },
+        {
+          "type": "text",
+          "id": "combo_name",
+          "label": "组合名称",
+          "default": "買1送1"
+        },
+        {
+          "type": "text",
+          "id": "combo_price",
+          "label": "组合价格",
+          "default": "NT$998"
+        },
+        {
+          "type": "text",
+          "id": "combo_tag",
+          "label": "组合标签",
+          "default": "全罐裝"
+        },
+        {
+          "type": "url",
+          "id": "combo_link",
+          "label": "商品鏈接"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "活動模板 - 活動暖場搶先開跑"
+    }
+  ]
+}
+{% endschema %}

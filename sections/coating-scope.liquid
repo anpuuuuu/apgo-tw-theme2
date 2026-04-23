@@ -1,0 +1,879 @@
+{% comment %}
+  APGO原子系列鍍膜適用範圍 Section
+  CSS/JS 完全保留，只將內容改為可配置
+{% endcomment %}
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --apgo-scope-primary: {{ section.settings.primary_color | default: '#f08418' }};
+    --apgo-scope-text-white: {{ section.settings.text_color | default: '#ffffff' }};
+    --apgo-scope-text-gray: #cccccc;
+    --apgo-scope-text-light: #b0b0b0;
+    --apgo-scope-dark-bg: {{ section.settings.background_color | default: '#000000' }};
+}
+
+body {
+    font-family: 'Microsoft JhengHei', 'PingFang TC', 'Hiragino Sans GB', 'Arial', sans-serif;
+    background: var(--apgo-scope-dark-bg);
+    color: var(--apgo-scope-text-white);
+    line-height: 1.6;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.apgo-scope-section {
+    background: #000000;
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.apgo-scope-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -20%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(240, 132, 24, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.apgo-scope-container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.apgo-scope-header {
+    margin-bottom: 25px;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: apgoScopeFadeIn 0.5s ease forwards;
+}
+
+@keyframes apgoScopeFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.apgo-scope-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--apgo-scope-primary);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+}
+
+.apgo-scope-subtitle {
+    font-size: 0.9rem;
+    color: var(--apgo-scope-text-gray);
+    max-width: 700px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.apgo-scope-scroll-container {
+    position: relative;
+    margin: 0 -20px;
+    padding: 0 20px;
+    overflow: hidden;
+}
+
+.apgo-scope-categories-row {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0 20px 0;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #f08418 rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: apgoScopeFadeIn 0.5s ease 0.2s forwards;
+}
+
+.apgo-scope-categories-row::-webkit-scrollbar {
+    height: 6px;
+}
+
+.apgo-scope-categories-row::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.apgo-scope-categories-row::-webkit-scrollbar-thumb {
+    background: #f08418;
+    border-radius: 3px;
+}
+
+.apgo-scope-scroll-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, #000000 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.apgo-scope-category-card {
+    flex: 0 0 auto;
+    width: 320px;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.apgo-scope-category-card:hover {
+    transform: translateY(-5px);
+    background: rgba(240, 132, 24, 0.06);
+    border-color: rgba(240, 132, 24, 0.2);
+    box-shadow: 0 10px 30px rgba(240, 132, 24, 0.15);
+}
+
+.apgo-scope-card-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--apgo-scope-primary);
+    color: white;
+    font-size: 0.7rem;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.apgo-scope-image-area {
+    width: 100%;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    color: var(--apgo-scope-text-gray);
+    overflow: hidden;
+}
+
+.apgo-scope-image-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.apgo-scope-category-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--apgo-scope-primary);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+}
+
+.apgo-scope-category-desc {
+    font-size: 0.875rem;
+    color: var(--apgo-scope-text-light);
+    line-height: 1.5;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.apgo-scope-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 17;
+}
+
+.apgo-scope-tag {
+    background: rgba(240, 132, 24, 0.08);
+    border: 1px solid rgba(240, 132, 24, 0.15);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    color: var(--apgo-scope-text-white);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.apgo-scope-category-card:hover .apgo-scope-tag {
+    background: rgba(240, 132, 24, 0.12);
+    border-color: rgba(240, 132, 24, 0.3);
+}
+
+.apgo-scope-expand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--apgo-scope-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.apgo-scope-category-card:hover .apgo-scope-expand {
+    border-top-color: rgba(240, 132, 24, 0.2);
+}
+
+.apgo-scope-expand-arrow {
+    transition: transform 0.3s ease;
+}
+
+.apgo-scope-category-card:hover .apgo-scope-expand-arrow {
+    transform: translateX(3px);
+}
+
+.apgo-scope-footer {
+    margin-top: 25px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: apgoScopeFadeIn 0.5s ease 0.4s forwards;
+}
+
+.apgo-scope-guarantee {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--apgo-scope-text-gray);
+    padding: 12px 24px;
+    background: rgba(240, 132, 24, 0.05);
+    border-radius: 20px;
+    border: 1px solid rgba(240, 132, 24, 0.1);
+    line-height: 1.5;
+}
+
+.apgo-scope-check {
+    color: var(--apgo-scope-primary);
+    font-weight: bold;
+}
+
+.apgo-scope-safety-note {
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 12px;
+    line-height: 1.5;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.apgo-scope-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.apgo-scope-modal.apgo-scope-show {
+    display: flex;
+    opacity: 1;
+}
+
+.apgo-scope-modal-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 20px;
+    padding: 40px 30px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 1px solid rgba(240, 132, 24, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.apgo-scope-modal.apgo-scope-show .apgo-scope-modal-content {
+    transform: scale(1);
+}
+
+.apgo-scope-close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--apgo-scope-text-gray);
+    font-size: 1.5rem;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.apgo-scope-close-modal:hover {
+    background: var(--apgo-scope-primary);
+    color: white;
+    transform: rotate(90deg);
+}
+
+.apgo-scope-modal-header {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.apgo-scope-modal-title {
+    font-size: 1.375rem;
+    color: var(--apgo-scope-primary);
+    margin-bottom: 10px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.apgo-scope-modal-subtitle {
+    font-size: 0.95rem;
+    color: var(--apgo-scope-text-gray);
+    line-height: 1.5;
+}
+
+.apgo-scope-modal-list {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.apgo-scope-modal-item {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--apgo-scope-text-white);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.5;
+}
+
+.apgo-scope-modal-item:last-child {
+    border-bottom: none;
+}
+
+.apgo-scope-modal-item::before {
+    content: '✓';
+    color: var(--apgo-scope-primary);
+    font-weight: bold;
+}
+
+.apgo-scope-modal-note {
+    background: rgba(240, 132, 24, 0.1);
+    border: 1px solid rgba(240, 132, 24, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 0.875rem;
+    color: var(--apgo-scope-text-gray);
+    line-height: 1.6;
+}
+
+.apgo-scope-modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.apgo-scope-modal-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.apgo-scope-modal-content::-webkit-scrollbar-thumb {
+    background: var(--apgo-scope-primary);
+    border-radius: 3px;
+}
+
+@media (max-width: 1024px) {
+    .apgo-scope-category-card {
+        width: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .apgo-scope-section {
+        padding: 30px 0;
+    }
+
+    .apgo-scope-title {
+        font-size: 1.6rem;
+    }
+
+    .apgo-scope-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .apgo-scope-category-card {
+         position: relative;
+        width: 260px;
+        padding: 18px;
+    }
+
+    .apgo-scope-image-area {
+        height: 70px;
+        margin-bottom: 12px;
+    }
+
+    .apgo-scope-category-title {
+        font-size: 1.3rem;
+    }
+
+    .apgo-scope-category-desc {
+        font-size: 0.8rem;
+    }
+
+    .apgo-scope-tag {
+        font-size: 0.9rem;
+        padding: 3px 8px;
+        position: relative;
+        z-index: 17;
+    }
+
+    .apgo-scope-guarantee {
+        font-size: 0.85rem;
+        padding: 10px 18px;
+    }
+
+    .apgo-scope-safety-note {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .apgo-scope-container {
+        padding: 0 15px;
+    }
+
+    .apgo-scope-category-card {
+        width: 240px;
+    }
+
+    .apgo-scope-title {
+        font-size: 1.4rem;
+    }
+}
+</style>
+
+<!-- 適用範圍區塊 -->
+<section class="apgo-scope-section" id="coating-scope">
+    <div class="apgo-scope-container">
+        <!-- 標題區域 -->
+        <header class="apgo-scope-header">
+            <h2 class="apgo-scope-title">{{ section.settings.title }}</h2>
+            <p class="apgo-scope-subtitle">{{ section.settings.subtitle }}</p>
+        </header>
+
+        <!-- 橫向滾動容器 -->
+        <div class="apgo-scope-scroll-container">
+            <div class="apgo-scope-categories-row">
+                {% for block in section.blocks %}
+                <article class="apgo-scope-category-card" onclick="handleScope_{{ section.id | replace: '-', '_' }}('{{ block.id }}')" {{ block.shopify_attributes }}>
+                    {% if block.settings.badge != blank %}
+                    <span class="apgo-scope-card-badge">{{ block.settings.badge }}</span>
+                    {% endif %}
+                    
+                    <div class="apgo-scope-image-area">
+                        {% if block.settings.image != blank %}
+                            <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}示意圖" />
+                        {% elsif block.settings.image_url != blank %}
+                            <img src="{{ block.settings.image_url }}" alt="{{ block.settings.title }}示意圖" />
+                        {% endif %}
+                    </div>
+                    
+                    <h3 class="apgo-scope-category-title">{{ block.settings.title }}</h3>
+                    <p class="apgo-scope-category-desc">{{ block.settings.description }}</p>
+                    
+                    <div class="apgo-scope-tags">
+                        {% assign tags = block.settings.tags | split: ',' %}
+                        {% for tag in tags %}
+                            <span class="apgo-scope-tag">{{ tag | strip }}</span>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="apgo-scope-expand">
+                        <span>{{ block.settings.expand_text }}</span>
+                        <span class="apgo-scope-expand-arrow">→</span>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- 底部說明 -->
+        <footer class="apgo-scope-footer">
+            <p class="apgo-scope-safety-note">
+                {{ section.settings.safety_note }}
+            </p>
+        </footer>
+    </div>
+</section>
+
+<!-- 材質詳情彈窗 -->
+<div class="apgo-scope-modal" id="apgoScopeModal-{{ section.id }}" role="dialog" aria-labelledby="modalTitle-{{ section.id }}" aria-describedby="modalSubtitle-{{ section.id }}">
+    <div class="apgo-scope-modal-content">
+        <button class="apgo-scope-close-modal" onclick="closeScopeModal_{{ section.id | replace: '-', '_' }}()" aria-label="關閉彈窗">×</button>
+        
+        <header class="apgo-scope-modal-header">
+            <h4 class="apgo-scope-modal-title" id="modalTitle-{{ section.id }}">{{ 'placeholders.blog_post_title' | t}}</h4>
+            <p class="apgo-scope-modal-subtitle" id="modalSubtitle-{{ section.id }}">副標題</p>
+        </header>
+        
+        <div class="apgo-scope-modal-list" id="modalList-{{ section.id }}">
+            <!-- 動態內容將在這裡填入 -->
+        </div>
+        
+        <div class="apgo-scope-modal-note" id="modalNote-{{ section.id }}" style="display: none;">
+            <!-- 注意事項 -->
+        </div>
+    </div>
+</div>
+
+<script>
+    // 儲存所有類別的詳細資料
+    const scopeDetails_{{ section.id | replace: '-', '_' }} = {
+        {% for block in section.blocks %}
+        '{{ block.id }}': {
+            title: {{ block.settings.modal_title | json }},
+            subtitle: {{ block.settings.modal_subtitle | json }},
+            items: {{ block.settings.modal_items | split: ',' | json }},
+            note: {{ block.settings.modal_note | json }}
+        }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+    };
+
+    // 處理類別點擊
+    function handleScope_{{ section.id | replace: '-', '_' }}(blockId) {
+        const details = scopeDetails_{{ section.id | replace: '-', '_' }}[blockId];
+        if (details) {
+            showScopeModal_{{ section.id | replace: '-', '_' }}(details);
+        }
+    }
+
+    // 顯示彈窗
+    function showScopeModal_{{ section.id | replace: '-', '_' }}(details) {
+        const modal = document.getElementById('apgoScopeModal-{{ section.id }}');
+        const modalTitle = document.getElementById('modalTitle-{{ section.id }}');
+        const modalSubtitle = document.getElementById('modalSubtitle-{{ section.id }}');
+        const modalList = document.getElementById('modalList-{{ section.id }}');
+        const modalNote = document.getElementById('modalNote-{{ section.id }}');
+        
+        // 設置標題
+        modalTitle.textContent = details.title;
+        modalSubtitle.textContent = details.subtitle;
+        
+        // 生成列表
+        modalList.innerHTML = details.items.map(item => 
+            `<div class="apgo-scope-modal-item">${item.trim()}</div>`
+        ).join('');
+        
+        // 設置注意事項
+        if (details.note) {
+            modalNote.textContent = details.note;
+            modalNote.style.display = 'block';
+        } else {
+            modalNote.style.display = 'none';
+        }
+        
+        // 顯示彈窗
+        modal.classList.add('apgo-scope-show');
+        document.body.style.overflow = 'hidden';
+        
+        // 聚焦到彈窗以提升無障礙性
+        modal.focus();
+    }
+
+    // 關閉彈窗
+    function closeScopeModal_{{ section.id | replace: '-', '_' }}() {
+        const modal = document.getElementById('apgoScopeModal-{{ section.id }}');
+        modal.classList.remove('apgo-scope-show');
+        document.body.style.overflow = 'auto';
+    }
+
+    // 點擊彈窗外部關閉
+    document.getElementById('apgoScopeModal-{{ section.id }}').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeScopeModal_{{ section.id | replace: '-', '_' }}();
+        }
+    });
+
+    // ESC 鍵關閉彈窗
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeScopeModal_{{ section.id | replace: '-', '_' }}();
+        }
+    });
+
+    // 監聽橫向滾動
+    const scrollContainer_{{ section.id | replace: '-', '_' }} = document.querySelector('#shopify-section-{{ section.id }} .apgo-scope-categories-row');
+    if (scrollContainer_{{ section.id | replace: '-', '_' }}) {
+        scrollContainer_{{ section.id | replace: '-', '_' }}.addEventListener('scroll', function() {
+            const scrollHint = document.querySelector('#shopify-section-{{ section.id }} .apgo-scope-scroll-hint');
+            if (scrollHint) {
+                // 滾動後隱藏提示
+                if (this.scrollLeft > 50) {
+                    scrollHint.style.opacity = '0';
+                } else {
+                    scrollHint.style.opacity = '0.7';
+                }
+            }
+        });
+    }
+
+    // 觸控優化
+    document.querySelectorAll('#shopify-section-{{ section.id }} .apgo-scope-category-card').forEach(card => {
+        card.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.98)';
+        });
+        
+        card.addEventListener('touchend', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+</script>
+
+{% schema %}
+{
+  "name": "鍍膜適用範圍",
+  "settings": [
+    {
+      "type": "header",
+      "content": "基本設置"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "主標題",
+      "default": "原子系列鍍膜適用範圍"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "副標題",
+      "default": "不分顏色、不分材質的全方位防護，適用汽車機車改色膜等各種表面"
+    },
+    {
+      "type": "textarea",
+      "id": "safety_note",
+      "label": "安全提醒",
+      "default": "安全提醒：由於產品使表面滑順的特性，雖然所有材質皆可鍍膜，但不建議用在輪胎、腳踏板、坐墊、地板等安全相關物件，以免導致危險發生"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "最大寬度",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "default": 1200,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "上方間距",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "下方間距",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "顏色設置"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "主要顏色",
+      "default": "#f08418"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "文字顏色",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "背景顏色",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "scope_category",
+      "name": "適用範圍類別",
+      "settings": [
+        {
+          "type": "header",
+          "content": "卡片設置"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "類別標題"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "類別描述"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "標籤文字",
+          "info": "如：熱門、推薦、專業"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "類別圖片"
+        },
+        {
+          "type": "text",
+          "id": "image_url",
+          "label": "圖片網址（備選）"
+        },
+        {
+          "type": "textarea",
+          "id": "tags",
+          "label": "標籤列表",
+          "info": "用逗號分隔，如：車身鈑金,汽車玻璃,塑膠件"
+        },
+        {
+          "type": "text",
+          "id": "expand_text",
+          "label": "展開按鈕文字",
+          "default": "查看所有適用材質"
+        },
+        {
+          "type": "header",
+          "content": "彈窗內容"
+        },
+        {
+          "type": "text",
+          "id": "modal_title",
+          "label": "彈窗標題"
+        },
+        {
+          "type": "text",
+          "id": "modal_subtitle",
+          "label": "彈窗副標題"
+        },
+        {
+          "type": "textarea",
+          "id": "modal_items",
+          "label": "詳細項目列表",
+          "info": "用逗號分隔每個項目"
+        },
+        {
+          "type": "textarea",
+          "id": "modal_note",
+          "label": "注意事項（選填）"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO 鍍膜適用範圍",
+      "blocks": [
+        {
+          "type": "scope_category",
+          "settings": {
+            "title": "汽車材質鍍膜",
+            "description": "適用各種汽車表面材質，提供全面車漆保護",
+            "badge": "熱門",
+            "tags": "車身鈑金,汽車玻璃,塑膠件,鍍鉻件,鋁圈",
+            "expand_text": "查看所有適用材質",
+            "modal_title": "汽車完整適用材質",
+            "modal_subtitle": "適用於各種汽車表面材質",
+            "modal_items": "所有車身鈑金,汽車玻璃（包括前檔風玻璃）,後照鏡,塑膠件,鍍鉻件,鋁圈（包括陽極處理）,鋼琴烤漆,防刮材質"
+          }
+        },
+        {
+          "type": "scope_category",
+          "settings": {
+            "title": "機車材質鍍膜",
+            "description": "機車各部位材質專用，提供完整防護",
+            "badge": "推薦",
+            "tags": "車殼,儀表板,後照鏡,鋁圈,土除",
+            "expand_text": "查看所有適用材質",
+            "modal_title": "機車完整適用材質",
+            "modal_subtitle": "適用於各種機車表面材質",
+            "modal_items": "所有車殼,儀表板,後照鏡,防刮材質,鋁圈,前後土除,擋泥板,排氣管防燙蓋"
+          }
+        },
+        {
+          "type": "scope_category",
+          "settings": {
+            "title": "改色包膜鍍膜",
+            "description": "各式膜料表面專用，維持膜料原有特性",
+            "badge": "專業",
+            "tags": "犀牛皮,改色膜,車身膜,保護膜,包膜",
+            "expand_text": "查看所有膜料類型",
+            "modal_title": "改色包膜完整適用類型",
+            "modal_subtitle": "適用於各式膜料表面",
+            "modal_items": "犀牛皮（PPF保護膜）,改色膜,車身彩貼膜,碳纖維膜,電鍍膜,消光膜,亮光膜,緞面膜,拉絲膜,變色龍膜,隱形車衣,局部保護膜",
+            "modal_note": "注意：施工前確保膜料已完全貼合"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

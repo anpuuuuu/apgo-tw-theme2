@@ -1,0 +1,1822 @@
+{% comment %}
+  APGO Footer Section
+  完整可編輯的 Footer 區塊，包含所有參數和開關
+  (已移除返回頂部按鈕功能)
+{% endcomment %}
+
+<footer class="apgo-footer">
+  <div class="apgo-footer-main">
+    <div class="apgo-footer-container">
+      <div class="apgo-footer-content">
+        
+        {% if section.settings.show_brand_section %}
+        <div class="apgo-footer-brand">
+          {% if section.settings.logo_image %}
+            <a href="{{ section.settings.logo_link | default: '/' }}" class="apgo-footer-logo">
+              <img src="{{ section.settings.logo_image | image_url: width: 200 }}" 
+                   alt="{{ section.settings.logo_alt_text | default: shop.name }}"
+                   width="200"
+                   height="{{ section.settings.logo_height | default: 50 }}">
+            </a>
+          {% endif %}
+          
+          {% if section.settings.show_tagline %}
+            <p class="apgo-brand-tagline">{{ section.settings.brand_tagline }}</p>
+          {% endif %}
+          
+          {% if section.settings.show_company_info %}
+            <p style="font-size: 0.85rem; color: #999999; margin-top: 10px;">
+              {{ section.settings.company_name }}<br>
+              {% if section.settings.show_tax_id %}
+                {{ 'footer.tax_id_label' | t }}：{{ section.settings.tax_id }}
+              {% endif %}
+            </p>
+          {% endif %}
+          
+          {% if section.settings.show_social_media %}
+          <div class="apgo-social-section">
+            <p class="apgo-social-title">{{ section.settings.social_title }}</p>
+            <div class="apgo-social-links">
+              {% if section.settings.show_facebook and section.settings.facebook_url != blank %}
+                <a href="{{ section.settings.facebook_url }}" class="apgo-social-link" title="Facebook">
+                  <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                </a>
+              {% endif %}
+              
+              {% if section.settings.show_instagram and section.settings.instagram_url != blank %}
+                <a href="{{ section.settings.instagram_url }}" class="apgo-social-link" title="Instagram">
+                  <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 110-8 4 4 0 010 8zm4.965-10.405a1.44 1.44 0 112.881.001 1.44 1.44 0 01-2.881-.001z"/>
+                  </svg>
+                </a>
+              {% endif %}
+              
+              {% if section.settings.show_youtube and section.settings.youtube_url != blank %}
+                <a href="{{ section.settings.youtube_url }}" class="apgo-social-link" title="YouTube">
+                  <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                </a>
+              {% endif %}
+              
+              {% if section.settings.show_tiktok and section.settings.tiktok_url != blank %}
+                <a href="{{ section.settings.tiktok_url }}" class="apgo-social-link" title="TikTok">
+                  <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                  </svg>
+                </a>
+              {% endif %}
+              
+              {% if section.settings.show_line and section.settings.line_url != blank %}
+                <a href="{{ section.settings.line_url }}" class="apgo-social-link" title="LINE">
+                  <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.911-4.069 9.428-6.967 1.739-1.907 2.572-3.843 2.572-5.992zm-18.988-2.595c.129 0 .234.105.234.234v4.153h2.287c.129 0 .233.105.233.234v.842c0 .129-.104.234-.233.234h-3.363c-.063 0-.119-.025-.161-.065l-.001-.001-.002-.002-.001-.001-.003-.003c-.04-.042-.065-.099-.065-.161v-5.231c0-.129.105-.234.234-.234h.841zm14.992 0c.129 0 .234.105.234.234v.842c0 .129-.105.234-.234.234h-2.287v.883h2.287c.129 0 .234.105.234.234v.842c0 .129-.105.234-.234.234h-2.287v.883h2.287c.129 0 .234.105.234.234v.842c0 .129-.105.234-.234.234h-3.363c-.063 0-.12-.025-.162-.065l-.003-.004-.003-.003c-.04-.042-.065-.099-.065-.161v-5.231c0-.063.025-.119.065-.161l.004-.004.003-.003c.042-.04.099-.065.162-.065h3.363zm-10.443.001c.129 0 .234.105.234.234v5.231c0 .129-.105.234-.234.234h-.842c-.129 0-.234-.105-.234-.234v-5.231c0-.129.105-.234.234-.234h.842zm2.127 0h.008l.012.001.013.001.013.001.013.002.013.003.012.003.007.002.005.001.006.002.013.004.012.004.012.005.012.005.011.005.011.006.011.006.011.007.005.003.006.003.01.007.01.007.01.008.009.008.008.007.008.008.008.009.008.008.008.009.007.009.007.01.007.009.006.01.006.01.005.011.005.01.005.011.004.011.004.011.003.012.003.011.003.013.002.012.002.007v.005l.001.013.001.012v.014l.001.041v3.539l2.146-3.433.001-.001.003-.006.004-.005.004-.006.005-.006.005-.005.005-.006.006-.005.006-.005.006-.005.007-.005.006-.005.007-.004.007-.004.008-.004.007-.004.008-.003.008-.004.008-.003.008-.002.009-.003.008-.002.009-.002.009-.001.009-.002h.009l.009-.001h.01l.009-.001h.053c.129 0 .234.105.234.234v5.231c0 .129-.105.234-.234.234h-.841c-.129 0-.234-.105-.234-.234v-3.539l-2.146 3.433-.001.002-.001.001-.003.005-.003.005-.003.004-.004.005-.004.005-.004.004-.004.005-.005.004-.005.004-.005.004-.005.004-.006.004-.005.003-.006.004-.006.003-.006.003-.007.003-.006.003-.007.002-.007.003-.007.002-.007.002-.008.002-.007.001-.008.002-.008.001-.008.001-.008.001-.009.001h-.008l-.009.001h-.057c-.129 0-.234-.105-.234-.234v-5.231c0-.129.105-.234.234-.234h.841z"/>
+                  </svg>
+                </a>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% if section.settings.show_products_section %}
+        <div class="apgo-footer-section">
+          <h3>{{ section.settings.products_title }}</h3>
+          <ul class="apgo-footer-links">
+            {% for block in section.blocks %}
+              {% if block.type == 'product_link' %}
+                <li>
+                  <a href="{{ block.settings.link_url }}">
+                    {{ block.settings.link_text }}
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        {% if section.settings.show_service_section %}
+        <div class="apgo-footer-section">
+          <h3>{{ section.settings.service_title }}</h3>
+          <ul class="apgo-footer-links">
+            {% for block in section.blocks %}
+              {% if block.type == 'service_link' %}
+                <li>
+                  <a href="{{ block.settings.link_url }}">
+                    {{ block.settings.link_text }}
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+                {% if section.settings.show_about_section %}
+        <div class="apgo-footer-section">
+          <h3>{{ section.settings.about_title }}</h3>
+          <ul class="apgo-footer-links">
+            {% for block in section.blocks %}
+              {% if block.type == 'about_link' %}
+                <li>
+                  <a href="{{ block.settings.link_url }}">
+                    {{ block.settings.link_text }}
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        {% if section.settings.show_contact_section %}
+        <div class="apgo-footer-section">
+          <h3>{{ section.settings.contact_title }}</h3>
+          <div class="apgo-contact-info">
+            {% if section.settings.show_phone %}
+            <div class="apgo-contact-item">
+              <span class="apgo-contact-icon">☎</span>
+              <div class="apgo-contact-text">
+                <strong>{{ section.settings.phone_label }}</strong>
+                {{ section.settings.phone_number }}
+              </div>
+            </div>
+            {% endif %}
+            
+            {% if section.settings.show_email %}
+            <div class="apgo-contact-item">
+              <span class="apgo-contact-icon">✉</span>
+              <div class="apgo-contact-text">
+                <strong>{{ section.settings.email_label }}</strong>
+                {{ section.settings.email_address }}
+              </div>
+            </div>
+            {% endif %}
+            
+            {% if section.settings.show_hours %}
+            <div class="apgo-contact-item">
+              <span class="apgo-contact-icon">⏰</span>
+              <div class="apgo-contact-text">
+                <strong>{{ section.settings.hours_label }}</strong>
+                {{ section.settings.business_hours }}
+              </div>
+            </div>
+            {% endif %}
+            
+            {% if section.settings.show_address %}
+            <div class="apgo-contact-item">
+              <span class="apgo-contact-icon">📍</span>
+              <div class="apgo-contact-text">
+                <strong>{{ section.settings.address_label }}</strong>
+                {{ section.settings.company_address }}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="apgo-footer-bottom">
+    <div class="apgo-footer-container">
+      <div class="apgo-footer-bottom-content">
+        {% if section.settings.show_copyright %}
+        <div class="apgo-copyright">
+          © {{ 'now' | date: '%Y' }} {{ section.settings.copyright_text }}
+        </div>
+        {% endif %}
+        
+        {% if section.settings.show_legal_links %}
+        <div class="apgo-footer-legal-links">
+          {% if section.settings.privacy_policy_url != blank %}
+            <a href="{{ section.settings.privacy_policy_url }}">{{ section.settings.privacy_policy_text }}</a>
+          {% endif %}
+          
+          {% if section.settings.terms_url != blank %}
+            {% if section.settings.privacy_policy_url != blank %}<span>|</span>{% endif %}
+            <a href="{{ section.settings.terms_url }}">{{ section.settings.terms_text }}</a>
+          {% endif %}
+          
+          {% if section.settings.return_policy_url != blank %}
+            {% if section.settings.privacy_policy_url != blank or section.settings.terms_url != blank %}<span>|</span>{% endif %}
+            <a href="{{ section.settings.return_policy_url }}">{{ section.settings.return_policy_text }}</a>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% if section.settings.show_payment_methods %}
+        <div class="apgo-payment-methods">
+          {% if section.settings.show_visa %}
+            <div class="apgo-payment-icon">
+              <img src="{{ section.settings.visa_image | image_url: width: section.settings.payment_img_width, height: section.settings.payment_img_height }}" 
+                   alt="{{ 'footer.payment_visa' | t }}" 
+                   width="{{ section.settings.payment_img_width }}" 
+                   height="{{ section.settings.payment_img_height }}">
+            </div>
+          {% endif %}
+          
+          {% if section.settings.show_mastercard %}
+            <div class="apgo-payment-icon">
+              <img src="{{ section.settings.mastercard_image | image_url: width: section.settings.payment_img_width, height: section.settings.payment_img_height }}" 
+                   alt="{{ 'footer.payment_mastercard' | t }}" 
+                   width="{{ section.settings.payment_img_width }}" 
+                   height="{{ section.settings.payment_img_height }}">
+            </div>
+          {% endif %}
+          
+          {% if section.settings.show_jcb %}
+            <div class="apgo-payment-icon">
+              <img src="{{ section.settings.jcb_image | image_url: width: section.settings.payment_img_width, height: section.settings.payment_img_height }}" 
+                   alt="{{ 'footer.payment_jcb' | t }}" 
+                   width="{{ section.settings.payment_img_width }}" 
+                   height="{{ section.settings.payment_img_height }}">
+            </div>
+          {% endif %}
+          
+          {% if section.settings.show_amex %}
+            <div class="apgo-payment-icon">
+              <img src="{{ section.settings.amex_image | image_url: width: section.settings.payment_img_width, height: section.settings.payment_img_height }}" 
+                   alt="{{ 'footer.payment_amex' | t }}" 
+                   width="{{ section.settings.payment_img_width }}" 
+                   height="{{ section.settings.payment_img_height }}">
+            </div>
+          {% endif %}
+          
+          {% if section.settings.show_unionpay %}
+            <div class="apgo-payment-icon">
+              <img src="{{ section.settings.unionpay_image | image_url: width: section.settings.payment_img_width, height: section.settings.payment_img_height }}" 
+                   alt="{{ 'footer.payment_unionpay' | t }}" 
+                   width="{{ section.settings.payment_img_width }}" 
+                   height="{{ section.settings.payment_img_height }}">
+            </div>
+          {% endif %}
+          
+          {% if section.settings.show_linepay %}
+            <div class="apgo-payment-icon">
+              <img src="{{ section.settings.linepay_image | image_url: width: section.settings.payment_img_width, height: section.settings.payment_img_height }}" 
+                   alt="{{ 'footer.payment_linepay' | t }}" 
+                   width="{{ section.settings.payment_img_width }}" 
+                   height="{{ section.settings.payment_img_height }}">
+            </div>
+          {% endif %}
+          
+          {% if section.settings.show_cod %}
+            <div class="apgo-payment-cod">{{ section.settings.cod_text }}</div>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</footer>
+  
+  <style>
+    /* Footer 專用樣式 - 所有樣式都加上 .apgo-footer 前綴 */
+    .apgo-footer * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  
+    .apgo-footer {
+      font-family: {{ section.settings.font_family }};
+      background: {{ section.settings.footer_bg_color }};
+      color: {{ section.settings.footer_text_color }};
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
+  
+    /* 頂部裝飾線 */
+    {% if section.settings.show_top_decoration %}
+    .apgo-footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: {{ section.settings.decoration_height }}px;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        {{ section.settings.accent_color }} 20%, 
+        {{ section.settings.accent_hover_color }} 50%, 
+        {{ section.settings.accent_color }} 80%, 
+        transparent 100%
+      );
+      animation: apgo-shimmer {{ section.settings.animation_speed }}s linear infinite;
+    }
+    {% endif %}
+  
+    @keyframes apgo-shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+  
+    /* 主要內容區 */
+    .apgo-footer-main {
+      padding: {{ section.settings.main_padding_top }}px 0 {{ section.settings.main_padding_bottom }}px;
+      background: {{ section.settings.main_bg_color }};
+      position: relative;
+    }
+  
+    /* 背景裝飾 */
+    {% if section.settings.show_bg_decoration %}
+    .apgo-footer-main::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -200px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, {{ section.settings.decoration_color }} 0%, transparent 70%);
+      animation: apgo-float {{ section.settings.float_animation_speed }}s ease-in-out infinite;
+    }
+    {% endif %}
+  
+    @keyframes apgo-float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-50px, -30px) rotate(180deg); }
+    }
+  
+    .apgo-footer-container {
+      max-width: {{ section.settings.container_max_width }}px;
+      margin: 0 auto;
+      padding: 0 {{ section.settings.container_padding }}px;
+      position: relative;
+      z-index: 1;
+    }
+  
+    .apgo-footer-content {
+      display: grid;
+      grid-template-columns: {{ section.settings.grid_columns }};
+      gap: {{ section.settings.grid_gap }}px;
+      margin-bottom: {{ section.settings.content_margin_bottom }}px;
+    }
+  
+    /* 品牌區域 */
+    .apgo-footer-brand {
+      padding-right: 20px;
+    }
+  
+    .apgo-footer-logo {
+      margin-bottom: 20px;
+      display: inline-block;
+      text-decoration: none;
+    }
+  
+    .apgo-footer-logo img {
+      height: {{ section.settings.logo_height }}px;
+      width: auto;
+      filter: brightness(1.1);
+      transition: all {{ section.settings.transition_speed }}s ease;
+    }
+  
+    .apgo-footer-logo:hover img {
+      filter: brightness(1.3);
+      transform: scale({{ section.settings.logo_hover_scale }});
+    }
+  
+    .apgo-brand-tagline {
+      font-size: {{ section.settings.tagline_font_size }}rem;
+      color: {{ section.settings.tagline_color }};
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+  
+    /* 社群媒體區域 */
+    .apgo-social-section {
+      margin-top: 30px;
+    }
+  
+    .apgo-social-title {
+      font-size: 0.9rem;
+      color: {{ section.settings.social_title_color }};
+      margin-bottom: 15px;
+    }
+  
+    .apgo-social-links {
+      display: flex;
+      gap: {{ section.settings.social_gap }}px;
+      flex-wrap: wrap;
+    }
+  
+    .apgo-social-link {
+      width: {{ section.settings.social_icon_size }}px;
+      height: {{ section.settings.social_icon_size }}px;
+      background: {{ section.settings.social_bg_color }};
+      border: 1px solid {{ section.settings.social_border_color }};
+      border-radius: {{ section.settings.social_border_radius }}px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: {{ section.settings.social_icon_color }};
+      transition: all {{ section.settings.transition_speed }}s ease;
+      position: relative;
+      overflow: hidden;
+    }
+  
+    .apgo-social-link::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: {{ section.settings.accent_color }};
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: all {{ section.settings.transition_speed }}s ease;
+      z-index: 0;
+    }
+  
+    .apgo-social-link:hover::before {
+      width: 100%;
+      height: 100%;
+    }
+  
+    .apgo-social-link:hover {
+      color: {{ section.settings.social_hover_color }};
+      border-color: {{ section.settings.accent_color }};
+      transform: translateY(-3px);
+    }
+  
+    .apgo-social-link svg {
+      width: 20px;
+      height: 20px;
+      position: relative;
+      z-index: 1;
+    }
+  
+    /* 連結區塊標題 */
+    .apgo-footer-section h3 {
+      font-size: {{ section.settings.section_title_size }}rem;
+      font-weight: bold;
+      color: {{ section.settings.section_title_color }};
+      margin-bottom: 25px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+  
+    {% if section.settings.show_title_underline %}
+    .apgo-footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background: {{ section.settings.accent_color }};
+      transition: width {{ section.settings.transition_speed }}s ease;
+    }
+  
+    .apgo-footer-section:hover h3::after {
+      width: 60px;
+    }
+    {% endif %}
+  
+    /* 連結列表 */
+    .apgo-footer-links {
+      list-style: none;
+    }
+  
+    .apgo-footer-links li {
+      margin-bottom: {{ section.settings.link_spacing }}px;
+    }
+  
+    .apgo-footer-links a {
+      color: {{ section.settings.link_color }};
+      text-decoration: none;
+      font-size: {{ section.settings.link_font_size }}rem;
+      transition: all {{ section.settings.transition_speed }}s ease;
+      position: relative;
+      display: inline-block;
+    }
+  
+    {% if section.settings.show_link_hover_underline %}
+    .apgo-footer-links a::before {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: {{ section.settings.accent_color }};
+      transition: width {{ section.settings.transition_speed }}s ease;
+    }
+  
+    .apgo-footer-links a:hover::before {
+      width: 100%;
+    }
+    {% endif %}
+  
+    .apgo-footer-links a:hover {
+      color: {{ section.settings.link_hover_color }};
+      transform: translateX({{ section.settings.link_hover_shift }}px);
+    }
+  
+    /* 聯絡資訊樣式 */
+    .apgo-contact-info {
+      color: {{ section.settings.contact_text_color }};
+      font-size: {{ section.settings.contact_font_size }}rem;
+      line-height: 1.8;
+    }
+  
+    .apgo-contact-item {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  
+    .apgo-contact-icon {
+      color: {{ section.settings.accent_color }};
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+  
+    .apgo-contact-text {
+      flex: 1;
+    }
+  
+    .apgo-contact-text strong {
+      color: {{ section.settings.contact_label_color }};
+      display: block;
+      margin-bottom: 2px;
+    }
+  
+    /* 底部版權區 */
+    .apgo-footer-bottom {
+      background: {{ section.settings.bottom_bg_color }};
+      padding: {{ section.settings.bottom_padding }}px 0;
+      border-top: 1px solid {{ section.settings.bottom_border_color }};
+    }
+  
+    .apgo-footer-bottom-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+  
+    .apgo-copyright {
+      color: {{ section.settings.copyright_color }};
+      font-size: {{ section.settings.copyright_font_size }}rem;
+    }
+  
+    .apgo-footer-legal-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+  
+    .apgo-footer-legal-links a {
+      color: {{ section.settings.legal_link_color }};
+      text-decoration: none;
+      font-size: {{ section.settings.legal_font_size }}rem;
+      transition: color {{ section.settings.transition_speed }}s ease;
+    }
+  
+    .apgo-footer-legal-links a:hover {
+      color: {{ section.settings.legal_link_hover_color }};
+    }
+  
+    .apgo-footer-legal-links span {
+      color: {{ section.settings.separator_color }};
+    }
+  
+    /* 付款方式 */
+    .apgo-payment-methods {
+      display: flex;
+      gap: {{ section.settings.payment_gap }}px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+  
+    .apgo-payment-icon {
+      height: {{ section.settings.payment_icon_height }}px;
+      padding: {{ section.settings.payment_icon_padding }}px;
+      background: {{ section.settings.payment_bg_color }};
+      border-radius: {{ section.settings.payment_border_radius }}px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all {{ section.settings.transition_speed }}s ease;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  
+    .apgo-payment-icon:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      background: {{ section.settings.payment_hover_bg }};
+    }
+  
+    .apgo-payment-icon img {
+      width: {{ section.settings.payment_img_width }}px;
+      height: {{ section.settings.payment_img_height }}px;
+      object-fit: contain;
+    }
+  
+    /* 貨到付款文字樣式 */
+    .apgo-payment-cod {
+      height: {{ section.settings.payment_icon_height }}px;
+      padding: 0 15px;
+      background: {{ section.settings.payment_bg_color }};
+      border-radius: {{ section.settings.payment_border_radius }}px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: {{ section.settings.cod_font_size }}rem;
+      font-weight: bold;
+      color: {{ section.settings.cod_text_color }};
+      transition: all {{ section.settings.transition_speed }}s ease;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  
+    .apgo-payment-cod:hover {
+      transform: translateY(-3px);
+      background: {{ section.settings.payment_hover_bg }};
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+  
+    /* 響應式設計 */
+    @media (max-width: 1024px) {
+      .apgo-footer-content {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+      }
+  
+      .apgo-footer-brand {
+        grid-column: span 3;
+        padding-right: 0;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 30px;
+        margin-bottom: 20px;
+      }
+  
+      .apgo-social-links {
+        justify-content: center;
+      }
+    }
+  
+    @media (max-width: 768px) {
+      .apgo-footer-main {
+        padding: 60px 0 30px;
+      }
+  
+      .apgo-footer-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+  
+      .apgo-footer-brand {
+        grid-column: span 1;
+      }
+  
+      .apgo-footer-section {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 30px;
+      }
+  
+      .apgo-footer-section:last-child {
+        border-bottom: none;
+      }
+  
+      .apgo-footer-bottom-content {
+        flex-direction: column;
+        text-align: center;
+      }
+  
+      .apgo-payment-methods {
+        order: -1;
+      }
+    }
+  
+    @media (max-width: 480px) {
+      .apgo-footer-section h3 {
+        font-size: 1.1rem;
+      }
+  
+      .apgo-social-link {
+        width: 36px;
+        height: 36px;
+      }
+  
+      .apgo-payment-icon {
+        height: 30px;
+        padding: 4px 8px;
+      }
+  
+      .apgo-payment-icon img {
+        height: 22px;
+      }
+  
+      .apgo-payment-cod {
+        height: 30px;
+        padding: 0 12px;
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+  
+  <script>
+    // 社群媒體連結點擊統計（可選）
+    {% if section.settings.enable_tracking %}
+    document.querySelectorAll('.apgo-social-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const platform = e.currentTarget.getAttribute('title');
+        console.log(`Clicked on ${platform}`);
+        // 這裡可以加入 Google Analytics 或其他追蹤代碼
+        {% if section.settings.ga_tracking_id != blank %}
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'social_click', {
+            'event_category': 'engagement',
+            'event_label': platform
+          });
+        }
+        {% endif %}
+      });
+    });
+    {% endif %}
+  </script>
+  
+  {% schema %}
+  {
+    "name": "APGO Footer",
+    "class": "apgo-footer-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "通用設定"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_family",
+        "label": "字體",
+        "default": "helvetica_n4"
+      },
+      {
+        "type": "range",
+        "id": "container_max_width",
+        "label": "容器最大寬度",
+        "min": 800,
+        "max": 1600,
+        "step": 50,
+        "unit": "px",
+        "default": 1200
+      },
+      {
+        "type": "range",
+        "id": "container_padding",
+        "label": "容器內邊距",
+        "min": 10,
+        "max": 50,
+        "step": 5,
+        "unit": "px",
+        "default": 20
+      },
+      {
+        "type": "text",
+        "id": "grid_columns",
+        "label": "網格列配置",
+        "default": "1.5fr 1fr 1fr 1fr 1fr",
+        "info": "使用 CSS Grid 格式，如：1.5fr 1fr 1fr 1fr 1fr"
+      },
+      {
+        "type": "range",
+        "id": "grid_gap",
+        "label": "網格間距",
+        "min": 20,
+        "max": 60,
+        "step": 5,
+        "unit": "px",
+        "default": 40
+      },
+      {
+        "type": "range",
+        "id": "content_margin_bottom",
+        "label": "內容底部邊距",
+        "min": 20,
+        "max": 80,
+        "step": 10,
+        "unit": "px",
+        "default": 60
+      },
+      {
+        "type": "range",
+        "id": "transition_speed",
+        "label": "動畫速度",
+        "min": 0.1,
+        "max": 1,
+        "step": 0.1,
+        "unit": "s",
+        "default": 0.3
+      },
+      {
+        "type": "header",
+        "content": "顏色設定"
+      },
+      {
+        "type": "color",
+        "id": "footer_bg_color",
+        "label": "Footer 背景色",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "footer_text_color",
+        "label": "Footer 文字色",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "main_bg_color",
+        "label": "主區域背景色",
+        "default": "#0a0a0a"
+      },
+      {
+        "type": "color",
+        "id": "accent_color",
+        "label": "強調色",
+        "default": "#f08418"
+      },
+      {
+        "type": "color",
+        "id": "accent_hover_color",
+        "label": "強調色（懸停）",
+        "default": "#ff9a3c"
+      },
+      {
+        "type": "header",
+        "content": "裝飾效果"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_top_decoration",
+        "label": "顯示頂部裝飾線",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "decoration_height",
+        "label": "裝飾線高度",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "unit": "px",
+        "default": 2
+      },
+      {
+        "type": "range",
+        "id": "animation_speed",
+        "label": "裝飾線動畫速度",
+        "min": 1,
+        "max": 10,
+        "step": 0.5,
+        "unit": "s",
+        "default": 3
+      },
+      {
+        "type": "checkbox",
+        "id": "show_bg_decoration",
+        "label": "顯示背景裝飾",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "decoration_color",
+        "label": "背景裝飾顏色",
+        "default": "rgba(240, 132, 24, 0.05)"
+      },
+      {
+        "type": "range",
+        "id": "float_animation_speed",
+        "label": "背景裝飾動畫速度",
+        "min": 10,
+        "max": 30,
+        "step": 5,
+        "unit": "s",
+        "default": 20
+      },
+      {
+        "type": "header",
+        "content": "內容區域邊距"
+      },
+      {
+        "type": "range",
+        "id": "main_padding_top",
+        "label": "主區域上邊距",
+        "min": 40,
+        "max": 120,
+        "step": 10,
+        "unit": "px",
+        "default": 80
+      },
+      {
+        "type": "range",
+        "id": "main_padding_bottom",
+        "label": "主區域下邊距",
+        "min": 20,
+        "max": 80,
+        "step": 10,
+        "unit": "px",
+        "default": 40
+      },
+      {
+        "type": "header",
+        "content": "品牌區域設定"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_brand_section",
+        "label": "顯示品牌區域",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_image",
+        "label": "Logo 圖片"
+      },
+      {
+        "type": "text",
+        "id": "logo_alt_text",
+        "label": "Logo 替代文字",
+        "default": "APGO"
+      },
+      {
+        "type": "url",
+        "id": "logo_link",
+        "label": "Logo 連結",
+        "default": "/"
+      },
+      {
+        "type": "range",
+        "id": "logo_height",
+        "label": "Logo 高度",
+        "min": 30,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "default": 50
+      },
+      {
+        "type": "range",
+        "id": "logo_hover_scale",
+        "label": "Logo 懸停縮放",
+        "min": 1,
+        "max": 1.5,
+        "step": 0.1,
+        "default": 1.1
+      },
+      {
+        "type": "checkbox",
+        "id": "show_tagline",
+        "label": "顯示品牌標語",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "brand_tagline",
+        "label": "品牌標語",
+      },
+      {
+        "type": "range",
+        "id": "tagline_font_size",
+        "label": "標語字體大小",
+        "min": 0.8,
+        "max": 1.5,
+        "step": 0.1,
+        "unit": "rem",
+        "default": 1
+      },
+      {
+        "type": "color",
+        "id": "tagline_color",
+        "label": "標語顏色",
+        "default": "#cccccc"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_company_info",
+        "label": "顯示公司資訊",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "company_name",
+        "label": "公司名稱",
+        "default": "光世代科技有限公司"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_tax_id",
+        "label": "顯示統一編號",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "tax_id",
+        "label": "統一編號",
+        "default": "24705400"
+      },
+      {
+        "type": "header",
+        "content": "社群媒體設定"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_social_media",
+        "label": "顯示社群媒體",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "social_title",
+        "label": "社群媒體標題",
+        "default": "關注我們的社群媒體"
+      },
+      {
+        "type": "color",
+        "id": "social_title_color",
+        "label": "社群標題顏色",
+        "default": "#999999"
+      },
+      {
+        "type": "range",
+        "id": "social_gap",
+        "label": "社群圖標間距",
+        "min": 8,
+        "max": 20,
+        "step": 2,
+        "unit": "px",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "social_icon_size",
+        "label": "社群圖標大小",
+        "min": 30,
+        "max": 50,
+        "step": 2,
+        "unit": "px",
+        "default": 40
+      },
+      {
+        "type": "color",
+        "id": "social_bg_color",
+        "label": "社群圖標背景色",
+        "default": "rgba(255, 255, 255, 0.05)"
+      },
+      {
+        "type": "color",
+        "id": "social_border_color",
+        "label": "社群圖標邊框色",
+        "default": "rgba(255, 255, 255, 0.1)"
+      },
+      {
+        "type": "range",
+        "id": "social_border_radius",
+        "label": "社群圖標圓角",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "unit": "px",
+        "default": 10
+      },
+      {
+        "type": "color",
+        "id": "social_icon_color",
+        "label": "社群圖標顏色",
+        "default": "#cccccc"
+      },
+      {
+        "type": "color",
+        "id": "social_hover_color",
+        "label": "社群圖標懸停顏色",
+        "default": "#ffffff"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_facebook",
+        "label": "顯示 Facebook",
+        "default": true
+      },
+      {
+        "type": "url",
+        "id": "facebook_url",
+        "label": "Facebook 連結"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_instagram",
+        "label": "顯示 Instagram",
+        "default": true
+      },
+      {
+        "type": "url",
+        "id": "instagram_url",
+        "label": "Instagram 連結"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_youtube",
+        "label": "顯示 YouTube",
+        "default": true
+      },
+      {
+        "type": "url",
+        "id": "youtube_url",
+        "label": "YouTube 連結"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_tiktok",
+        "label": "顯示 TikTok",
+        "default": true
+      },
+      {
+        "type": "url",
+        "id": "tiktok_url",
+        "label": "TikTok 連結"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_line",
+        "label": "顯示 LINE",
+        "default": true
+      },
+      {
+        "type": "url",
+        "id": "line_url",
+        "label": "LINE 連結"
+      },
+      {
+        "type": "header",
+        "content": "產品區域設定"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_products_section",
+        "label": "顯示產品區域",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "products_title",
+        "label": "產品區域標題",
+        "default": "產品系列"
+      },
+      {
+        "type": "header",
+        "content": "服務區域設定"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_service_section",
+        "label": "顯示服務區域",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "service_title",
+        "label": "服務區域標題",
+        "default": "服務與支援"
+      },
+      {
+        "type": "header",
+        "content": "關於區域設定"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_about_section",
+        "label": "顯示關於區域",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "about_title",
+        "label": "關於區域標題",
+        "default": "關於 APGO"
+      },
+      {
+        "type": "header",
+        "content": "聯絡資訊設定"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_contact_section",
+        "label": "顯示聯絡資訊",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "contact_title",
+        "label": "聯絡資訊標題",
+        "default": "聯絡資訊"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_phone",
+        "label": "顯示電話",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "phone_label",
+        "label": "電話標籤",
+        "default": "客服專線"
+      },
+      {
+        "type": "text",
+        "id": "phone_number",
+        "label": "電話號碼",
+        "default": "02-29030101"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_email",
+        "label": "顯示電子郵件",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "email_label",
+        "label": "電子郵件標籤",
+        "default": "客服信箱"
+      },
+      {
+        "type": "text",
+        "id": "email_address",
+        "label": "電子郵件地址",
+        "default": "service@apgo.com.tw"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_hours",
+        "label": "顯示營業時間",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "hours_label",
+        "label": "營業時間標籤",
+        "default": "營業時間"
+      },
+      {
+        "type": "text",
+        "id": "business_hours",
+        "label": "營業時間",
+        "default": "週一至週五 9:00-18:00"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_address",
+        "label": "顯示地址",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "address_label",
+        "label": "地址標籤",
+        "default": "公司地址"
+      },
+      {
+        "type": "text",
+        "id": "company_address",
+        "label": "公司地址",
+        "default": "新北市新莊區鳳山街56巷3號"
+      },
+      {
+        "type": "color",
+        "id": "contact_text_color",
+        "label": "聯絡資訊文字顏色",
+        "default": "#cccccc"
+      },
+      {
+        "type": "color",
+        "id": "contact_label_color",
+        "label": "聯絡資訊標籤顏色",
+        "default": "#ffffff"
+      },
+      {
+        "type": "range",
+        "id": "contact_font_size",
+        "label": "聯絡資訊字體大小",
+        "min": 0.8,
+        "max": 1.2,
+        "step": 0.1,
+        "unit": "rem",
+        "default": 1.0
+      },
+      {
+        "type": "header",
+        "content": "區塊標題設定"
+      },
+      {
+        "type": "range",
+        "id": "section_title_size",
+        "label": "區塊標題大小",
+        "min": 1,
+        "max": 2,
+        "step": 0.1,
+        "unit": "rem",
+        "default": 1.2
+      },
+      {
+        "type": "color",
+        "id": "section_title_color",
+        "label": "區塊標題顏色",
+        "default": "#ffffff"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_title_underline",
+        "label": "顯示標題底線",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "連結設定"
+      },
+      {
+        "type": "color",
+        "id": "link_color",
+        "label": "連結顏色",
+        "default": "#cccccc"
+      },
+      {
+        "type": "color",
+        "id": "link_hover_color",
+        "label": "連結懸停顏色",
+        "default": "#f08418"
+      },
+      {
+        "type": "range",
+        "id": "link_font_size",
+        "label": "連結字體大小",
+        "min": 0.8,
+        "max": 1.2,
+        "step": 0.1,
+        "unit": "rem",
+        "default": 1.0
+      },
+      {
+        "type": "range",
+        "id": "link_spacing",
+        "label": "連結間距",
+        "min": 8,
+        "max": 20,
+        "step": 2,
+        "unit": "px",
+        "default": 12
+      },
+      {
+        "type": "checkbox",
+        "id": "show_link_hover_underline",
+        "label": "顯示連結懸停底線",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "link_hover_shift",
+        "label": "連結懸停位移",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "unit": "px",
+        "default": 5
+      },
+      {
+        "type": "header",
+        "content": "底部版權區設定"
+      },
+      {
+        "type": "color",
+        "id": "bottom_bg_color",
+        "label": "底部背景色",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "bottom_border_color",
+        "label": "底部邊框顏色",
+        "default": "rgba(255, 255, 255, 0.1)"
+      },
+      {
+        "type": "range",
+        "id": "bottom_padding",
+        "label": "底部內邊距",
+        "min": 20,
+        "max": 50,
+        "step": 5,
+        "unit": "px",
+        "default": 30
+      },
+      {
+        "type": "checkbox",
+        "id": "show_copyright",
+        "label": "顯示版權資訊",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "copyright_text",
+        "label": "版權文字",
+        "default": "APGO. All rights reserved."
+      },
+      {
+        "type": "color",
+        "id": "copyright_color",
+        "label": "版權文字顏色",
+        "default": "#999999"
+      },
+      {
+        "type": "range",
+        "id": "copyright_font_size",
+        "label": "版權文字大小",
+        "min": 0.7,
+        "max": 1.2,
+        "step": 0.1,
+        "unit": "rem",
+        "default": 0.9
+      },
+      {
+        "type": "header",
+        "content": "法律連結設定"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_legal_links",
+        "label": "顯示法律連結",
+        "default": true
+      },
+      {
+        "type": "url",
+        "id": "privacy_policy_url",
+        "label": "隱私權政策連結"
+      },
+      {
+        "type": "text",
+        "id": "privacy_policy_text",
+        "label": "隱私權政策文字",
+        "default": "隱私權政策"
+      },
+      {
+        "type": "url",
+        "id": "terms_url",
+        "label": "服務條款連結"
+      },
+      {
+        "type": "text",
+        "id": "terms_text",
+        "label": "服務條款文字",
+        "default": "服務條款"
+      },
+      {
+        "type": "url",
+        "id": "return_policy_url",
+        "label": "退換貨政策連結"
+      },
+      {
+        "type": "text",
+        "id": "return_policy_text",
+        "label": "退換貨政策文字",
+        "default": "退換貨政策"
+      },
+      {
+        "type": "color",
+        "id": "legal_link_color",
+        "label": "法律連結顏色",
+        "default": "#999999"
+      },
+      {
+        "type": "color",
+        "id": "legal_link_hover_color",
+        "label": "法律連結懸停顏色",
+        "default": "#f08418"
+      },
+      {
+        "type": "range",
+        "id": "legal_font_size",
+        "label": "法律連結字體大小",
+        "min": 0.7,
+        "max": 1.2,
+        "step": 0.1,
+        "unit": "rem",
+        "default": 0.9
+      },
+      {
+        "type": "color",
+        "id": "separator_color",
+        "label": "分隔符顏色",
+        "default": "rgba(255, 255, 255, 0.1)"
+      },
+      {
+        "type": "header",
+        "content": "付款方式設定"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_payment_methods",
+        "label": "顯示付款方式",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "payment_gap",
+        "label": "付款圖標間距",
+        "min": 8,
+        "max": 20,
+        "step": 2,
+        "unit": "px",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "payment_icon_height",
+        "label": "付款圖標高度",
+        "min": 25,
+        "max": 50,
+        "step": 5,
+        "unit": "px",
+        "default": 35
+      },
+      {
+        "type": "range",
+        "id": "payment_icon_padding",
+        "label": "付款圖標內邊距",
+        "min": 5,
+        "max": 15,
+        "step": 1,
+        "unit": "px",
+        "default": 5
+      },
+      {
+        "type": "color",
+        "id": "payment_bg_color",
+        "label": "付款圖標背景色",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "payment_hover_bg",
+        "label": "付款圖標懸停背景色",
+        "default": "#f8f8f8"
+      },
+      {
+        "type": "range",
+        "id": "payment_border_radius",
+        "label": "付款圖標圓角",
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "unit": "px",
+        "default": 6
+      },
+      {
+        "type": "range",
+        "id": "payment_img_width",
+        "label": "付款圖片寬度",
+        "min": 40,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "default": 60
+      },
+      {
+        "type": "range",
+        "id": "payment_img_height",
+        "label": "付款圖片高度",
+        "min": 20,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "default": 24
+      },
+      {
+        "type": "checkbox",
+        "id": "show_visa",
+        "label": "顯示 Visa",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "visa_image",
+        "label": "Visa 圖片"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_mastercard",
+        "label": "顯示 Mastercard",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "mastercard_image",
+        "label": "Mastercard 圖片"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_jcb",
+        "label": "顯示 JCB",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "jcb_image",
+        "label": "JCB 圖片"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_amex",
+        "label": "顯示 American Express",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "amex_image",
+        "label": "American Express 圖片"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_unionpay",
+        "label": "顯示 UnionPay",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "unionpay_image",
+        "label": "UnionPay 圖片"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_linepay",
+        "label": "顯示 LINE Pay",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "linepay_image",
+        "label": "LINE Pay 圖片"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_cod",
+        "label": "顯示貨到付款",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cod_text",
+        "label": "貨到付款文字",
+        "default": "貨到付款"
+      },
+      {
+        "type": "color",
+        "id": "cod_text_color",
+        "label": "貨到付款文字顏色",
+        "default": "#333333"
+      },
+      {
+        "type": "range",
+        "id": "cod_font_size",
+        "label": "貨到付款文字大小",
+        "min": 0.6,
+        "max": 1,
+        "step": 0.1,
+        "unit": "rem",
+        "default": 0.8
+      },
+      {
+        "type": "header",
+        "content": "追蹤設定"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_tracking",
+        "label": "啟用點擊追蹤",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "ga_tracking_id",
+        "label": "Google Analytics ID",
+        "info": "輸入您的 GA 追蹤 ID (可選)"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "product_link",
+        "name": "產品連結",
+        "settings": [
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "連結文字",
+            "default": "產品連結"
+          },
+          {
+            "type": "url",
+            "id": "link_url",
+            "label": "連結網址"
+          }
+        ]
+      },
+      {
+        "type": "service_link",
+        "name": "服務連結",
+        "settings": [
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "連結文字",
+            "default": "服務連結"
+          },
+          {
+            "type": "url",
+            "id": "link_url",
+            "label": "連結網址"
+          }
+        ]
+      },
+      {
+        "type": "about_link",
+        "name": "關於連結",
+        "settings": [
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "連結文字",
+            "default": "關於連結"
+          },
+          {
+            "type": "url",
+            "id": "link_url",
+            "label": "連結網址"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "APGO Footer",
+        "blocks": [
+          {
+            "type": "product_link",
+            "settings": {
+              "link_text": "鍍膜產品",
+              "link_url": "/collections/coating"
+            }
+          },
+          {
+            "type": "product_link",
+            "settings": {
+              "link_text": "清潔用品",
+              "link_url": "/collections/cleaning"
+            }
+          },
+          {
+            "type": "service_link",
+            "settings": {
+              "link_text": "客服中心",
+              "link_url": "/pages/customer-service"
+            }
+          },
+          {
+            "type": "service_link",
+            "settings": {
+              "link_text": "安裝服務",
+              "link_url": "/pages/installation"
+            }
+          },
+          {
+            "type": "about_link",
+            "settings": {
+              "link_text": "公司簡介",
+              "link_url": "/pages/about"
+            }
+          },
+          {
+            "type": "about_link",
+            "settings": {
+              "link_text": "聯絡我們",
+              "link_url": "/pages/contact"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,244 @@
+{% comment %}
+  APGO Custom Login Page - Dark Tech Style
+  Fixed: H1 Visibility Issue (Forced White Color)
+{% endcomment %}
+
+<style>
+  /* 這裡的 CSS 會呼叫你佈景主題原本定義好的變數，確保風格一致 */
+  .customer-login-section {
+    padding: 60px 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    color: #ffffff !important; /* 強制所有文字預設為白色 */
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  /* 🔥 修正重點：強制標題為白色，不使用變數 */
+  .login-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0;
+    color: #ffffff !important; /* 強制白色，避免被主題變數(黑色)覆蓋 */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* --- 修正 HIKO 社群登入按鈕的樣式與間距 --- */
+  div[name="hiko-container"] {
+    margin-bottom: 30px; /* 增加與下方 Email 的距離 */
+    display: block;
+    width: 100%;
+  }
+  
+  /* 強制調整 HIKO 內部的間距，避免與標題黏住 */
+  .h_wizard {
+    margin-top: 20px !important; 
+    margin-bottom: 30px !important;
+  }
+
+  /* --- 輸入框樣式 (Dark Tech 風格) --- */
+  .form-field {
+    margin-bottom: 20px;
+  }
+
+  .form-field input {
+    width: 100%;
+    padding: 15px;
+    background-color: #1a1a1a !important; /* 強制深灰底色 */
+    border: 1px solid #333 !important;    /* 強制深色邊框 */
+    border-radius: 8px !important;        /* 圓角 */
+    color: #ffffff !important;            /* 強制輸入文字白色 */
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .form-field input::placeholder {
+    color: #888 !important; /* 提示文字灰色 */
+    opacity: 1;
+  }
+
+  /* 輸入框點擊時的橘色光暈 */
+  .form-field input:focus {
+    outline: none;
+    border-color: #f08418 !important;
+    box-shadow: 0 0 0 1px #f08418 !important;
+  }
+
+  /* --- 登入按鈕 (APGO 橘色) --- */
+  .submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #f08418 !important; /* 強制 APGO 橘 */
+    color: #ffffff !important;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+  }
+
+  .submit-btn:hover {
+    filter: brightness(1.1); /* 滑鼠移過去變亮一點 */
+    background-color: #d66a00 !important;
+  }
+
+  /* --- 底部連結 --- */
+  .login-footer-links {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #ccc;
+  }
+
+  .login-footer-links a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .login-footer-links a:hover {
+    color: #f08418;
+    text-decoration: underline;
+  }
+
+  /* 錯誤訊息樣式 */
+  .errors ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    background: #3d0e0e; /* 深紅底 */
+    border: 1px solid #8b0000;
+    border-radius: 5px;
+  }
+  .errors li {
+    padding: 10px;
+    color: #ffcccc;
+  }
+
+  /* --- 強制修復漏網之魚 (暴力修正 V2 - 安全版) --- */
+  
+  /* 1. 只針對文字內容去背，不影響按鈕容器 */
+  .customer-login-section h1,
+  .customer-login-section h2,
+  .customer-login-section p,
+  .customer-login-section a,
+  .customer-login-section span,
+  .customer-login-section label {
+    background-color: transparent !important; 
+  }
+  
+  /* ⚠️ 重要：特別排除 HIKO 按鈕內的 span，避免文字背景變透明導致問題 */
+  .hbuttons span, .hline_text {
+    background-color: transparent !important; /* HIKO 文字透背 */
+  }
+
+  /* 2. 輸入框 placeholder 修正 */
+  .customer-login-section input::placeholder {
+    background-color: transparent !important;
+    color: #888 !important;
+  }
+  
+</style>
+
+<div class="customer-login-section">
+  
+  <div class="login-header">
+    <h1>會員登入</h1>
+  </div>
+
+  <div id="login-form">
+    {% form 'customer_login' %}
+      
+      {% comment %} 錯誤訊息顯示區 {% endcomment %}
+      {{ form.errors | default_errors }}
+
+      {% comment %} 
+        HIKO Social Login 區塊 
+      {% endcomment %}
+      <div name="hiko-container" type="login" app=""></div>
+
+      <div class="form-field">
+        <input 
+          type="email" 
+          name="customer[email]" 
+          id="CustomerEmail" 
+          placeholder="電子信箱 (Email)" 
+          autocorrect="off" 
+          autocapitalize="off" 
+          autocomplete="email"
+          required
+        >
+      </div>
+
+      <div class="form-field">
+        <input 
+          type="password" 
+          name="customer[password]" 
+          id="CustomerPassword" 
+          placeholder="密碼" 
+          autocomplete="current-password"
+          required
+        >
+      </div>
+
+      <button type="submit" class="submit-btn">立即登入</button>
+      
+      <div class="login-footer-links">
+         <a href="{{ routes.account_register_url }}">註冊新帳號</a>
+         &nbsp;|&nbsp; 
+         <a href="#recover" onclick="document.querySelector('#recover-password-form').style.display='block'; document.querySelector('#login-form').style.display='none';">忘記密碼？</a>
+      </div>
+
+    {% endform %}
+  </div>
+
+  {% comment %} 忘記密碼表單 (預設隱藏) {% endcomment %}
+  <div id="recover-password-form" style="display: none;">
+    <div class="login-header">
+      <h2 style="color:white !important;">重設密碼</h2>
+      <p style="color:#aaa !important; font-size: 0.9em;">請輸入您的 Email，我們將寄送重設連結給您。</p>
+    </div>
+    
+    {% form 'recover_customer_password' %}
+      {{ form.errors | default_errors }}
+      
+      {% if form.posted_successfully? %}
+        <p style="color: #4caf50; background: #0e290f; padding: 10px; border-radius: 5px;">重設信件已發送！請檢查您的信箱。</p>
+      {% endif %}
+
+      <div class="form-field">
+        <input type="email" name="email" id="RecoverEmail" placeholder="電子信箱" required>
+      </div>
+      
+      <button type="submit" class="submit-btn">發送重設連結</button>
+      
+      <div class="login-footer-links">
+        <a href="#" onclick="document.querySelector('#recover-password-form').style.display='none'; document.querySelector('#login-form').style.display='block'; return false;">取消並返回登入</a>
+      </div>
+    {% endform %}
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Login",
+  "settings": [
+    {
+      "type": "header",
+      "content": "樣式設定"
+    },
+    {
+      "type": "paragraph",
+      "content": "此頁面已套用 APGO Dark Tech 風格設定 (強制白字修正版)。"
+    }
+  ]
+}
+{% endschema %}

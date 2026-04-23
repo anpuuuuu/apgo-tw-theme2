@@ -1,0 +1,420 @@
+{% comment %}
+  APGO Custom Account Page - Dark Tech Style V4.1
+  Fix: Global theme variable reset for buttons to prevent white backgrounds.
+{% endcomment %}
+
+<style>
+  /* --- 變數清洗區 (關鍵修正) --- */
+  .customer-account-section {
+    /* 強制重置按鈕相關的變數，讓它們失效，回歸我們的 CSS 控制 */
+    --color-secondary-button-background: transparent !important;
+    --color-secondary-button-text: #cccccc !important;
+    --color-secondary-button-border: #444444 !important;
+    
+    background-color: #050505 !important;
+    color: #ffffff !important;
+    padding: 60px 20px;
+    min-height: 90vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .account-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* --- 標題樣式 --- */
+  h1, h2, h3 { color: #fff !important; margin: 0; font-weight: 700; }
+  
+  /* --- 左側側邊欄 --- */
+  .account-sidebar {
+    background-color: #111 !important;
+    border-radius: 16px;
+    padding: 30px;
+    border: 1px solid #222 !important;
+    position: sticky; 
+    top: 120px;
+    z-index: 10;
+  }
+
+  .profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 20px;
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #f08418, #d66a00) !important;
+    color: #fff !important;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 auto 15px auto;
+    box-shadow: 0 4px 20px rgba(240, 132, 24, 0.3);
+  }
+
+  .profile-name { font-size: 1.2rem; margin-bottom: 5px; }
+  .profile-email { font-size: 0.9rem; color: #888 !important; word-break: break-all; }
+
+  /* 側邊欄導航按鈕 */
+  .sidebar-menu { display: flex; flex-direction: column; gap: 10px; }
+  
+  .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #ccc !important;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+    border: 1px solid transparent;
+  }
+  
+  .nav-link.active {
+    background-color: rgba(240, 132, 24, 0.15) !important;
+    color: #f08418 !important;
+    border-color: rgba(240, 132, 24, 0.3) !important;
+    font-weight: 600;
+  }
+  
+  .nav-link:hover {
+    background-color: #222 !important;
+    color: #fff !important;
+  }
+
+  .logout-btn {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666 !important;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+    transition: color 0.2s;
+  }
+  .logout-btn:hover { color: #fff !important; }
+
+  /* --- 右側內容區 --- */
+  .content-header {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .content-title { font-size: 1.8rem; }
+
+  /* --- 按鈕樣式 (核彈級修正) --- */
+  /* 針對 <a> 標籤和 <button> 標籤都生效 */
+  .customer-account-section .btn-primary,
+  .customer-account-section a.btn-primary {
+    background-color: #f08418 !important; 
+    color: #ffffff !important; 
+    border: 1px solid #f08418 !important;
+    padding: 10px 24px !important; 
+    border-radius: 8px !important;
+    text-decoration: none !important; 
+    font-weight: 600 !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(240, 132, 24, 0.2);
+  }
+  .customer-account-section .btn-primary:hover,
+  .customer-account-section a.btn-primary:hover { 
+    background-color: #d66a00 !important; 
+    border-color: #d66a00 !important; 
+    transform: translateY(-2px);
+  }
+
+  .customer-account-section .btn-secondary,
+  .customer-account-section a.btn-secondary {
+    background-color: transparent !important; 
+    background: transparent !important; /* 防止有些瀏覽器吃 background 簡寫 */
+    color: #cccccc !important; 
+    border: 1px solid #444444 !important;
+    padding: 8px 16px !important; 
+    border-radius: 6px !important; 
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem !important;
+    transition: all 0.2s;
+  }
+  .customer-account-section .btn-secondary:hover,
+  .customer-account-section a.btn-secondary:hover { 
+    border-color: #ffffff !important; 
+    color: #ffffff !important; 
+    background-color: rgba(255,255,255,0.1) !important;
+  }
+
+  /* --- 訂單卡片 --- */
+  .orders-grid { display: flex; flex-direction: column; gap: 20px; }
+
+  .order-card {
+    background-color: #111 !important;
+    border: 1px solid #222 !important;
+    border-radius: 12px;
+    padding: 25px;
+    display: grid;
+    grid-template-columns: 1.2fr 2.5fr 1fr auto; /* ID | 圖片 | 狀態 | 按鈕 */
+    align-items: center;
+    gap: 25px;
+    transition: transform 0.2s, border-color 0.2s;
+    text-decoration: none;
+  }
+
+  .order-card:hover {
+    transform: translateY(-2px);
+    border-color: #444 !important;
+    background-color: #161616 !important;
+  }
+
+  /* 訂單資訊欄 */
+  .order-info-group { display: flex; flex-direction: column; gap: 6px; }
+  .order-id { color: #f08418 !important; font-weight: bold; font-size: 1.1rem; }
+  .order-date { color: #666 !important; font-size: 0.85rem; }
+  .order-total { color: #fff !important; font-weight: 600; margin-top: 5px; }
+
+  /* 圖片預覽區 */
+  .order-preview-images {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  .order-thumb {
+    width: 55px;
+    height: 55px;
+    border-radius: 6px;
+    border: 1px solid #333 !important;
+    object-fit: cover;
+    background-color: #000 !important;
+  }
+
+  .more-items-badge {
+    font-size: 0.8rem;
+    color: #888 !important;
+    background: #222 !important;
+    padding: 5px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* 狀態標籤 */
+  .order-status-group { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  
+  .badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    display: inline-block;
+  }
+  
+  .badge-payment { background: #222 !important; color: #ccc !important; border: 1px solid #333 !important; }
+  .badge-fulfillment { background: rgba(240, 132, 24, 0.15) !important; color: #f08418 !important; border: 1px solid rgba(240, 132, 24, 0.2) !important; }
+
+  /* 訂單詳情按鈕 (查看詳情) */
+  .view-order-btn {
+    padding: 8px 16px;
+    border: 1px solid #444 !important;
+    border-radius: 6px;
+    color: #fff !important;
+    font-size: 0.9rem;
+    background: transparent !important;
+    transition: all 0.2s;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .order-card:hover .view-order-btn {
+    border-color: #fff !important;
+    background: rgba(255,255,255,0.1) !important;
+  }
+
+  /* --- 預設地址預覽卡片 --- */
+  .address-card-preview {
+    background: #111 !important;
+    border: 1px solid #222 !important;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 40px;
+  }
+  .address-card-title { font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+  
+  /* --- RWD 手機版優化 --- */
+  @media (max-width: 768px) {
+    .account-wrapper { grid-template-columns: 1fr; gap: 30px; }
+
+    /* 側邊欄變為頂部資訊卡 */
+    .account-sidebar {
+      position: relative !important;
+      top: unset !important;
+      padding: 20px;
+    }
+    
+    .sidebar-menu { flex-direction: row; flex-wrap: wrap; }
+    .nav-link { flex: 1; justify-content: center; white-space: nowrap; font-size: 0.9rem; padding: 10px; }
+    .logout-btn { width: 100%; margin-top: 10px; border-top: 1px solid #222; padding-top: 15px; }
+
+    /* 訂單卡片手機版 */
+    .order-card {
+      grid-template-columns: 1fr; /* 單欄堆疊 */
+      gap: 15px;
+      padding: 20px;
+    }
+    
+    /* 調整順序 */
+    .order-info-group { 
+      flex-direction: row; 
+      justify-content: space-between; 
+      align-items: center; 
+      border-bottom: 1px solid #222;
+      padding-bottom: 10px;
+    }
+    
+    .order-preview-images {
+      overflow-x: auto; /* 允許橫向滑動 */
+      padding-bottom: 5px;
+      width: 100%;
+    }
+    
+    .order-status-group { 
+      flex-direction: row; 
+      flex-wrap: wrap;
+    }
+    
+    .view-order-btn {
+      width: 100%;
+      background: #1a1a1a !important; 
+      border: 1px solid #333 !important;
+    }
+  }
+</style>
+
+<div class="customer-account-section">
+  <div class="account-wrapper">
+    
+    <aside class="account-sidebar">
+      <div class="profile-header">
+        <div class="profile-avatar">
+          {{ customer.first_name | first | upcase | default: 'U' }}
+        </div>
+        <div class="profile-name">{{ customer.name }}</div>
+        <div class="profile-email">{{ customer.email }}</div>
+      </div>
+      
+      <nav class="sidebar-menu">
+        <a href="{{ routes.account_url }}" class="nav-link active">
+          📦 我的訂單
+        </a>
+        <a href="{{ routes.account_addresses_url }}" class="nav-link">
+          📍 收件地址 ({{ customer.addresses_count }})
+        </a>
+      </nav>
+        
+      <a href="{{ routes.account_logout_url }}" class="logout-btn">
+        登出帳號
+      </a>
+    </aside>
+
+    <main class="account-content">
+      
+      <div class="content-header">
+        <h2 class="content-title">訂單記錄</h2>
+        <a href="{{ routes.all_products_collection_url }}" class="btn-primary mobile-hidden">去逛逛</a>
+      </div>
+
+      {% paginate customer.orders by 10 %}
+        {% if customer.orders.size > 0 %}
+          <div class="orders-grid">
+            {% for order in customer.orders %}
+              <a href="{{ order.customer_url }}" class="order-card">
+                
+                <div class="order-info-group">
+                  <div class="order-id">{{ order.name }}</div>
+                  <div class="order-date">{{ order.created_at | date: "%Y/%m/%d" }}</div>
+                  <div class="order-total mobile-hidden">{{ order.total_price | money }}</div>
+                </div>
+
+                <div class="order-preview-images">
+                  {% assign line_items_with_images = order.line_items | where: "image" %}
+                  {% for item in line_items_with_images limit: 4 %}
+                    <img src="{{ item.image | image_url: width: 110 }}" 
+                         alt="{{ item.title | escape }}" 
+                         class="order-thumb" 
+                         width="55" height="55" loading="lazy">
+                  {% endfor %}
+                  
+                  {% assign remaining = line_items_with_images.size | minus: 4 %}
+                  {% if remaining > 0 %}
+                    <div class="more-items-badge">+{{ remaining }}</div>
+                  {% endif %}
+                </div>
+
+                <div class="order-status-group">
+                  <span class="badge badge-payment">{{ order.financial_status_label }}</span>
+                  <span class="badge badge-fulfillment">{{ order.fulfillment_status_label }}</span>
+                  <div class="order-total desktop-hidden" style="margin-top: 5px;">{{ order.total_price | money }}</div>
+                </div>
+
+                <div class="view-order-btn">查看詳情</div>
+                
+              </a>
+            {% endfor %}
+          </div>
+          
+          {% if paginate.pages > 1 %}
+            <div style="text-align: center; margin-top: 40px;">
+              {{ paginate | default_pagination }}
+            </div>
+          {% endif %}
+
+        {% else %}
+          <div class="order-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px; text-align: center;">
+            <p style="color: #888; font-size: 1.1rem; margin-bottom: 20px;">目前尚無訂單記錄</p>
+            <a href="{{ routes.all_products_collection_url }}" class="btn-primary">立即購物</a>
+          </div>
+        {% endif %}
+      {% endpaginate %}
+
+      <div class="address-card-preview">
+        <h3 class="address-card-title">預設收件資訊</h3>
+        {% if customer.default_address %}
+          <div style="color: #fff; font-weight: bold; margin-bottom: 5px;">{{ customer.default_address.name }}</div>
+          <div style="color: #ccc; margin-bottom: 5px;">{{ customer.default_address.phone }}</div>
+          <div style="color: #ccc; margin-bottom: 15px;">
+            {{ customer.default_address.zip }} {{ customer.default_address.city }} {{ customer.default_address.address1 }}
+          </div>
+        {% else %}
+          <p style="color: #888; margin-bottom: 15px;">尚未設定預設地址</p>
+        {% endif %}
+        <a href="{{ routes.account_addresses_url }}" class="btn-secondary">管理所有地址</a>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Account V4.1 DarkTech",
+  "settings": []
+}
+{% endschema %}

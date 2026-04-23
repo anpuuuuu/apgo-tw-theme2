@@ -1,0 +1,370 @@
+{% comment %}
+  Apgo.tw 專用文章模板 (Shopify OS 2.0) - 最終完整版 (Make 修正版)
+  檔名: main-article-apgo.liquid
+  
+  核心功能：
+  1. 自動美化 AI 生成的 HTML
+  2. 讀取 Metafield: custom.make_specs_table_json
+  3. 讀取 Metafield: custom.make_cta_*
+  4. 內建除錯模式 (Debug Mode)
+{% endcomment %}
+
+{% schema %}
+{
+  "name": "Apgo Article (黑橘版)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "除錯模式"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_debug",
+      "label": "顯示 Metafield 除錯資訊",
+      "info": "如果看不到表格或 CTA，請勾選此項檢查資料是否正確讀取。",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "色彩設定"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "背景顏色",
+      "default": "#050505"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "卡片背景色",
+      "default": "#141414"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "強調色 (橘)",
+      "default": "#FF6B00"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "主要文字色",
+      "default": "#E5E5E5"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Apgo Article Main"
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+  /* =========================================
+     1. 基礎容器與字體設定
+     ========================================= */
+  .apgo-section {
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    font-family: 'Noto Sans TC', sans-serif;
+    padding-bottom: 6rem;
+    overflow-x: hidden;
+  }
+
+  .apgo-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+  
+  /* 除錯區塊樣式 */
+  .apgo-debug-box {
+    background: #330000;
+    border: 1px solid red;
+    color: #ffcccc;
+    padding: 1rem;
+    margin: 1rem auto;
+    font-family: monospace;
+    font-size: 0.85rem;
+    word-break: break-all;
+    max-width: 800px;
+  }
+
+  /* 隱藏捲軸 */
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* =========================================
+     2. 文章排版核心樣式
+     ========================================= */
+  .article-content { line-height: 1.8; font-size: 1.05rem; color: #d4d4d4; }
+
+  .article-content h2 {
+    color: white; font-size: 1.5rem; font-weight: 700;
+    margin-top: 3rem; margin-bottom: 1.5rem;
+    display: flex; align-items: center;
+  }
+  .article-content h2::before {
+    content: ''; display: inline-block; width: 6px; height: 24px;
+    background-color: {{ section.settings.accent_color }}; margin-right: 12px; border-radius: 2px;
+  }
+
+  .article-content h3 {
+    color: {{ section.settings.accent_color }}; font-size: 1.25rem; font-weight: 700;
+    margin-top: 2rem; margin-bottom: 0.75rem;
+  }
+
+  .article-content p { margin-bottom: 1.5rem; }
+  
+  .article-content a {
+    color: {{ section.settings.accent_color }}; text-decoration: underline;
+    text-underline-offset: 4px; transition: opacity 0.2s;
+  }
+  .article-content a:hover { opacity: 0.8; }
+
+  .article-content blockquote {
+    border-left: 4px solid {{ section.settings.accent_color }};
+    background: linear-gradient(90deg, rgba(255, 107, 0, 0.05) 0%, transparent 100%);
+    padding: 1rem 1.5rem; margin: 2rem 0; font-style: italic; color: #fff;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .article-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; }
+  .article-content ul li::marker { color: {{ section.settings.accent_color }}; }
+  
+  /* =========================================
+     3. 圖片樣式
+     ========================================= */
+  .article-content figure { margin: 2.5rem 0; width: 100%; }
+
+  .article-content img {
+    width: 100%; height: auto; display: block; border-radius: 12px;
+    border: 1px solid #2A2A2A; background-color: {{ section.settings.card_bg }};
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .article-content img:hover {
+    transform: scale(1.01); border-color: {{ section.settings.accent_color }}50;
+  }
+  .article-content figcaption {
+    margin-top: 0.75rem; text-align: center; font-size: 0.875rem;
+    color: #9CA3AF; font-family: monospace;
+  }
+
+  /* =========================================
+     4. 黑科技表格樣式
+     ========================================= */
+  .tech-table-container {
+    background-color: {{ section.settings.card_bg }};
+    border: 1px solid #2A2A2A; border-radius: 12px;
+    overflow: hidden; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    margin: 3rem 0;
+  }
+  
+  .tech-table-deco {
+    position: absolute; top: 0; right: 0; width: 60px; height: 60px;
+    background: linear-gradient(to bottom left, rgba(255, 107, 0, 0.2), transparent);
+    border-bottom-left-radius: 24px; pointer-events: none;
+  }
+
+  .tech-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .tech-table th, .tech-table td { padding: 1rem; text-align: left; }
+  .tech-table th { white-space: nowrap; background-color: #1A1A1A; border-bottom: 1px solid #2A2A2A; color: #9CA3AF; }
+  .tech-table th:first-child { color: {{ section.settings.accent_color }}; }
+  .tech-table tr { border-bottom: 1px solid #2A2A2A; }
+  .tech-table tr:last-child { border-bottom: none; }
+  
+  .tech-row-highlight { background-color: rgba(255, 107, 0, 0.08); }
+  .tech-row-highlight td { color: {{ section.settings.accent_color }}; font-weight: bold; }
+  .tech-row-highlight td:first-child { color: white; }
+
+  /* =========================================
+     5. 強力 CTA 卡片樣式
+     ========================================= */
+  .cta-card {
+    position: relative;
+    background: linear-gradient(135deg, #1E1E1E 0%, #000000 100%);
+    border: 1px solid rgba(255, 107, 0, 0.3); border-radius: 16px;
+    padding: 2rem; text-align: center; margin: 4rem auto;
+    overflow: hidden; animation: glow-pulse 3s infinite;
+  }
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(255, 107, 0, 0.1); }
+    50% { box-shadow: 0 0 25px rgba(255, 107, 0, 0.3); }
+  }
+  .cta-bg-blur {
+    position: absolute; top: -30px; right: -30px; width: 120px; height: 120px;
+    background-color: {{ section.settings.accent_color }};
+    opacity: 0.15; filter: blur(50px); border-radius: 50%;
+  }
+  .cta-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px; border-radius: 50%;
+    background-color: rgba(255, 107, 0, 0.1); border: 1px solid rgba(255, 107, 0, 0.3);
+    color: {{ section.settings.accent_color }}; margin-bottom: 1rem;
+  }
+  .cta-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; background-color: {{ section.settings.accent_color }};
+    color: #000; font-weight: 700; padding: 14px; border-radius: 10px;
+    text-decoration: none !important; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .cta-btn:hover {
+    transform: scale(1.02); box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
+    color: #000 !important; opacity: 1 !important;
+  }
+{% endstyle %}
+
+<div class="apgo-section pt-10">
+
+  <!-- 除錯模式顯示 (僅當勾選時顯示) -->
+  {% if section.settings.show_debug %}
+    <div class="apgo-debug-box">
+      <strong>[DEBUG MODE] Metafield Data Check (Make Version):</strong><br>
+      <br>
+      1. Specs Table JSON (custom.make_specs_table_json.value):<br>
+      {{ article.metafields.custom.make_specs_table_json.value }}<br>
+      <br>
+      2. CTA Target URL (custom.make_cta_target_url.value):<br>
+      {% assign raw_url_debug = article.metafields.custom.make_cta_target_url.value %}
+      {% if raw_url_debug.url %}
+        [Object] {{ raw_url_debug.url }}
+      {% else %}
+        [String] {{ raw_url_debug }}
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <!-- A. 封面圖 (Hero Image) -->
+  {% if article.image %}
+  <div class="apgo-container mb-10">
+    <div style="position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px;">
+      <img 
+        src="{{ article.image | image_url: width: 1200 }}" 
+        alt="{{ article.image.alt | escape }}"
+        width="1200"
+        height="{{ 1200 | divided_by: article.image.aspect_ratio | round }}"
+        style="width: 100%; height: 100%; object-fit: cover;"
+        loading="lazy"
+      >
+      <div style="position: absolute; inset: 0; background: linear-gradient(to top, #050505 0%, transparent 100%); opacity: 0.6;"></div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- B. 文章標頭 (Meta Info) -->
+  <div class="apgo-container" style="margin-top: -3rem; position: relative; z-index: 10; margin-bottom: 2.5rem;">
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+      {% for tag in article.tags %}
+        <span style="background: #1F2937; color: #D1D5DB; font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid #374151;">
+          {{ tag }}
+        </span>
+      {% endfor %}
+    </div>
+
+    <h1 style="color: white; font-size: 2rem; font-weight: 700; line-height: 1.3; margin-bottom: 1rem;">
+      {{ article.title }}
+    </h1>
+
+    <div style="display: flex; align-items: center; gap: 0.75rem; border-bottom: 1px solid #2A2A2A; padding-bottom: 1.5rem;">
+      <div style="width: 32px; height: 32px; background: #374151; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.75rem;">
+        {{ article.author | slice: 0, 1 }}
+      </div>
+      <div style="font-size: 0.75rem; color: #9CA3AF;">
+        <strong style="color: white;">{{ article.author }}</strong> · {{ article.published_at | date: "%Y.%m.%d" }}
+      </div>
+    </div>
+  </div>
+
+  <!-- C. 文章正文 -->
+  <article class="apgo-container article-content">
+    {{ article.content }}
+  </article>
+
+  <!-- D. 黑科技表格 (Tech Table) -->
+  <!-- 修正: 讀取 make_specs_table_json -->
+  {% assign table_json = article.metafields.custom.make_specs_table_json.value %}
+  
+  {% if table_json %}
+    <div class="apgo-container">
+      <div class="tech-table-container">
+        <div class="tech-table-deco"></div>
+        <div class="overflow-x-auto hide-scrollbar" style="overflow-x: auto;">
+          <table class="tech-table">
+            <thead>
+              <tr>
+                {% for header in table_json.headers %}
+                  <th>{{ header }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in table_json.rows %}
+              <tr class="{% if row.highlight %}tech-row-highlight{% endif %}">
+                {% for cell in row.cells %}
+                  <td>{{ cell }}</td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    {% if section.settings.show_debug %}
+      <div class="apgo-container text-red-500 border border-red-500 p-2 my-4">
+        Debug: 表格 Metafield (custom.make_specs_table_json) 為空或讀取失敗。請檢查格式是否為 JSON。
+      </div>
+    {% endif %}
+  {% endif %}
+
+  <!-- E. 強力 CTA (Call to Action) -->
+  <!-- 修正: 判斷 make_cta_target_url 是連結物件還是純字串 -->
+  {% assign raw_cta_url = article.metafields.custom.make_cta_target_url.value %}
+  {% if raw_cta_url.url %}
+    {% assign cta_url = raw_cta_url.url %}
+  {% else %}
+    {% assign cta_url = raw_cta_url %}
+  {% endif %}
+
+  {% assign cta_title = article.metafields.custom.make_cta_title.value %}
+  {% assign cta_desc = article.metafields.custom.make_cta_description.value %}
+  {% assign cta_btn_text = article.metafields.custom.make_cta_button_text.value %}
+  
+  {% if cta_url != blank %}
+    <div class="apgo-container">
+      <div class="cta-card group">
+        <div class="cta-bg-blur"></div>
+        <div class="cta-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M222.14,58.87A8,8,0,0,0,216,56H54.68L49.79,29.14A8,8,0,0,0,41.91,24H24A8,8,0,0,0,24,40H36.1l19.2,105.61A32,32,0,0,0,88,176h92a32,32,0,0,0,32.7-26.05l16-91.05ZM180,160H88a16,16,0,0,1-15.68-12.85l-14-76.62H210.55Z"></path><path d="M200,184a24,24,0,1,0,24,24A24,24,0,0,0,200,184Zm0,32a8,8,0,1,1,8-8A8,8,0,0,1,200,216Z"></path><path d="M88,184a24,24,0,1,0,24,24A24,24,0,0,0,88,184Zm0,32a8,8,0,1,1,8-8A8,8,0,0,1,88,216Z"></path></svg>
+        </div>
+
+        <h3 style="color: white; font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">
+          {{ cta_title | default: "Apgo 精選推薦" }}
+        </h3>
+
+        <p style="color: #9CA3AF; font-size: 0.875rem; margin-bottom: 1.5rem; max-width: 320px; margin-left: auto; margin-right: auto;">
+          {{ cta_desc | default: "立即查看我們推薦的超值組合。" }}
+        </p>
+
+        <a href="{{ cta_url }}" class="cta-btn">
+          <span>{{ cta_btn_text | default: "立即搶購" }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path></svg>
+        </a>
+      </div>
+    </div>
+  {% else %}
+    {% if section.settings.show_debug %}
+      <div class="apgo-container text-red-500 border border-red-500 p-2 my-4">
+        Debug: CTA 連結 Metafield (custom.make_cta_target_url) 為空。
+        <br>Raw Value: {{ article.metafields.custom.make_cta_target_url.value }}
+      </div>
+    {% endif %}
+  {% endif %}
+
+</div>

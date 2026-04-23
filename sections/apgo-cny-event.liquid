@@ -1,0 +1,1065 @@
+{% comment %}
+  APGO 2026 新春戰術活動頁 - All-in-One Section
+  Version: 14.0 (Visibility Toggles & Smart Footer Backdrop)
+{% endcomment %}
+
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet"></noscript>
+
+<script>
+    window.tailwindConfig = {
+        prefix: 'tw-', 
+        theme: {
+            extend: {
+                fontFamily: {
+                    sans: ['"Noto Sans TC"', 'sans-serif'],
+                    mono: ['"JetBrains Mono"', 'monospace'],
+                },
+                colors: {
+                    dt: {
+                        screen: '#050505',
+                        surface: '#121212',
+                        input: '#1a1a1a',
+                        border: '#333333',
+                        orange: '#f08418',
+                        gold: '#C5A572',
+                        textSec: '#999999',
+                        danger: '#ef4444' 
+                    }
+                },
+                backgroundImage: {
+                    'scan-line': 'linear-gradient(to right, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)',
+                },
+                animation: {
+                    'scan': 'scan 2s linear infinite',
+                },
+                keyframes: {
+                    scan: {
+                        '0%': { transform: 'translateX(-100%) skewX(-15deg)' },
+                        '100%': { transform: 'translateX(200%) skewX(-15deg)' }
+                    }
+                }
+            }
+        }
+    }
+</script>
+<script src="https://cdn.tailwindcss.com" defer onload="tailwind.config = window.tailwindConfig"></script>
+
+<style>
+    /* 強制覆蓋主題樣式 */
+    #apgo-tactical-section {
+        background-color: #050505 !important;
+        color: #e5e5e5 !important;
+        font-family: "Noto Sans TC", sans-serif !important;
+        line-height: 1.5;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    #apgo-tactical-section h1, h2, h3, h4, p, span, div, button {
+        color: inherit; 
+    }
+
+    #apgo-tactical-section .font-mono {
+        font-family: "JetBrains Mono", monospace !important;
+    }
+
+    /* 隱藏滾動條 */
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* 圖片佔位符 */
+    .placeholder-box {
+        background-color: #1a1a1a; border: 2px dashed #333;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        color: #666; font-family: 'JetBrains Mono', monospace; text-align: center;
+    }
+
+    /* 斜角與按鈕 */
+    .clip-path-slant { clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%); padding-left: 2rem; }
+    
+    /* 雙排滑動佈局 ($88) */
+    .grid-scroll-area {
+        display: grid; grid-template-rows: repeat(2, 1fr);
+        grid-auto-flow: column; grid-auto-columns: 140px;
+        gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px;
+    }
+    @media (min-width: 768px) { .grid-scroll-area { grid-auto-columns: 200px; } }
+    .snap-item { scroll-snap-align: start; }
+
+    /* 導航列樣式 */
+    .sticky-nav-link {
+        color: #999; padding: 12px 16px; font-weight: bold; font-size: 14px; white-space: nowrap;
+        border-bottom: 2px solid transparent; transition: all 0.3s; cursor: pointer;
+    }
+    .sticky-nav-link:hover, .sticky-nav-link.active {
+        color: #f08418; border-bottom-color: #f08418;
+    }
+    
+    /* 強制固定樣式 */
+    .nav-fixed {
+        position: fixed !important;
+        top: 0; left: 0; width: 100%;
+        background-color: rgba(5, 5, 5, 0.95);
+        backdrop-filter: blur(8px);
+        z-index: 999;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        animation: slideDown 0.3s ease-out;
+    }
+    @keyframes slideDown {
+        from { transform: translateY(-100%); }
+        to { transform: translateY(0); }
+    }
+    
+    section { scroll-margin-top: 60px; }
+    .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    html { scroll-behavior: smooth; }
+</style>
+
+<div id="apgo-tactical-section" class="tw-relative tw-pb-40">
+
+    <section id="section-hero" class="tw-w-full tw-relative">
+        <div class="tw-hidden md:tw-block tw-w-full tw-h-auto">
+            {% if section.settings.hero_image_pc %}
+                {{ section.settings.hero_image_pc | image_url: width: 1920 | image_tag: class: 'tw-w-full tw-object-cover tw-h-auto', loading: 'eager', sizes: '100vw' }}
+            {% else %}
+                <div class="placeholder-box tw-w-full tw-h-[600px] tw-border-b tw-border-dt-orange">PC Banner (1920x850)</div>
+            {% endif %}
+        </div>
+        <div class="md:tw-hidden tw-w-full tw-h-auto">
+            {% if section.settings.hero_image_mb %}
+                 {{ section.settings.hero_image_mb | image_url: width: 750 | image_tag: class: 'tw-w-full tw-object-cover tw-h-auto', loading: 'eager', sizes: '100vw' }}
+            {% else %}
+                <div class="placeholder-box tw-w-full tw-h-[500px] tw-border-b tw-border-dt-orange">Mobile Banner (750x1100)</div>
+            {% endif %}
+        </div>
+    </section>
+
+    <div id="nav-placeholder" class="tw-w-full tw-h-[50px] tw-hidden"></div>
+    
+    <div id="apgo-sticky-nav" class="tw-w-full tw-bg-[#050505] tw-border-b tw-border-dt-border tw-z-40">
+        <div id="sticky-nav-container" class="tw-max-w-[1200px] tw-mx-auto tw-flex tw-overflow-x-auto scrollbar-hide">
+            <div data-target="section-hero" class="sticky-nav-link" onclick="scrollToSection('section-hero')">主會場</div>
+            
+            {% if section.settings.show_luckybox %}
+                <div data-target="section-luckybox" class="sticky-nav-link" onclick="scrollToSection('section-luckybox')">{{ section.settings.lucky_title }}</div>
+            {% endif %}
+            
+            {% if section.settings.show_bogo %}
+                <div data-target="section-bundle" class="sticky-nav-link" onclick="scrollToSection('section-bundle')">{{ section.settings.bogo_title }}</div>
+            {% endif %}
+            
+            {% if section.settings.show_zone88 %}
+                <div data-target="section-88" class="sticky-nav-link" onclick="scrollToSection('section-88')">$88專區</div>
+            {% endif %}
+            
+            {% if section.settings.show_selected %}
+                <div data-target="section-selected" class="sticky-nav-link" onclick="scrollToSection('section-selected')">{{ section.settings.selected_title }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="tw-max-w-[1200px] tw-mx-auto tw-px-4 tw-space-y-16 tw-py-8">
+        
+        {% if section.settings.show_luckybox %}
+        <section id="section-luckybox" class="tw-w-full">
+            <div class="tw-flex tw-items-center tw-gap-2 tw-mb-4">
+                <div class="tw-w-1 tw-h-6 tw-bg-dt-orange"></div>
+                <h2 class="tw-text-xl tw-font-bold tw-text-white tw-tracking-widest !tw-text-white">{{ section.settings.lucky_title }}</h2>
+            </div>
+            
+            {% assign lucky_product = all_products[section.settings.lucky_product] %}
+            
+            <div class="tw-bg-dt-surface tw-border tw-border-dt-border tw-rounded-xl tw-overflow-hidden tw-relative">
+                <div class="tw-w-full tw-h-auto tw-bg-dt-input tw-relative">
+                   {% if section.settings.lucky_image %}
+                        {{ section.settings.lucky_image | image_url: width: 1200 | image_tag: class: 'tw-w-full tw-h-auto tw-object-contain tw-block', loading: 'lazy', sizes: '(min-width: 768px) 1200px, 100vw' }}
+                   {% else %}
+                        <div class="placeholder-box tw-w-full tw-h-[400px]">福箱圖片 (高度自適應)</div>
+                   {% endif %}
+                </div>
+
+                <div class="tw-p-5 tw-relative">
+                    <div class="tw-flex tw-justify-between tw-items-end tw-mb-6">
+                        <div>
+                            <h3 class="tw-text-2xl tw-font-bold tw-text-white !tw-text-white">{{ lucky_product.title | default: 'APGO 馬年發財福箱' }}</h3>
+                            <div class="tw-text-sm tw-text-dt-textSec tw-mt-1">{{ section.settings.lucky_desc }}</div>
+                        </div>
+                        <div class="tw-text-right">
+                             {% if lucky_product.compare_at_price > lucky_product.price %}
+                                <div class="tw-text-xs tw-text-dt-textSec tw-line-through tw-decoration-dt-orange">{{ lucky_product.compare_at_price | money_without_trailing_zeros }}</div>
+                             {% endif %}
+                            <div class="tw-text-3xl tw-font-mono tw-font-bold tw-text-dt-gold">{{ lucky_product.price | default: 288800 | money_without_trailing_zeros }}</div>
+                        </div>
+                    </div>
+
+                    <div class="tw-bg-[#151515] tw-border tw-border-dt-border tw-rounded-lg tw-p-4 tw-mb-6">
+                        <div class="tw-flex tw-justify-between tw-items-center tw-mb-3 tw-border-b tw-border-dt-border/50 tw-pb-2">
+                            <span class="tw-text-xs tw-font-mono tw-text-dt-orange">內容物預覽</span>
+                            <button onclick="openLuckyContentModal()" class="tw-text-xs tw-text-white hover:tw-text-dt-orange tw-flex tw-items-center tw-gap-1 tw-transition-colors">
+                                查看全部 <i class="fas fa-search-plus"></i>
+                            </button>
+                        </div>
+                        <div class="tw-grid tw-grid-cols-4 tw-gap-2">
+                            {% assign lucky_blocks_count = 0 %}
+                            {% assign total_lucky_value = 0 %}
+                            
+                            {% for block in section.blocks %}
+                                {% if block.type == 'lucky_item' %}
+                                    {% assign lucky_blocks_count = lucky_blocks_count | plus: 1 %}
+                                    {% assign item_total = block.settings.item_value | times: block.settings.item_qty %}
+                                    {% assign total_lucky_value = total_lucky_value | plus: item_total %}
+                                    {% if lucky_blocks_count <= 4 %}
+                                        <div class="tw-aspect-square tw-bg-dt-input tw-rounded tw-border tw-border-dt-border tw-flex tw-items-center tw-justify-center tw-p-1 tw-overflow-hidden">
+                                            {% if block.settings.custom_img %}
+                                                {{ block.settings.custom_img | image_url: width: 100 | image_tag: class: 'tw-w-full tw-h-full tw-object-contain', loading: 'lazy' }}
+                                            {% else %}
+                                                <div class="tw-text-[9px] tw-text-center tw-text-gray-500">
+                                                    {% if block.settings.item_icon == 'main' %}<i class="fas fa-bottle-droplet tw-text-lg tw-mb-1"></i>{% endif %}
+                                                    {% if block.settings.item_icon == 'tool' %}<i class="fas fa-tools tw-text-lg tw-mb-1"></i>{% endif %}
+                                                    {% if block.settings.item_icon == 'gift' %}<i class="fas fa-gift tw-text-lg tw-mb-1"></i>{% endif %}
+                                                    <br>{{ block.settings.item_name | truncate: 4 }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if lucky_blocks_count > 4 %}
+                                <div class="tw-aspect-square tw-bg-dt-input tw-rounded tw-border tw-border-dt-border tw-flex tw-items-center tw-justify-center tw-p-1 tw-cursor-pointer hover:tw-border-dt-orange" onclick="openLuckyContentModal()">
+                                    <div class="tw-text-xs tw-font-bold tw-text-dt-orange">+{{ lucky_blocks_count | minus: 4 }}</div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if lucky_product.available %}
+                        <button onclick="addToCart({{ lucky_product.selected_or_first_available_variant.id }})" class="tw-w-full tw-bg-dt-orange tw-text-black tw-font-bold tw-py-4 tw-rounded tw-shadow-[0_0_15px_rgba(240,132,24,0.3)] hover:tw-bg-[#ff9f43] active:tw-scale-[0.98] tw-transition-all tw-relative tw-overflow-hidden">
+                            <span class="tw-relative tw-z-10">立即搶購</span>
+                            <div class="tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-bg-gradient-to-r tw-from-transparent tw-via-white/20 tw-to-transparent tw--translate-x-full tw-animate-[shimmer_2s_infinite]"></div>
+                        </button>
+                    {% else %}
+                         <button class="tw-w-full tw-bg-gray-700 tw-text-gray-400 tw-font-bold tw-py-4 tw-rounded tw-cursor-not-allowed">已售完</button>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if section.settings.show_bogo %}
+        <section id="section-bundle" class="tw-w-full">
+            <div class="tw-flex tw-items-center tw-gap-2 tw-mb-4">
+                <div class="tw-w-1 tw-h-6 tw-bg-dt-orange"></div>
+                <h2 class="tw-text-xl tw-font-bold tw-text-white tw-tracking-widest !tw-text-white">{{ section.settings.bogo_title }}</h2>
+            </div>
+            
+            <div class="tw-mb-6 tw-rounded-xl tw-overflow-hidden tw-border tw-border-dt-orange/30">
+                <div class="tw-hidden md:tw-block">
+                    {% if section.settings.bogo_banner_pc %}
+                        {{ section.settings.bogo_banner_pc | image_url: width: 1200 | image_tag: class: 'tw-w-full tw-h-auto', loading: 'lazy' }}
+                    {% else %}
+                         <div class="placeholder-box tw-w-full tw-h-[250px]">PC BOGO Banner</div>
+                    {% endif %}
+                </div>
+                 <div class="md:tw-hidden">
+                    {% if section.settings.bogo_banner_mb %}
+                        {{ section.settings.bogo_banner_mb | image_url: width: 750 | image_tag: class: 'tw-w-full tw-h-auto', loading: 'lazy' }}
+                    {% else %}
+                         <div class="placeholder-box tw-w-full tw-h-[200px]">Mobile BOGO Banner</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+                {% for block in section.blocks %}
+                    {% if block.type == 'bogo_item' %}
+                        {% assign p = all_products[block.settings.product] %}
+                        {% if p != empty %}
+                        <div class="tw-bg-dt-surface tw-border tw-border-dt-border tw-rounded-xl tw-p-4 tw-flex tw-flex-col">
+                            <div class="tw-w-full tw-aspect-square tw-bg-dt-input tw-rounded-lg tw-mb-4 tw-overflow-hidden tw-flex tw-items-center tw-justify-center">
+                                {{ p.featured_image | image_url: width: 600 | image_tag: class: 'tw-w-full tw-h-full tw-object-contain', loading: 'lazy' }}
+                            </div>
+                            
+                            <h3 class="tw-text-lg tw-font-bold tw-text-white !tw-text-white tw-mb-2">{{ p.title }}</h3>
+                            
+                            <div class="tw-font-mono tw-text-2xl tw-font-bold tw-text-dt-orange tw-mb-4">
+                                {% if block.settings.custom_price != blank %}
+                                    {{ block.settings.custom_price }}
+                                {% else %}
+                                    {{ p.price | money_without_trailing_zeros }}
+                                {% endif %}
+                            </div>
+                            
+                            <div class="tw-mt-auto">
+                                {% if p.variants.size > 1 %}
+                                    <script type="application/json" id="variants-data-{{ p.id }}">
+                                        [
+                                            {% for variant in p.variants %}
+                                                {
+                                                    "id": {{ variant.id }},
+                                                    "title": "{{ variant.title }}",
+                                                    "price": "{{ variant.price | money_without_trailing_zeros }}",
+                                                    "img": "{% if variant.image %}{{ variant.image | image_url: width: 300 }}{% else %}{{ p.featured_image | image_url: width: 300 }}{% endif %}",
+                                                    "available": {{ variant.available }}
+                                                }{% unless forloop.last %},{% endunless %}
+                                            {% endfor %}
+                                        ]
+                                    </script>
+                                    <button onclick="openVariantModal('{{ p.title | escape }}', {{ p.id }})" class="tw-w-full tw-bg-dt-orange tw-text-black tw-font-black tw-py-3 tw-rounded hover:tw-bg-[#ff9f43] tw-transition-colors tw-flex tw-items-center tw-justify-center tw-gap-2">
+                                        <i class="fas fa-cart-plus"></i> 加入購物車
+                                    </button>
+                                {% else %}
+                                    <button onclick="addToCart({{ p.first_available_variant.id }})" class="tw-w-full tw-bg-dt-orange tw-text-black tw-font-black tw-py-3 tw-rounded hover:tw-bg-[#ff9f43] tw-transition-colors tw-flex tw-items-center tw-justify-center tw-gap-2">
+                                        <i class="fas fa-cart-plus"></i> 加入購物車
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        {% if section.settings.show_zone88 %}
+        <section id="section-88" class="tw-w-full">
+            <div class="tw-flex tw-items-center tw-gap-2 tw-mb-4">
+                <div class="tw-w-1 tw-h-6 tw-bg-dt-orange"></div>
+                <h2 class="tw-text-xl tw-font-bold tw-text-white tw-tracking-widest !tw-text-white">$88 戰術補給</h2>
+            </div>
+            
+            <div class="tw-mb-6 tw-rounded-xl tw-overflow-hidden tw-border tw-border-dt-border">
+                <div class="tw-hidden md:tw-block">
+                    {% if section.settings.zone_88_banner_pc %}
+                        {{ section.settings.zone_88_banner_pc | image_url: width: 1200 | image_tag: class: 'tw-w-full tw-h-auto', loading: 'lazy' }}
+                    {% else %}
+                         <div class="placeholder-box tw-w-full tw-h-[200px]">$88 Banner PC</div>
+                    {% endif %}
+                </div>
+                 <div class="md:tw-hidden">
+                    {% if section.settings.zone_88_banner_mb %}
+                        {{ section.settings.zone_88_banner_mb | image_url: width: 750 | image_tag: class: 'tw-w-full tw-h-auto', loading: 'lazy' }}
+                    {% else %}
+                         <div class="placeholder-box tw-w-full tw-h-[150px]">$88 Banner MB</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="grid-scroll-area scrollbar-hide">
+                {% for block in section.blocks %}
+                    {% if block.type == 'zone88_item' %}
+                        {% assign p = all_products[block.settings.product] %}
+                        {% if p != empty %}
+                        <div class="snap-item tw-bg-dt-surface tw-border tw-border-dt-border tw-rounded-lg tw-p-3 tw-flex tw-flex-col tw-h-full tw-group tw-relative">
+                            <div class="tw-w-full tw-h-[100px] tw-bg-[#111] tw-rounded tw-mb-2 tw-overflow-hidden tw-flex tw-items-center tw-justify-center">
+                                 {% if block.settings.custom_img %}
+                                    {{ block.settings.custom_img | image_url: width: 200 | image_tag: class: 'tw-w-full tw-h-full tw-object-contain', loading: 'lazy' }}
+                                 {% else %}
+                                    {{ p.featured_image | image_url: width: 200 | image_tag: class: 'tw-w-full tw-h-full tw-object-contain', loading: 'lazy' }}
+                                 {% endif %}
+                            </div>
+                            
+                            <h4 class="tw-text-xs tw-text-gray-300 tw-font-bold tw-mb-1 tw-truncate">
+                                {% if block.settings.custom_title != blank %}
+                                    {{ block.settings.custom_title }}
+                                {% else %}
+                                    {{ p.title }}
+                                {% endif %}
+                            </h4>
+                            
+                            <div class="tw-mt-auto tw-flex tw-justify-between tw-items-end">
+                                <div class="tw-font-mono tw-text-lg tw-font-bold tw-text-dt-orange">${{ block.settings.display_price }}</div>
+                                
+                                {% if p.variants.size > 1 %}
+                                     <script type="application/json" id="variants-data-{{ p.id }}">
+                                        [
+                                            {% for variant in p.variants %}
+                                                {
+                                                    "id": {{ variant.id }},
+                                                    "title": "{{ variant.title }}",
+                                                    "price": "{{ variant.price | money_without_trailing_zeros }}",
+                                                    "img": "{% if variant.image %}{{ variant.image | image_url: width: 300 }}{% else %}{{ p.featured_image | image_url: width: 300 }}{% endif %}",
+                                                    "available": {{ variant.available }}
+                                                }{% unless forloop.last %},{% endunless %}
+                                            {% endfor %}
+                                        ]
+                                    </script>
+                                    <button onclick="openVariantModal('{{ p.title | escape }}', {{ p.id }})" class="tw-bg-dt-border tw-text-white tw-w-7 tw-h-7 tw-rounded tw-flex tw-items-center tw-justify-center hover:tw-bg-dt-orange hover:tw-text-black tw-transition-colors"><i class="fas fa-plus tw-text-xs"></i></button>
+                                {% else %}
+                                    <button onclick="addToCart({{ p.first_available_variant.id }})" class="tw-bg-dt-border tw-text-white tw-w-7 tw-h-7 tw-rounded tw-flex tw-items-center tw-justify-center hover:tw-bg-dt-orange hover:tw-text-black tw-transition-colors"><i class="fas fa-plus tw-text-xs"></i></button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        {% if section.settings.show_selected %}
+        <section id="section-selected" class="tw-w-full">
+            <div class="tw-flex tw-items-center tw-gap-2 tw-mb-4">
+                <div class="tw-w-1 tw-h-6 tw-bg-dt-orange"></div>
+                <h2 class="tw-text-xl tw-font-bold tw-text-white tw-tracking-widest !tw-text-white">{{ section.settings.selected_title }}</h2>
+            </div>
+            
+            <div class="tw-mb-6 tw-rounded-xl tw-overflow-hidden">
+                <div class="tw-hidden md:tw-block">
+                    {% if section.settings.selected_banner_pc %}
+                        {{ section.settings.selected_banner_pc | image_url: width: 1200 | image_tag: class: 'tw-w-full tw-h-auto', loading: 'lazy' }}
+                    {% else %}
+                         <div class="placeholder-box tw-w-full tw-h-[200px]">Selected Banner PC</div>
+                    {% endif %}
+                </div>
+                 <div class="md:tw-hidden">
+                    {% if section.settings.selected_banner_mb %}
+                        {{ section.settings.selected_banner_mb | image_url: width: 750 | image_tag: class: 'tw-w-full tw-h-auto', loading: 'lazy' }}
+                    {% else %}
+                         <div class="placeholder-box tw-w-full tw-h-[150px]">Selected Banner MB</div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="tw-grid tw-grid-cols-2 md:tw-grid-cols-4 tw-gap-3">
+                {% for block in section.blocks %}
+                    {% if block.type == 'selected_item' %}
+                        {% assign p = all_products[block.settings.product] %}
+                        {% if p != empty %}
+                        <div class="tw-bg-dt-surface tw-border tw-border-dt-border tw-rounded-lg tw-p-3">
+                            <div class="tw-w-full tw-h-[120px] tw-bg-dt-input tw-rounded tw-mb-2 tw-overflow-hidden tw-flex tw-items-center tw-justify-center">
+                                {{ p.featured_image | image_url: width: 300 | image_tag: class: 'tw-w-full tw-h-full tw-object-contain', loading: 'lazy' }}
+                            </div>
+                            <h4 class="tw-text-sm tw-font-bold tw-text-gray-300 tw-truncate">{{ p.title }}</h4>
+                            <div class="tw-flex tw-justify-between tw-items-center tw-mt-2">
+                                <span class="tw-text-dt-gold tw-font-mono tw-font-bold">{{ p.price | money_without_trailing_zeros }}</span>
+                                <button onclick="addToCart({{ p.first_available_variant.id }})" class="tw-w-6 tw-h-6 tw-bg-dt-border tw-rounded tw-flex tw-items-center tw-justify-center tw-text-xs hover:tw-bg-dt-orange hover:tw-text-black"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+    </div>
+
+    <div id="footer-backdrop" class="tw-fixed tw-inset-0 tw-bg-black/50 tw-z-40 tw-hidden tw-transition-opacity tw-backdrop-blur-sm" onclick="toggleApgoDrawer()"></div>
+
+    <div id="apgo-smart-footer" class="tw-fixed tw-bottom-0 tw-left-0 tw-w-full tw-z-50 tw-transform tw-translate-y-[120%] tw-transition-transform tw-duration-500 tw-ease-out tw-flex tw-flex-col tw-items-end">
+        <div id="apgo-cart-drawer" class="tw-w-full tw-bg-[#121212] tw-border-t tw-border-dt-orange/20 tw-max-h-0 tw-overflow-y-auto tw-transition-[max-height] tw-duration-300 tw-ease-in-out">
+            <div class="tw-p-4 tw-space-y-3" id="apgo-cart-items-container">
+                </div>
+            <div class="tw-h-[80px]"></div>
+        </div>
+        
+        <div class="tw-w-full tw-relative tw-shadow-[0_-10px_40px_rgba(0,0,0,0.9)]">
+            <div class="tw-bg-[#1a1a1a] tw-w-full tw-py-1 tw-px-4 tw-border-t tw-border-dt-orange/50 tw-relative" onclick="toggleApgoDrawer()">
+                <div class="tw-flex tw-justify-between tw-items-center tw-text-[10px] tw-mb-1 tw-cursor-pointer">
+                    <span id="apgo-progress-text" class="tw-text-gray-400 tw-font-mono">任務目標: 解鎖黃金刮刮卡 (尚差 <span class="tw-text-dt-orange tw-font-bold">$2,888</span>)</span>
+                    <i id="apgo-drawer-arrow" class="fas fa-chevron-up tw-text-gray-500 tw-transition-transform tw-duration-300"></i>
+                </div>
+                <div class="tw-w-full tw-bg-black tw-h-1.5 tw-rounded-none tw-overflow-hidden tw-relative">
+                    <div id="apgo-progress-bar" class="tw-bg-dt-orange tw-h-full tw-w-0 tw-transition-all tw-duration-700 tw-ease-out tw-relative">
+                        <div class="tw-absolute tw-inset-0 tw-w-full tw-h-full tw-bg-scan-line tw-animate-scan"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tw-bg-dt-screen/95 tw-backdrop-blur tw-border-t tw-border-dt-border tw-p-3 tw-flex tw-items-center tw-justify-between pb-safe tw-cursor-pointer" onclick="handleApgoFooterClick(event)">
+                <div class="tw-flex tw-flex-col tw-pl-2 tw-group">
+                    <div class="tw-text-dt-textSec tw-text-[10px] tw-font-mono tw-uppercase tw-flex tw-items-center tw-gap-1">
+                        目前裝備數 <span class="tw-text-[9px] tw-bg-dt-border tw-px-1 tw-rounded tw-text-white" id="apgo-cart-count">0</span>
+                    </div>
+                    <div class="tw-text-white tw-font-mono tw-font-bold tw-text-2xl tw-flex tw-items-baseline !tw-text-white">
+                        <span class="tw-text-sm tw-mr-1 tw-text-dt-orange">$</span>
+                        <span id="apgo-cart-total-display">0</span>
+                    </div>
+                    <div class="tw-text-[9px] tw-text-gray-500 tw-mt-0.5 group-hover:tw-text-dt-orange tw-transition-colors">點擊查看明細</div>
+                </div>
+                <a href="/cart" class="tw-bg-dt-orange tw-text-black tw-font-black tw-px-8 tw-py-3 tw-rounded tw-shadow-[0_0_20px_rgba(240,132,24,0.4)] tw-flex tw-items-center tw-gap-2 active:tw-scale-95 tw-transition-transform clip-path-slant tw-z-10 hover:tw-bg-[#ff9f43] !tw-text-black !tw-no-underline">
+                    去結帳 <i class="fas fa-chevron-right tw-text-xs"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="apgo-footer-spacer" class="tw-h-0 tw-transition-all tw-duration-300"></div>
+
+    <div id="modal-lucky-content" class="tw-fixed tw-inset-0 tw-z-[100] tw-hidden">
+        <div class="tw-absolute tw-inset-0 tw-bg-black/80 tw-backdrop-blur-sm" onclick="closeModal('modal-lucky-content')"></div>
+        <div class="tw-absolute tw-bottom-0 md:tw-top-1/2 md:tw-left-1/2 md:tw--translate-x-1/2 md:tw--translate-y-1/2 tw-w-full md:tw-w-[600px] tw-bg-[#121212] tw-border-t md:tw-border tw-border-dt-orange tw-rounded-t-xl md:tw-rounded-xl tw-shadow-2xl tw-flex tw-flex-col tw-max-h-[90vh]">
+            
+            <div class="tw-w-full tw-flex tw-justify-center tw-pt-3 tw-pb-1 md:tw-hidden" onclick="closeModal('modal-lucky-content')">
+                <div class="tw-w-12 tw-h-1.5 tw-bg-gray-700 tw-rounded-full"></div>
+            </div>
+
+            <div class="tw-p-4 tw-border-b tw-border-dt-border tw-bg-[#1a1a1a] tw-flex tw-flex-col tw-items-center">
+                <h3 class="tw-text-lg tw-font-bold tw-text-white !tw-text-white">福箱裝備清單</h3>
+                <div class="tw-mt-1 tw-text-xs tw-text-gray-400">
+                    總價值 <span class="tw-line-through tw-mr-1">${{ total_lucky_value }}</span> 
+                    <i class="fas fa-arrow-right tw-text-dt-orange tw-mx-1"></i> 
+                    驚喜價 <span class="tw-text-dt-gold tw-font-bold tw-text-lg">{{ lucky_product.price | default: 288800 | money_without_trailing_zeros }}</span>
+                </div>
+            </div>
+            <div class="tw-p-4 tw-overflow-y-auto tw-bg-[#0a0a0a] tw-grid tw-grid-cols-3 md:tw-grid-cols-4 tw-gap-3">
+                 {% for block in section.blocks %}
+                    {% if block.type == 'lucky_item' %}
+                        <div class="tw-bg-dt-input tw-border tw-border-dt-border tw-rounded tw-p-2 tw-flex tw-flex-col tw-items-center tw-text-center tw-relative">
+                             <div class="tw-w-full tw-aspect-square tw-mb-2 tw-flex tw-items-center tw-justify-center">
+                                 {% if block.settings.custom_img %}
+                                    {{ block.settings.custom_img | image_url: width: 100 | image_tag: class: 'tw-w-full tw-h-full tw-object-contain', loading: 'lazy' }}
+                                 {% else %}
+                                    <div class="tw-text-[9px] tw-text-gray-600">
+                                        ICON
+                                    </div>
+                                 {% endif %}
+                            </div>
+                            <div class="tw-text-xs tw-text-gray-300 tw-font-bold tw-leading-tight">{{ block.settings.item_name }}</div>
+                            <div class="tw-absolute tw-top-1 tw-right-1 tw-bg-dt-border tw-text-white tw-text-[9px] tw-px-1 tw-rounded tw-font-mono">x{{ block.settings.item_qty }}</div>
+                        </div>
+                    {% endif %}
+                 {% endfor %}
+            </div>
+            <div class="tw-p-4 tw-bg-[#1a1a1a] tw-border-t tw-border-dt-border">
+                <button onclick="addToCart({{ lucky_product.selected_or_first_available_variant.id }})" class="tw-w-full tw-bg-dt-orange tw-text-black tw-font-bold tw-py-3 tw-rounded tw-shadow-lg">
+                    立即以 {{ lucky_product.price | default: 288800 | money_without_trailing_zeros }} 帶走
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-variant" class="tw-fixed tw-inset-0 tw-z-[100] tw-hidden">
+        <div class="tw-absolute tw-inset-0 tw-bg-black/80 tw-backdrop-blur-sm" onclick="closeModal('modal-variant')"></div>
+        <div class="tw-absolute tw-bottom-0 md:tw-top-1/2 md:tw-left-1/2 md:tw--translate-x-1/2 md:tw--translate-y-1/2 tw-w-full md:tw-w-[500px] tw-bg-[#121212] tw-border-t md:tw-border tw-border-dt-orange tw-rounded-t-xl md:tw-rounded-xl tw-shadow-2xl tw-flex tw-flex-col tw-max-h-[90vh]">
+            
+            <div class="tw-w-full tw-flex tw-justify-center tw-pt-3 tw-pb-1 md:tw-hidden" onclick="closeModal('modal-variant')">
+                <div class="tw-w-12 tw-h-1.5 tw-bg-gray-700 tw-rounded-full"></div>
+            </div>
+
+            <div class="tw-p-4 tw-border-b tw-border-dt-border tw-bg-[#1a1a1a]">
+                <h3 id="variant-title" class="tw-text-lg tw-font-bold tw-text-white !tw-text-white">選擇規格</h3>
+            </div>
+            <div class="tw-p-5 tw-overflow-y-auto">
+                <div id="variant-options" class="tw-grid tw-grid-cols-2 tw-gap-3"></div>
+            </div>
+            <div class="tw-p-4 tw-bg-[#1a1a1a] tw-border-t tw-border-dt-border tw-flex tw-gap-3 pb-safe">
+                <button onclick="closeModal('modal-variant')" class="tw-flex-1 tw-border tw-border-dt-border tw-text-gray-400 tw-py-3 tw-rounded tw-font-mono tw-text-sm">取消</button>
+                <button id="variant-confirm-btn" class="tw-flex-[2] tw-bg-dt-orange tw-text-black tw-font-bold tw-py-3 tw-rounded">加入購物車</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const TARGET_AMOUNT = 2888;
+    let isDrawerOpen = false;
+    let selectedVariantId = null;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        refreshCart();
+        
+        const heroSection = document.getElementById('section-hero');
+        const stickyNav = document.getElementById('apgo-sticky-nav');
+        const placeholder = document.getElementById('nav-placeholder');
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.sticky-nav-link');
+        const navContainer = document.getElementById('sticky-nav-container');
+
+        // Sticky & Scroll Spy
+        window.addEventListener('scroll', () => {
+            const heroHeight = heroSection.offsetHeight;
+            if (window.scrollY > heroHeight) {
+                stickyNav.classList.add('nav-fixed');
+                placeholder.classList.remove('tw-hidden');
+            } else {
+                stickyNav.classList.remove('nav-fixed');
+                placeholder.classList.add('tw-hidden');
+            }
+            
+            let currentSectionId = '';
+            const scrollY = window.scrollY;
+            const viewportHeight = window.innerHeight;
+            const checkPoint = scrollY + (viewportHeight * 0.4);
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                if (checkPoint >= sectionTop && checkPoint < sectionTop + sectionHeight) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            if (currentSectionId) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if(link.getAttribute('data-target') === currentSectionId) {
+                        link.classList.add('active');
+                        const containerWidth = navContainer.clientWidth;
+                        const itemLeft = link.offsetLeft;
+                        const itemWidth = link.clientWidth;
+                        const scrollLeft = itemLeft - (containerWidth / 2) + (itemWidth / 2);
+                        navContainer.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+                    }
+                });
+            }
+        });
+    });
+
+    function scrollToSection(id) {
+        const section = document.getElementById(id);
+        if (section) {
+            const offset = 60; 
+            const top = section.offsetTop - offset;
+            window.scrollTo({
+                top: top,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    function removeFromCart(variantId) {
+        if(!variantId) return;
+        let formData = { 'id': variantId.toString(), 'quantity': 0 };
+        fetch(window.Shopify.routes.root + 'cart/change.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => { refreshCart(); })
+        .catch((error) => { console.error('Error removing item:', error); });
+    }
+
+    function addToCart(variantId) {
+        if(!variantId) return;
+        let formData = { 'items': [{ 'id': variantId, 'quantity': 1 }] };
+        fetch(window.Shopify.routes.root + 'cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(navigator.vibrate) navigator.vibrate(15);
+            closeModal('modal-variant');
+            closeModal('modal-lucky-content');
+            refreshCart(); 
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('加入失敗，請稍後再試');
+        });
+    }
+
+    function refreshCart() {
+        fetch(window.Shopify.routes.root + 'cart.js')
+        .then(response => response.json())
+        .then(cart => { updateFooterUI(cart); });
+    }
+
+    function updateFooterUI(cart) {
+        const footer = document.getElementById('apgo-smart-footer');
+        const spacer = document.getElementById('apgo-footer-spacer');
+        const totalDisplay = document.getElementById('apgo-cart-total-display');
+        const countDisplay = document.getElementById('apgo-cart-count');
+        const progressBar = document.getElementById('apgo-progress-bar');
+        const progressText = document.getElementById('apgo-progress-text');
+        const backdrop = document.getElementById('footer-backdrop');
+        
+        let totalPrice = cart.total_price / 100;
+        
+        totalDisplay.innerText = totalPrice.toLocaleString();
+        countDisplay.innerText = cart.item_count;
+
+        // Toggle Footer Visibility
+        if (cart.item_count > 0) {
+            footer.classList.remove('tw-translate-y-[120%]');
+            spacer.classList.add('tw-h-[140px]');
+        } else {
+            footer.classList.add('tw-translate-y-[120%]');
+            spacer.classList.remove('tw-h-[140px]');
+            // 如果購物車清空，確保遮罩也關閉
+            if(isDrawerOpen) {
+                toggleApgoDrawer();
+            }
+        }
+
+        let percent = Math.min((totalPrice / TARGET_AMOUNT) * 100, 100);
+        progressBar.style.width = percent + '%';
+
+        if (totalPrice >= TARGET_AMOUNT) {
+            progressText.innerHTML = '<span class="tw-text-green-500 tw-font-bold tw-font-mono">[ 任務完成 ]</span> 黃金刮刮卡資格已獲取';
+            progressBar.classList.remove('tw-bg-dt-orange');
+            progressBar.classList.add('tw-bg-green-500');
+        } else {
+            let diff = TARGET_AMOUNT - totalPrice;
+            progressText.innerHTML = `任務目標: 解鎖黃金刮刮卡 (尚差 <span class="tw-text-dt-orange tw-font-bold">$${diff.toLocaleString()}</span>)`;
+            progressBar.classList.add('tw-bg-dt-orange');
+            progressBar.classList.remove('tw-bg-green-500');
+        }
+
+        renderCartItems(cart.items);
+    }
+
+    function renderCartItems(items) {
+        const container = document.getElementById('apgo-cart-items-container');
+        container.innerHTML = '';
+        items.forEach(item => {
+            const itemEl = document.createElement('div');
+            itemEl.className = 'tw-relative tw-flex tw-gap-3 tw-bg-[#1a1a1a] tw-p-2 tw-rounded tw-border tw-border-dt-border tw-group';
+            itemEl.innerHTML = `
+                <div class="tw-w-16 tw-h-16 tw-bg-[#111] tw-border tw-border-dt-border tw-rounded tw-flex tw-items-center tw-justify-center tw-overflow-hidden tw-flex-shrink-0">
+                    <img src="${item.image}" class="tw-w-full tw-h-full tw-object-cover" width="64" height="64">
+                </div>
+                <div class="tw-flex-1 tw-min-w-0 tw-flex tw-flex-col tw-justify-between">
+                    <div class="tw-flex tw-justify-between tw-items-start">
+                        <div class="tw-truncate tw-pr-6">
+                            <div class="tw-text-white tw-text-sm tw-font-bold tw-truncate !tw-text-white">${item.product_title}</div>
+                            ${item.variant_title != 'Default Title' ? `<div class="tw-text-dt-orange tw-text-xs tw-font-mono tw-mt-0.5">${item.variant_title}</div>` : ''}
+                        </div>
+                        <button onclick="removeFromCart(${item.variant_id})" class="tw-text-gray-600 hover:tw-text-dt-danger tw-transition-colors tw-absolute tw-top-2 tw-right-2">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="tw-flex tw-justify-between tw-items-end tw-mt-1">
+                        <div class="tw-text-[10px] tw-font-mono tw-bg-dt-border tw-text-gray-300 tw-px-1.5 tw-py-0.5 tw-rounded">QTY: ${item.quantity}</div>
+                        <div class="tw-text-white tw-font-mono tw-font-bold !tw-text-white">$${(item.price / 100).toLocaleString()}</div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(itemEl);
+        });
+    }
+
+    // [重要] 遮罩與抽屜切換邏輯
+    function toggleApgoDrawer() {
+        const drawer = document.getElementById('apgo-cart-drawer');
+        const arrow = document.getElementById('apgo-drawer-arrow');
+        const backdrop = document.getElementById('footer-backdrop');
+        
+        isDrawerOpen = !isDrawerOpen;
+        
+        if (!isDrawerOpen) {
+            // 關閉狀態
+            drawer.style.maxHeight = '0px';
+            arrow.style.transform = 'rotate(0deg)';
+            backdrop.classList.add('tw-hidden');
+        } else {
+            // 開啟狀態
+            drawer.style.maxHeight = '50vh';
+            arrow.style.transform = 'rotate(180deg)';
+            backdrop.classList.remove('tw-hidden');
+        }
+    }
+
+    function handleApgoFooterClick(e) {
+        if (e.target.closest('a')) return; 
+        toggleApgoDrawer();
+    }
+
+    function openLuckyContentModal() {
+        document.getElementById('modal-lucky-content').classList.remove('tw-hidden');
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.add('tw-hidden');
+    }
+
+    function openVariantModal(productTitle, productId) {
+        const dataScript = document.getElementById(`variants-data-${productId}`);
+        if(!dataScript) { console.error("Variant data not found"); return; }
+        const variants = JSON.parse(dataScript.innerHTML);
+
+        const container = document.getElementById('variant-options');
+        const confirmBtn = document.getElementById('variant-confirm-btn');
+        document.getElementById('variant-title').innerText = productTitle;
+        
+        container.innerHTML = '';
+        selectedVariantId = null;
+        confirmBtn.disabled = true;
+        confirmBtn.classList.add('tw-opacity-50');
+
+        variants.forEach((v, idx) => {
+            const card = document.createElement('div');
+            card.className = 'tw-cursor-pointer tw-relative tw-group';
+            let displayPrice = v.price.replace('$', '').replace('.00', '');
+            
+            card.innerHTML = `
+                <div class="tw-border tw-border-dt-border tw-bg-[#1a1a1a] tw-rounded-lg tw-p-2 tw-transition-all hover:tw-border-gray-500 tw-h-full tw-flex tw-flex-col" id="variant-card-${v.id}">
+                    <div class="tw-w-full tw-aspect-square tw-rounded tw-mb-2 tw-bg-[#111] tw-overflow-hidden">
+                        <img src="${v.img}" class="tw-w-full tw-h-full tw-object-cover" width="200" height="200">
+                    </div>
+                    <div class="tw-mt-auto">
+                        <div class="tw-text-gray-300 tw-text-xs tw-font-bold tw-leading-tight tw-mb-1">${v.title}</div>
+                        <div class="tw-text-dt-orange tw-font-mono tw-font-bold">$${displayPrice}</div>
+                    </div>
+                    <div class="tw-absolute tw-inset-0 tw-border-2 tw-border-dt-orange tw-rounded-lg tw-opacity-0" id="variant-ring-${v.id}"></div>
+                    ${!v.available ? '<div class="tw-absolute tw-inset-0 tw-bg-black/60 tw-flex tw-items-center tw-justify-center tw-text-white tw-text-xs tw-font-bold">售完</div>' : ''}
+                </div>`;
+            
+            if(v.available) {
+                card.onclick = () => {
+                    variants.forEach(vr => {
+                        const ring = document.getElementById(`variant-ring-${vr.id}`);
+                        if(ring) ring.classList.add('tw-opacity-0');
+                    });
+                    document.getElementById(`variant-ring-${v.id}`).classList.remove('tw-opacity-0');
+                    selectedVariantId = v.id;
+                    confirmBtn.disabled = false;
+                    confirmBtn.classList.remove('tw-opacity-50');
+                };
+            }
+            container.appendChild(card);
+        });
+
+        confirmBtn.onclick = () => addToCart(selectedVariantId);
+        document.getElementById('modal-variant').classList.remove('tw-hidden');
+    }
+</script>
+
+{% schema %}
+{
+  "name": "APGO 新春戰術活動頁",
+  "settings": [
+    {
+        "type": "header",
+        "content": "開關設定 (Visibility)"
+    },
+    {
+        "type": "checkbox",
+        "id": "show_luckybox",
+        "label": "啟用福箱區",
+        "default": true
+    },
+    {
+        "type": "checkbox",
+        "id": "show_bogo",
+        "label": "啟用買一送一",
+        "default": true
+    },
+    {
+        "type": "checkbox",
+        "id": "show_zone88",
+        "label": "啟用 $88 專區",
+        "default": true
+    },
+    {
+        "type": "checkbox",
+        "id": "show_selected",
+        "label": "啟用精選商品",
+        "default": true
+    },
+    {
+      "type": "header",
+      "content": "主視覺 (Hero)"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image_pc",
+      "label": "PC 版 Banner (1920x850)"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image_mb",
+      "label": "手機版 Banner (750x1100)"
+    },
+    {
+      "type": "header",
+      "content": "馬年福箱 (Lucky Box)"
+    },
+    {
+      "type": "text",
+      "id": "lucky_title",
+      "label": "區塊標題",
+      "default": "馬年限定福箱"
+    },
+    {
+      "type": "product",
+      "id": "lucky_product",
+      "label": "選擇福箱商品"
+    },
+    {
+      "type": "image_picker",
+      "id": "lucky_image",
+      "label": "福箱形象大圖"
+    },
+    {
+      "type": "text",
+      "id": "lucky_desc",
+      "label": "福箱描述",
+      "default": "內含 30+ 件頂級護理產品與限量周邊"
+    },
+    {
+      "type": "header",
+      "content": "買一送一 (BOGO)"
+    },
+    {
+      "type": "text",
+      "id": "bogo_title",
+      "label": "區塊標題",
+      "default": "熱銷買一送一"
+    },
+    {
+      "type": "image_picker",
+      "id": "bogo_banner_pc",
+      "label": "PC 區塊 Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "bogo_banner_mb",
+      "label": "Mobile 區塊 Banner"
+    },
+    {
+      "type": "header",
+      "content": "$88 專區"
+    },
+    {
+        "type": "image_picker",
+        "id": "zone_88_banner_pc",
+        "label": "PC 區塊 Banner"
+    },
+    {
+        "type": "image_picker",
+        "id": "zone_88_banner_mb",
+        "label": "Mobile 區塊 Banner"
+    },
+    {
+      "type": "header",
+      "content": "精選好物 (Selected)"
+    },
+    {
+      "type": "text",
+      "id": "selected_title",
+      "label": "區塊標題",
+      "default": "精選好物"
+    },
+    {
+      "type": "image_picker",
+      "id": "selected_banner_pc",
+      "label": "PC 區塊 Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "selected_banner_mb",
+      "label": "Mobile 區塊 Banner"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "lucky_item",
+      "name": "福箱內容物 (自定義)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "item_name",
+          "label": "物品名稱",
+          "default": "琉璃釉鍍膜"
+        },
+        {
+          "type": "number",
+          "id": "item_qty",
+          "label": "數量",
+          "default": 1
+        },
+        {
+          "type": "number",
+          "id": "item_value",
+          "label": "單品價值 (計算總值用)",
+          "default": 500
+        },
+        {
+            "type": "image_picker",
+            "id": "custom_img",
+            "label": "上傳圖片 (選填)",
+            "info": "若上傳圖片將優先顯示，未上傳則顯示圖示"
+        },
+        {
+          "type": "select",
+          "id": "item_icon",
+          "label": "圖示類型 (無圖片時顯示)",
+          "options": [
+            {"value": "main", "label": "藥劑瓶 (Main)"},
+            {"value": "tool", "label": "工具 (Tool)"},
+            {"value": "gift", "label": "禮物 (Gift)"}
+          ],
+          "default": "main"
+        }
+      ]
+    },
+    {
+      "type": "bogo_item",
+      "name": "買一送一商品",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "選擇商品"
+        },
+        {
+           "type": "text",
+           "id": "custom_price",
+           "label": "自訂顯示價格 (必填)",
+           "default": "1,999",
+           "info": "請直接輸入想顯示的價格文字"
+        }
+      ]
+    },
+    {
+      "type": "zone88_item",
+      "name": "$88 專區商品",
+      "settings": [
+        {
+            "type": "product",
+            "id": "product",
+            "label": "選擇商品"
+        },
+        {
+            "type": "image_picker",
+            "id": "custom_img",
+            "label": "自訂圖片 (選填)",
+            "info": "覆蓋商品原圖"
+        },
+        {
+            "type": "text",
+            "id": "custom_title",
+            "label": "自訂顯示名稱 (選填)",
+            "info": "若不填寫則顯示原產品名稱"
+        },
+        {
+            "type": "text",
+            "id": "display_price",
+            "label": "顯示價格",
+            "default": "88"
+        }
+      ]
+    },
+    {
+      "type": "selected_item",
+      "name": "精選商品",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "選擇商品"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO 新春戰術活動頁",
+      "blocks": [
+        {"type": "lucky_item"},
+        {"type": "lucky_item"}
+      ]
+    }
+  ]
+}
+{% endschema %}

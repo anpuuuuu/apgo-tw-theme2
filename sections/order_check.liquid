@@ -1,0 +1,871 @@
+{% comment %}
+  APGO 訂單查詢系統 v4.3 (UI Scroll Top Fix)
+  修正重點：
+  1. [UX Fix] 將自動滾動改為 `block: 'start'` (頂部對齊)。
+     解決單筆訂單商品過多導致卡片過長時，畫面被拉到中間、看不到訂單頭部的問題。
+  2. 列表模式也同步修正為頂部對齊。
+{% endcomment %}
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+<style>
+  /* --- APGO 品牌強制樣式 --- */
+  
+  #apgo-tracking-section {
+    background-color: #050505 !important;
+    color: #E5E5E5 !important;
+    font-family: 'Noto Sans TC', sans-serif !important;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .apgo-bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  #apgo-tracking-section .apgo-card {
+    background-color: #141414 !important;
+    border: 1px solid #2A2A2A !important;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6) !important;
+    position: relative;
+    z-index: 10;
+    /* 這裡設定了滾動邊距，確保 scrollIntoView 時不會貼頂 */
+    scroll-margin-top: 120px; 
+  }
+
+  /* 強制手機版輸入框 16px 防止放大 */
+  #apgo-tracking-section input, 
+  #apgo-tracking-section select {
+    background-color: #1A1A1A !important;
+    border: 1px solid #2A2A2A !important;
+    color: #FFFFFF !important;
+    box-shadow: none !important; 
+    -webkit-appearance: none;
+    font-size: 16px !important;
+  }
+  
+  #apgo-tracking-section input:focus, 
+  #apgo-tracking-section select:focus {
+    border-color: {{ section.settings.accent_color }} !important;
+    outline: none !important;
+    box-shadow: 0 0 0 1px {{ section.settings.accent_color }} !important;
+  }
+
+  #apgo-tracking-section .apgo-btn-primary {
+    background-color: {{ section.settings.accent_color }} !important;
+    color: #050505 !important;
+    border: none !important;
+    font-weight: 700 !important;
+    box-shadow: 0 0 15px {{ section.settings.accent_color | color_modify: 'alpha', 0.5 }} !important;
+  }
+
+  #apgo-tracking-section .apgo-btn-track {
+    background: linear-gradient(90deg, {{ section.settings.accent_color }}, #ea580c) !important;
+    color: #050505 !important;
+    border: none !important;
+    box-shadow: 0 0 20px {{ section.settings.accent_color | color_modify: 'alpha', 0.4 }} !important;
+  }
+
+  #apgo-tracking-section .apgo-btn-secondary {
+    background-color: transparent !important;
+    border: 1px solid #2A2A2A !important;
+    color: #9CA3AF !important;
+  }
+
+  #apgo-tracking-section .status-badge {
+    background-color: #1A1A1A !important;
+    border: 1px solid #2A2A2A !important;
+    color: {{ section.settings.accent_color }} !important;
+  }
+  
+  #apgo-tracking-section .step-circle {
+    background-color: #141414 !important;
+    border: 2px solid #2A2A2A !important;
+    color: #525252 !important;
+    position: relative;
+    z-index: 20 !important;
+  }
+
+  .timeline-bar-bg, .timeline-bar-progress {
+    z-index: 1 !important;
+  }
+
+  #apgo-tracking-section .step-circle-active {
+    border-color: {{ section.settings.accent_color }} !important;
+    color: {{ section.settings.accent_color }} !important;
+    background-color: #141414 !important;
+    box-shadow: 0 0 15px {{ section.settings.accent_color | color_modify: 'alpha', 0.4 }} !important;
+  }
+
+  #apgo-tracking-section .text-apgo-force { color: {{ section.settings.accent_color }} !important; }
+  #apgo-tracking-section .text-white-force { color: #FFFFFF !important; }
+  #apgo-tracking-section .text-muted-force { color: #9CA3AF !important; }
+  
+  #apgo-tracking-section .timeline-bar-active { background-color: {{ section.settings.accent_color }} !important; }
+  
+  #apgo-tracking-section .product-item {
+    border-bottom: 1px solid #2A2A2A !important;
+  }
+  #apgo-tracking-section .product-item:last-child {
+    border-bottom: none !important;
+  }
+  
+  #apgo-tracking-section ::placeholder { color: #4B5563 !important; opacity: 1 !important; }
+  
+  .order-list-item:hover {
+      border-color: {{ section.settings.accent_color }} !important;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: #1A1A1A; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #555; }
+</style>
+
+<div id="apgo-tracking-section">
+
+    {% if section.settings.show_bg_effect %}
+    <div class="apgo-bg-layer">
+        <div class="absolute top-[-5%] right-[-10%] w-[500px] h-[500px] rounded-full blur-[120px]" 
+             style="background-color: {{ section.settings.accent_color }}; opacity: 0.15;"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-blue-600/5 rounded-full blur-[100px]"></div>
+    </div>
+    {% endif %}
+
+    <main class="flex-grow flex items-center justify-center p-4 relative z-10 w-full max-w-lg mx-auto my-10">
+        
+        <div id="search-card" class="apgo-card w-full rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden transition-all duration-300">
+            <div class="absolute top-0 left-0 w-full h-1" style="background: linear-gradient(90deg, transparent, {{ section.settings.accent_color }}, transparent); opacity: 0.8;"></div>
+            
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-14 h-14 rounded-full text-2xl mb-4 border" 
+                     style="background-color: rgba(255, 107, 0, 0.1) !important; color: {{ section.settings.accent_color }} !important; border-color: rgba(255, 107, 0, 0.3) !important;">
+                    <i class="ph ph-package"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-white-force mb-2">{{ section.settings.heading_text }}</h1>
+                <p class="text-muted-force text-sm">{{ section.settings.subheading_text }}</p>
+            </div>
+
+            <form id="tracking-form" onsubmit="handleSearch(event)" class="space-y-5">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-muted-force uppercase tracking-wider ml-1">{{ section.settings.label_order_id }}</label>
+                    <div class="relative">
+                        <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-force"><i class="ph ph-identification-card text-lg"></i></div>
+                        <input type="text" id="order-id" required placeholder="{{ section.settings.placeholder_order_id }}" 
+                            class="w-full rounded-xl py-3.5 pl-11 pr-4 font-mono transition-all"
+                            oninput="checkInputs()">
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-muted-force uppercase tracking-wider ml-1">{{ section.settings.label_phone }}</label>
+                    <div class="flex gap-2">
+                        <select id="phone-country" class="rounded-xl px-3 text-sm font-mono">
+                            <option value="+886">台灣 (+886)</option>
+                            <option value="+852">香港 (+852)</option>
+                            <option value="+81">日本 (+81)</option>
+                        </select>
+                        <input type="tel" id="phone-number" required placeholder="{{ section.settings.placeholder_phone }}"
+                            class="flex-1 rounded-xl py-3.5 px-4 font-mono transition-all"
+                            oninput="checkInputs()">
+                    </div>
+                </div>
+                <button type="submit" id="submit-btn" disabled
+                    class="apgo-btn-primary w-full py-4 mt-4 rounded-xl font-bold text-base flex items-center justify-center gap-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.01]">
+                    <span>{{ section.settings.btn_search_text }}</span><i class="ph-bold ph-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+
+        <div id="order-list-card" class="apgo-card hidden w-full rounded-2xl p-6 shadow-2xl animate-[slideUp_0.4s_ease-out_forwards]">
+            <div class="flex justify-between items-center mb-6 border-b border-[#2A2A2A] pb-4">
+                <h2 class="text-xl font-bold text-white-force">請選擇訂單</h2>
+                <button onclick="resetSearch()" class="text-muted-force hover:text-white transition-colors"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <p class="text-sm text-muted-force mb-4">找到了 <span id="order-count" class="text-apgo-force font-bold">0</span> 筆符合的訂單：</p>
+            <div id="order-list-container" class="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                </div>
+        </div>
+
+        <div id="result-card" class="apgo-card hidden w-full rounded-2xl overflow-hidden shadow-2xl animate-[slideUp_0.4s_ease-out_forwards]">
+            <div class="p-6 border-b border-[#2A2A2A] flex justify-between items-start" style="background-color: #1A1A1A !important;">
+                <div>
+                    <span id="res-status-text" class="status-badge inline-block px-2 py-0.5 rounded text-xs font-bold border mb-2">查詢中...</span>
+                    <h2 id="res-display-order-id" class="text-xl font-bold text-white-force font-mono">#-------</h2>
+                    <p id="res-order-date" class="text-muted-force text-xs mt-1">下單時間：-</p>
+                </div>
+                <button id="back-btn" onclick="resetSearch()" class="text-muted-force hover:text-white transition-colors"><i class="ph ph-x text-xl"></i></button>
+            </div>
+
+            <div class="p-6 md:p-8">
+                
+                <div id="error-msg-block" class="hidden text-center mb-8">
+                    <div class="border rounded-xl p-6" style="background-color: rgba(239, 68, 68, 0.1) !important; border-color: rgba(239, 68, 68, 0.3) !important;">
+                        <div class="text-red-500 text-3xl mb-2"><i class="ph-fill ph-warning-circle"></i></div>
+                        <h3 class="text-red-500 font-bold text-lg">{{ section.settings.err_title }}</h3>
+                        <p class="text-muted-force text-sm mt-2">{{ section.settings.err_msg }}</p>
+                        <button class="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 transition-colors">聯繫客服</button>
+                    </div>
+                </div>
+
+                <div id="normal-timeline-block">
+                    <div class="relative flex justify-between items-center mb-10 mx-2">
+                        <div class="timeline-bar-bg absolute top-1/2 left-0 w-full h-1 -z-10 rounded-full" style="background-color: #2A2A2A !important;"></div>
+                        <div id="timeline-progress" class="timeline-bar-progress absolute top-1/2 left-0 w-0 h-1 -z-10 rounded-full shadow-glow transition-all duration-700 ease-out" style="background-color: {{ section.settings.accent_color }} !important;"></div>
+
+                        <div class="flex flex-col items-center gap-2 timeline-step relative" data-step="1">
+                            <div class="step-circle w-8 h-8 rounded-full border-2 flex items-center justify-center z-20 transition-all duration-500"><i class="ph-fill ph-package text-xs"></i></div>
+                            <span id="step-text-1" class="step-text text-[10px] font-bold text-muted-force uppercase transition-colors duration-300 absolute -bottom-6 w-24 text-center">{{ section.settings.status_step1 }}</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 timeline-step relative" data-step="2">
+                            <div class="step-circle w-8 h-8 rounded-full border-2 flex items-center justify-center z-20 transition-all duration-500"><i class="ph-fill ph-archive text-xs"></i></div>
+                            <span id="step-text-2" class="step-text text-[10px] font-bold text-muted-force uppercase transition-colors duration-300 absolute -bottom-6 w-20 text-center">{{ section.settings.status_step2 }}</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 timeline-step relative" data-step="3">
+                            <div class="step-circle w-8 h-8 rounded-full border-2 flex items-center justify-center z-20 transition-all duration-500"><i class="ph-fill ph-truck text-xs"></i></div>
+                            <span id="step-text-3" class="step-text text-[10px] font-bold text-muted-force uppercase transition-colors duration-300 absolute -bottom-6 w-20 text-center">{{ section.settings.status_step3 }}</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 timeline-step relative" data-step="4">
+                            <div class="step-circle w-8 h-8 rounded-full border-2 flex items-center justify-center z-20 transition-all duration-500"><i class="ph-fill ph-check-circle text-xs"></i></div>
+                            <span id="step-text-4" class="step-text text-[10px] font-bold text-muted-force uppercase transition-colors duration-300 absolute -bottom-6 w-24 text-center">{{ section.settings.status_step4 }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="tracking-action-area" class="text-center mb-8 hidden opacity-0 transition-opacity duration-500">
+                    <a id="track-link-btn" href="#" target="_blank" class="apgo-btn-track group relative inline-flex items-center justify-center gap-2 w-full py-4 font-bold rounded-xl transition-all shadow-glow hover:scale-[1.02]">
+                        <div class="absolute inset-0 bg-white/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <i class="ph-bold ph-truck text-xl"></i>
+                        <span id="track-btn-text" class="text-lg tracking-wide relative z-10">{{ section.settings.btn_17track_default }}</span>
+                        <i class="ph-bold ph-arrow-right relative z-10 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <p class="text-[10px] text-muted-force mt-3 opacity-60">{{ section.settings.btn_hint_text }}</p>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-white-force border-l-4 border-apgo pl-3" style="border-color: {{ section.settings.accent_color }} !important;">{{ section.settings.label_products }}</h3>
+                    <div id="res-product-list" class="rounded-xl border border-[#2A2A2A]" style="background-color: rgba(26,26,26,0.5);"></div>
+                </div>
+
+                <div class="mt-8 pt-4 border-t border-[#2A2A2A] space-y-3">
+                    <div class="flex justify-between text-sm items-center">
+                        <span class="text-muted-force">物流方式</span>
+                        <span class="text-white-force font-medium" id="res-shipping-method">-</span>
+                    </div>
+                    
+                    <div id="cvs-info-block" class="hidden space-y-3">
+                        <div class="flex justify-between text-sm items-center"><span class="text-muted-force">門市種類</span><span class="text-apgo-force font-medium" id="res-cvs-company">-</span></div>
+                        <div class="flex justify-between text-sm items-center"><span class="text-muted-force">門市名稱</span><span class="text-white-force font-medium" id="res-cvs-store">-</span></div>
+                        <div class="flex justify-between text-sm items-start"><span class="text-muted-force shrink-0">門市地址</span><span class="text-muted-force text-right text-xs max-w-[200px]" id="res-cvs-address">-</span></div>
+                    </div>
+
+                    <div class="flex justify-between text-sm items-center">
+                        <span class="text-muted-force">物流單號</span>
+                        <span class="text-apgo-force font-mono select-all" id="res-tracking-number">-</span>
+                    </div>
+                    
+                    <div class="flex justify-between text-sm pt-3 border-t border-[#2A2A2A]/50 font-bold items-center">
+                        <span class="text-white-force">總金額</span>
+                        <span class="text-apgo-force font-mono text-xl" id="res-total-price">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 bg-[#1A1A1A] border-t border-[#2A2A2A] grid grid-cols-2 gap-3">
+                <button onclick="resetSearch()" class="apgo-btn-secondary py-3 rounded-lg text-sm font-bold transition-colors">{{ section.settings.btn_reset }}</button>
+                <button onclick="location.reload()" class="apgo-btn-secondary py-3 rounded-lg text-sm font-bold transition-colors">{{ section.settings.btn_home }}</button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // --- APGO 訂單查詢系統 v4.4 (UI Tweak: 7-11 Wording) ---
+    // 修正重點：
+    // 1. [UI Fix] 針對 7-11 訂單，強制將進度條第 2 步驟 (Step 2) 顯示為「訂單準備中」。
+    // 2. 保留所有 v4.3 的功能 (自動滾動、多筆訂單列表、資安防護)。
+
+    const GAS_URL = "{{ section.settings.gas_url }}";
+    
+    // 文字設定
+    const TEXT_CONFIG = {
+        step1: "{{ section.settings.status_step1 }}" || "訂單待確認",
+        step2: "{{ section.settings.status_step2 }}" || "理貨中",
+        step3: "{{ section.settings.status_step3 }}" || "運送中",
+        step4: "{{ section.settings.status_step4 }}" || "已送達",
+        status_error: "{{ section.settings.status_error }}" || "狀態異常",
+        btn_default: "{{ section.settings.btn_17track_default }}" || "查看詳細貨態",
+        btn_711: "{{ section.settings.btn_17track_711 }}" || "查看 7-11 貨態",
+        btn_family: "{{ section.settings.btn_17track_family }}" || "查看全家貨態",
+        btn_hct: "{{ section.settings.btn_hct }}" || "查看宅配貨態"
+    };
+
+    const CARRIER_CODES = {
+        FAMILY: '100227', SEVEN: '190456', HCT: '190466'
+    };
+
+    // DOM Elements
+    const searchCard = document.getElementById('search-card');
+    const listCard = document.getElementById('order-list-card'); 
+    const resultCard = document.getElementById('result-card');
+    const submitBtn = document.getElementById('submit-btn');
+    const orderInput = document.getElementById('order-id');
+    const phoneInput = document.getElementById('phone-number');
+    const phoneCountry = document.getElementById('phone-country');
+
+    // Debug Mode
+    const urlParams = new URLSearchParams(window.location.search);
+    const isDebugMode = urlParams.get('debug') === 'true';
+
+    function logDebug(title, data) {
+        if (!isDebugMode) return;
+        let panel = document.getElementById('debug-panel');
+        if (!panel) {
+            panel = document.createElement('div');
+            panel.id = 'debug-panel';
+            panel.className = "mt-6 p-4 bg-gray-900 rounded-xl border border-gray-700 text-left overflow-x-auto text-xs font-mono shadow-inner";
+            document.querySelector('#result-card .p-6.md\\:p-8').appendChild(panel);
+        }
+        const time = new Date().toLocaleTimeString();
+        let content = typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
+        content = content.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        panel.innerHTML += `<div class="mb-4 border-b border-gray-700 pb-2 last:border-0"><div class="font-bold text-green-400 mb-1">[${time}] ${title}</div><pre class="text-gray-300 whitespace-pre-wrap break-all">${content}</pre></div>`;
+    }
+
+    // 輸入法監聽
+    let isComposing = false;
+    if(orderInput) {
+        orderInput.addEventListener('compositionstart', () => { isComposing = true; });
+        orderInput.addEventListener('compositionend', () => { isComposing = false; checkInputs(); });
+        orderInput.addEventListener('input', checkInputs);
+        orderInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && isComposing) { e.preventDefault(); e.stopPropagation(); } });
+    }
+    if(phoneInput) phoneInput.addEventListener('input', checkInputs);
+    if(phoneCountry) phoneCountry.addEventListener('change', checkInputs);
+
+    function checkInputs() {
+        if(!submitBtn || !orderInput || !phoneInput) return;
+        if (isComposing) return;
+        const val = orderInput.value.trim();
+        const valid = val.length >= 1 && phoneInput.value.length >= 8;
+        submitBtn.disabled = !valid;
+        submitBtn.classList.toggle('opacity-50', !valid);
+        submitBtn.classList.toggle('cursor-not-allowed', !valid);
+    }
+
+    function normalizePhone(country, number) {
+        let clean = number.replace(/\D/g, '');
+        if (country === "+886" && clean.startsWith("0")) clean = clean.substring(1);
+        return country + clean;
+    }
+
+    // --- 主搜尋邏輯 ---
+    function handleSearch(e) {
+        if (e) e.preventDefault();
+        if (isComposing) return;
+
+        const oldDebug = document.getElementById('debug-panel');
+        if(oldDebug) oldDebug.remove();
+
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="ph ph-spinner animate-spin text-xl"></i> 查詢中...';
+        submitBtn.disabled = true;
+
+        if (!GAS_URL) {
+            alert('請先在 Shopify 後台設定 GAS URL');
+            submitBtn.innerHTML = originalText;
+            checkInputs(); 
+            return;
+        }
+
+        const payload = { 
+            order_name: orderInput.value.trim(), 
+            phone: normalizePhone(phoneCountry.value, phoneInput.value),
+            debug: isDebugMode 
+        };
+
+        if(isDebugMode) logDebug('📤 發送請求', payload);
+
+        fetch(GAS_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+            body: JSON.stringify(payload)
+        })
+        .then(r => r.json())
+        .then(res => {
+            if(res.status === 'error') {
+                alert('查詢失敗：' + (res.message || '查無此訂單，請確認資料是否相符'));
+                if(isDebugMode) logDebug("❌ 後端錯誤", res);
+            } else {
+                const orders = res.orders || [];
+                
+                if (orders.length === 1) {
+                    showDetail(orders[0]); 
+                } else if (orders.length > 1) {
+                    showOrderList(orders); 
+                } else {
+                    alert('查無資料');
+                }
+                
+                if(isDebugMode) logDebug('✅ 查詢成功', res);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('系統連線錯誤');
+            if(isDebugMode) logDebug('☠️ 系統錯誤', err.toString());
+        })
+        .finally(() => {
+            submitBtn.innerHTML = originalText;
+            checkInputs();
+        });
+    }
+
+    // --- 顯示訂單列表 (使用確認編號) ---
+    function showOrderList(orders) {
+        searchCard.classList.add('hidden');
+        resultCard.classList.add('hidden');
+        listCard.classList.remove('hidden');
+
+        document.getElementById('order-count').innerText = orders.length;
+        const container = document.getElementById('order-list-container');
+        container.innerHTML = '';
+
+        orders.forEach(order => {
+            let statusText = order.external_message || "查詢中";
+            
+            const div = document.createElement('div');
+            div.className = "order-list-item p-4 rounded-xl border border-[#2A2A2A] bg-[#1A1A1A] cursor-pointer transition-all flex justify-between items-center group mb-3";
+            div.onclick = () => showDetail(order, true); 
+
+            div.innerHTML = `
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="font-bold text-white-force text-lg">#${order.confirmation_number}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-[#2A2A2A] text-apgo-force border border-[#2A2A2A]">${statusText}</span>
+                    </div>
+                    <div class="text-xs text-muted-force font-mono">${order.order_created_at.split('T')[0]} • $${Math.floor(order.total_price)}</div>
+                </div>
+                <div class="text-muted-force group-hover:text-apgo-force transition-colors">
+                    <i class="ph-bold ph-caret-right text-xl"></i>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+
+        setTimeout(() => {
+            listCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+
+    // --- 顯示詳細頁 (Scroll Top) ---
+    function showDetail(res, fromList = false) {
+        searchCard.classList.add('hidden');
+        listCard.classList.add('hidden');
+        resultCard.classList.remove('hidden');
+
+        const backBtn = document.getElementById('back-btn');
+        if (fromList) {
+            backBtn.innerHTML = '<i class="ph-bold ph-arrow-left text-xl"></i>';
+            backBtn.onclick = () => {
+                resultCard.classList.add('hidden');
+                listCard.classList.remove('hidden');
+                setTimeout(() => listCard.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+            };
+        } else {
+            backBtn.innerHTML = '<i class="ph-bold ph-x text-xl"></i>';
+            backBtn.onclick = resetSearch;
+        }
+
+        const shipping = res.shipping || {};
+        
+        document.getElementById('res-display-order-id').innerText = res.confirmation_number || res.order_name;
+        document.getElementById('res-order-date').innerText = res.order_created_at ? res.order_created_at.split('T')[0] : '-';
+        document.getElementById('res-tracking-number').innerText = res.tracking_number || '尚未產生';
+        document.getElementById('res-shipping-method').innerText = shipping.method || '宅配/超取';
+        document.getElementById('res-total-price').innerText = '$' + Math.floor(res.total_price || 0);
+
+        const cvsInfoBlock = document.getElementById('cvs-info-block');
+        if (shipping.cvs_store_name) {
+            cvsInfoBlock.classList.remove('hidden');
+            document.getElementById('res-cvs-company').innerText = shipping.cvs_company || '超商';
+            document.getElementById('res-cvs-store').innerText = shipping.cvs_store_name;
+            document.getElementById('res-cvs-address').innerText = shipping.cvs_address || '';
+        } else {
+            cvsInfoBlock.classList.add('hidden');
+        }
+
+        const pList = document.getElementById('res-product-list');
+        pList.innerHTML = (res.products || []).map(p => `
+            <div class="product-item flex items-center justify-between p-4 bg-transparent hover:bg-white/5 transition-colors">
+                <div class="flex-grow pr-4">
+                    <div class="text-sm text-white-force font-bold leading-tight mb-1">${p.title}</div>
+                    ${p.variant_title ? `<div class="text-xs text-muted-force font-mono">${p.variant_title}</div>` : ''}
+                </div>
+                <div class="text-right shrink-0"> 
+                        <div class="text-sm font-mono font-bold text-apgo-force">$${Math.floor(p.price)}</div>
+                        <div class="text-xs text-muted-force mt-1">x${p.quantity}</div>
+                </div>
+            </div>`).join('');
+
+        const logisticInfo = getLogisticInfo(res);
+        const statusResult = calculateStep(res, (logisticInfo.is711 || logisticInfo.isHCT));
+
+        if(isDebugMode) {
+             logDebug('🧮 狀態計算', {
+                 "單號": res.order_name,
+                 "物流": logisticInfo.isFamily ? "全家" : "其他",
+                 "7-11偵測": logisticInfo.is711,
+                 "Step": statusResult.step
+             });
+        }
+
+        if (statusResult.isError) {
+            document.getElementById('normal-timeline-block').classList.add('hidden');
+            document.getElementById('error-msg-block').classList.remove('hidden');
+            document.getElementById('res-status-text').innerText = TEXT_CONFIG.status_error;
+            document.getElementById('res-status-text').className = "inline-block px-2 py-0.5 rounded border mb-2 text-red-500 border-red-900 bg-red-900/20";
+        } else {
+            document.getElementById('normal-timeline-block').classList.remove('hidden');
+            document.getElementById('error-msg-block').classList.add('hidden');
+            
+            document.getElementById('res-status-text').innerText = statusResult.text;
+            document.getElementById('res-status-text').className = "status-badge inline-block px-2 py-0.5 rounded text-xs font-bold border mb-2";
+            
+            document.getElementById('step-text-1').innerText = statusResult.step1Text;
+            document.getElementById('step-text-2').innerText = statusResult.step2Text;
+            document.getElementById('step-text-3').innerText = statusResult.step3Text;
+            document.getElementById('step-text-4').innerText = statusResult.step4Text;
+
+            updateTimeline(statusResult.step);
+        }
+
+        const btnArea = document.getElementById('tracking-action-area');
+        const trackBtn = document.getElementById('track-link-btn');
+        const trackBtnText = document.getElementById('track-btn-text');
+
+        if (logisticInfo.hasTracking && !statusResult.isError) {
+            btnArea.classList.remove('hidden');
+            setTimeout(() => btnArea.classList.remove('opacity-0'), 100);
+            trackBtn.href = logisticInfo.trackUrl;
+            trackBtnText.innerText = logisticInfo.btnText;
+        } else {
+            btnArea.classList.add('hidden', 'opacity-0');
+        }
+        
+        setTimeout(() => resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
+
+    // --- 核心邏輯 ---
+
+    function getLogisticInfo(res) {
+        const shipping = res.shipping || {};
+        const method = (shipping.method || '').toLowerCase();
+        const company = (shipping.cvs_company || '').toLowerCase();
+        const subtype = (shipping.logistics_subtype || '').toUpperCase();
+        const trackingNum = res.tracking_number;
+
+        const isFamily = method.includes('全家') || company.includes('全家') || company.includes('family') || subtype === 'FAMI';
+        // 增加 7-11 判斷的廣度
+        const is711 = method.includes('7-11') || company.includes('7-eleven') || company.includes('7-11') || subtype === 'UNIMART' || subtype === '7-11';
+        const isHCT = method.includes('新竹') || method.includes('hct') || method.includes('宅配') || subtype === 'HCT';
+
+        let btnText = TEXT_CONFIG.btn_default;
+        let fcCode = ''; 
+
+        if (isFamily) { btnText = TEXT_CONFIG.btn_family; fcCode = CARRIER_CODES.FAMILY; } 
+        else if (is711) { btnText = TEXT_CONFIG.btn_711; fcCode = CARRIER_CODES.SEVEN; } 
+        else if (isHCT) { btnText = TEXT_CONFIG.btn_hct; fcCode = CARRIER_CODES.HCT; }
+
+        let trackUrl = '#';
+        if (trackingNum) {
+            trackUrl = `https://t.17track.net/zh-cn#nums=${trackingNum}`;
+            if (fcCode) trackUrl += `&fc=${fcCode}`;
+        }
+        return { isFamily, is711, isHCT, btnText, trackUrl, hasTracking: !!trackingNum };
+    }
+
+    function calculateStep(res, isSafeMode) {
+        const rawStatus = res.external_status; 
+        const shipStatus = (rawStatus || "").toString().trim(); 
+        const hasTracking = !!res.tracking_number;
+        const tags = res.tags || "";
+        const shipState = res.shipment_status || ""; 
+        
+        // 判斷是否為 7-11 (為了修改 step2Text)
+        const shipping = res.shipping || {};
+        const method = (shipping.method || '').toLowerCase();
+        const company = (shipping.cvs_company || '').toLowerCase();
+        const is711 = method.includes('7-11') || company.includes('7-eleven') || company.includes('7-11');
+
+        let step = 1;
+        let text = TEXT_CONFIG.step1; 
+        let step1Text = TEXT_CONFIG.step1; 
+        let step2Text = TEXT_CONFIG.step2;    
+        let step3Text = TEXT_CONFIG.step3; 
+        let step4Text = TEXT_CONFIG.step4; 
+        let isError = false; 
+
+        const isForceDelivered = shipState === 'delivered' || tags.includes('已取件') || tags.includes('已送達') || tags.includes('取貨成功');
+        if (isForceDelivered) {
+             step = 4; text = "已取件/送達"; step1Text = "賣家準備中"; step2Text = "物流驗收完成"; step4Text = "已取件";
+             // ★ 修正：如果是 7-11 且已送達，Step 2 還是要顯示訂單準備中
+             if (is711) step2Text = "訂單準備中";
+             return { step, text, step1Text, step2Text, step3Text, step4Text, isError };
+        }
+
+        const hctDetails = ['300', '3001', '3002', '3003', '3004', '3006'];
+        if (hctDetails.includes(shipStatus)) {
+             if (shipStatus === '300') { step = 1; text = "賣家準備中"; }
+             else if (['3001', '3002'].includes(shipStatus)) { step = 3; text = "運送中"; step2Text = "物流驗收完成"; }
+             else if (['3003'].includes(shipStatus)) { step = 4; text = "已達門市"; step2Text = "物流驗收完成"; }
+             else if (['3006'].includes(shipStatus)) { step = 4; text = "已送達"; step2Text = "物流驗收完成"; }
+             else if (['3004'].includes(shipStatus)) { step = 2; isError = true; text = "運送異常"; }
+        } else if (isSafeMode) {
+            if (hasTracking) { step = 3; text = "運送中"; step2Text = "已出貨"; } 
+            else { step = 1; text = "訂單待確認"; }
+        } else {
+            if (!hasTracking) { step = 1; text = "訂單待確認"; }
+            else if (['310', '3018', '3032'].includes(shipStatus)) { step = 2; text = "物流驗收中"; }
+            else if (['3001', '3002', '3024'].includes(shipStatus)) { step = 3; text = "運送中"; step2Text = "物流驗收完成"; }
+            else if (['3003', '2063', '2073'].includes(shipStatus)) { step = 4; text = "已達門市"; step2Text = "物流驗收完成"; } 
+            else if (['3006', '2067', '3022'].includes(shipStatus)) { step = 4; text = "已取件"; step4Text = "已取件"; step2Text = "物流驗收完成"; }
+            else if (['2068', '2064', '2065', '2066', '2069', '3004', '2030', '3019', '3020'].includes(shipStatus)) { step = 2; isError = true; text = "運送異常/退回"; }
+            else { if(hasTracking) { step = 1; text = "賣家準備中"; } }
+        }
+        
+        if (step === 4) { step1Text = "賣家準備中"; step2Text = "物流驗收完成"; }
+
+        // ★★★ 針對 7-11 的最終文字修正 ★★★
+        if (is711) {
+            step2Text = "訂單準備中";
+        }
+
+        return { step, text, step1Text, step2Text, step3Text, step4Text, isError };
+    }
+
+    function updateTimeline(step) {
+        const percent = ['0%', '0%', '33%', '66%', '100%'][step];
+        document.getElementById('timeline-progress').style.width = percent;
+        document.querySelectorAll('.timeline-step').forEach(el => {
+            const s = parseInt(el.dataset.step);
+            const circle = el.querySelector('.step-circle');
+            const text = el.querySelector('.step-text');
+            circle.className = "step-circle w-8 h-8 rounded-full border-2 flex items-center justify-center z-20 transition-all duration-500";
+            text.className = "step-text text-[10px] font-bold uppercase transition-colors duration-300 absolute -bottom-6 w-24 text-center";
+            if (s <= step) {
+                circle.classList.add('step-circle-active');
+                text.classList.add('text-apgo-force');
+            } else {
+                circle.classList.add('bg-[#1A1A1A]', 'border-[#2A2A2A]', 'text-[#9CA3AF]');
+                text.classList.add('text-muted-force');
+            }
+        });
+    }
+
+    function resetSearch() {
+        resultCard.classList.add('hidden');
+        listCard.classList.add('hidden');
+        searchCard.classList.remove('hidden');
+        const debug = document.getElementById('debug-panel');
+        if(debug) debug.remove();
+        checkInputs();
+    }
+    
+    checkInputs();
+</script>
+
+{% schema %}
+{
+  "name": "APGO 訂單查詢 v2.9",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "核心設定"
+    },
+    {
+      "type": "text",
+      "id": "gas_url",
+      "label": "Google Apps Script URL",
+      "info": "請填入部署好的 GAS Web App URL"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "主題顏色 (APGO Orange)",
+      "default": "#FF6B00"
+    },
+    {
+        "type": "checkbox",
+        "id": "show_bg_effect",
+        "label": "顯示背景光暈特效",
+        "default": true
+    },
+    {
+      "type": "header",
+      "content": "文字設定 - 搜尋區塊"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "標題",
+      "default": "追蹤您的訂單"
+    },
+    {
+      "type": "text",
+      "id": "subheading_text",
+      "label": "副標題",
+      "default": "請輸入訂單編號或收件人姓名查詢"
+    },
+    {
+      "type": "text",
+      "id": "label_order_id",
+      "label": "訂單編號欄位名稱",
+      "default": "訂單編號 / 收件人姓名"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_order_id",
+      "label": "訂單編號提示文字",
+      "default": "例如：#10153 或 王小明"
+    },
+    {
+      "type": "text",
+      "id": "label_phone",
+      "label": "手機號碼欄位名稱",
+      "default": "手機號碼"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_phone",
+      "label": "手機號碼提示文字",
+      "default": "0973-858-085"
+    },
+    {
+      "type": "text",
+      "id": "btn_search_text",
+      "label": "查詢按鈕文字",
+      "default": "立即查詢"
+    },
+    {
+      "type": "header",
+      "content": "文字設定 - 結果頁面"
+    },
+    {
+      "type": "text",
+      "id": "status_step1",
+      "label": "狀態 1 (確認)",
+      "default": "訂單待確認"
+    },
+    {
+      "type": "text",
+      "id": "status_step2",
+      "label": "狀態 2 (理貨)",
+      "default": "理貨中"
+    },
+    {
+      "type": "text",
+      "id": "status_step3",
+      "label": "狀態 3 (運送)",
+      "default": "運送中"
+    },
+    {
+      "type": "text",
+      "id": "status_step4",
+      "label": "狀態 4 (送達)",
+      "default": "已送達"
+    },
+    {
+      "type": "text",
+      "id": "status_step4_pickup",
+      "label": "狀態 4 (已取件)",
+      "default": "已取件"
+    },
+    {
+      "type": "text",
+      "id": "btn_17track_default",
+      "label": "按鈕文字 (預設)",
+      "default": "查看詳細貨態"
+    },
+    {
+      "type": "text",
+      "id": "btn_17track_711",
+      "label": "按鈕文字 (7-11)",
+      "default": "點擊查看 7-11 詳細貨態"
+    },
+    {
+      "type": "text",
+      "id": "btn_17track_family",
+      "label": "按鈕文字 (全家)",
+      "default": "查看全家詳細貨態"
+    },
+    {
+        "type": "text",
+        "id": "btn_hct",
+        "label": "按鈕文字 (宅配/新竹)",
+        "default": "點擊查看 宅配 詳細貨態"
+    },
+    {
+      "type": "text",
+      "id": "btn_hint_text",
+      "label": "按鈕下方提示",
+      "default": "點擊按鈕前往物流查詢頁面查看即時進度"
+    },
+    {
+      "type": "text",
+      "id": "label_products",
+      "label": "商品內容標題",
+      "default": "商品內容"
+    },
+    {
+      "type": "text",
+      "id": "btn_reset",
+      "label": "查詢其他按鈕",
+      "default": "查詢其他"
+    },
+    {
+      "type": "text",
+      "id": "btn_home",
+      "label": "回首頁按鈕",
+      "default": "回首頁"
+    },
+    {
+      "type": "header",
+      "content": "錯誤訊息"
+    },
+    {
+      "type": "text",
+      "id": "err_title",
+      "label": "錯誤標題",
+      "default": "物流狀態異常"
+    },
+    {
+      "type": "textarea",
+      "id": "err_msg",
+      "label": "錯誤說明",
+      "default": "請聯繫 APGO 客服為您協助處理。"
+    },
+    {
+        "type": "text",
+        "id": "status_error",
+        "label": "狀態標籤 (異常)",
+        "default": "狀態異常"
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO 訂單查詢 v2.9"
+    }
+  ]
+}
+{% endschema %}
