@@ -57,7 +57,7 @@
         "rating_score": "4.9",
         "rating_count": "2,847",
         "show_installment": true,
-        "show_buy_now": true
+        "show_buy_now": false
       }
     },
     "mobile": {
@@ -393,8 +393,6 @@
         "ritual_image": "shopify://shop_images/02-fabric.jpg",
         "ritual_video_url": "",
         "ritual_video_label": "▶ 觀看 Ritual 影片",
-        "ritual_heading": "",
-        "ritual_body": "",
         "timeline_subtitle": "獨家微膠囊鎖香技術，經摩擦釋放香氛，24 小時後仍可辨識。",
         "cmp_col0": "比較項目",
         "cmp_col1": "APGO 超級洗衣精",
