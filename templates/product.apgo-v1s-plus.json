@@ -309,17 +309,6 @@
         "related_collection": "限時特惠-apgo-科技執法測速器"
       }
     },
-    "dtabs": {
-      "type": "apgo-desktop-tabs",
-      "settings": {
-        "rating_score": "4.9",
-        "rating_count": "",
-        "ritual_video_url": "",
-        "ritual_heading": "重新定義<br>洗衣的日常",
-        "ritual_body": "追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的每一件衣物。",
-        "ugc_enabled": false
-      }
-    },
     "apgo_related_qqpb6W": {
       "type": "apgo-related",
       "settings": {
@@ -333,7 +322,6 @@
   "order": [
     "hero",
     "mobile",
-    "dtabs",
     "apgo_related_qqpb6W"
   ]
 }

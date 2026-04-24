@@ -1,8 +1,8 @@
 {% comment %}
-  APGO · Mobile PDP (mobile-only self-contained mega section)
-  Carousel + info + ship card + state-driven tabs + sticky bottom CTA
-  Ported from variants/mobile/m1-classic-plus.jsx
-  Hidden on desktop via CSS (.apgo-mobile-only)
+  APGO · PDP 內容 (shared mega section, mobile + desktop)
+  Mobile: shows full layout — carousel + info + tabs/panels + sticky CTA
+  Desktop: only tabs + panels show (apgo-hero handles top of page).
+  The .apgo-mpdp-mobile-shell wrapper + .apgo-mpdp-sticky are hidden on desktop via CSS.
 {% endcomment %}
 
 {%- liquid
@@ -14,9 +14,12 @@
   endif
 -%}
 
-<section class="apgo-mpdp apgo-mobile-only" data-section-id="{{ section.id }}">
+<section class="apgo-mpdp" data-section-id="{{ section.id }}">
   {% form 'product', product, id: 'apgo-mobile-product-form', class: 'apgo-product-form apgo-mpdp-form' %}
     <input type="hidden" name="id" value="{{ v.id }}" data-apgo-variant-id>
+
+    {%- comment -%} ====== MOBILE-ONLY SHELL: carousel + info block (hidden on desktop) ====== {%- endcomment -%}
+    <div class="apgo-mpdp-mobile-shell">
 
     {%- comment -%} Carousel (video optional + images) {%- endcomment -%}
     <div class="apgo-mpdp-carousel" data-apgo-carousel>
@@ -142,6 +145,9 @@
       </div>
     </div>
 
+    </div>
+    {%- comment -%} ====== END MOBILE-ONLY SHELL ====== {%- endcomment -%}
+
     {%- comment -%} Tabs {%- endcomment -%}
     <div class="apgo-mpdp-tabs" role="tablist" data-apgo-mtabs>
       <button type="button" class="apgo-mpdp-tab active" data-apgo-mtab="desc" role="tab">商品說明</button>
@@ -168,6 +174,24 @@
         <h2 class="apgo-serif">{{ section.settings.ritual_heading | default: '重新定義<br>洗衣的日常' }}</h2>
         <p>{{ section.settings.ritual_body | default: '追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。' }}</p>
       </div>
+
+      {%- comment -%} Free image gallery (image blocks render here in order added) {%- endcomment -%}
+      {%- assign has_imgs = false -%}
+      {%- for block in section.blocks -%}{%- if block.type == 'image' and block.settings.image != blank -%}{%- assign has_imgs = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
+      {%- if has_imgs -%}
+        <div class="apgo-mpdp-images">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'image' and block.settings.image != blank -%}
+              <figure class="apgo-mpdp-image-block" {{ block.shopify_attributes }}>
+                <img src="{{ block.settings.image | image_url: width: 1400 }}" alt="{{ block.settings.caption | default: product.title }}" loading="lazy">
+                {%- if block.settings.caption != blank -%}
+                  <figcaption class="apgo-muted">{{ block.settings.caption }}</figcaption>
+                {%- endif -%}
+              </figure>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
 
       {%- comment -%} Pain × Solutions {%- endcomment -%}
       <div class="apgo-mpdp-pain-wrap">
@@ -340,9 +364,9 @@
 
 {% schema %}
 {
-  "name": "APGO · Mobile PDP",
+  "name": "APGO · PDP 內容（共用）",
   "tag": "section",
-  "class": "apgo-section apgo-section-mobile-pdp",
+  "class": "apgo-section apgo-section-pdp-content",
   "settings": [
     { "type": "header", "content": "顶部 Carousel" },
     { "type": "url",          "id": "video_url",      "label": "影片連結（選填）" },
@@ -368,6 +392,14 @@
     { "type": "collection", "id": "related_collection", "label": "相關商品集合" }
   ],
   "blocks": [
+    {
+      "type": "image",
+      "name": "圖片",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "圖片" },
+        { "type": "text", "id": "caption", "label": "說明（選填）" }
+      ]
+    },
     {
       "type": "pain",
       "name": "痛點 × 解方",
