@@ -70,22 +70,42 @@
       hub from flashing their default dark bg before our scoped overrides hit.
     {%- endcomment -%}
     <style id="apgo-v1s-plus-critical">
-      /* Promo bar (戰術廣播條) — inline bg-color + tw-bg-black on <a> */
-      #apgo-promo-bar,
-      #apgo-promo-bar > a,
-      #apgo-promo-bar [class*="tw-bg-"] {
+      /* --------------------------------------------------------------
+         Promo bar (戰術廣播條) — on first paint, before Tailwind CDN is
+         ready, the <a> has no flex/padding classes applied so it stacks
+         tall and shows its inline background-color (#050505) as a big
+         black block, then collapses ("small black") once Tailwind paints.
+         Fix: hide the entire section until JS removes .apgo-promo--hidden
+         (that handler already runs after DOMContentLoaded + Tailwind).
+         --------------------------------------------------------------- */
+      #apgo-promo-bar.apgo-promo--hidden {
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+      }
+      /* Also neutralize the <a>'s inline bg-color with a more specific
+         attribute selector so even if the hide above is bypassed, the
+         element paints cream not black. */
+      #apgo-promo-bar a[style],
+      #apgo-promo-bar a[class*="tw-bg-"] {
         background: #fdfaf2 !important;
         background-color: #fdfaf2 !important;
       }
-      /* Tactical Hub — dark surface token */
-      [id^="shopify-section-apgo_tactical_hub"],
+
+      /* Tactical Hub — their scoped rule #apgo-hub-<id> beats our class
+         selector, so we target the id-prefix pattern to match specificity. */
+      [id^="apgo-hub-"],
       .apgo-widget-container {
-        background: transparent !important;
-        --dt-bg-surface: #fdfaf2;
-        --dt-bg-input: #f2ece0;
-        --dt-border: #d9d3c3;
+        --dt-bg-screen: #fdfaf2 !important;
+        --dt-bg-surface: #fdfaf2 !important;
+        --dt-bg-input: #f2ece0 !important;
+        --dt-border: #d9d3c3 !important;
       }
-      /* Announcement + header — color-scheme vars */
+      [id^="shopify-section-apgo_tactical_hub"] {
+        background: transparent !important;
+      }
+
+      /* Announcement + header — color-scheme CSS vars */
       announcement-bar-component,
       header-component,
       .header,
