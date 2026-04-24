@@ -178,7 +178,23 @@
         </div>
       </div>
 
-      {%- comment -%} Free image gallery (image blocks render here in order added) {%- endcomment -%}
+      {%- comment -%} Pain × Solutions {%- endcomment -%}
+      <div class="apgo-mpdp-pain-wrap">
+        <h3 class="apgo-serif">日常痛點 · 專屬科學解方</h3>
+        <div class="apgo-mpdp-pain-grid">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'pain' -%}
+              <div class="apgo-mpdp-pain-card" {{ block.shopify_attributes }}>
+                <div class="apgo-muted">{{ block.settings.pain }}</div>
+                <div class="apgo-mpdp-pain-arrow">→</div>
+                <div class="apgo-serif">{{ block.settings.solution }}</div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- comment -%} Free image gallery (image blocks render here, after pain) {%- endcomment -%}
       {%- assign has_imgs = false -%}
       {%- for block in section.blocks -%}{%- if block.type == 'image' and block.settings.image != blank -%}{%- assign has_imgs = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
       {%- if has_imgs -%}
@@ -195,22 +211,6 @@
           {%- endfor -%}
         </div>
       {%- endif -%}
-
-      {%- comment -%} Pain × Solutions {%- endcomment -%}
-      <div class="apgo-mpdp-pain-wrap">
-        <h3 class="apgo-serif">日常痛點 · 專屬科學解方</h3>
-        <div class="apgo-mpdp-pain-grid">
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'pain' -%}
-              <div class="apgo-mpdp-pain-card" {{ block.shopify_attributes }}>
-                <div class="apgo-muted">{{ block.settings.pain }}</div>
-                <div class="apgo-mpdp-pain-arrow">→</div>
-                <div class="apgo-serif">{{ block.settings.solution }}</div>
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-      </div>
 
       {%- comment -%} 24H Timeline (mobile vertical / desktop horizontal) {%- endcomment -%}
       <div class="apgo-mpdp-timeline">

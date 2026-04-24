@@ -24,7 +24,11 @@
   box-sizing: border-box;
 }
 /* Section background — span full width to avoid page bg leaking through */
+.apgo-section,
 .apgo-mpdp,
+.apgo-pdp,
+.apgo-related,
+.apgo-hero,
 .apgo-section-pdp-content { background: var(--apgo-bg); }
 .apgo-section *, .apgo-mpdp *, .apgo-pdp * { box-sizing: border-box; }
 .apgo-serif { font-family: var(--apgo-serif); font-weight: 400; }
@@ -587,27 +591,28 @@
     color: var(--apgo-ink); border-bottom-color: var(--apgo-ink); font-weight: 500;
   }
 
-  /* ---------- Panel: full-width container, inner blocks center themselves ---------- */
-  .apgo-mpdp-panel { padding: 0 32px; max-width: 1280px; margin: 0 auto; }
+  /* ---------- Panel: full-width container, inner blocks decide their own width ---------- */
+  .apgo-mpdp-panel { padding: 0; max-width: none; margin: 0; }
+  /* Centered inner blocks (cap to 1280, with padding) */
+  .apgo-mpdp-pain-wrap,
+  .apgo-mpdp-timeline,
+  .apgo-mpdp-cmp-wrap,
+  .apgo-mpdp-ugc-wrap,
+  .apgo-mpdp-images { max-width: 1280px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px; }
 
-  /* ---------- RITUAL: 2-col side-by-side ---------- */
+  /* ---------- RITUAL: full-width 2-col, no overlay card on desktop ---------- */
   .apgo-mpdp-ritual-wrap {
-    display: grid; grid-template-columns: 1.1fr 0.9fr;
-    gap: 64px; align-items: center; margin: 0 0 96px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; align-items: center; margin: 0 0 96px;
+    width: 100%; max-width: none; padding: 0;
   }
   .apgo-mpdp-ritual {
-    position: relative; margin: 0; border-radius: 16px; overflow: hidden;
+    position: relative; margin: 0; border-radius: 0; overflow: hidden;
   }
-  .apgo-mpdp-ritual img { width: 100%; height: 520px; object-fit: cover; display: block; }
-  .apgo-mpdp-ritual-overlay {
-    position: absolute; left: 24px; right: 24px; bottom: 24px;
-    background: rgba(255,255,255,0.94); color: var(--apgo-ink);
-    padding: 24px 28px; border-radius: 12px;
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  }
-  .apgo-mpdp-overlay-heading { color: var(--apgo-ink); font-size: 20px; }
-  .apgo-mpdp-overlay-body    { color: var(--apgo-muted); }
-  .apgo-mpdp-ritual-text { padding: 0; }
+  .apgo-mpdp-ritual img { width: 100%; height: 600px; object-fit: cover; display: block; }
+  /* Hide the overlay card entirely on desktop — text lives in the right column */
+  .apgo-mpdp-ritual-overlay { display: none !important; }
+  .apgo-mpdp-ritual-text { padding: 0 80px; }
   .apgo-mpdp-ritual-text .apgo-mpdp-kicker { font-size: 12px; letter-spacing: 0.2em; margin-bottom: 20px; }
   .apgo-mpdp-ritual-text h2 { font-size: 40px; line-height: 1.25; margin: 0 0 24px; font-weight: 400; }
   .apgo-mpdp-ritual-text p  { font-size: 15px; line-height: 1.85; color: var(--apgo-muted); margin: 0; }
