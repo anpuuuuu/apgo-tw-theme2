@@ -161,7 +161,7 @@
       <div class="apgo-mpdp-ritual-wrap">
         {%- if section.settings.ritual_image != blank or section.settings.ritual_video_url != blank -%}
           <div class="apgo-mpdp-ritual">
-            {%- comment -%} Mobile: if video URL set, render <video>; else fall back to image with overlay {%- endcomment -%}
+            {%- comment -%} Mobile: video if URL set, else image (desktop hides both) {%- endcomment -%}
             {%- if section.settings.ritual_video_url != blank -%}
               <video class="apgo-mpdp-ritual-video apgo-mpdp-mobile-only"
                      {% if section.settings.ritual_image != blank %}poster="{{ section.settings.ritual_image | image_url: width: 900 }}"{% endif %}
@@ -174,18 +174,19 @@
                    alt="{{ section.settings.ritual_heading }}" loading="lazy">
             {%- endif -%}
 
-            {%- comment -%} Desktop: always full-bleed 16:9 image (no overlay card) {%- endcomment -%}
+            {%- comment -%} Desktop: 1:1 image on the left of the 2-col grid {%- endcomment -%}
             {%- if section.settings.ritual_image != blank -%}
               <img class="apgo-mpdp-ritual-img-desktop apgo-mpdp-desktop-only"
-                   src="{{ section.settings.ritual_image | image_url: width: 1920 }}"
+                   src="{{ section.settings.ritual_image | image_url: width: 1200 }}"
                    alt="{{ section.settings.ritual_heading }}" loading="lazy">
             {%- endif -%}
 
-            {%- comment -%} Mobile-only overlay (heading on image) — hidden when video is present {%- endcomment -%}
+            {%- comment -%} Overlay card — visible on BOTH mobile (heading only) and desktop (heading + body) {%- endcomment -%}
             {%- if section.settings.ritual_video_url == blank and section.settings.ritual_image != blank -%}
-              <div class="apgo-mpdp-ritual-overlay apgo-mpdp-mobile-only">
-                <div class="apgo-mpdp-kicker apgo-mpdp-kicker-inv">— THE RITUAL —</div>
+              <div class="apgo-mpdp-ritual-overlay">
+                <div class="apgo-mpdp-kicker apgo-mpdp-kicker-inv apgo-mpdp-mobile-only">— THE RITUAL —</div>
                 <div class="apgo-serif apgo-mpdp-overlay-heading">{{ section.settings.ritual_heading | default: '重新定義洗衣的日常' | replace: '<br>', '' }}</div>
+                <p class="apgo-mpdp-overlay-body apgo-mpdp-desktop-only">{{ section.settings.ritual_body | default: '追求的不只是乾淨，更是洗滌過程中的「儀式感」。洗衣不再是負擔，是一種展現生活品味的自我選擇。以溫和純淨的配方，打理屬於您的自我空間。' }}</p>
               </div>
             {%- endif -%}
           </div>
