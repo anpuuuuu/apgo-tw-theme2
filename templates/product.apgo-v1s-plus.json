@@ -63,13 +63,6 @@
     "mobile": {
       "type": "apgo-mobile-pdp",
       "blocks": {
-        "image_AjYkFB": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/08-scents.jpg",
-            "caption": ""
-          }
-        },
         "timeline_c9nFjf": {
           "type": "timeline",
           "settings": {
@@ -318,7 +311,6 @@
         }
       },
       "block_order": [
-        "image_AjYkFB",
         "timeline_c9nFjf",
         "timeline_aE7Abp",
         "timeline_gRnMnX",
@@ -364,6 +356,10 @@
         "ritual_image": "shopify://shop_images/02-fabric.jpg",
         "ritual_heading": "重新定義<br>洗衣的日常",
         "ritual_body": "追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。",
+        "timeline_subtitle": "獨家微膠囊鎖香技術，經摩擦釋放香氛，24 小時後仍可辨識。",
+        "cmp_col0": "比較項目",
+        "cmp_col1": "APGO 超級洗衣精",
+        "cmp_col2": "一般市售洗衣精",
         "ugc_enabled": false,
         "related_collection": "限時特惠-apgo-科技執法測速器"
       }
