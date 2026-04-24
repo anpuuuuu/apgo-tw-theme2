@@ -67,18 +67,35 @@
 
 .apgo-hero-grid {
   display: grid;
-  grid-template-columns: 80px 1fr 460px;
-  gap: 32px;
-  align-items: flex-start;
+  grid-template-columns: 1fr 460px;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "main sidebar"
+    "thumbs sidebar";
+  gap: 20px 32px;
+  align-items: start;
 }
+.apgo-main-media { grid-area: main; }
+.apgo-sidebar    { grid-area: sidebar; }
 
-/* Thumb rail */
-.apgo-thumb-rail { display: flex; flex-direction: column; gap: 10px; }
+/* Thumb rail — now horizontal row underneath main image */
+.apgo-thumb-rail {
+  grid-area: thumbs;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.apgo-thumb-rail::-webkit-scrollbar { display: none; }
 .apgo-thumb {
+  flex: 0 0 88px;
+  width: 88px; height: 88px;
   padding: 0; border: 2px solid transparent; border-radius: 10px;
   background: none; cursor: pointer; overflow: hidden; transition: border-color .2s;
 }
-.apgo-thumb img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
+.apgo-thumb img { width: 100%; height: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
 .apgo-thumb.active { border-color: var(--apgo-ink); }
 .apgo-thumb-placeholder { background: var(--apgo-bg-ash); aspect-ratio: 1/1; }
 
@@ -200,7 +217,7 @@
 }
 
 @media (max-width: 1080px) and (min-width: 769px) {
-  .apgo-hero-grid { grid-template-columns: 70px 1fr 380px; gap: 24px; }
+  .apgo-hero-grid { grid-template-columns: 1fr 380px; gap: 16px 24px; }
 }
 
 /* ==========================================================================
@@ -937,25 +954,15 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
   background-color: transparent !important;
 }
 
-/* 7) Hero 主圖區：窄視窗讓縮圖列 (data-apgo-thumb-rail) 排到主圖下方 */
+/* 7) Hero 主圖區：窄視窗讓 sidebar 掉到最下面，主圖 + 縮圖一列 */
 @media (max-width: 900px) {
   .apgo-hero-grid {
     grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "main"
+      "thumbs"
+      "sidebar" !important;
     gap: 16px !important;
   }
-  .apgo-main-media { order: 1; }
-  .apgo-thumb-rail {
-    order: 2;
-    flex-direction: row !important;
-    overflow-x: auto;
-    gap: 8px !important;
-    padding-bottom: 4px;
-    scrollbar-width: none;
-  }
-  .apgo-thumb-rail::-webkit-scrollbar { display: none; }
-  .apgo-thumb {
-    flex: 0 0 72px;
-    width: 72px; height: 72px;
-  }
-  .apgo-sidebar { order: 3; }
+  .apgo-thumb { flex: 0 0 72px; width: 72px; height: 72px; }
 }
