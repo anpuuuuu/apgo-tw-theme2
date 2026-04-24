@@ -388,28 +388,13 @@
 .apgo-mpdp-panel.active { display: block; }
 
 /* Ritual */
-.apgo-mpdp-ritual { position: relative; background: var(--apgo-ink); }
-.apgo-mpdp-ritual-img-mobile { width: 100%; aspect-ratio: 16/10; object-fit: cover; opacity: 0.75; display: block; }
+.apgo-mpdp-ritual { position: relative; background: transparent; border-radius: 12px; overflow: hidden; }
+.apgo-mpdp-ritual-img-mobile { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; }
 .apgo-mpdp-ritual-video { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; background: var(--apgo-ink); }
 /* Hide desktop image on mobile (default state) */
 .apgo-mpdp-ritual-img-desktop { display: none; }
-.apgo-mpdp-ritual-overlay {
-  position: absolute; inset: 0; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; text-align: center; color: var(--apgo-bg);
-}
-.apgo-mpdp-play-sm {
-  width: 56px; height: 56px; border-radius: 50%; background: rgba(253,250,242,0.95);
-  margin-bottom: 12px; display: flex; align-items: center; justify-content: center;
-}
-.apgo-mpdp-play-sm span {
-  display: block; width: 0; height: 0;
-  border-left: 14px solid var(--apgo-ink);
-  border-top: 10px solid transparent; border-bottom: 10px solid transparent;
-  margin-left: 3px;
-}
-.apgo-mpdp-ritual-overlay .apgo-serif { font-size: 16px; margin-top: 6px; }
 
-.apgo-mpdp-ritual-text { padding: 32px 16px; }
+.apgo-mpdp-ritual-text { padding: 24px 16px 32px; }
 .apgo-mpdp-ritual-text h2 { font-size: 22px; font-weight: 300; line-height: 1.4; margin: 12px 0 14px; }
 .apgo-mpdp-ritual-text p { font-size: 13px; line-height: 1.9; color: rgba(45,46,40,0.75); margin: 0; }
 
@@ -629,30 +614,6 @@
   /* Forcefully hide mobile-only media on desktop (override base display rules) */
   .apgo-mpdp-ritual > .apgo-mpdp-ritual-img-mobile,
   .apgo-mpdp-ritual > .apgo-mpdp-ritual-video { display: none !important; visibility: hidden; height: 0 !important; width: 0 !important; }
-  /* Overlay card: translucent cream centered on the image */
-  .apgo-mpdp-ritual-overlay {
-    position: absolute;
-    left: 24px; right: 24px;
-    top: 50%; transform: translateY(-50%);
-    background: rgba(253, 250, 242, 0.95);
-    color: var(--apgo-ink);
-    padding: 22px 26px; border-radius: 12px;
-    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-    box-shadow: 0 8px 24px rgba(45, 46, 40, 0.08);
-    text-align: center;
-    line-height: 1.5;
-    display: block;
-  }
-  .apgo-mpdp-overlay-heading {
-    color: var(--apgo-ink); font-size: 20px; font-weight: 400;
-    line-height: 1.4; margin: 0 0 10px;
-    font-family: var(--apgo-serif);
-  }
-  .apgo-mpdp-overlay-body {
-    color: var(--apgo-muted); font-size: 12px;
-    line-height: 1.8; margin: 0; opacity: 1;
-    display: block !important;
-  }
   /* Right text column */
   .apgo-mpdp-ritual-text { padding: 0; text-align: left; }
   .apgo-mpdp-ritual-text .apgo-mpdp-kicker { font-size: 12px; letter-spacing: 0.4em; color: var(--apgo-sage); margin-bottom: 16px; }
@@ -794,9 +755,6 @@
 /* Tablet fallback: 769–1080px — keep horizontal layouts but tighten spacing */
 @media (min-width: 769px) and (max-width: 1080px) {
   .apgo-mpdp-ritual-wrap { gap: 32px; padding: 48px 24px; }
-  .apgo-mpdp-ritual-overlay { left: 16px; right: 16px; padding: 18px 20px; top: 50%; transform: translateY(-50%); }
-  .apgo-mpdp-overlay-heading { font-size: 18px; margin-bottom: 8px; }
-  .apgo-mpdp-overlay-body { font-size: 12px; line-height: 1.75; }
   .apgo-mpdp-ritual-text h2 { font-size: 26px; }
   .apgo-mpdp-tabs { gap: 32px; padding: 0 24px; }
   .apgo-mpdp-pain-wrap { padding: 48px 0; }

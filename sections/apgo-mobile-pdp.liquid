@@ -181,14 +181,6 @@
                    alt="{{ section.settings.ritual_heading }}" loading="lazy">
             {%- endif -%}
 
-            {%- comment -%} Overlay card — visible on BOTH mobile (heading only) and desktop (heading + body) {%- endcomment -%}
-            {%- if section.settings.ritual_video_url == blank and section.settings.ritual_image != blank -%}
-              <div class="apgo-mpdp-ritual-overlay">
-                <div class="apgo-mpdp-kicker apgo-mpdp-kicker-inv apgo-mpdp-mobile-only">— THE RITUAL —</div>
-                <div class="apgo-serif apgo-mpdp-overlay-heading">{{ section.settings.ritual_heading | default: '重新定義洗衣的日常' | replace: '<br>', '' }}</div>
-                <p class="apgo-mpdp-overlay-body apgo-mpdp-desktop-only">{{ section.settings.ritual_body | default: '追求的不只是乾淨，更是洗滌過程中的「儀式感」。洗衣不再是負擔，是一種展現生活品味的自我選擇。以溫和純淨的配方，打理屬於您的自我空間。' }}</p>
-              </div>
-            {%- endif -%}
           </div>
         {%- endif -%}
 
