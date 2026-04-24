@@ -11,6 +11,46 @@
   "sections": {
     "hero": {
       "type": "apgo-hero",
+      "blocks": {
+        "trust_cell_wAMJQb": {
+          "type": "trust_cell",
+          "settings": {
+            "icon": "✓",
+            "title": "SGS",
+            "subtitle": "國家級認證"
+          }
+        },
+        "trust_cell_hLX4TY": {
+          "type": "trust_cell",
+          "settings": {
+            "icon": "✈",
+            "title": "免運",
+            "subtitle": "滿 799"
+          }
+        },
+        "trust_cell_m8BqfH": {
+          "type": "trust_cell",
+          "settings": {
+            "icon": "↻",
+            "title": "30 天",
+            "subtitle": "鑑賞退換"
+          }
+        },
+        "trust_cell_Xi7Aj7": {
+          "type": "trust_cell",
+          "settings": {
+            "icon": "☘",
+            "title": "台灣",
+            "subtitle": "製造"
+          }
+        }
+      },
+      "block_order": [
+        "trust_cell_wAMJQb",
+        "trust_cell_hLX4TY",
+        "trust_cell_m8BqfH",
+        "trust_cell_Xi7Aj7"
+      ],
       "settings": {
         "kicker": "Aroma Aesthetics",
         "show_rating": true,
@@ -161,6 +201,68 @@
             "key": "認證",
             "value": "SGS 99.9% 抗菌合格"
           }
+        },
+        "review_qebHMt": {
+          "type": "review",
+          "settings": {
+            "name": "黃小姐",
+            "date": "2026.03.12",
+            "scent": "淨心棉花",
+            "body": "香味非常柔和不刺鼻，寶寶衣服洗起來也很放心。"
+          }
+        },
+        "review_TTyTyM": {
+          "type": "review",
+          "settings": {
+            "name": "Emma L.",
+            "date": "2026.03.08",
+            "scent": "清雅白茶",
+            "body": "白茶香是我的最愛，淡雅不俗氣。瓶身設計也很精緻。"
+          }
+        },
+        "review_yHC9jf": {
+          "type": "review",
+          "settings": {
+            "name": "陳先生",
+            "date": "2026.02.28",
+            "scent": "海洋晨曦",
+            "body": "深層潔淨效果非常明顯，兒子運動服洗完真的像新的一樣。"
+          }
+        },
+        "faq_4bqmMM": {
+          "type": "faq",
+          "settings": {
+            "q": "可以洗嬰幼兒衣服嗎？",
+            "a": "可以。通過 SGS 檢驗、8 大零添加、pH 中性，專為敏感肌與嬰幼兒設計。"
+          }
+        },
+        "faq_m8J3DJ": {
+          "type": "faq",
+          "settings": {
+            "q": "用量比一般洗衣精省嗎？",
+            "a": "是。超濃縮配方用量僅需 1/3，1L 可洗約 50 次。"
+          }
+        },
+        "faq_KdqbX3": {
+          "type": "faq",
+          "settings": {
+            "q": "不同香氛可混用嗎？",
+            "a": "可以。每款都經過香氛師調配，相互搭配不衝突。"
+          }
+        },
+        "faq_PwmgAk": {
+          "type": "faq",
+          "settings": {
+            "q": "運送需要幾天？",
+            "a": "下單後 24 小時內出貨，黑貓宅配 1-2 個工作日送達。"
+          }
+        },
+        "faq_mhTqnX": {
+          "type": "faq",
+          "settings": {
+            "q": "可以退換貨嗎？",
+            "a": "未拆封商品提供 30 天鑑賞期，可無條件退換貨。"
+          }
         }
       },
       "block_order": [
@@ -182,7 +284,15 @@
         "spec_6pNMkj",
         "spec_LMBkxw",
         "spec_77QxXd",
-        "spec_g9aw4q"
+        "spec_g9aw4q",
+        "review_qebHMt",
+        "review_TTyTyM",
+        "review_yHC9jf",
+        "faq_4bqmMM",
+        "faq_m8J3DJ",
+        "faq_KdqbX3",
+        "faq_PwmgAk",
+        "faq_mhTqnX"
       ],
       "settings": {
         "video_url": "",
@@ -210,12 +320,11 @@
         "ugc_enabled": false
       }
     },
-    "related": {
+    "apgo_related_qqpb6W": {
       "type": "apgo-related",
-      "disabled": true,
       "settings": {
         "heading": "您可能也喜歡",
-        "collection": "",
+        "collection": "所有產品",
         "columns": 4,
         "limit": 4
       }
@@ -225,6 +334,6 @@
     "hero",
     "mobile",
     "dtabs",
-    "related"
+    "apgo_related_qqpb6W"
   ]
 }
