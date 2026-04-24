@@ -805,7 +805,9 @@ body.template-suffix-apgo-v1s-plus header-component *[class*="color-"] {
   color: var(--apgo-ink) !important;
 }
 
-/* Descendants — text / links / icons */
+/* Descendants — text / links only. Do NOT force fill/stroke on SVG icons here:
+   Shopify header icons are line icons (fill="none" stroke="currentColor"); forcing
+   fill: currentColor turns them into solid blobs. Just set color, let SVG natives decide. */
 body.template-suffix-apgo-v1s-plus announcement-bar-component *,
 body.template-suffix-apgo-v1s-plus .announcement-bar *,
 body.template-suffix-apgo-v1s-plus header-component *,
@@ -813,13 +815,6 @@ body.template-suffix-apgo-v1s-plus header.header *,
 body.template-suffix-apgo-v1s-plus .header * {
   color: var(--apgo-ink) !important;
   border-color: var(--apgo-line) !important;
-}
-body.template-suffix-apgo-v1s-plus announcement-bar-component svg,
-body.template-suffix-apgo-v1s-plus header-component svg,
-body.template-suffix-apgo-v1s-plus header.header svg,
-body.template-suffix-apgo-v1s-plus .header svg {
-  fill: currentColor !important;
-  stroke: currentColor !important;
 }
 
 /* Cart badge: invert to dark pill on cream so the number stays legible */
@@ -887,6 +882,80 @@ body.template-suffix-apgo-v1s-plus .apgo-footer a:hover {
   color: var(--apgo-sage) !important;
 }
 body.template-suffix-apgo-v1s-plus .apgo-footer svg {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+/* 5) Footer 社群 icon：翻轉成「深色方塊 + 米白 icon」 */
+body.template-suffix-apgo-v1s-plus .apgo-footer .apgo-social-link {
+  background: var(--apgo-ink) !important;
+  background-color: var(--apgo-ink) !important;
+  border: 1px solid var(--apgo-ink) !important;
+  border-radius: 8px !important;   /* 方形（微圓角） */
+  color: var(--apgo-bg) !important;
+}
+body.template-suffix-apgo-v1s-plus .apgo-footer .apgo-social-link,
+body.template-suffix-apgo-v1s-plus .apgo-footer .apgo-social-link * {
+  color: var(--apgo-bg) !important;
+}
+body.template-suffix-apgo-v1s-plus .apgo-footer .apgo-social-link svg,
+body.template-suffix-apgo-v1s-plus .apgo-footer .apgo-social-link i {
+  color: var(--apgo-bg) !important;
   fill: currentColor !important;
-  stroke: currentColor !important;
+}
+body.template-suffix-apgo-v1s-plus .apgo-footer .apgo-social-link:hover {
+  background: var(--apgo-sage) !important;
+  border-color: var(--apgo-sage) !important;
+}
+
+/* 6) APGO Tactical Hub：翻轉內建 --dt-* 變數為 cream 主題，保留橙色重點 */
+body.template-suffix-apgo-v1s-plus .apgo-widget-container,
+body.template-suffix-apgo-v1s-plus .apgo-widget-container * {
+  --dt-bg-screen: #fdfaf2;
+  --dt-bg-surface: #fdfaf2;     /* cream — trigger + panel bg */
+  --dt-bg-input: #f2ece0;       /* slightly ashy cream for inner cards */
+  --dt-text-secondary: #5a5b55; /* muted ink for secondary text */
+  --dt-border: #d9d3c3;         /* apgo-line */
+  /* --dt-signal-orange 保留橙色，不覆寫 */
+}
+/* 面板 & 觸發按鈕：確保字色轉成深墨，不被外層 .apgo-footer * 規則誤傷 */
+body.template-suffix-apgo-v1s-plus .apgo-widget-container .hub-panel,
+body.template-suffix-apgo-v1s-plus .apgo-widget-container .hub-trigger,
+body.template-suffix-apgo-v1s-plus .apgo-widget-container .hub-panel * {
+  color: var(--apgo-ink);
+}
+/* 保留橙色的標題/圖示 */
+body.template-suffix-apgo-v1s-plus .apgo-widget-container [style*="orange"],
+body.template-suffix-apgo-v1s-plus .apgo-widget-container .item-icon,
+body.template-suffix-apgo-v1s-plus .apgo-widget-container .hub-trigger {
+  color: var(--dt-signal-orange, #f08418);
+}
+/* 防「還沒載入前閃一下黑底」— section 外層 shopify-section 保持透明 */
+body.template-suffix-apgo-v1s-plus #shopify-section-apgo_tactical_hub_Nyn4XK,
+body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* 7) Hero 主圖區：窄視窗讓縮圖列 (data-apgo-thumb-rail) 排到主圖下方 */
+@media (max-width: 900px) {
+  .apgo-hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .apgo-main-media { order: 1; }
+  .apgo-thumb-rail {
+    order: 2;
+    flex-direction: row !important;
+    overflow-x: auto;
+    gap: 8px !important;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .apgo-thumb-rail::-webkit-scrollbar { display: none; }
+  .apgo-thumb {
+    flex: 0 0 72px;
+    width: 72px; height: 72px;
+  }
+  .apgo-sidebar { order: 3; }
 }
