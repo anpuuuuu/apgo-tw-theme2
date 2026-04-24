@@ -63,6 +63,41 @@
     "mobile": {
       "type": "apgo-mobile-pdp",
       "blocks": {
+        "image_3XkXAz": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/08-scents.jpg",
+            "caption": ""
+          }
+        },
+        "pain_LDhBMY": {
+          "type": "pain",
+          "settings": {
+            "pain": "洗不掉的頑垢",
+            "solution": "超濃縮酵素活性"
+          }
+        },
+        "pain_bwLixy": {
+          "type": "pain",
+          "settings": {
+            "pain": "室內晾衣的霉味",
+            "solution": "奈米消臭技術"
+          }
+        },
+        "pain_7WwNne": {
+          "type": "pain",
+          "settings": {
+            "pain": "護衣護色的掙扎",
+            "solution": "中性護色配方"
+          }
+        },
+        "pain_ynmwTw": {
+          "type": "pain",
+          "settings": {
+            "pain": "短暫的芬芳",
+            "solution": "24H 留香技術"
+          }
+        },
         "timeline_c9nFjf": {
           "type": "timeline",
           "settings": {
@@ -106,34 +141,6 @@
             "label": "隔日",
             "description": "依然清爽可辨識",
             "strength": 30
-          }
-        },
-        "pain_LDhBMY": {
-          "type": "pain",
-          "settings": {
-            "pain": "洗不掉的頑垢",
-            "solution": "超濃縮酵素活性"
-          }
-        },
-        "pain_bwLixy": {
-          "type": "pain",
-          "settings": {
-            "pain": "室內晾衣的霉味",
-            "solution": "奈米消臭技術"
-          }
-        },
-        "pain_7WwNne": {
-          "type": "pain",
-          "settings": {
-            "pain": "護衣護色的掙扎",
-            "solution": "中性護色配方"
-          }
-        },
-        "pain_ynmwTw": {
-          "type": "pain",
-          "settings": {
-            "pain": "短暫的芬芳",
-            "solution": "24H 留香技術"
           }
         },
         "compare_hEzUej": {
@@ -308,18 +315,46 @@
             "q": "可以退換貨嗎？",
             "a": "未拆封商品提供 30 天鑑賞期，可無條件退換貨。"
           }
+        },
+        "ugc_a6ehf8": {
+          "type": "ugc",
+          "settings": {
+            "image": "shopify://shop_images/10-closing.jpg",
+            "handle": "",
+            "likes": 100,
+            "url": ""
+          }
+        },
+        "ugc_qrcPrV": {
+          "type": "ugc",
+          "settings": {
+            "image": "shopify://shop_images/07-matrix.jpg",
+            "handle": "",
+            "likes": 100,
+            "url": ""
+          }
+        },
+        "ugc_CHBLDa": {
+          "type": "ugc",
+          "settings": {
+            "image": "shopify://shop_images/09-ritual.jpg",
+            "handle": "",
+            "likes": 100,
+            "url": ""
+          }
         }
       },
       "block_order": [
+        "image_3XkXAz",
+        "pain_LDhBMY",
+        "pain_bwLixy",
+        "pain_7WwNne",
+        "pain_ynmwTw",
         "timeline_c9nFjf",
         "timeline_aE7Abp",
         "timeline_gRnMnX",
         "timeline_FKMAmz",
         "timeline_DXkk3R",
-        "pain_LDhBMY",
-        "pain_bwLixy",
-        "pain_7WwNne",
-        "pain_ynmwTw",
         "compare_hEzUej",
         "compare_YBNYNt",
         "compare_anDepg",
@@ -342,25 +377,26 @@
         "faq_m8J3DJ",
         "faq_KdqbX3",
         "faq_PwmgAk",
-        "faq_mhTqnX"
+        "faq_mhTqnX",
+        "ugc_a6ehf8",
+        "ugc_qrcPrV",
+        "ugc_CHBLDa"
       ],
       "settings": {
         "video_url": "",
-        "video_poster": "shopify://shop_images/02-fabric.jpg",
         "video_label": "產品實測影片 · 60s",
         "kicker": "AROMA AESTHETICS",
         "show_rating": true,
         "rating_score": "4.9",
         "rating_count": "2847",
         "show_installment": true,
-        "ritual_image": "shopify://shop_images/02-fabric.jpg",
         "ritual_heading": "重新定義<br>洗衣的日常",
         "ritual_body": "追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。",
         "timeline_subtitle": "獨家微膠囊鎖香技術，經摩擦釋放香氛，24 小時後仍可辨識。",
         "cmp_col0": "比較項目",
         "cmp_col1": "APGO 超級洗衣精",
         "cmp_col2": "一般市售洗衣精",
-        "ugc_enabled": false,
+        "ugc_enabled": true,
         "related_collection": "限時特惠-apgo-科技執法測速器"
       }
     },
