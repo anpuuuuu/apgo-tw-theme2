@@ -1,0 +1,21 @@
+{% comment %}
+  共用 CTA 按鈕 · 可用於主購物車 / 次要行動
+  用法：{% render 'apgo-cta-button', label: '加入購物車', style: 'primary', url: '#' %}
+{% endcomment %}
+
+{%- assign style = style | default: 'primary' -%}
+{%- assign bg = '#2D2E28' -%}
+{%- assign fg = '#F6F1E7' -%}
+{%- if style == 'secondary' -%}
+  {%- assign bg = 'transparent' -%}
+  {%- assign fg = '#2D2E28' -%}
+{%- elsif style == 'sage' -%}
+  {%- assign bg = '#F6F1E7' -%}
+  {%- assign fg = '#2D2E28' -%}
+{%- endif -%}
+
+{% if url %}<a href="{{ url }}"{% else %}<button type="{{ type | default: 'button' }}"{% endif %}
+  class="apgo-cta apgo-cta--{{ style }}"
+  style="display:inline-block; padding:16px 32px; background:{{ bg }}; color:{{ fg }}; border:{% if style == 'secondary' %}1px solid #2D2E28{% else %}none{% endif %}; border-radius:999px; font-size:13px; letter-spacing:0.15em; font-weight:500; text-decoration:none; cursor:pointer; text-align:center;">
+  {{ label }}
+</{% if url %}a{% else %}button{% endif %}>

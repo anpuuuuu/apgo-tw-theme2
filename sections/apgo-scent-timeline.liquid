@@ -1,0 +1,72 @@
+{% comment %} Section: 24H Scent Timeline · 立即可用 {% endcomment %}
+
+<section class="apgo-section apgo-timeline-section" data-section-id="{{ section.id }}">
+  <div class="apgo-container" style="padding:80px 32px 60px;">
+    <div style="text-align:center; margin-bottom:44px;">
+      <div class="apgo-kicker" style="margin-bottom:12px;">— {{ section.settings.kicker }} —</div>
+      <h3 class="apgo-serif" style="font-size:28px; font-weight:400; margin:0;">{{ section.settings.heading }}</h3>
+      {% if section.settings.subtitle != blank %}
+        <p class="apgo-muted" style="font-size:13px; margin:10px auto 0; max-width:520px; line-height:1.8;">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="apgo-timeline">
+        <div class="apgo-timeline-track"></div>
+        <div class="apgo-timeline-row">
+          {% for block in section.blocks %}
+            <div style="text-align:center;" {{ block.shopify_attributes }}>
+              <div class="apgo-display" style="font-size:28px; color:var(--apgo-sage); letter-spacing:0.1em; margin-bottom:4px;">{{ block.settings.hour }}</div>
+              <div class="apgo-timeline-dot"></div>
+              <div class="apgo-serif" style="font-size:15px; margin-bottom:8px;">{{ block.settings.label }}</div>
+              <div class="apgo-muted" style="font-size:11px; line-height:1.7; margin-bottom:10px;">{{ block.settings.description }}</div>
+              <div style="height:4px; background:rgba(94,111,93,0.15); border-radius:2px; overflow:hidden;">
+                <div style="height:100%; width:{{ block.settings.strength }}%; background:var(--apgo-sage); transition:width 0.6s;"></div>
+              </div>
+              <div class="apgo-muted" style="font-size:10px; margin-top:4px;">香氛強度 {{ block.settings.strength }}%</div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      {% render 'apgo-placeholder', name: '24H 留香時間軸', hint: '請新增 5 個時間點 block（0H / 6H / 12H / 18H / 24H）' %}
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "APGO · 24H Timeline",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "英文副標", "default": "24H LASTING" },
+    { "type": "text", "id": "heading", "label": "標題", "default": "持續一整天的香氛" },
+    { "type": "textarea", "id": "subtitle", "label": "副標", "default": "獨家微膠囊鎖香技術，經摩擦釋放香氛，24 小時後仍可辨識。" }
+  ],
+  "blocks": [
+    {
+      "type": "point",
+      "name": "時間點",
+      "settings": [
+        { "type": "text", "id": "hour", "label": "時間（例：0H / 6H）" },
+        { "type": "text", "id": "label", "label": "情境標題" },
+        { "type": "text", "id": "description", "label": "描述" },
+        { "type": "range", "id": "strength", "label": "香氛強度 %", "min": 0, "max": 100, "step": 5, "default": 100 }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "APGO · 24H Timeline",
+      "blocks": [
+        { "type": "point", "settings": { "hour": "0H",  "label": "洗滌完成", "description": "基調 · 前段花香綻放", "strength": 100 }},
+        { "type": "point", "settings": { "hour": "6H",  "label": "日常穿著", "description": "中段 · 木質底香展現", "strength": 85 }},
+        { "type": "point", "settings": { "hour": "12H", "label": "午後",     "description": "後調 · 溫潤麝香持續", "strength": 65 }},
+        { "type": "point", "settings": { "hour": "18H", "label": "傍晚",     "description": "尾調 · 淡雅純淨感",   "strength": 45 }},
+        { "type": "point", "settings": { "hour": "24H", "label": "隔日",     "description": "依然清爽 · 可辨識",   "strength": 30 }}
+      ]
+    }
+  ]
+}
+{% endschema %}

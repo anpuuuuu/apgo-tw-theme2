@@ -62,6 +62,10 @@
 
 	
   {% render 'shogun-head' %}
+
+  {%- if template.suffix == 'apgo-v1s-plus' -%}
+    {{ 'apgo-pdp.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
 </head>
 
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}" data-shop-host="{{ shop.permanent_domain }}">

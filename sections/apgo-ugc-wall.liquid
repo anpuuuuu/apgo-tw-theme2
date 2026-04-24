@@ -1,0 +1,97 @@
+{% comment %}
+  Section: UGC Instagram Wall · 預設關閉
+  開啟條件：
+    (A) 建立 Metaobject: ugc_post（image/handle/likes/instagram_url）
+    (B) 或 手動新增 ugc_block 做為過渡方案
+{% endcomment %}
+
+{% if section.settings.enabled %}
+  <section class="apgo-section apgo-ugc" data-section-id="{{ section.id }}">
+    <div class="apgo-container" style="padding:60px 32px;">
+      <div style="text-align:center; margin-bottom:32px;">
+        <div class="apgo-kicker" style="margin-bottom:10px;">— {{ section.settings.kicker }} —</div>
+        <h3 class="apgo-serif" style="font-size:24px; font-weight:400; margin:0 0 6px;">{{ section.settings.heading }}</h3>
+        <p class="apgo-muted" style="font-size:12px; margin:0;">{{ section.settings.subheading }}</p>
+      </div>
+
+      {%- comment -%} Data source: Metaobject first, fallback to blocks {%- endcomment -%}
+      {%- assign posts = section.settings.ugc_posts.value -%}
+
+      {% if posts and posts.size > 0 %}
+        <div class="apgo-ugc-grid">
+          {% for post in posts limit: 12 %}
+            <a href="{{ post.instagram_url }}" target="_blank" rel="noopener" class="apgo-ugc-cell">
+              <img src="{{ post.image | image_url: width: 400 }}" alt="{{ post.handle }}" loading="lazy">
+              <span class="apgo-ugc-user">@{{ post.handle }}</span>
+              <span class="apgo-ugc-likes">♡ {{ post.likes }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      {% elsif section.blocks.size > 0 %}
+        <div class="apgo-ugc-grid">
+          {% for block in section.blocks %}
+            {% if block.type == 'ugc_block' %}
+              <a href="{{ block.settings.instagram_url | default: '#' }}" target="_blank" rel="noopener" class="apgo-ugc-cell" {{ block.shopify_attributes }}>
+                {% if block.settings.image %}
+                  <img src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ block.settings.handle }}" loading="lazy">
+                {% endif %}
+                <span class="apgo-ugc-user">@{{ block.settings.handle }}</span>
+                <span class="apgo-ugc-likes">♡ {{ block.settings.likes }}</span>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        {% render 'apgo-placeholder', name: 'UGC Instagram 牆',
+           hint: '請完成以下任一選項：
+             (A) 建立 Metaobject「ugc_post」並在 Section 設定綁定
+             (B) 或於此 Section 新增 UGC block（過渡方案）' %}
+      {% endif %}
+
+      {% if section.settings.more_url != blank %}
+        <div style="text-align:center; margin-top:24px;">
+          <a href="{{ section.settings.more_url }}" target="_blank" rel="noopener"
+             style="display:inline-block; padding:12px 32px; border:1px solid var(--apgo-ink); border-radius:999px; font-size:13px; letter-spacing:0.15em; text-decoration:none; color:var(--apgo-ink);">
+            查看更多 Instagram →
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "APGO · UGC Wall",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "啟用此區塊", "default": false, "info": "等 UGC 資料準備好再開啟" },
+    { "type": "text", "id": "kicker", "label": "英文副標", "default": "#APGOLAUNDRY" },
+    { "type": "text", "id": "heading", "label": "標題", "default": "用戶實拍 · Instagram" },
+    { "type": "text", "id": "subheading", "label": "副標", "default": "2,100+ 位顧客分享他們的洗衣時光" },
+    { "type": "header", "content": "資料來源" },
+    {
+      "type": "metaobject_list",
+      "id": "ugc_posts",
+      "metaobject_type": "ugc_post",
+      "label": "UGC 貼文（推薦）",
+      "info": "建好 Metaobject「ugc_post」後在此選取；若未建，使用下方 block 作為過渡"
+    },
+    { "type": "url", "id": "more_url", "label": "「查看更多」連結", "info": "例：Instagram 主頁" }
+  ],
+  "blocks": [
+    {
+      "type": "ugc_block",
+      "name": "UGC 貼文（過渡方案）",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "圖片" },
+        { "type": "text", "id": "handle", "label": "IG Handle（不含 @）" },
+        { "type": "number", "id": "likes", "label": "讚數" },
+        { "type": "url", "id": "instagram_url", "label": "Instagram 原貼文連結" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [{ "name": "APGO · UGC Wall" }]
+}
+{% endschema %}

@@ -1,0 +1,133 @@
+/* ============================================
+   APGO PDP V1S+ · Shared Styles
+   Based on: variants/v1-classic-plus.jsx
+   ============================================ */
+
+:root {
+  --apgo-bg:          #F6F1E7;  /* 奶霧杏 */
+  --apgo-bg-alt:      #FDFAF2;  /* 象牙白 */
+  --apgo-bg-ash:      #E8E2D4;  /* 沙色 */
+  --apgo-ink:         #2D2E28;  /* 墨黑 */
+  --apgo-sage:        #5E6F5D;  /* 莫蘭迪綠 */
+  --apgo-sage-light:  #8BA089;
+  --apgo-line:        rgba(94,111,93,0.15);
+  --apgo-muted:       rgba(45,46,40,0.55);
+
+  --apgo-radius-pill: 999px;
+  --apgo-radius-card: 12px;
+  --apgo-radius-img:  10px;
+  --apgo-radius-sm:   4px;
+
+  --apgo-font-serif:   'Noto Serif TC', 'Cormorant Garamond', serif;
+  --apgo-font-sans:    'Noto Sans TC', sans-serif;
+  --apgo-font-display: 'Cormorant Garamond', serif;
+}
+
+/* Reset within APGO sections */
+.apgo-section * { box-sizing: border-box; }
+.apgo-section { background: var(--apgo-bg); color: var(--apgo-ink); font-family: var(--apgo-font-sans); }
+
+.apgo-container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+.apgo-serif     { font-family: var(--apgo-font-serif); }
+.apgo-sans      { font-family: var(--apgo-font-sans); }
+.apgo-display   { font-family: var(--apgo-font-display); font-style: italic; }
+.apgo-muted     { color: var(--apgo-muted); }
+
+.apgo-kicker {
+  font-family: var(--apgo-font-display);
+  font-size: 12px;
+  letter-spacing: 0.4em;
+  color: var(--apgo-sage);
+  text-transform: uppercase;
+}
+
+/* CTA */
+.apgo-cta:hover { opacity: 0.9; }
+.apgo-cta--secondary:hover { background: var(--apgo-ink); color: var(--apgo-bg); }
+
+/* Product grid (gallery + info) */
+.apgo-pdp-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 48px; padding: 40px 0; }
+@media (max-width: 900px) { .apgo-pdp-grid { grid-template-columns: 1fr; gap: 24px; padding: 20px 0; } }
+
+/* Trust badges */
+.apgo-trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.apgo-trust-cell {
+  padding: 12px 4px; text-align: center;
+  background: var(--apgo-bg-alt);
+  border: 1px solid rgba(94,111,93,0.18);
+  border-radius: var(--apgo-radius-img);
+}
+.apgo-trust-icon { font-size: 18px; color: var(--apgo-sage); margin-bottom: 4px; }
+
+/* Timeline */
+.apgo-timeline { position: relative; padding: 0 40px; }
+.apgo-timeline-track {
+  position: absolute; left: 40px; right: 40px; top: 46px; height: 4px;
+  background: linear-gradient(to right, var(--apgo-sage), var(--apgo-sage-light), #B8CAB4, #D6DFD3);
+  border-radius: 2px;
+}
+.apgo-timeline-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; position: relative; }
+.apgo-timeline-dot {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--apgo-ink); margin: 8px auto 18px;
+  position: relative; z-index: 2;
+  box-shadow: 0 0 0 4px var(--apgo-bg);
+}
+
+/* Comparison table */
+.apgo-comparison-table {
+  max-width: 880px; margin: 0 auto;
+  background: var(--apgo-bg);
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid rgba(94,111,93,0.18);
+}
+.apgo-comparison-head {
+  display: grid; grid-template-columns: 1.4fr 1fr 1fr;
+  background: var(--apgo-ink); color: var(--apgo-bg);
+}
+.apgo-comparison-head > div { padding: 16px 20px; font-size: 14px; text-align: center; }
+.apgo-comparison-head > div:first-child { text-align: left; font-size: 12px; letter-spacing: 0.15em; }
+.apgo-comparison-head > div:not(:first-child) { border-left: 1px solid rgba(246,241,231,0.2); }
+.apgo-comparison-row {
+  display: grid; grid-template-columns: 1.4fr 1fr 1fr;
+  border-top: 1px solid rgba(94,111,93,0.12);
+}
+.apgo-comparison-row > div { padding: 16px 20px; font-size: 13px; }
+.apgo-comparison-row .apgo-cell-feature { color: rgba(45,46,40,0.7); }
+.apgo-comparison-row .apgo-cell-apgo { text-align: center; background: rgba(94,111,93,0.08); border-left: 1px solid rgba(94,111,93,0.12); font-family: var(--apgo-font-serif); }
+.apgo-comparison-row .apgo-cell-competitor { text-align: center; border-left: 1px solid rgba(94,111,93,0.12); color: rgba(45,46,40,0.55); }
+.apgo-win-mark { color: var(--apgo-sage); margin-right: 6px; }
+
+/* UGC grid */
+.apgo-ugc-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.apgo-ugc-cell { position: relative; aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden; cursor: pointer; }
+.apgo-ugc-cell img { width: 100%; height: 100%; object-fit: cover; }
+.apgo-ugc-user { position: absolute; bottom: 8px; left: 8px; color: #fff; font-size: 10px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+.apgo-ugc-likes { position: absolute; top: 8px; right: 8px; color: #fff; font-size: 11px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+
+@media (max-width: 900px) {
+  .apgo-trust-grid { grid-template-columns: repeat(2, 1fr); }
+  .apgo-timeline { padding: 0; }
+  .apgo-timeline-row { grid-template-columns: 1fr; gap: 10px; }
+  .apgo-timeline-track { display: none; }
+  .apgo-comparison-head > div,
+  .apgo-comparison-row > div { padding: 10px 8px; font-size: 11px; }
+  .apgo-ugc-grid { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+}
+
+/* Pain-point card */
+.apgo-pain-card {
+  padding: 24px; background: var(--apgo-bg);
+  border: 1px solid var(--apgo-line);
+  border-radius: var(--apgo-radius-card);
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: center;
+}
+
+/* Quiz banner */
+.apgo-quiz-banner {
+  padding: 48px 32px;
+  background: linear-gradient(135deg, var(--apgo-sage), #3E4F3E);
+  color: var(--apgo-bg);
+  display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center;
+}
+@media (max-width: 900px) { .apgo-quiz-banner { grid-template-columns: 1fr; text-align: center; } }

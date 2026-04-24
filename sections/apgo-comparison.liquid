@@ -1,0 +1,72 @@
+{% comment %} Section: Comparison Table · vs 一般洗衣精 · 立即可用 {% endcomment %}
+
+<section class="apgo-section apgo-comparison" data-section-id="{{ section.id }}">
+  <div class="apgo-container" style="padding:60px 32px; background:var(--apgo-bg-alt); margin:0 -32px; border-top:1px solid var(--apgo-line); border-bottom:1px solid var(--apgo-line);">
+    <div style="text-align:center; margin-bottom:36px;">
+      <div class="apgo-kicker" style="margin-bottom:12px;">— {{ section.settings.kicker }} —</div>
+      <h3 class="apgo-serif" style="font-size:28px; font-weight:400; margin:0;">{{ section.settings.heading }}</h3>
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="apgo-comparison-table">
+        <div class="apgo-comparison-head">
+          <div>{{ section.settings.col_label }}</div>
+          <div class="apgo-serif">{{ section.settings.col_apgo }}</div>
+          <div style="opacity:0.75;">{{ section.settings.col_competitor }}</div>
+        </div>
+        {% for block in section.blocks %}
+          <div class="apgo-comparison-row" {{ block.shopify_attributes }}>
+            <div class="apgo-cell-feature">{{ block.settings.feature }}</div>
+            <div class="apgo-cell-apgo">
+              {% if block.settings.apgo_wins %}<span class="apgo-win-mark">✓</span>{% endif %}{{ block.settings.apgo_value }}
+            </div>
+            <div class="apgo-cell-competitor">{{ block.settings.competitor_value }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      {% render 'apgo-placeholder', name: '比較表', hint: '請新增比較列 block（建議 5-8 列）' %}
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "APGO · Comparison",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "英文副標", "default": "THE DIFFERENCE" },
+    { "type": "text", "id": "heading", "label": "標題", "default": "為什麼選 APGO？" },
+    { "type": "text", "id": "col_label", "label": "第一欄標題", "default": "比較項目" },
+    { "type": "text", "id": "col_apgo", "label": "APGO 欄標題", "default": "APGO 超級洗衣精" },
+    { "type": "text", "id": "col_competitor", "label": "對手欄標題", "default": "一般市售洗衣精" }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "比較列",
+      "settings": [
+        { "type": "text", "id": "feature", "label": "項目" },
+        { "type": "text", "id": "apgo_value", "label": "APGO 值" },
+        { "type": "text", "id": "competitor_value", "label": "對手值" },
+        { "type": "checkbox", "id": "apgo_wins", "label": "APGO 勝出（加 ✓ + 高亮）", "default": true }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "APGO · Comparison",
+      "blocks": [
+        { "type": "row", "settings": { "feature": "濃縮倍數", "apgo_value": "8 倍超濃縮", "competitor_value": "1-2 倍", "apgo_wins": true }},
+        { "type": "row", "settings": { "feature": "留香時間", "apgo_value": "24 小時", "competitor_value": "2-4 小時", "apgo_wins": true }},
+        { "type": "row", "settings": { "feature": "pH 值", "apgo_value": "中性 7.0", "competitor_value": "鹼性 9-10", "apgo_wins": true }},
+        { "type": "row", "settings": { "feature": "嬰幼兒適用", "apgo_value": "✓ SGS 認證", "competitor_value": "視品牌而定", "apgo_wins": true }},
+        { "type": "row", "settings": { "feature": "香氛選擇", "apgo_value": "6 款訂製香氛", "competitor_value": "1-2 款通用", "apgo_wins": true }},
+        { "type": "row", "settings": { "feature": "八大零添加", "apgo_value": "✓ 全數通過", "competitor_value": "通常含螢光劑", "apgo_wins": true }},
+        { "type": "row", "settings": { "feature": "單次成本", "apgo_value": "約 NT$ 8", "competitor_value": "約 NT$ 5-10", "apgo_wins": false }}
+      ]
+    }
+  ]
+}
+{% endschema %}

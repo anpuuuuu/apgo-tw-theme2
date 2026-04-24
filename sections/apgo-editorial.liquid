@@ -1,0 +1,39 @@
+{% comment %} Section: Editorial (THE RITUAL) · 立即可用 {% endcomment %}
+
+<section class="apgo-section apgo-editorial" data-section-id="{{ section.id }}">
+  <div class="apgo-container" style="padding: 80px 32px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;">
+      {% if section.settings.image %}
+        <img src="{{ section.settings.image | image_url: width: 800 }}"
+             alt="{{ section.settings.heading }}"
+             loading="lazy"
+             style="width:100%; border-radius:14px;">
+      {% else %}
+        {% render 'apgo-placeholder', name: 'Editorial 圖片', hint: '請在此 Section 設定上傳一張編輯圖' %}
+      {% endif %}
+      <div>
+        <div class="apgo-kicker" style="margin-bottom:14px;">— {{ section.settings.kicker }} —</div>
+        <h2 class="apgo-serif" style="font-size:34px; font-weight:300; line-height:1.35; margin:0 0 18px;">
+          {{ section.settings.heading | newline_to_br }}
+        </h2>
+        <p style="font-size:14px; line-height:2; color:rgba(45,46,40,0.75); margin:0;">
+          {{ section.settings.body }}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "APGO · Editorial",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "英文副標", "default": "THE RITUAL" },
+    { "type": "textarea", "id": "heading", "label": "標題（支援換行）", "default": "重新定義\n洗衣的日常" },
+    { "type": "textarea", "id": "body", "label": "內文", "default": "追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的每一件衣物。" },
+    { "type": "image_picker", "id": "image", "label": "主視覺" }
+  ],
+  "presets": [{ "name": "APGO · Editorial" }]
+}
+{% endschema %}

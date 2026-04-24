@@ -1,0 +1,128 @@
+{% comment %} Section: APGO Product Info · 商品名 / 價格 / 香氛 / 容量 / CTA {% endcomment %}
+
+<section class="apgo-section apgo-product-info" data-section-id="{{ section.id }}">
+  <div class="apgo-container" style="padding: 40px 32px;">
+
+    {%- if section.settings.kicker != blank -%}
+      <div class="apgo-kicker" style="margin-bottom: 14px;">— {{ section.settings.kicker }} —</div>
+    {%- endif -%}
+
+    <h1 class="apgo-serif" style="font-size:34px; font-weight:300; line-height:1.35; margin:0 0 12px;">
+      {{ product.title }}
+    </h1>
+
+    {%- if product.metafields.apgo.subtitle -%}
+      <p class="apgo-muted" style="font-size:13px; letter-spacing:0.08em; margin-bottom:24px;">
+        {{ product.metafields.apgo.subtitle }}
+      </p>
+    {%- endif -%}
+
+    {% form 'product', product, id: 'apgo-product-form' %}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+      {% comment %} Price {% endcomment %}
+      <div style="display:flex; gap:14px; align-items:baseline; margin-bottom:28px;">
+        <span class="apgo-serif" style="font-size:32px;">
+          {{ product.selected_or_first_available_variant.price | money }}
+        </span>
+        {%- if product.compare_at_price > product.price -%}
+          <span class="apgo-muted" style="text-decoration:line-through; font-size:16px;">
+            {{ product.compare_at_price | money }}
+          </span>
+          <span style="background:var(--apgo-sage); color:var(--apgo-bg); padding:3px 10px; border-radius:999px; font-size:11px; letter-spacing:0.1em;">
+            限時 {{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}% OFF
+          </span>
+        {%- endif -%}
+      </div>
+
+      {% comment %} Variant options (香氛 / 容量 / 其他) {% endcomment %}
+      {% for option in product.options_with_values %}
+        <div style="margin-bottom:20px;">
+          <div class="apgo-kicker" style="font-size:11px; margin-bottom:10px;">{{ option.name }}</div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            {% for value in option.values %}
+              <label style="cursor:pointer;">
+                <input type="radio" name="options[{{ option.name }}]" value="{{ value }}"
+                       {% if option.selected_value == value %}checked{% endif %}
+                       style="display:none;"
+                       class="apgo-opt-input">
+                <span class="apgo-opt-chip" style="display:inline-block; padding:10px 18px; border:1px solid var(--apgo-line); border-radius:999px; background:var(--apgo-bg-alt); font-size:13px;">
+                  {{ value }}
+                </span>
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+
+      {% comment %} Trust badges row (inline compact) {% endcomment %}
+      {% if section.blocks.size > 0 %}
+        <div class="apgo-trust-grid" style="margin: 20px 0;">
+          {% for block in section.blocks %}
+            {% if block.type == 'trust_cell' %}
+              <div class="apgo-trust-cell" {{ block.shopify_attributes }}>
+                <div class="apgo-trust-icon">{{ block.settings.icon }}</div>
+                <div class="apgo-serif" style="font-size:11px; font-weight:500;">{{ block.settings.title }}</div>
+                <div class="apgo-muted" style="font-size:10px; margin-top:1px;">{{ block.settings.subtitle }}</div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% comment %} CTA {% endcomment %}
+      <button type="submit" name="add"
+              class="apgo-cta apgo-cta--primary"
+              style="width:100%; padding:18px 32px; background:var(--apgo-ink); color:var(--apgo-bg); border:none; border-radius:999px; font-size:14px; letter-spacing:0.2em; cursor:pointer; margin-top:12px;"
+              {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+        {% if product.selected_or_first_available_variant.available %}
+          加入購物車 · ADD TO CART
+        {% else %}
+          補貨中
+        {% endif %}
+      </button>
+    {% endform %}
+
+    {% comment %} Share {% endcomment %}
+    <div style="margin-top:20px; display:flex; gap:14px; font-size:12px; color:rgba(45,46,40,0.55); letter-spacing:0.1em;">
+      分享 <span>Facebook</span>·<span>Line</span>·<span>複製連結</span>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "APGO · Product Info",
+  "tag": "section",
+  "class": "apgo-section-product-info",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "英文副標", "default": "APGO LAUNDRY ESSENCE" },
+    { "type": "header", "content": "Metafield 依賴" },
+    { "type": "paragraph", "content": "商品副標請設定 product.metafields.apgo.subtitle（single_line_text）" }
+  ],
+  "blocks": [
+    {
+      "type": "trust_cell",
+      "name": "信任徽章格",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "icon", "label": "圖示（emoji 或符號）", "default": "✓" },
+        { "type": "text", "id": "title", "label": "主標", "default": "SGS" },
+        { "type": "text", "id": "subtitle", "label": "副標", "default": "國家級認證" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO · Product Info",
+      "blocks": [
+        { "type": "trust_cell", "settings": { "icon": "🛡", "title": "SGS", "subtitle": "國家級認證" }},
+        { "type": "trust_cell", "settings": { "icon": "✈", "title": "免運", "subtitle": "滿 799" }},
+        { "type": "trust_cell", "settings": { "icon": "↻", "title": "30 天", "subtitle": "鑑賞退換" }},
+        { "type": "trust_cell", "settings": { "icon": "☘", "title": "台灣", "subtitle": "製造" }}
+      ]
+    }
+  ]
+}
+{% endschema %}

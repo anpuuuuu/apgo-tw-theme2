@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "gallery":    { "type": "apgo-gallery" },
+    "info":       { "type": "apgo-product-info" },
+    "shipping":   { "type": "apgo-shipping-info" },
+    "editorial":  { "type": "apgo-editorial" },
+    "quiz":       { "type": "apgo-scent-quiz" },
+    "pain":       { "type": "apgo-pain-solutions" },
+    "timeline":   { "type": "apgo-scent-timeline" },
+    "comparison": { "type": "apgo-comparison" },
+    "ugc":        { "type": "apgo-ugc-wall" },
+    "spec":       { "type": "apgo-spec-table" },
+    "related":    { "type": "apgo-related" }
+  },
+  "order": [
+    "gallery",
+    "info",
+    "shipping",
+    "editorial",
+    "quiz",
+    "pain",
+    "timeline",
+    "comparison",
+    "ugc",
+    "spec",
+    "related"
+  ]
+}

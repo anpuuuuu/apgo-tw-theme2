@@ -1,0 +1,61 @@
+{% comment %} Section: Pain × Solutions · 4 格痛點解方 · 立即可用 {% endcomment %}
+
+<section class="apgo-section apgo-pain" data-section-id="{{ section.id }}">
+  <div class="apgo-container" style="padding:60px 32px; background:var(--apgo-bg-alt); margin:0 -32px; border-top:1px solid var(--apgo-line); border-bottom:1px solid var(--apgo-line);">
+    {% if section.settings.heading != blank %}
+      <h3 class="apgo-serif" style="font-size:24px; text-align:center; margin-bottom:40px; font-weight:400;">{{ section.settings.heading }}</h3>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        {% for block in section.blocks %}
+          <div class="apgo-pain-card" {{ block.shopify_attributes }}>
+            <div>
+              <div class="apgo-muted" style="font-size:11px; letter-spacing:0.1em; margin-bottom:4px;">PAIN</div>
+              <div class="apgo-serif" style="font-size:15px;">{{ block.settings.pain }}</div>
+            </div>
+            <div style="color:var(--apgo-sage); font-size:18px;">→</div>
+            <div>
+              <div class="apgo-muted" style="font-size:11px; letter-spacing:0.1em; margin-bottom:4px; color:var(--apgo-sage);">SOLUTION</div>
+              <div class="apgo-serif" style="font-size:15px;">{{ block.settings.solution }}</div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      {% render 'apgo-placeholder', name: '痛點解方', hint: '請新增至少 2 個 block' %}
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "APGO · Pain × Solutions",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "標題", "default": "日常痛點 · 專屬科學解方" }
+  ],
+  "blocks": [
+    {
+      "type": "pair",
+      "name": "痛點 × 解方",
+      "settings": [
+        { "type": "text", "id": "pain", "label": "痛點" },
+        { "type": "text", "id": "solution", "label": "解方" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "APGO · Pain × Solutions",
+      "blocks": [
+        { "type": "pair", "settings": { "pain": "洗不掉的頑垢", "solution": "超濃縮酵素活性" }},
+        { "type": "pair", "settings": { "pain": "室內晾衣的霉味", "solution": "奈米消臭技術" }},
+        { "type": "pair", "settings": { "pain": "護衣護色的掙扎", "solution": "中性護色配方" }},
+        { "type": "pair", "settings": { "pain": "短暫的芬芳", "solution": "24H 留香技術" }}
+      ]
+    }
+  ]
+}
+{% endschema %}
