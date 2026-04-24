@@ -400,7 +400,10 @@
         "cmp_col1": "APGO 超級洗衣精",
         "cmp_col2": "一般市售洗衣精",
         "ugc_enabled": true,
-        "related_collection": "限時特惠-apgo-科技執法測速器"
+        "long_image": "shopify://shop_images/05-safe.jpg",
+        "long_image_alt": "",
+        "long_image_link": "",
+        "related_collection": "所有產品"
       }
     },
     "apgo_related_qqpb6W": {
