@@ -169,6 +169,43 @@
       });
     });
 
+    // Thumb rail prev/next nav — scroll by 5 tiles at a time
+    (function () {
+      var rail = $('[data-apgo-thumb-rail]', form);
+      if (!rail) return;
+      var prevBtn = $('[data-apgo-thumb-nav="prev"]', form);
+      var nextBtn = $('[data-apgo-thumb-nav="next"]', form);
+
+      function stepSize() {
+        var firstThumb = rail.querySelector('.apgo-thumb');
+        if (!firstThumb) return rail.clientWidth;
+        var gap = 10; // must match CSS .apgo-thumb-rail gap
+        // Scroll by one full "page" of 5 thumbs
+        return (firstThumb.offsetWidth + gap) * 5;
+      }
+
+      function updateNav() {
+        if (!prevBtn || !nextBtn) return;
+        var overflow = rail.scrollWidth - rail.clientWidth > 1;
+        if (!overflow) {
+          prevBtn.setAttribute('disabled', 'disabled');
+          nextBtn.setAttribute('disabled', 'disabled');
+          return;
+        }
+        if (rail.scrollLeft <= 1) prevBtn.setAttribute('disabled', 'disabled');
+        else prevBtn.removeAttribute('disabled');
+        if (rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 1) nextBtn.setAttribute('disabled', 'disabled');
+        else nextBtn.removeAttribute('disabled');
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', function () { rail.scrollBy({ left: -stepSize(), behavior: 'smooth' }); });
+      if (nextBtn) nextBtn.addEventListener('click', function () { rail.scrollBy({ left: stepSize(), behavior: 'smooth' }); });
+      rail.addEventListener('scroll', updateNav, { passive: true });
+      window.addEventListener('resize', updateNav);
+      // Initial state (after a tick so layout is settled)
+      setTimeout(updateNav, 50);
+    })();
+
     // Initial sync
     updateCurrentValueLabels();
     var v0 = findVariant(readSelectedOptions());

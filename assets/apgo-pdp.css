@@ -72,26 +72,46 @@
   grid-template-areas:
     "main sidebar"
     "thumbs sidebar";
-  gap: 20px 32px;
+  gap: 8px 32px;          /* 橫向 32px 保留 sidebar 間距；縱向 8px 讓縮圖貼近主圖 */
   align-items: start;
 }
 .apgo-main-media { grid-area: main; }
 .apgo-sidebar    { grid-area: sidebar; }
 
-/* Thumb rail — now horizontal row underneath main image */
-.apgo-thumb-rail {
+/* Thumb rail wrapper — prev btn | rail (overflow hidden) | next btn */
+.apgo-thumb-rail-wrap {
   grid-area: thumbs;
   display: flex;
-  flex-direction: row;
-  gap: 12px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding-bottom: 4px;
+  align-items: center;
+  gap: 8px;
 }
-.apgo-thumb-rail::-webkit-scrollbar { display: none; }
+.apgo-thumb-nav {
+  flex: 0 0 28px;
+  width: 28px; height: 28px;
+  border: 1px solid var(--apgo-line);
+  background: var(--apgo-bg);
+  color: var(--apgo-ink);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0;
+  transition: background .15s, border-color .15s, opacity .15s;
+}
+.apgo-thumb-nav:hover { background: var(--apgo-bg-ash); border-color: var(--apgo-ink); }
+.apgo-thumb-nav:disabled { opacity: 0.3; cursor: default; }
+
+.apgo-thumb-rail {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
 .apgo-thumb {
-  flex: 0 0 88px;
-  width: 88px; height: 88px;
+  /* Exactly 5 thumbs visible at once: (100% - 4*10px gap) / 5 */
+  flex: 0 0 calc((100% - 40px) / 5);
+  aspect-ratio: 1/1;
   padding: 0; border: 2px solid transparent; border-radius: 10px;
   background: none; cursor: pointer; overflow: hidden; transition: border-color .2s;
 }
@@ -954,7 +974,7 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
   background-color: transparent !important;
 }
 
-/* 7) Hero 主圖區：窄視窗讓 sidebar 掉到最下面，主圖 + 縮圖一列 */
+/* 7) Hero 主圖區：窄視窗讓 sidebar 掉到最下面，主圖 → 縮圖 → sidebar 單列 */
 @media (max-width: 900px) {
   .apgo-hero-grid {
     grid-template-columns: 1fr !important;
@@ -962,7 +982,6 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
       "main"
       "thumbs"
       "sidebar" !important;
-    gap: 16px !important;
+    gap: 8px !important;
   }
-  .apgo-thumb { flex: 0 0 72px; width: 72px; height: 72px; }
 }
