@@ -1,0 +1,482 @@
+{% comment %}
+  APGO · Mobile PDP (mobile-only self-contained mega section)
+  Carousel + info + ship card + state-driven tabs + sticky bottom CTA
+  Ported from variants/mobile/m1-classic-plus.jsx
+  Hidden on desktop via CSS (.apgo-mobile-only)
+{% endcomment %}
+
+{%- liquid
+  assign v = product.selected_or_first_available_variant
+  assign has_compare = false
+  if product.compare_at_price > product.price
+    assign has_compare = true
+    assign discount_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
+  endif
+-%}
+
+<section class="apgo-mpdp apgo-mobile-only" data-section-id="{{ section.id }}">
+  {% form 'product', product, id: 'apgo-mobile-product-form', class: 'apgo-product-form apgo-mpdp-form' %}
+    <input type="hidden" name="id" value="{{ v.id }}" data-apgo-variant-id>
+
+    {%- comment -%} Carousel (video optional + images) {%- endcomment -%}
+    <div class="apgo-mpdp-carousel" data-apgo-carousel>
+      <div class="apgo-mpdp-track" data-apgo-carousel-track>
+        {%- if section.settings.video_url != blank -%}
+          <div class="apgo-mpdp-slide apgo-mpdp-slide-video">
+            <div class="apgo-mpdp-video-poster" style="background-image:url('{{ section.settings.video_poster | image_url: width: 800 }}');">
+              <div class="apgo-mpdp-play"><span></span></div>
+              <div class="apgo-mpdp-video-label">▶ {{ section.settings.video_label | default: '產品實測影片 · 60s' }}</div>
+            </div>
+          </div>
+        {%- endif -%}
+        {%- if product.media.size > 0 -%}
+          {%- for m in product.media limit: 6 -%}
+            <div class="apgo-mpdp-slide">
+              <img src="{{ m | image_url: width: 900 }}" alt="{{ m.alt | default: product.title }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      {%- if has_compare -%}
+        <div class="apgo-mpdp-discount">限時 {{ discount_pct }}% OFF</div>
+      {%- endif -%}
+      <div class="apgo-mpdp-counter"><span data-apgo-carousel-idx>1</span> / <span data-apgo-carousel-total></span></div>
+    </div>
+
+    {%- comment -%} Info block {%- endcomment -%}
+    <div class="apgo-mpdp-info">
+      {%- if section.settings.kicker != blank -%}
+        <div class="apgo-mpdp-kicker">{{ section.settings.kicker }}</div>
+      {%- endif -%}
+      <h1 class="apgo-mpdp-title apgo-serif">{{ product.title }}</h1>
+      {%- if product.metafields.apgo.subtitle != blank -%}
+        <div class="apgo-mpdp-subtitle">{{ product.metafields.apgo.subtitle }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.show_rating -%}
+        <div class="apgo-mpdp-rating">
+          <span class="apgo-stars">★★★★★</span>
+          <strong>{{ section.settings.rating_score }}</strong>
+          <span class="apgo-muted">· {{ section.settings.rating_count }} 則評價</span>
+        </div>
+      {%- endif -%}
+
+      <div class="apgo-mpdp-price-row">
+        <span class="apgo-serif apgo-mpdp-price" data-apgo-price>{{ v.price | money }}</span>
+        {%- if has_compare -%}
+          <span class="apgo-mpdp-compare" data-apgo-compare>{{ product.compare_at_price | money }}</span>
+          <span class="apgo-mpdp-discount-pill">−{{ discount_pct }}%</span>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.show_installment -%}
+        <div class="apgo-mpdp-installment" data-apgo-installment>分 3 期 0 利率 · 每期 {{ v.price | divided_by: 3 | money }}</div>
+      {%- endif -%}
+
+      {%- comment -%} Variant options {%- endcomment -%}
+      {%- for option in product.options_with_values -%}
+        {%- assign is_scent = false -%}
+        {%- if option.name contains '香' or option.name contains 'Scent' -%}{%- assign is_scent = true -%}{%- endif -%}
+
+        <div class="apgo-mpdp-opt" data-apgo-option-group data-option-position="{{ option.position }}">
+          <div class="apgo-mpdp-opt-label">
+            <span>{{ option.name }}</span>
+            <span class="apgo-muted" data-apgo-current-value>{{ option.selected_value }}</span>
+          </div>
+          {%- if is_scent -%}
+            <div class="apgo-mpdp-scent-grid">
+              {%- for value in option.values -%}
+                {%- assign sc = '#E8DFC9' -%}
+                {%- case value -%}
+                  {%- when '淨心棉花' -%}{%- assign sc = '#E8DFC9' -%}
+                  {%- when '花漾蒼蘭' -%}{%- assign sc = '#D4DDE0' -%}
+                  {%- when '浪漫玫瑰' -%}{%- assign sc = '#E8D4CF' -%}
+                  {%- when '海洋晨曦' -%}{%- assign sc = '#C8D6DA' -%}
+                  {%- when '清雅白茶' -%}{%- assign sc = '#DAE0CE' -%}
+                  {%- when '薰衣紫戀' -%}{%- assign sc = '#D6CFDD' -%}
+                {%- endcase -%}
+                <label class="apgo-mpdp-scentbtn {% if option.selected_value == value %}active{% endif %}">
+                  <input type="radio" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" data-apgo-option-input {% if option.selected_value == value %}checked{% endif %}>
+                  <span class="apgo-mpdp-swatch" style="background:{{ sc }}"></span>
+                  <span class="apgo-serif">{{ value }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <div class="apgo-mpdp-chip-grid">
+              {%- for value in option.values -%}
+                <label class="apgo-mpdp-chip {% if option.selected_value == value %}active{% endif %}">
+                  <input type="radio" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" data-apgo-option-input {% if option.selected_value == value %}checked{% endif %}>
+                  <span>{{ value }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+
+      {%- comment -%} Qty (inline) {%- endcomment -%}
+      <div class="apgo-mpdp-qty-row">
+        <span class="apgo-mpdp-qty-label">數量</span>
+        <div class="apgo-mpdp-qty">
+          <button type="button" data-apgo-qty="down" aria-label="減少">−</button>
+          <input type="number" name="quantity" value="1" min="1" data-apgo-qty-input>
+          <button type="button" data-apgo-qty="up" aria-label="增加">+</button>
+        </div>
+      </div>
+
+      {%- comment -%} Ship card {%- endcomment -%}
+      <div class="apgo-mpdp-ship">
+        {%- assign ship_rows = 'i:滿 NT$ 799 免運|黑貓宅配 · 24 小時內出貨;ii:30 天鑑賞期|未拆封可無條件退換貨;iii:SGS 國家級檢驗|99.9% 抗菌 · 八大零添加' | split: ';' -%}
+        {%- for row in ship_rows -%}
+          {%- assign parts = row | split: ':' -%}
+          {%- assign tparts = parts[1] | split: '|' -%}
+          <div class="apgo-mpdp-ship-row">
+            <span class="apgo-mpdp-ship-icon">{{ parts[0] }}</span>
+            <div>
+              <strong>{{ tparts[0] }}</strong>
+              <div class="apgo-muted">{{ tparts[1] }}</div>
+            </div>
+          </div>
+          {%- unless forloop.last -%}<div class="apgo-mpdp-ship-sep"></div>{%- endunless -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- comment -%} Tabs {%- endcomment -%}
+    <div class="apgo-mpdp-tabs" role="tablist" data-apgo-mtabs>
+      <button type="button" class="apgo-mpdp-tab active" data-apgo-mtab="desc" role="tab">商品說明</button>
+      <button type="button" class="apgo-mpdp-tab" data-apgo-mtab="spec" role="tab">規格</button>
+      <button type="button" class="apgo-mpdp-tab" data-apgo-mtab="review" role="tab">評價</button>
+      <button type="button" class="apgo-mpdp-tab" data-apgo-mtab="faq" role="tab">問答</button>
+    </div>
+
+    {%- comment -%} Tab panel: 商品說明 {%- endcomment -%}
+    <div class="apgo-mpdp-panel active" data-apgo-mpanel="desc">
+      {%- if section.settings.ritual_image != blank -%}
+        <div class="apgo-mpdp-ritual">
+          <img src="{{ section.settings.ritual_image | image_url: width: 900 }}" alt="{{ section.settings.ritual_heading }}" loading="lazy">
+          <div class="apgo-mpdp-ritual-overlay">
+            <div class="apgo-mpdp-play-sm"><span></span></div>
+            <div class="apgo-mpdp-kicker apgo-mpdp-kicker-inv">— THE RITUAL —</div>
+            <div class="apgo-serif">30 秒看懂 APGO 使用方式</div>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="apgo-mpdp-ritual-text">
+        <div class="apgo-mpdp-kicker">— THE RITUAL —</div>
+        <h2 class="apgo-serif">{{ section.settings.ritual_heading | default: '重新定義<br>洗衣的日常' }}</h2>
+        <p>{{ section.settings.ritual_body | default: '追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。' }}</p>
+      </div>
+
+      {%- comment -%} Pain × Solutions {%- endcomment -%}
+      <div class="apgo-mpdp-pain-wrap">
+        <h3 class="apgo-serif">日常痛點 · 專屬科學解方</h3>
+        <div class="apgo-mpdp-pain-grid">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'pain' -%}
+              <div class="apgo-mpdp-pain-card" {{ block.shopify_attributes }}>
+                <div class="apgo-muted">{{ block.settings.pain }}</div>
+                <div class="apgo-mpdp-pain-arrow">→</div>
+                <div class="apgo-serif">{{ block.settings.solution }}</div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- comment -%} 24H Timeline (mobile vertical) {%- endcomment -%}
+      <div class="apgo-mpdp-timeline">
+        <div class="apgo-mpdp-kicker">— 24H LASTING —</div>
+        <h3 class="apgo-serif">持續一整天的香氛</h3>
+        <div>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'timeline' -%}
+              <div class="apgo-mpdp-timeline-row" {{ block.shopify_attributes }}>
+                <div class="apgo-mpdp-timeline-hour">{{ block.settings.hour }}</div>
+                <div>
+                  <div class="apgo-serif">{{ block.settings.label }}</div>
+                  <div class="apgo-muted">{{ block.settings.description }}</div>
+                </div>
+                <div>
+                  <div class="apgo-mpdp-timeline-bar">
+                    <div style="width:{{ block.settings.strength }}%"></div>
+                  </div>
+                  <div class="apgo-mpdp-timeline-pct">{{ block.settings.strength }}%</div>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- comment -%} Comparison table (mobile) {%- endcomment -%}
+      <div class="apgo-mpdp-cmp-wrap">
+        <div class="apgo-mpdp-kicker">— THE DIFFERENCE —</div>
+        <h3 class="apgo-serif">為什麼選 APGO？</h3>
+        <div class="apgo-mpdp-cmp">
+          <div class="apgo-mpdp-cmp-head">
+            <div>項目</div>
+            <div class="apgo-serif">APGO</div>
+            <div>一般</div>
+          </div>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'compare' -%}
+              <div class="apgo-mpdp-cmp-row" {{ block.shopify_attributes }}>
+                <div class="apgo-muted">{{ block.settings.feature }}</div>
+                <div class="apgo-serif"><span class="apgo-mpdp-win">✓</span>{{ block.settings.apgo_value }}</div>
+                <div class="apgo-muted">{{ block.settings.competitor_value }}</div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- comment -%} UGC (mobile 3-col) {%- endcomment -%}
+      {%- if section.settings.ugc_enabled -%}
+        <div class="apgo-mpdp-ugc-wrap">
+          <div class="apgo-mpdp-kicker">— #APGOLAUNDRY —</div>
+          <h3 class="apgo-serif">用戶實拍 · Instagram</h3>
+          <p class="apgo-muted apgo-mpdp-ugc-sub">2,100+ 位顧客分享</p>
+          <div class="apgo-mpdp-ugc-grid">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'ugc' -%}
+                <a href="{{ block.settings.url }}" class="apgo-mpdp-ugc-cell" {{ block.shopify_attributes }} target="_blank" rel="noopener">
+                  {%- if block.settings.image != blank -%}
+                    <img src="{{ block.settings.image | image_url: width: 400 }}" alt="@{{ block.settings.handle }}" loading="lazy">
+                  {%- endif -%}
+                  <span class="apgo-mpdp-ugc-like">♡ {{ block.settings.likes }}</span>
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Tab panel: 規格 {%- endcomment -%}
+    <div class="apgo-mpdp-panel" data-apgo-mpanel="spec">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'spec' -%}
+          <div class="apgo-mpdp-spec-row" {{ block.shopify_attributes }}>
+            <div class="apgo-muted">{{ block.settings.key }}</div>
+            <div class="apgo-serif">{{ block.settings.value }}</div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} Tab panel: 評價 {%- endcomment -%}
+    <div class="apgo-mpdp-panel" data-apgo-mpanel="review">
+      <div class="apgo-mpdp-rev-summary">
+        <div class="apgo-serif apgo-mpdp-rev-score">{{ section.settings.rating_score }}</div>
+        <div class="apgo-stars">★★★★★</div>
+        <div class="apgo-muted">基於 {{ section.settings.rating_count }} 則真實評價</div>
+      </div>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'review' -%}
+          <div class="apgo-mpdp-rev-item" {{ block.shopify_attributes }}>
+            <div class="apgo-mpdp-rev-head">
+              <strong>{{ block.settings.name }}</strong>
+              <span class="apgo-stars">★★★★★</span>
+            </div>
+            <div class="apgo-mpdp-rev-meta">{{ block.settings.date }} · 已購買：{{ block.settings.scent }}</div>
+            <p>{{ block.settings.body }}</p>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} Tab panel: 問答 {%- endcomment -%}
+    <div class="apgo-mpdp-panel" data-apgo-mpanel="faq">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq' -%}
+          <details class="apgo-mpdp-faq" {{ block.shopify_attributes }}>
+            <summary>
+              <span class="apgo-serif">Q. {{ block.settings.q }}</span>
+              <span class="apgo-mpdp-faq-toggle">+</span>
+            </summary>
+            <p>A. {{ block.settings.a }}</p>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} Related products (horizontal scroll) {%- endcomment -%}
+    {%- if section.settings.related_collection != blank -%}
+      {%- assign rcol = collections[section.settings.related_collection] -%}
+      {%- if rcol and rcol.products.size > 0 -%}
+        <div class="apgo-mpdp-related">
+          <h3 class="apgo-serif">您可能也喜歡</h3>
+          <div class="apgo-mpdp-related-scroll">
+            {%- for p in rcol.products limit: 8 -%}
+              {%- unless p.id == product.id -%}
+                <a class="apgo-mpdp-related-item" href="{{ p.url }}">
+                  <img src="{{ p.featured_image | image_url: width: 280 }}" alt="{{ p.title }}" loading="lazy">
+                  <div class="apgo-serif">{{ p.title }}</div>
+                  <div>{{ p.price | money }}</div>
+                </a>
+              {%- endunless -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- comment -%} Sticky bottom CTA bar {%- endcomment -%}
+    <div class="apgo-mpdp-sticky">
+      <button type="button" class="apgo-mpdp-wish" aria-label="加入收藏">♡</button>
+      <button type="submit" name="add" class="apgo-mpdp-cta-secondary" data-apgo-add {% unless v.available %}disabled{% endunless %}>
+        {% if v.available %}加入購物車{% else %}補貨中{% endif %}
+      </button>
+      <button type="button" class="apgo-mpdp-cta-primary" data-apgo-buy-now {% unless v.available %}disabled{% endunless %}>
+        立即購買 <span data-apgo-total>{{ v.price | money }}</span>
+      </button>
+    </div>
+
+    <script type="application/json" data-apgo-variants>{{ product.variants | json }}</script>
+  {% endform %}
+</section>
+
+{% schema %}
+{
+  "name": "APGO · Mobile PDP",
+  "tag": "section",
+  "class": "apgo-section apgo-section-mobile-pdp",
+  "settings": [
+    { "type": "header", "content": "顶部 Carousel" },
+    { "type": "url",          "id": "video_url",      "label": "影片連結（選填）" },
+    { "type": "image_picker", "id": "video_poster",   "label": "影片封面（選填）" },
+    { "type": "text",         "id": "video_label",    "label": "影片標籤", "default": "產品實測影片 · 60s" },
+
+    { "type": "header", "content": "基本資訊" },
+    { "type": "text",     "id": "kicker",       "label": "英文副標", "default": "AROMA AESTHETICS" },
+    { "type": "checkbox", "id": "show_rating",  "label": "顯示評分", "default": true },
+    { "type": "text",     "id": "rating_score", "label": "評分", "default": "4.9" },
+    { "type": "text",     "id": "rating_count", "label": "評價數", "default": "2,847" },
+    { "type": "checkbox", "id": "show_installment", "label": "顯示 3 期 0 利率", "default": true },
+
+    { "type": "header", "content": "商品說明區（Ritual）" },
+    { "type": "image_picker", "id": "ritual_image", "label": "Ritual 視覺圖" },
+    { "type": "textarea", "id": "ritual_heading", "label": "標題（支援 HTML <br>）", "default": "重新定義<br>洗衣的日常" },
+    { "type": "textarea", "id": "ritual_body", "label": "內文", "default": "追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。" },
+
+    { "type": "header", "content": "UGC" },
+    { "type": "checkbox", "id": "ugc_enabled", "label": "顯示 UGC 牆", "default": false },
+
+    { "type": "header", "content": "相關商品" },
+    { "type": "collection", "id": "related_collection", "label": "相關商品集合" }
+  ],
+  "blocks": [
+    {
+      "type": "pain",
+      "name": "痛點 × 解方",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "pain", "label": "痛點", "default": "洗不掉的頑垢" },
+        { "type": "text", "id": "solution", "label": "解方", "default": "超濃縮酵素活性" }
+      ]
+    },
+    {
+      "type": "timeline",
+      "name": "留香時間點",
+      "limit": 5,
+      "settings": [
+        { "type": "text", "id": "hour", "label": "時間", "default": "0H" },
+        { "type": "text", "id": "label", "label": "標籤", "default": "洗滌完成" },
+        { "type": "text", "id": "description", "label": "描述", "default": "前段花香綻放" },
+        { "type": "range", "id": "strength", "label": "強度 %", "min": 0, "max": 100, "step": 5, "default": 100 }
+      ]
+    },
+    {
+      "type": "compare",
+      "name": "比較表 - 一列",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "feature", "label": "項目", "default": "濃縮倍數" },
+        { "type": "text", "id": "apgo_value", "label": "APGO", "default": "8 倍" },
+        { "type": "text", "id": "competitor_value", "label": "一般", "default": "1-2 倍" }
+      ]
+    },
+    {
+      "type": "ugc",
+      "name": "UGC 貼文",
+      "limit": 9,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "圖片" },
+        { "type": "text", "id": "handle", "label": "IG handle" },
+        { "type": "number", "id": "likes", "label": "讚數", "default": 100 },
+        { "type": "url", "id": "url", "label": "IG 貼文連結" }
+      ]
+    },
+    {
+      "type": "spec",
+      "name": "規格列",
+      "limit": 12,
+      "settings": [
+        { "type": "text", "id": "key", "label": "欄位", "default": "商品名稱" },
+        { "type": "text", "id": "value", "label": "內容", "default": "APGO 超級濃縮洗衣精" }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "評價",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "name", "label": "姓名", "default": "黃小姐" },
+        { "type": "text", "id": "date", "label": "日期", "default": "2026.03.12" },
+        { "type": "text", "id": "scent", "label": "購買香氛", "default": "淨心棉花" },
+        { "type": "textarea", "id": "body", "label": "評價內容", "default": "香味非常柔和不刺鼻，寶寶衣服洗起來也很放心。" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "常見問題",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "q", "label": "問題", "default": "可以洗嬰幼兒衣服嗎？" },
+        { "type": "textarea", "id": "a", "label": "回答", "default": "可以。通過 SGS 檢驗、8 大零添加、pH 中性，專為敏感肌與嬰幼兒設計。" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO · Mobile PDP",
+      "blocks": [
+        { "type": "pain",     "settings": { "pain": "洗不掉的頑垢", "solution": "超濃縮酵素活性" }},
+        { "type": "pain",     "settings": { "pain": "室內晾衣的霉味", "solution": "奈米消臭技術" }},
+        { "type": "pain",     "settings": { "pain": "護衣護色的掙扎", "solution": "中性護色配方" }},
+        { "type": "pain",     "settings": { "pain": "短暫的芬芳", "solution": "24H 留香技術" }},
+        { "type": "timeline", "settings": { "hour": "0H",  "label": "洗滌完成", "description": "前段花香綻放",   "strength": 100 }},
+        { "type": "timeline", "settings": { "hour": "6H",  "label": "日常穿著", "description": "中段木質底香",   "strength": 85  }},
+        { "type": "timeline", "settings": { "hour": "12H", "label": "午後",     "description": "後調溫潤麝香",   "strength": 65  }},
+        { "type": "timeline", "settings": { "hour": "18H", "label": "傍晚",     "description": "尾調淡雅純淨",   "strength": 45  }},
+        { "type": "timeline", "settings": { "hour": "24H", "label": "隔日",     "description": "依然清爽可辨識", "strength": 30  }},
+        { "type": "compare",  "settings": { "feature": "濃縮倍數", "apgo_value": "8 倍",    "competitor_value": "1-2 倍" }},
+        { "type": "compare",  "settings": { "feature": "留香時間", "apgo_value": "24 小時",  "competitor_value": "2-4 小時" }},
+        { "type": "compare",  "settings": { "feature": "pH 值",    "apgo_value": "中性 7.0", "competitor_value": "鹼性 9-10" }},
+        { "type": "compare",  "settings": { "feature": "嬰幼兒",   "apgo_value": "適用",     "competitor_value": "視品牌" }},
+        { "type": "compare",  "settings": { "feature": "香氛數",   "apgo_value": "6 款",    "competitor_value": "1-2 款" }},
+        { "type": "compare",  "settings": { "feature": "螢光劑",   "apgo_value": "零添加",   "competitor_value": "通常含" }},
+        { "type": "spec", "settings": { "key": "商品名稱", "value": "APGO 超級濃縮洗衣精" }},
+        { "type": "spec", "settings": { "key": "容量",     "value": "1L / 2L / 4L 補充包" }},
+        { "type": "spec", "settings": { "key": "產地",     "value": "台灣製造" }},
+        { "type": "spec", "settings": { "key": "主要成分", "value": "濃縮酵素、護色因子、植萃香氛" }},
+        { "type": "spec", "settings": { "key": "香氛選擇", "value": "6 款香氛可選" }},
+        { "type": "spec", "settings": { "key": "適用",     "value": "各式衣物、嬰幼兒、寵物用品" }},
+        { "type": "spec", "settings": { "key": "pH 值",    "value": "中性（pH 7.0 ± 0.5）" }},
+        { "type": "spec", "settings": { "key": "保存期限", "value": "未開封 3 年／開封後 18 個月" }},
+        { "type": "spec", "settings": { "key": "認證",     "value": "SGS 99.9% 抗菌合格" }},
+        { "type": "review", "settings": { "name": "黃小姐",  "date": "2026.03.12", "scent": "淨心棉花", "body": "香味非常柔和不刺鼻，寶寶衣服洗起來也很放心。會一直回購！" }},
+        { "type": "review", "settings": { "name": "Emma L.", "date": "2026.03.08", "scent": "清雅白茶", "body": "白茶香是我的最愛，淡雅不俗氣。瓶身設計也很精緻。" }},
+        { "type": "review", "settings": { "name": "陳先生",  "date": "2026.02.28", "scent": "海洋晨曦", "body": "深層潔淨效果非常明顯，兒子運動服洗完真的像新的一樣。" }},
+        { "type": "faq", "settings": { "q": "可以洗嬰幼兒衣服嗎？", "a": "可以。通過 SGS 檢驗、8 大零添加、pH 中性，專為敏感肌與嬰幼兒設計。" }},
+        { "type": "faq", "settings": { "q": "用量比一般洗衣精省嗎？", "a": "是。超濃縮配方用量僅需 1/3，1L 可洗約 50 次。" }},
+        { "type": "faq", "settings": { "q": "不同香氛可混用嗎？", "a": "可以。每款都經過香氛師調配，相互搭配不衝突。" }},
+        { "type": "faq", "settings": { "q": "運送需要幾天？", "a": "下單後 24 小時內出貨，黑貓宅配 1-2 個工作日送達。" }},
+        { "type": "faq", "settings": { "q": "可以退換貨嗎？", "a": "未拆封商品提供 30 天鑑賞期，可無條件退換貨。" }}
+      ]
+    }
+  ]
+}
+{% endschema %}

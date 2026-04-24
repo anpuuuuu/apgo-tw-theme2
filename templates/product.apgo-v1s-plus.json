@@ -9,16 +9,12 @@
  */
 {
   "sections": {
-    "gallery": {
-      "type": "apgo-gallery",
+    "hero": {
+      "type": "apgo-hero",
       "settings": {}
     },
-    "info": {
-      "type": "apgo-product-info",
-      "settings": {}
-    },
-    "shipping": {
-      "type": "apgo-shipping-info",
+    "mobile": {
+      "type": "apgo-mobile-pdp",
       "settings": {}
     },
     "editorial": {
@@ -55,9 +51,8 @@
     }
   },
   "order": [
-    "gallery",
-    "info",
-    "shipping",
+    "hero",
+    "mobile",
     "editorial",
     "quiz",
     "pain",

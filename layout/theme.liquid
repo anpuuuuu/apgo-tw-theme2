@@ -65,6 +65,7 @@
 
   {%- if template.suffix == 'apgo-v1s-plus' -%}
     {{ 'apgo-pdp.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'apgo-pdp.js' | asset_url }}" defer></script>
   {%- endif -%}
 </head>
 

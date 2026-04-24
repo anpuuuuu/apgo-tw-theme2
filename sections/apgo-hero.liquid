@@ -1,0 +1,279 @@
+{% comment %}
+  APGO · Hero (Desktop-first PDP top fold)
+  3-column grid: thumb rail (80px) | main image (1fr) | purchase sidebar (460px)
+  Ported from variants/v1-classic-plus.jsx
+{% endcomment %}
+
+{%- liquid
+  assign v = product.selected_or_first_available_variant
+  assign has_compare = false
+  if product.compare_at_price > product.price
+    assign has_compare = true
+    assign discount_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
+  endif
+-%}
+
+<section class="apgo-pdp apgo-desktop-only" data-section-id="{{ section.id }}">
+  <div class="apgo-container">
+
+    {%- comment -%} Breadcrumb {%- endcomment -%}
+    <nav class="apgo-breadcrumb">
+      <a href="{{ routes.root_url }}">首頁</a>
+      <span class="apgo-sep">/</span>
+      {%- if collection -%}
+        <a href="{{ collection.url }}">{{ collection.title }}</a>
+        <span class="apgo-sep">/</span>
+      {%- endif -%}
+      <span>{{ product.title }}</span>
+    </nav>
+
+    {% form 'product', product, id: 'apgo-product-form', class: 'apgo-product-form' %}
+      <input type="hidden" name="id" value="{{ v.id }}" data-apgo-variant-id>
+
+      <div class="apgo-hero-grid">
+
+        {%- comment -%} Thumbnail rail (desktop left column) {%- endcomment -%}
+        <div class="apgo-thumb-rail" data-apgo-thumb-rail>
+          {%- if product.media.size > 0 -%}
+            {%- for m in product.media limit: 6 -%}
+              <button type="button"
+                      class="apgo-thumb {% if forloop.first %}active{% endif %}"
+                      data-apgo-thumb-idx="{{ forloop.index0 }}"
+                      aria-label="顯示第 {{ forloop.index }} 張圖">
+                <img src="{{ m | image_url: width: 200 }}"
+                     alt="{{ m.alt | default: product.title }}"
+                     loading="lazy" width="80" height="80">
+              </button>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..5) -%}
+              <div class="apgo-thumb apgo-thumb-placeholder"></div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Main image (desktop center column) {%- endcomment -%}
+        <div class="apgo-main-media">
+          {%- if product.featured_media -%}
+            <img class="apgo-main-img"
+                 src="{{ product.featured_media | image_url: width: 1400 }}"
+                 alt="{{ product.featured_media.alt | default: product.title }}"
+                 loading="eager"
+                 data-apgo-main-img>
+          {%- else -%}
+            <div class="apgo-main-img apgo-main-placeholder">{% render 'apgo-placeholder', name: 'Main image', hint: '上傳商品主圖' %}</div>
+          {%- endif -%}
+
+          {%- if has_compare -%}
+            <div class="apgo-discount-badge">限時 {{ discount_pct }}% OFF</div>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Purchase sidebar (desktop right column) {%- endcomment -%}
+        <aside class="apgo-sidebar">
+
+          {%- if section.settings.kicker != blank -%}
+            <div class="apgo-kicker">{{ section.settings.kicker }}</div>
+          {%- endif -%}
+
+          <h1 class="apgo-title apgo-serif">{{ product.title }}</h1>
+
+          {%- if product.metafields.apgo.subtitle != blank -%}
+            <p class="apgo-subtitle">{{ product.metafields.apgo.subtitle }}</p>
+          {%- endif -%}
+
+          {%- comment -%} Rating (static display — consider Judge.me integration later) {%- endcomment -%}
+          {%- if section.settings.show_rating -%}
+            <div class="apgo-rating">
+              <span class="apgo-stars">★★★★★</span>
+              <span class="apgo-rating-num">{{ section.settings.rating_score }}</span>
+              <span class="apgo-muted">· {{ section.settings.rating_count }} 則評價</span>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Price {%- endcomment -%}
+          <div class="apgo-price-row">
+            <span class="apgo-serif apgo-price" data-apgo-price>{{ v.price | money }}</span>
+            {%- if has_compare -%}
+              <span class="apgo-price-compare" data-apgo-compare>{{ product.compare_at_price | money }}</span>
+              <span class="apgo-discount-pill">−{{ discount_pct }}%</span>
+            {%- endif -%}
+          </div>
+
+          {%- if section.settings.show_installment -%}
+            <div class="apgo-installment apgo-muted" data-apgo-installment>
+              分 3 期 0 利率 · 每期 {{ v.price | divided_by: 3 | money }}
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Variant options (scent + size, using radio chips) {%- endcomment -%}
+          {%- for option in product.options_with_values -%}
+            {%- assign is_scent = false -%}
+            {%- if option.name contains '香' or option.name contains 'Scent' -%}
+              {%- assign is_scent = true -%}
+            {%- endif -%}
+
+            <div class="apgo-option-group" data-apgo-option-group data-option-position="{{ option.position }}">
+              <div class="apgo-option-label">
+                <span class="apgo-kicker-small">{{ option.name }}</span>
+                <span class="apgo-muted apgo-option-current" data-apgo-current-value>{{ option.selected_value }}</span>
+              </div>
+
+              {%- if is_scent -%}
+                <div class="apgo-scent-grid">
+                  {%- for value in option.values -%}
+                    {%- assign swatch_color = '#E8DFC9' -%}
+                    {%- case value -%}
+                      {%- when '淨心棉花' -%}{%- assign swatch_color = '#E8DFC9' -%}
+                      {%- when '花漾蒼蘭' -%}{%- assign swatch_color = '#D4DDE0' -%}
+                      {%- when '浪漫玫瑰' -%}{%- assign swatch_color = '#E8D4CF' -%}
+                      {%- when '海洋晨曦' -%}{%- assign swatch_color = '#C8D6DA' -%}
+                      {%- when '清雅白茶' -%}{%- assign swatch_color = '#DAE0CE' -%}
+                      {%- when '薰衣紫戀' -%}{%- assign swatch_color = '#D6CFDD' -%}
+                    {%- endcase -%}
+                    <label class="apgo-scentbtn {% if option.selected_value == value %}active{% endif %}">
+                      <input type="radio"
+                             name="options[{{ option.name | escape }}]"
+                             value="{{ value | escape }}"
+                             data-apgo-option-input
+                             {% if option.selected_value == value %}checked{% endif %}>
+                      <span class="apgo-swatch" style="background:{{ swatch_color }}"></span>
+                      <span class="apgo-serif">{{ value }}</span>
+                    </label>
+                  {%- endfor -%}
+                </div>
+              {%- else -%}
+                <div class="apgo-chip-row">
+                  {%- for value in option.values -%}
+                    <label class="apgo-chip {% if option.selected_value == value %}active{% endif %}">
+                      <input type="radio"
+                             name="options[{{ option.name | escape }}]"
+                             value="{{ value | escape }}"
+                             data-apgo-option-input
+                             {% if option.selected_value == value %}checked{% endif %}>
+                      <span>{{ value }}</span>
+                    </label>
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+
+          {%- comment -%} Quantity stepper {%- endcomment -%}
+          <div class="apgo-option-group">
+            <div class="apgo-kicker-small" style="margin-bottom:10px;">購買數量</div>
+            <div class="apgo-qty">
+              <button type="button" data-apgo-qty="down" aria-label="減少">−</button>
+              <input type="number" name="quantity" value="1" min="1" data-apgo-qty-input>
+              <button type="button" data-apgo-qty="up" aria-label="增加">+</button>
+            </div>
+          </div>
+
+          {%- comment -%} CTAs {%- endcomment -%}
+          <div class="apgo-cta-group">
+            <button type="submit" name="add"
+                    class="apgo-cta-primary"
+                    data-apgo-add
+                    {% unless v.available %}disabled{% endunless %}>
+              {%- if v.available -%}
+                加入購物車 · <span data-apgo-total>{{ v.price | money }}</span>
+              {%- else -%}
+                補貨中
+              {%- endif -%}
+            </button>
+
+            {%- if section.settings.show_buy_now -%}
+              <button type="button" class="apgo-cta-secondary" data-apgo-buy-now>
+                立即購買 · 快速結帳
+              </button>
+            {%- endif -%}
+
+            <button type="button" class="apgo-wishlist-link">♡ 加入收藏</button>
+          </div>
+
+          {%- comment -%} Trust badges 4-col {%- endcomment -%}
+          {%- if section.blocks.size > 0 -%}
+            <div class="apgo-trust-grid">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'trust_cell' -%}
+                  <div class="apgo-trust-cell" {{ block.shopify_attributes }}>
+                    <div class="apgo-trust-icon">{{ block.settings.icon }}</div>
+                    <div class="apgo-serif apgo-trust-title">{{ block.settings.title }}</div>
+                    <div class="apgo-muted apgo-trust-sub">{{ block.settings.subtitle }}</div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Ship info card {%- endcomment -%}
+          <div class="apgo-ship-card">
+            {%- assign ship_rows = 'i:滿 NT$ 799 免運|黑貓宅配 · 24 小時內出貨;ii:30 天鑑賞期|未拆封可無條件退換貨;iii:SGS 國家級檢驗|99.9% 抗菌率 · 八大零添加' | split: ';' -%}
+            {%- for row in ship_rows -%}
+              {%- assign parts = row | split: ':' -%}
+              {%- assign n = parts[0] -%}
+              {%- assign text_parts = parts[1] | split: '|' -%}
+              <div class="apgo-ship-row">
+                <span class="apgo-ship-icon">{{ n }}</span>
+                <div>
+                  <strong>{{ text_parts[0] }}</strong>
+                  <div class="apgo-muted">{{ text_parts[1] }}</div>
+                </div>
+              </div>
+              {%- unless forloop.last -%}<div class="apgo-ship-sep"></div>{%- endunless -%}
+            {%- endfor -%}
+          </div>
+
+          {%- comment -%} Share {%- endcomment -%}
+          <div class="apgo-share">分享 <span>Facebook</span>·<span>Line</span>·<span>複製連結</span></div>
+
+        </aside>
+      </div>
+
+      {%- comment -%} Hidden JSON for JS: all variants w/ option values {%- endcomment -%}
+      <script type="application/json" data-apgo-variants>
+        {{ product.variants | json }}
+      </script>
+    {% endform %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "APGO · Hero (Desktop)",
+  "tag": "section",
+  "class": "apgo-section apgo-section-hero",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "英文副標", "default": "Aroma Aesthetics" },
+    { "type": "checkbox", "id": "show_rating", "label": "顯示評分", "default": true },
+    { "type": "text", "id": "rating_score", "label": "評分", "default": "4.9" },
+    { "type": "text", "id": "rating_count", "label": "評價數", "default": "2,847" },
+    { "type": "checkbox", "id": "show_installment", "label": "顯示 3 期 0 利率", "default": true },
+    { "type": "checkbox", "id": "show_buy_now", "label": "顯示「立即購買」按鈕", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "trust_cell",
+      "name": "信任徽章格",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "icon", "label": "圖示 (emoji / symbol)", "default": "✓" },
+        { "type": "text", "id": "title", "label": "主標", "default": "SGS" },
+        { "type": "text", "id": "subtitle", "label": "副標", "default": "國家級認證" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO · Hero",
+      "blocks": [
+        { "type": "trust_cell", "settings": { "icon": "🛡", "title": "SGS", "subtitle": "國家級認證" }},
+        { "type": "trust_cell", "settings": { "icon": "✈", "title": "免運", "subtitle": "滿 799" }},
+        { "type": "trust_cell", "settings": { "icon": "↻", "title": "30 天", "subtitle": "鑑賞退換" }},
+        { "type": "trust_cell", "settings": { "icon": "☘", "title": "台灣", "subtitle": "製造" }}
+      ]
+    }
+  ]
+}
+{% endschema %}
