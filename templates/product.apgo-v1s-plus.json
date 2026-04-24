@@ -384,7 +384,6 @@
       ],
       "settings": {
         "video_url": "",
-        "video_poster": "shopify://shop_images/01-hero.jpg",
         "video_label": "產品實測影片 · 60s",
         "kicker": "AROMA AESTHETICS",
         "show_rating": true,
@@ -394,8 +393,8 @@
         "ritual_image": "shopify://shop_images/02-fabric.jpg",
         "ritual_video_url": "",
         "ritual_video_label": "▶ 觀看 Ritual 影片",
-        "ritual_heading": "重新定義<br>洗衣的日常",
-        "ritual_body": "追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。",
+        "ritual_heading": "",
+        "ritual_body": "",
         "timeline_subtitle": "獨家微膠囊鎖香技術，經摩擦釋放香氛，24 小時後仍可辨識。",
         "cmp_col0": "比較項目",
         "cmp_col1": "APGO 超級洗衣精",
