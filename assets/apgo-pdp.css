@@ -456,6 +456,15 @@
   text-shadow: 0 1px 3px rgba(0,0,0,0.6);
 }
 
+/* Long image (below UGC) — full-width, natural aspect */
+.apgo-mpdp-longimg-wrap { padding: 8px 16px 32px; text-align: center; }
+.apgo-mpdp-longimg-link { display: block; }
+.apgo-mpdp-longimg {
+  display: block; width: 100%; height: auto;
+  max-width: 1200px; margin: 0 auto;
+  border-radius: 8px;
+}
+
 /* Spec tab */
 .apgo-mpdp-spec-row { padding: 13px 16px; border-bottom: 1px solid var(--apgo-line); font-size: 12px; }
 .apgo-mpdp-spec-row .apgo-muted { margin-bottom: 3px; }
@@ -584,6 +593,7 @@
   /* Centered inner blocks — cap to 1240 (matches hero container), with their own vertical padding */
   .apgo-mpdp-cmp-wrap,
   .apgo-mpdp-ugc-wrap,
+  .apgo-mpdp-longimg-wrap,
   .apgo-mpdp-images { max-width: 1240px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px; }
   /* Full-bleed blocks — bg spans the whole viewport, inner content stays centered to 1240 */
   .apgo-mpdp-pain-wrap,

@@ -295,6 +295,28 @@
           </div>
         </div>
       {%- endif -%}
+
+      {%- comment -%} Long image (below UGC) — full-width, natural aspect {%- endcomment -%}
+      {%- if section.settings.long_image != blank -%}
+        <div class="apgo-mpdp-longimg-wrap">
+          {%- assign _limg = section.settings.long_image -%}
+          {%- if section.settings.long_image_link != blank -%}
+            <a href="{{ section.settings.long_image_link }}" class="apgo-mpdp-longimg-link">
+              <img class="apgo-mpdp-longimg"
+                   src="{{ _limg | image_url: width: 1600 }}"
+                   alt="{{ section.settings.long_image_alt | default: _limg.alt | default: '' }}"
+                   loading="lazy"
+                   width="{{ _limg.width }}" height="{{ _limg.height }}">
+            </a>
+          {%- else -%}
+            <img class="apgo-mpdp-longimg"
+                 src="{{ _limg | image_url: width: 1600 }}"
+                 alt="{{ section.settings.long_image_alt | default: _limg.alt | default: '' }}"
+                 loading="lazy"
+                 width="{{ _limg.width }}" height="{{ _limg.height }}">
+          {%- endif -%}
+        </div>
+      {%- endif -%}
     </div>
 
     {%- comment -%} Tab panel: 規格 {%- endcomment -%}
@@ -416,6 +438,12 @@
 
     { "type": "header", "content": "UGC" },
     { "type": "checkbox", "id": "ugc_enabled", "label": "顯示 UGC 牆", "default": false },
+
+    { "type": "header", "content": "UGC 下方長圖" },
+    { "type": "paragraph", "content": "可上傳一張長圖（如品牌故事、規格長圖），會顯示在 UGC 牆下方、保持原始比例自適應寬度。" },
+    { "type": "image_picker", "id": "long_image", "label": "長圖" },
+    { "type": "text", "id": "long_image_alt", "label": "圖片替代文字（SEO）" },
+    { "type": "url", "id": "long_image_link", "label": "點擊連結（選填）" },
 
     { "type": "header", "content": "相關商品" },
     { "type": "collection", "id": "related_collection", "label": "相關商品集合" }
