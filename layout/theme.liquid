@@ -64,6 +64,37 @@
   {% render 'shogun-head' %}
 
   {%- if template.suffix == 'apgo-v1s-plus' -%}
+    {%- comment -%}
+      Critical paint-prevention styles — inlined so they apply on the very first
+      frame, before external CSS finishes loading. Stops the promo bar + tactical
+      hub from flashing their default dark bg before our scoped overrides hit.
+    {%- endcomment -%}
+    <style id="apgo-v1s-plus-critical">
+      /* Promo bar (戰術廣播條) — inline bg-color + tw-bg-black on <a> */
+      #apgo-promo-bar,
+      #apgo-promo-bar > a,
+      #apgo-promo-bar [class*="tw-bg-"] {
+        background: #fdfaf2 !important;
+        background-color: #fdfaf2 !important;
+      }
+      /* Tactical Hub — dark surface token */
+      [id^="shopify-section-apgo_tactical_hub"],
+      .apgo-widget-container {
+        background: transparent !important;
+        --dt-bg-surface: #fdfaf2;
+        --dt-bg-input: #f2ece0;
+        --dt-border: #d9d3c3;
+      }
+      /* Announcement + header — color-scheme vars */
+      announcement-bar-component,
+      header-component,
+      .header,
+      .announcement-bar {
+        --color-background: 253, 250, 242;
+        --color-foreground: 45, 46, 40;
+        background: #fdfaf2 !important;
+      }
+    </style>
     {{ 'apgo-pdp.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'apgo-pdp.js' | asset_url }}" defer></script>
   {%- endif -%}
