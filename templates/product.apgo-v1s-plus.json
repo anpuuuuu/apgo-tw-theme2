@@ -1,16 +1,58 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "gallery":    { "type": "apgo-gallery" },
-    "info":       { "type": "apgo-product-info" },
-    "shipping":   { "type": "apgo-shipping-info" },
-    "editorial":  { "type": "apgo-editorial" },
-    "quiz":       { "type": "apgo-scent-quiz" },
-    "pain":       { "type": "apgo-pain-solutions" },
-    "timeline":   { "type": "apgo-scent-timeline" },
-    "comparison": { "type": "apgo-comparison" },
-    "ugc":        { "type": "apgo-ugc-wall" },
-    "spec":       { "type": "apgo-spec-table" },
-    "related":    { "type": "apgo-related" }
+    "gallery": {
+      "type": "apgo-gallery",
+      "settings": {}
+    },
+    "info": {
+      "type": "apgo-product-info",
+      "settings": {}
+    },
+    "shipping": {
+      "type": "apgo-shipping-info",
+      "settings": {}
+    },
+    "editorial": {
+      "type": "apgo-editorial",
+      "settings": {}
+    },
+    "quiz": {
+      "type": "apgo-scent-quiz",
+      "settings": {}
+    },
+    "pain": {
+      "type": "apgo-pain-solutions",
+      "settings": {}
+    },
+    "timeline": {
+      "type": "apgo-scent-timeline",
+      "settings": {}
+    },
+    "comparison": {
+      "type": "apgo-comparison",
+      "settings": {}
+    },
+    "ugc": {
+      "type": "apgo-ugc-wall",
+      "settings": {}
+    },
+    "spec": {
+      "type": "apgo-spec-table",
+      "settings": {}
+    },
+    "related": {
+      "type": "apgo-related",
+      "settings": {}
+    }
   },
   "order": [
     "gallery",

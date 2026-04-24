@@ -42,6 +42,10 @@ This file can be re-written at any time.
 
 	
   {% render 'shogun-head' %}
+
+  {%- if template.suffix == 'apgo-v1s-plus' -%}
+    {{ 'apgo-pdp.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
 </head>
   <body>
     {% include 'shogun-content-handler' %}
