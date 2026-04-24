@@ -69,7 +69,7 @@
   {%- endif -%}
 </head>
 
-  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}" data-shop-host="{{ shop.permanent_domain }}">
+  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}{% if template.suffix != blank %} template-suffix-{{ template.suffix }}{% endif %}" data-shop-host="{{ shop.permanent_domain }}">
     {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
     {% comment %} 本機預覽時強制留在 127.0.0.1/localhost，不跳轉到線上商店 {% endcomment %}
     <script>

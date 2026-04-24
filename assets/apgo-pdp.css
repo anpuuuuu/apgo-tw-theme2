@@ -780,3 +780,82 @@
   .apgo-mpdp-timeline > div:last-child::before { left: 40px; right: 40px; top: 50px; }
   .apgo-mpdp-cmp-wrap { padding: 48px 24px; }
 }
+
+/* =========================================================================
+   V1S+ 專屬：覆寫 Header / Announcement Bar / Footer 配色
+   只在 body.template-suffix-apgo-v1s-plus（= 本模板）下生效
+   目的：讓白字淺色對比消失，統一成 cream 底 + ink 字
+   ========================================================================= */
+body.template-suffix-apgo-v1s-plus announcement-bar-component,
+body.template-suffix-apgo-v1s-plus .announcement-bar,
+body.template-suffix-apgo-v1s-plus header-component,
+body.template-suffix-apgo-v1s-plus header.header,
+body.template-suffix-apgo-v1s-plus .section-header,
+body.template-suffix-apgo-v1s-plus .apgo-footer,
+body.template-suffix-apgo-v1s-plus .apgo-footer-main,
+body.template-suffix-apgo-v1s-plus .apgo-footer-bottom {
+  background: var(--apgo-bg) !important;
+  background-color: var(--apgo-bg) !important;
+  color: var(--apgo-ink) !important;
+}
+
+/* Announcement bar: text/links/icons */
+body.template-suffix-apgo-v1s-plus .announcement-bar,
+body.template-suffix-apgo-v1s-plus .announcement-bar *,
+body.template-suffix-apgo-v1s-plus announcement-bar-component,
+body.template-suffix-apgo-v1s-plus announcement-bar-component * {
+  color: var(--apgo-ink) !important;
+  border-color: var(--apgo-line) !important;
+}
+
+/* Header: logo text, nav links, icons, counters */
+body.template-suffix-apgo-v1s-plus header-component a,
+body.template-suffix-apgo-v1s-plus header-component button,
+body.template-suffix-apgo-v1s-plus header-component span,
+body.template-suffix-apgo-v1s-plus header-component summary,
+body.template-suffix-apgo-v1s-plus header-component details,
+body.template-suffix-apgo-v1s-plus header.header a,
+body.template-suffix-apgo-v1s-plus header.header button,
+body.template-suffix-apgo-v1s-plus header.header span,
+body.template-suffix-apgo-v1s-plus .header a,
+body.template-suffix-apgo-v1s-plus .header button,
+body.template-suffix-apgo-v1s-plus .header span {
+  color: var(--apgo-ink) !important;
+}
+body.template-suffix-apgo-v1s-plus header-component svg,
+body.template-suffix-apgo-v1s-plus header.header svg,
+body.template-suffix-apgo-v1s-plus .header svg,
+body.template-suffix-apgo-v1s-plus .announcement-bar svg,
+body.template-suffix-apgo-v1s-plus announcement-bar-component svg {
+  color: var(--apgo-ink) !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* Cart badge: keep contrast with a dark pill on cream */
+body.template-suffix-apgo-v1s-plus header-component .cart-count,
+body.template-suffix-apgo-v1s-plus header-component [class*="cart-count"],
+body.template-suffix-apgo-v1s-plus .header [class*="cart-count"] {
+  background: var(--apgo-ink) !important;
+  color: var(--apgo-bg) !important;
+}
+
+/* Footer */
+body.template-suffix-apgo-v1s-plus .apgo-footer,
+body.template-suffix-apgo-v1s-plus .apgo-footer * {
+  color: var(--apgo-ink) !important;
+  border-color: var(--apgo-line) !important;
+}
+body.template-suffix-apgo-v1s-plus .apgo-footer a:hover {
+  color: var(--apgo-sage) !important;
+}
+body.template-suffix-apgo-v1s-plus .apgo-footer svg {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* Bottom borderline that separates header from content */
+body.template-suffix-apgo-v1s-plus header-component,
+body.template-suffix-apgo-v1s-plus header.header {
+  border-bottom: 1px solid var(--apgo-line) !important;
+}
