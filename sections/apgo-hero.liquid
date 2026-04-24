@@ -32,49 +32,58 @@
 
       <div class="apgo-hero-grid">
 
-        {%- comment -%} Thumbnail rail — horizontal carousel below main image, shows ~5 at a time {%- endcomment -%}
-        <div class="apgo-thumb-rail-wrap">
-          <button type="button" class="apgo-thumb-nav apgo-thumb-nav--prev" data-apgo-thumb-nav="prev" aria-label="上一張">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <div class="apgo-thumb-rail" data-apgo-thumb-rail>
-            {%- if product.media.size > 0 -%}
-              {%- for m in product.media -%}
-                <button type="button"
-                        class="apgo-thumb {% if forloop.first %}active{% endif %}"
-                        data-apgo-thumb-idx="{{ forloop.index0 }}"
-                        aria-label="顯示第 {{ forloop.index }} 張圖">
-                  <img src="{{ m | image_url: width: 200 }}"
-                       alt="{{ m.alt | default: product.title }}"
-                       loading="lazy" width="80" height="80">
-                </button>
-              {%- endfor -%}
+        {%- comment -%}
+          Left column: main image on top, thumb carousel directly below.
+          Wrapped in a flex container so thumb-rail always hugs the bottom of
+          the main image — unaffected by sidebar height on the right.
+        {%- endcomment -%}
+        <div class="apgo-hero-left">
+
+          {%- comment -%} Main image {%- endcomment -%}
+          <div class="apgo-main-media">
+            {%- if product.featured_media -%}
+              <img class="apgo-main-img"
+                   src="{{ product.featured_media | image_url: width: 1400 }}"
+                   alt="{{ product.featured_media.alt | default: product.title }}"
+                   loading="eager"
+                   data-apgo-main-img>
             {%- else -%}
-              {%- for i in (1..5) -%}
-                <div class="apgo-thumb apgo-thumb-placeholder"></div>
-              {%- endfor -%}
+              <div class="apgo-main-img apgo-main-placeholder">{% render 'apgo-placeholder', name: 'Main image', hint: '上傳商品主圖' %}</div>
+            {%- endif -%}
+
+            {%- if has_compare -%}
+              <div class="apgo-discount-badge">限時 {{ discount_pct }}% OFF</div>
             {%- endif -%}
           </div>
-          <button type="button" class="apgo-thumb-nav apgo-thumb-nav--next" data-apgo-thumb-nav="next" aria-label="下一張">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-        </div>
 
-        {%- comment -%} Main image (desktop center column) {%- endcomment -%}
-        <div class="apgo-main-media">
-          {%- if product.featured_media -%}
-            <img class="apgo-main-img"
-                 src="{{ product.featured_media | image_url: width: 1400 }}"
-                 alt="{{ product.featured_media.alt | default: product.title }}"
-                 loading="eager"
-                 data-apgo-main-img>
-          {%- else -%}
-            <div class="apgo-main-img apgo-main-placeholder">{% render 'apgo-placeholder', name: 'Main image', hint: '上傳商品主圖' %}</div>
-          {%- endif -%}
+          {%- comment -%} Thumbnail rail — horizontal carousel, shows ~5 at a time {%- endcomment -%}
+          <div class="apgo-thumb-rail-wrap">
+            <button type="button" class="apgo-thumb-nav apgo-thumb-nav--prev" data-apgo-thumb-nav="prev" aria-label="上一張">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="apgo-thumb-rail" data-apgo-thumb-rail>
+              {%- if product.media.size > 0 -%}
+                {%- for m in product.media -%}
+                  <button type="button"
+                          class="apgo-thumb {% if forloop.first %}active{% endif %}"
+                          data-apgo-thumb-idx="{{ forloop.index0 }}"
+                          aria-label="顯示第 {{ forloop.index }} 張圖">
+                    <img src="{{ m | image_url: width: 200 }}"
+                         alt="{{ m.alt | default: product.title }}"
+                         loading="lazy" width="80" height="80">
+                  </button>
+                {%- endfor -%}
+              {%- else -%}
+                {%- for i in (1..5) -%}
+                  <div class="apgo-thumb apgo-thumb-placeholder"></div>
+                {%- endfor -%}
+              {%- endif -%}
+            </div>
+            <button type="button" class="apgo-thumb-nav apgo-thumb-nav--next" data-apgo-thumb-nav="next" aria-label="下一張">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
 
-          {%- if has_compare -%}
-            <div class="apgo-discount-badge">限時 {{ discount_pct }}% OFF</div>
-          {%- endif -%}
         </div>
 
         {%- comment -%} Purchase sidebar (desktop right column) {%- endcomment -%}

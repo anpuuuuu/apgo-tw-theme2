@@ -68,19 +68,21 @@
 .apgo-hero-grid {
   display: grid;
   grid-template-columns: 1fr 460px;
-  grid-template-rows: auto auto;
-  grid-template-areas:
-    "main sidebar"
-    "thumbs sidebar";
-  gap: 8px 32px;          /* 橫向 32px 保留 sidebar 間距；縱向 8px 讓縮圖貼近主圖 */
+  gap: 32px;
   align-items: start;
 }
-.apgo-main-media { grid-area: main; }
-.apgo-sidebar    { grid-area: sidebar; }
+/* Left column: main image stacked tight on top of thumb carousel.
+   Using flex here (not grid rows) means the sidebar's height on the right
+   can't expand rows and push the thumbs away from the main image. */
+.apgo-hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;           /* allow shrink inside grid track */
+}
 
 /* Thumb rail wrapper — prev btn | rail (overflow hidden) | next btn */
 .apgo-thumb-rail-wrap {
-  grid-area: thumbs;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -119,10 +121,11 @@
 .apgo-thumb.active { border-color: var(--apgo-ink); }
 .apgo-thumb-placeholder { background: var(--apgo-bg-ash); aspect-ratio: 1/1; }
 
-/* Main image */
+/* Main image — 讓圖片按原始比例顯示，不強制正方形裁切。
+   這樣主圖底部就是產品實際內容的邊緣，縮圖會直接貼在產品下方。 */
 .apgo-main-media { position: relative; }
 .apgo-main-img {
-  width: 100%; aspect-ratio: 1/1; object-fit: cover;
+  width: 100%; height: auto; object-fit: contain;
   background: var(--apgo-bg-ash); border-radius: 20px; display: block;
 }
 .apgo-main-placeholder { display: flex; align-items: center; justify-content: center; padding: 20px; }
@@ -974,14 +977,10 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
   background-color: transparent !important;
 }
 
-/* 7) Hero 主圖區：窄視窗讓 sidebar 掉到最下面，主圖 → 縮圖 → sidebar 單列 */
+/* 7) Hero 主圖區：窄視窗單列 — hero-left (主圖+縮圖) 然後 sidebar */
 @media (max-width: 900px) {
   .apgo-hero-grid {
     grid-template-columns: 1fr !important;
-    grid-template-areas:
-      "main"
-      "thumbs"
-      "sidebar" !important;
-    gap: 8px !important;
+    gap: 16px !important;
   }
 }
