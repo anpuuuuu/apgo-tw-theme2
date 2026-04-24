@@ -63,6 +63,58 @@
     "mobile": {
       "type": "apgo-mobile-pdp",
       "blocks": {
+        "image_AjYkFB": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/08-scents.jpg",
+            "caption": ""
+          }
+        },
+        "timeline_c9nFjf": {
+          "type": "timeline",
+          "settings": {
+            "hour": "0H",
+            "label": "洗滌完成",
+            "description": "前段花香綻放",
+            "strength": 100
+          }
+        },
+        "timeline_aE7Abp": {
+          "type": "timeline",
+          "settings": {
+            "hour": "6H",
+            "label": "日常穿著",
+            "description": "中段木質底香",
+            "strength": 85
+          }
+        },
+        "timeline_gRnMnX": {
+          "type": "timeline",
+          "settings": {
+            "hour": "12H",
+            "label": "午後",
+            "description": "後調溫潤麝香",
+            "strength": 65
+          }
+        },
+        "timeline_FKMAmz": {
+          "type": "timeline",
+          "settings": {
+            "hour": "18H",
+            "label": "傍晚",
+            "description": "尾調淡雅純淨",
+            "strength": 45
+          }
+        },
+        "timeline_DXkk3R": {
+          "type": "timeline",
+          "settings": {
+            "hour": "24H",
+            "label": "隔日",
+            "description": "依然清爽可辨識",
+            "strength": 30
+          }
+        },
         "pain_LDhBMY": {
           "type": "pain",
           "settings": {
@@ -266,6 +318,12 @@
         }
       },
       "block_order": [
+        "image_AjYkFB",
+        "timeline_c9nFjf",
+        "timeline_aE7Abp",
+        "timeline_gRnMnX",
+        "timeline_FKMAmz",
+        "timeline_DXkk3R",
         "pain_LDhBMY",
         "pain_bwLixy",
         "pain_7WwNne",
