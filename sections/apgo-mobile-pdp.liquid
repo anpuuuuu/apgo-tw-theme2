@@ -171,14 +171,14 @@
             {%- elsif section.settings.ritual_image != blank -%}
               <img class="apgo-mpdp-ritual-img-mobile apgo-mpdp-mobile-only"
                    src="{{ section.settings.ritual_image | image_url: width: 900 }}"
-                   alt="{{ section.settings.ritual_heading }}" loading="lazy">
+                   alt="重新定義洗衣的日常" loading="lazy">
             {%- endif -%}
 
             {%- comment -%} Desktop: 1:1 image on the left of the 2-col grid {%- endcomment -%}
             {%- if section.settings.ritual_image != blank -%}
               <img class="apgo-mpdp-ritual-img-desktop apgo-mpdp-desktop-only"
                    src="{{ section.settings.ritual_image | image_url: width: 1200 }}"
-                   alt="{{ section.settings.ritual_heading }}" loading="lazy">
+                   alt="重新定義洗衣的日常" loading="lazy">
             {%- endif -%}
 
           </div>
@@ -186,8 +186,8 @@
 
         <div class="apgo-mpdp-ritual-text">
           <div class="apgo-mpdp-kicker">— THE RITUAL —</div>
-          <h2 class="apgo-serif">{{ section.settings.ritual_heading | default: '重新定義<br>洗衣的日常' }}</h2>
-          <p>{{ section.settings.ritual_body | default: '追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。' }}</p>
+          <h2 class="apgo-serif">重新定義<br>洗衣的日常</h2>
+          <p>追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。</p>
         </div>
       </div>
 
@@ -425,8 +425,6 @@
     { "type": "image_picker", "id": "ritual_image", "label": "Ritual 視覺圖（電腦端 16:9，建議 1920×1099；手機端兼當影片封面）" },
     { "type": "url", "id": "ritual_video_url", "label": "Ritual 影片連結（手機端，選填 — 留白則只顯示圖片）" },
     { "type": "text", "id": "ritual_video_label", "label": "影片標籤（手機端）", "default": "▶ 觀看 Ritual 影片" },
-    { "type": "textarea", "id": "ritual_heading", "label": "標題（支援 HTML <br>）", "default": "重新定義<br>洗衣的日常" },
-    { "type": "textarea", "id": "ritual_body", "label": "內文", "default": "追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。" },
 
     { "type": "header", "content": "24H Timeline" },
     { "type": "text", "id": "timeline_subtitle", "label": "副標說明", "default": "獨家微膠囊鎖香技術，經摩擦釋放香氛，24 小時後仍可辨識。" },
