@@ -11,19 +11,142 @@
   "sections": {
     "hero": {
       "type": "apgo-hero",
-      "settings": {}
+      "settings": {
+        "kicker": "Aroma Aesthetics",
+        "show_rating": true,
+        "rating_score": "4.9",
+        "rating_count": "2,847",
+        "show_installment": true,
+        "show_buy_now": true
+      }
     },
     "mobile": {
       "type": "apgo-mobile-pdp",
-      "settings": {}
+      "blocks": {
+        "pain_LDhBMY": {
+          "type": "pain",
+          "settings": {
+            "pain": "洗不掉的頑垢",
+            "solution": "超濃縮酵素活性"
+          }
+        },
+        "pain_bwLixy": {
+          "type": "pain",
+          "settings": {
+            "pain": "室內晾衣的霉味",
+            "solution": "奈米消臭技術"
+          }
+        },
+        "pain_7WwNne": {
+          "type": "pain",
+          "settings": {
+            "pain": "護衣護色的掙扎",
+            "solution": "中性護色配方"
+          }
+        },
+        "pain_ynmwTw": {
+          "type": "pain",
+          "settings": {
+            "pain": "短暫的芬芳",
+            "solution": "24H 留香技術"
+          }
+        },
+        "compare_hEzUej": {
+          "type": "compare",
+          "settings": {
+            "feature": "濃縮倍數",
+            "apgo_value": "8 倍",
+            "competitor_value": "1-2 倍"
+          }
+        },
+        "compare_YBNYNt": {
+          "type": "compare",
+          "settings": {
+            "feature": "留香時間",
+            "apgo_value": "24 小時",
+            "competitor_value": "2-4 小時"
+          }
+        },
+        "compare_anDepg": {
+          "type": "compare",
+          "settings": {
+            "feature": "pH 值",
+            "apgo_value": "中性 7.0",
+            "competitor_value": "鹼性 9-10"
+          }
+        },
+        "compare_UHM8Kq": {
+          "type": "compare",
+          "settings": {
+            "feature": "嬰幼兒",
+            "apgo_value": "✓ 適用",
+            "competitor_value": "視品牌"
+          }
+        },
+        "compare_zMykQH": {
+          "type": "compare",
+          "settings": {
+            "feature": "香氛數",
+            "apgo_value": "6 款",
+            "competitor_value": "1-2 款"
+          }
+        },
+        "compare_zUMRNa": {
+          "type": "compare",
+          "settings": {
+            "feature": "螢光劑",
+            "apgo_value": "✓ 零添加",
+            "competitor_value": "通常含"
+          }
+        }
+      },
+      "block_order": [
+        "pain_LDhBMY",
+        "pain_bwLixy",
+        "pain_7WwNne",
+        "pain_ynmwTw",
+        "compare_hEzUej",
+        "compare_YBNYNt",
+        "compare_anDepg",
+        "compare_UHM8Kq",
+        "compare_zMykQH",
+        "compare_zUMRNa"
+      ],
+      "settings": {
+        "video_url": "",
+        "video_label": "產品實測影片 · 60s",
+        "kicker": "AROMA AESTHETICS",
+        "show_rating": true,
+        "rating_score": "4.9",
+        "rating_count": "",
+        "show_installment": true,
+        "ritual_image": "shopify://shop_images/08-scents.jpg",
+        "ritual_heading": "重新定義<br>洗衣的日常",
+        "ritual_body": "追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。",
+        "ugc_enabled": false,
+        "related_collection": ""
+      }
     },
     "dtabs": {
       "type": "apgo-desktop-tabs",
-      "settings": {}
+      "settings": {
+        "rating_score": "4.9",
+        "rating_count": "",
+        "ritual_video_url": "",
+        "ritual_heading": "重新定義<br>洗衣的日常",
+        "ritual_body": "追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的每一件衣物。",
+        "ugc_enabled": false
+      }
     },
     "related": {
       "type": "apgo-related",
-      "settings": {}
+      "disabled": true,
+      "settings": {
+        "heading": "您可能也喜歡",
+        "collection": "",
+        "columns": 4,
+        "limit": 4
+      }
     }
   },
   "order": [
