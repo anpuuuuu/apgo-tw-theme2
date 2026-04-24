@@ -158,21 +158,24 @@
 
     {%- comment -%} Tab panel: 商品說明 {%- endcomment -%}
     <div class="apgo-mpdp-panel active" data-apgo-mpanel="desc">
-      {%- if section.settings.ritual_image != blank -%}
-        <div class="apgo-mpdp-ritual">
-          <img src="{{ section.settings.ritual_image | image_url: width: 900 }}" alt="{{ section.settings.ritual_heading }}" loading="lazy">
-          <div class="apgo-mpdp-ritual-overlay">
-            <div class="apgo-mpdp-play-sm"><span></span></div>
-            <div class="apgo-mpdp-kicker apgo-mpdp-kicker-inv">— THE RITUAL —</div>
-            <div class="apgo-serif">30 秒看懂 APGO 使用方式</div>
+      <div class="apgo-mpdp-ritual-wrap">
+        {%- if section.settings.ritual_image != blank -%}
+          <div class="apgo-mpdp-ritual">
+            <img src="{{ section.settings.ritual_image | image_url: width: 900 }}" alt="{{ section.settings.ritual_heading }}" loading="lazy">
+            <div class="apgo-mpdp-ritual-overlay">
+              <div class="apgo-mpdp-play-sm apgo-mpdp-mobile-only"><span></span></div>
+              <div class="apgo-mpdp-kicker apgo-mpdp-kicker-inv apgo-mpdp-mobile-only">— THE RITUAL —</div>
+              <div class="apgo-serif apgo-mpdp-overlay-heading">{{ section.settings.ritual_heading | default: '重新定義洗衣的日常' | replace: '<br>', '' }}</div>
+              <p class="apgo-mpdp-overlay-body apgo-mpdp-desktop-only">{{ section.settings.ritual_body | default: '追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。' }}</p>
+            </div>
           </div>
-        </div>
-      {%- endif -%}
+        {%- endif -%}
 
-      <div class="apgo-mpdp-ritual-text">
-        <div class="apgo-mpdp-kicker">— THE RITUAL —</div>
-        <h2 class="apgo-serif">{{ section.settings.ritual_heading | default: '重新定義<br>洗衣的日常' }}</h2>
-        <p>{{ section.settings.ritual_body | default: '追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。' }}</p>
+        <div class="apgo-mpdp-ritual-text">
+          <div class="apgo-mpdp-kicker">— THE RITUAL —</div>
+          <h2 class="apgo-serif">{{ section.settings.ritual_heading | default: '重新定義<br>洗衣的日常' }}</h2>
+          <p>{{ section.settings.ritual_body | default: '追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。' }}</p>
+        </div>
       </div>
 
       {%- comment -%} Free image gallery (image blocks render here in order added) {%- endcomment -%}
@@ -209,10 +212,13 @@
         </div>
       </div>
 
-      {%- comment -%} 24H Timeline (mobile vertical) {%- endcomment -%}
+      {%- comment -%} 24H Timeline (mobile vertical / desktop horizontal) {%- endcomment -%}
       <div class="apgo-mpdp-timeline">
         <div class="apgo-mpdp-kicker">— 24H LASTING —</div>
         <h3 class="apgo-serif">持續一整天的香氛</h3>
+        {%- if section.settings.timeline_subtitle != blank -%}
+          <p class="apgo-muted apgo-mpdp-timeline-sub">{{ section.settings.timeline_subtitle }}</p>
+        {%- endif -%}
         <div>
           {%- for block in section.blocks -%}
             {%- if block.type == 'timeline' -%}
@@ -240,9 +246,9 @@
         <h3 class="apgo-serif">為什麼選 APGO？</h3>
         <div class="apgo-mpdp-cmp">
           <div class="apgo-mpdp-cmp-head">
-            <div>項目</div>
-            <div class="apgo-serif">APGO</div>
-            <div>一般</div>
+            <div>{{ section.settings.cmp_col0 | default: '比較項目' }}</div>
+            <div class="apgo-serif">{{ section.settings.cmp_col1 | default: 'APGO 超級洗衣精' }}</div>
+            <div>{{ section.settings.cmp_col2 | default: '一般市售洗衣精' }}</div>
           </div>
           {%- for block in section.blocks -%}
             {%- if block.type == 'compare' -%}
@@ -384,6 +390,14 @@
     { "type": "image_picker", "id": "ritual_image", "label": "Ritual 視覺圖" },
     { "type": "textarea", "id": "ritual_heading", "label": "標題（支援 HTML <br>）", "default": "重新定義<br>洗衣的日常" },
     { "type": "textarea", "id": "ritual_body", "label": "內文", "default": "追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。" },
+
+    { "type": "header", "content": "24H Timeline" },
+    { "type": "text", "id": "timeline_subtitle", "label": "副標說明", "default": "獨家微膠囊鎖香技術，經摩擦釋放香氛，24 小時後仍可辨識。" },
+
+    { "type": "header", "content": "比較表 欄位標題" },
+    { "type": "text", "id": "cmp_col0", "label": "第一欄（項目）", "default": "比較項目" },
+    { "type": "text", "id": "cmp_col1", "label": "第二欄（APGO）", "default": "APGO 超級洗衣精" },
+    { "type": "text", "id": "cmp_col2", "label": "第三欄（對手）", "default": "一般市售洗衣精" },
 
     { "type": "header", "content": "UGC" },
     { "type": "checkbox", "id": "ugc_enabled", "label": "顯示 UGC 牆", "default": false },

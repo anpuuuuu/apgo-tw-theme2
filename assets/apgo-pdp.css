@@ -538,160 +538,215 @@
 }
 
 /* =====================================================================
-   DESKTOP OVERRIDES — apgo-mpdp section also serves desktop tabs view
-   On desktop: hide mobile-shell + sticky CTA; restyle tabs + panels
+   VIEWPORT-SCOPED VISIBILITY (within .apgo-mpdp section only)
+   ===================================================================== */
+.apgo-mpdp-desktop-only { display: none !important; }
+.apgo-mpdp-mobile-only  { display: initial; }
+
+/* Ritual overlay: heading + body styles (used on desktop) */
+.apgo-mpdp-overlay-heading { font-size: 22px; line-height: 1.3; color: var(--apgo-bg); margin-bottom: 8px; font-weight: 400; }
+.apgo-mpdp-overlay-body    { font-size: 13px; line-height: 1.7; color: var(--apgo-bg); opacity: 0.92; margin: 0; }
+
+/* Timeline subtitle (only shown on desktop) */
+.apgo-mpdp-timeline-sub { display: none; }
+
+/* =====================================================================
+   DESKTOP OVERRIDES — match Claude Design handoff specs
    ===================================================================== */
 @media (min-width: 769px) {
+  /* Toggle viewport visibility */
+  .apgo-mpdp .apgo-mpdp-mobile-only  { display: none !important; }
+  .apgo-mpdp .apgo-mpdp-desktop-only { display: block !important; }
 
   /* Hide mobile-only chunks */
   .apgo-mpdp-mobile-shell,
-  .apgo-mpdp-sticky { display: none !important; }
+  .apgo-mpdp-sticky,
+  .apgo-mpdp-related { display: none !important; }
 
-  /* Section background + breathing room */
-  .apgo-mpdp { background: var(--apgo-bg); padding: 60px 0 80px; }
+  /* Section container: cap width + center */
+  .apgo-mpdp { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
 
-  /* Center & cap width on tabs / panels / related / images */
-  .apgo-mpdp-tabs,
-  .apgo-mpdp-panel,
-  .apgo-mpdp-related,
-  .apgo-mpdp-images {
-    max-width: 1280px; margin-left: auto; margin-right: auto;
-    padding-left: 40px; padding-right: 40px;
-  }
-
-  /* Tab bar */
+  /* ---------- Tabs (desktop) ---------- */
   .apgo-mpdp-tabs {
-    display: flex; gap: 40px; border-bottom: 1px solid var(--apgo-line);
-    background: transparent; padding-top: 0;
+    display: flex; justify-content: center; gap: 48px;
+    border-top: 1px solid var(--apgo-line);
+    border-bottom: 1px solid var(--apgo-line);
+    margin: 80px 0 64px; padding: 0; overflow: visible;
   }
   .apgo-mpdp-tab {
-    padding: 18px 0; font-size: 15px; letter-spacing: 0.04em;
-    background: none; opacity: 0.55; position: relative;
+    flex: 0 0 auto; padding: 22px 0; font-size: 13px;
+    letter-spacing: 0.18em; border-bottom: 2px solid transparent;
+    background: none; border-top: none; border-left: none; border-right: none;
+    color: var(--apgo-muted); white-space: nowrap;
   }
-  .apgo-mpdp-tab.active { opacity: 1; font-weight: 600; }
-  .apgo-mpdp-tab.active::after {
-    content: ''; position: absolute; left: 0; right: 0; bottom: -1px;
-    height: 2px; background: var(--apgo-ink);
+  .apgo-mpdp-tab.active {
+    color: var(--apgo-ink); border-bottom-color: var(--apgo-ink); font-weight: 500;
   }
 
-  /* Panels: more padding, no fixed bg/border carryover from mobile */
-  .apgo-mpdp-panel { padding-top: 48px; }
-  .apgo-mpdp-panel.active { display: block; }
+  /* ---------- Panel padding ---------- */
+  .apgo-mpdp-panel { padding: 0; }
 
-  /* Image gallery (desktop) — wider, optional 2-col when there are 2+ images */
-  .apgo-mpdp-images { gap: 24px; margin: 32px auto; }
-  .apgo-mpdp-image-block img { border-radius: 18px; }
-
-  /* Ritual: side-by-side image + text */
+  /* ---------- RITUAL: 2-col side-by-side ---------- */
+  .apgo-mpdp-ritual-wrap {
+    display: grid; grid-template-columns: 1.1fr 0.9fr;
+    gap: 64px; align-items: center; margin: 0 0 96px;
+  }
   .apgo-mpdp-ritual {
-    aspect-ratio: 16/7; border-radius: 22px; margin-bottom: 24px;
+    position: relative; margin: 0; border-radius: 16px; overflow: hidden;
   }
-  .apgo-mpdp-ritual-text {
-    text-align: center; padding: 24px 0 32px; max-width: 720px; margin: 0 auto;
+  .apgo-mpdp-ritual img { width: 100%; height: 520px; object-fit: cover; display: block; }
+  .apgo-mpdp-ritual-overlay {
+    position: absolute; left: 24px; right: 24px; bottom: 24px;
+    background: rgba(255,255,255,0.94); color: var(--apgo-ink);
+    padding: 24px 28px; border-radius: 12px;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   }
-  .apgo-mpdp-ritual-text h2 { font-size: 32px; line-height: 1.35; margin: 10px 0 18px; }
-  .apgo-mpdp-ritual-text p { font-size: 15px; line-height: 1.85; }
+  .apgo-mpdp-overlay-heading { color: var(--apgo-ink); font-size: 20px; }
+  .apgo-mpdp-overlay-body    { color: var(--apgo-muted); }
+  .apgo-mpdp-ritual-text { padding: 0; }
+  .apgo-mpdp-ritual-text .apgo-mpdp-kicker { font-size: 12px; letter-spacing: 0.2em; margin-bottom: 20px; }
+  .apgo-mpdp-ritual-text h2 { font-size: 40px; line-height: 1.25; margin: 0 0 24px; font-weight: 400; }
+  .apgo-mpdp-ritual-text p  { font-size: 15px; line-height: 1.85; color: var(--apgo-muted); margin: 0; }
 
-  /* Pain × Solutions: 4-col grid */
-  .apgo-mpdp-pain-wrap { margin: 56px 0; text-align: center; }
-  .apgo-mpdp-pain-wrap h3 { font-size: 28px; margin-bottom: 32px; }
+  /* ---------- PAIN: 2-col grid, horizontal pill cards ---------- */
+  .apgo-mpdp-pain-wrap { margin: 0 0 96px; text-align: center; }
+  .apgo-mpdp-pain-wrap h3 { font-size: 28px; margin: 0 0 40px; font-weight: 400; }
   .apgo-mpdp-pain-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
-    background: transparent; border: none; padding: 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px;
+    max-width: 960px; margin: 0 auto;
   }
   .apgo-mpdp-pain-card {
-    display: flex; flex-direction: column; align-items: center; text-align: center;
-    background: var(--apgo-bg-alt); border: 1px solid var(--apgo-line);
-    border-radius: 16px; padding: 28px 22px; gap: 0;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    gap: 16px; padding: 18px 28px; border: 1px solid var(--apgo-line);
+    border-radius: 999px; text-align: left; background: var(--apgo-bg);
   }
-  .apgo-mpdp-pain-card > div:first-child { font-size: 13px; color: var(--apgo-muted); }
-  .apgo-mpdp-pain-arrow {
-    color: var(--apgo-sage); font-size: 18px; margin: 14px 0;
-    transform: rotate(90deg); display: inline-block;
-  }
-  .apgo-mpdp-pain-card .apgo-serif { font-size: 16px; color: var(--apgo-sage); }
+  .apgo-mpdp-pain-card > .apgo-muted { font-size: 14px; text-align: right; }
+  .apgo-mpdp-pain-card > .apgo-serif { font-size: 15px; text-align: left; color: var(--apgo-ink); }
+  .apgo-mpdp-pain-arrow { color: var(--apgo-muted); font-size: 14px; }
 
-  /* Timeline: stays vertical rows but caps width and adds breathing room */
-  .apgo-mpdp-timeline { margin: 56px 0; text-align: center; padding: 0; }
-  .apgo-mpdp-timeline h3 { font-size: 28px; margin-bottom: 24px; }
+  /* ---------- TIMELINE: horizontal w/ axis line ---------- */
+  .apgo-mpdp-timeline { margin: 0 0 96px; text-align: center; }
+  .apgo-mpdp-timeline > .apgo-mpdp-kicker { margin-bottom: 14px; }
+  .apgo-mpdp-timeline > h3 { font-size: 28px; margin: 0 0 12px; font-weight: 400; }
+  .apgo-mpdp-timeline-sub { display: block; font-size: 13px; max-width: 560px; margin: 0 auto 56px; line-height: 1.7; }
   .apgo-mpdp-timeline > div:last-child {
-    text-align: left; max-width: 820px; margin: 0 auto;
-    background: var(--apgo-bg-alt); border: 1px solid var(--apgo-line);
-    border-radius: 16px; padding: 12px 24px;
+    position: relative;
+    display: flex; justify-content: space-between; align-items: stretch;
+    gap: 16px; max-width: 1080px; margin: 0 auto; padding: 0 20px;
   }
-
-  /* Comparison table */
-  .apgo-mpdp-cmp-wrap { margin: 56px 0; text-align: center; }
-  .apgo-mpdp-cmp-wrap h3 { font-size: 28px; margin-bottom: 32px; }
-  .apgo-mpdp-cmp { max-width: 900px; margin: 0 auto; text-align: left; }
-  .apgo-mpdp-cmp-head, .apgo-mpdp-cmp-row {
-    grid-template-columns: 1.4fr 1fr 1fr; padding: 16px 28px; font-size: 14px;
+  /* Horizontal axis line */
+  .apgo-mpdp-timeline > div:last-child::before {
+    content: ''; position: absolute; left: 60px; right: 60px; top: 92px;
+    height: 1px; background: var(--apgo-line); z-index: 0;
   }
-  .apgo-mpdp-cmp-head { font-size: 13px; }
+  .apgo-mpdp-timeline-row {
+    position: relative; display: flex; flex-direction: column; align-items: center;
+    flex: 1; gap: 0; padding: 0; border: none; background: none;
+    grid-template-columns: none; z-index: 1;
+  }
+  .apgo-mpdp-timeline-hour {
+    font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+    font-size: 36px; font-style: italic; font-weight: 400;
+    color: var(--apgo-ink); line-height: 1; margin-bottom: 28px;
+    width: auto; height: auto; background: none; border: none;
+  }
+  /* Dot on axis */
+  .apgo-mpdp-timeline-row::before {
+    content: ''; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--apgo-ink); margin-bottom: 20px;
+    box-shadow: 0 0 0 4px var(--apgo-bg);
+  }
+  .apgo-mpdp-timeline-row > div:nth-child(2) {
+    text-align: center; margin-bottom: 18px;
+  }
+  .apgo-mpdp-timeline-row > div:nth-child(2) .apgo-serif { font-size: 14px; margin-bottom: 4px; }
+  .apgo-mpdp-timeline-row > div:nth-child(2) .apgo-muted { font-size: 12px; }
+  .apgo-mpdp-timeline-row > div:nth-child(3) { width: 100%; max-width: 140px; text-align: center; }
+  .apgo-mpdp-timeline-bar {
+    width: 100%; height: 3px; background: var(--apgo-line);
+    border-radius: 2px; overflow: hidden; margin-bottom: 8px;
+  }
+  .apgo-mpdp-timeline-bar > div { height: 100%; background: var(--apgo-ink); }
+  .apgo-mpdp-timeline-pct { font-size: 11px; color: var(--apgo-muted); letter-spacing: 0.05em; }
+  .apgo-mpdp-timeline-pct::before { content: '香氛強度 '; }
 
-  /* UGC */
-  .apgo-mpdp-ugc-wrap { text-align: center; margin: 56px 0; }
-  .apgo-mpdp-ugc-wrap h3 { font-size: 28px; }
-  .apgo-mpdp-ugc-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  /* ---------- COMPARISON: polished dark header ---------- */
+  .apgo-mpdp-cmp-wrap { margin: 0 0 96px; text-align: center; }
+  .apgo-mpdp-cmp-wrap > .apgo-mpdp-kicker { margin-bottom: 14px; }
+  .apgo-mpdp-cmp-wrap > h3 { font-size: 28px; margin: 0 0 40px; font-weight: 400; }
+  .apgo-mpdp-cmp {
+    max-width: 900px; margin: 0 auto; border: 1px solid var(--apgo-line);
+    border-radius: 16px; overflow: hidden; background: var(--apgo-bg);
+  }
+  .apgo-mpdp-cmp-head {
+    display: grid; grid-template-columns: 1fr 1.2fr 1fr;
+    background: var(--apgo-ink); color: var(--apgo-bg);
+    padding: 20px 24px; gap: 16px; text-align: center;
+    font-size: 13px; letter-spacing: 0.08em;
+  }
+  .apgo-mpdp-cmp-head > div:nth-child(2) { font-size: 15px; }
+  .apgo-mpdp-cmp-row {
+    display: grid; grid-template-columns: 1fr 1.2fr 1fr;
+    padding: 20px 24px; gap: 16px; text-align: center;
+    border-top: 1px solid var(--apgo-line); align-items: center;
+  }
+  .apgo-mpdp-cmp-row:first-of-type { border-top: none; }
+  .apgo-mpdp-cmp-row > div:nth-child(1) { font-size: 13px; text-align: left; }
+  .apgo-mpdp-cmp-row > div:nth-child(2) { font-size: 15px; color: var(--apgo-ink); }
+  .apgo-mpdp-cmp-row > div:nth-child(3) { font-size: 13px; }
+  .apgo-mpdp-win { color: #2D7D5F; margin-right: 6px; }
 
-  /* Spec panel */
-  .apgo-mpdp-panel[data-apgo-mpanel="spec"] { padding-bottom: 48px; }
+  /* ---------- IMAGE GALLERY (desktop) ---------- */
+  .apgo-mpdp-images { margin: 0 0 96px; gap: 24px; }
+  .apgo-mpdp-image-block img { border-radius: 16px; }
+
+  /* ---------- SPEC panel ---------- */
+  .apgo-mpdp-panel[data-apgo-mpanel="spec"] {
+    max-width: 720px; margin: 0 auto; padding: 16px 0 80px;
+  }
   .apgo-mpdp-spec-row {
-    grid-template-columns: 220px 1fr; padding: 16px 28px; font-size: 15px;
-    max-width: 820px; margin: 0 auto;
-    background: var(--apgo-bg-alt); border-top: 1px solid var(--apgo-line);
+    display: grid; grid-template-columns: 200px 1fr; gap: 32px;
+    padding: 18px 0; border-bottom: 1px solid var(--apgo-line); margin: 0;
   }
-  .apgo-mpdp-spec-row:first-child {
-    border-top-left-radius: 14px; border-top-right-radius: 14px;
-  }
-  .apgo-mpdp-spec-row:last-child {
-    border-bottom-left-radius: 14px; border-bottom-right-radius: 14px;
-  }
+  .apgo-mpdp-spec-row .apgo-muted { font-size: 13px; }
+  .apgo-mpdp-spec-row .apgo-serif { font-size: 14px; color: var(--apgo-ink); }
 
-  /* Review panel — 2-col grid, summary spans full row */
-  .apgo-mpdp-panel[data-apgo-mpanel="review"] { padding-bottom: 48px; }
-  .apgo-mpdp-panel[data-apgo-mpanel="review"].active {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+  /* ---------- REVIEW panel ---------- */
+  .apgo-mpdp-panel[data-apgo-mpanel="review"] {
+    max-width: 880px; margin: 0 auto; padding: 16px 0 80px;
   }
-  .apgo-mpdp-rev-summary {
-    grid-column: 1 / -1;
-    display: flex; align-items: center; gap: 24px; text-align: left;
-    padding: 28px 32px; border: 1px solid var(--apgo-line); border-bottom: 1px solid var(--apgo-line);
-    border-radius: 16px; background: var(--apgo-bg-alt);
-  }
-  .apgo-mpdp-rev-score { font-size: 56px; line-height: 1; }
-  .apgo-mpdp-rev-summary .apgo-stars { font-size: 18px; margin: 0 0 4px; display: inline-block; }
-  .apgo-mpdp-rev-summary .apgo-muted { font-size: 13px; }
-  .apgo-mpdp-rev-item {
-    background: var(--apgo-bg-alt); border: 1px solid var(--apgo-line);
-    border-radius: 14px; padding: 22px 24px;
-  }
-  .apgo-mpdp-rev-head strong { font-size: 15px; }
-  .apgo-mpdp-rev-meta { font-size: 12px; }
-  .apgo-mpdp-rev-item p { font-size: 14px; line-height: 1.7; }
+  .apgo-mpdp-rev-summary { padding: 32px 0 40px; text-align: center; border-bottom: 1px solid var(--apgo-line); margin-bottom: 32px; }
+  .apgo-mpdp-rev-score { font-size: 56px; line-height: 1; margin-bottom: 8px; }
+  .apgo-mpdp-rev-item { padding: 24px 0; border-bottom: 1px solid var(--apgo-line); }
+  .apgo-mpdp-rev-head { display: flex; gap: 16px; align-items: center; margin-bottom: 6px; }
+  .apgo-mpdp-rev-meta { font-size: 12px; color: var(--apgo-muted); margin-bottom: 12px; }
+  .apgo-mpdp-rev-item p { font-size: 14px; line-height: 1.8; margin: 0; }
 
-  /* FAQ panel */
+  /* ---------- FAQ panel ---------- */
   .apgo-mpdp-panel[data-apgo-mpanel="faq"] {
-    padding-bottom: 48px; max-width: 880px;
+    max-width: 800px; margin: 0 auto; padding: 16px 0 80px;
   }
-  .apgo-mpdp-faq {
-    background: var(--apgo-bg-alt); border: 1px solid var(--apgo-line); border-radius: 12px;
-    padding: 0 24px; margin-bottom: 12px; cursor: default;
+  .apgo-mpdp-faq { border-bottom: 1px solid var(--apgo-line); padding: 0; }
+  .apgo-mpdp-faq summary {
+    list-style: none; cursor: pointer; padding: 24px 0;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
   }
-  .apgo-mpdp-faq summary { padding: 18px 0; font-size: 15px; }
-  .apgo-mpdp-faq-toggle { font-size: 22px; }
-  .apgo-mpdp-faq p { font-size: 14px; line-height: 1.8; padding-bottom: 18px; }
-
-  /* Related products on desktop — hide because apgo-related runs separately */
-  .apgo-mpdp-related { display: none; }
+  .apgo-mpdp-faq summary::-webkit-details-marker { display: none; }
+  .apgo-mpdp-faq summary .apgo-serif { font-size: 16px; }
+  .apgo-mpdp-faq-toggle { font-size: 20px; color: var(--apgo-muted); transition: transform 0.2s; }
+  .apgo-mpdp-faq[open] .apgo-mpdp-faq-toggle { transform: rotate(45deg); }
+  .apgo-mpdp-faq p { font-size: 14px; line-height: 1.8; padding: 0 0 24px; margin: 0; color: var(--apgo-muted); }
 }
 
-/* Tablet fallback — 2-col pain, 1-col reviews */
-@media (max-width: 1080px) and (min-width: 769px) {
-  .apgo-mpdp-tabs,
-  .apgo-mpdp-panel,
-  .apgo-mpdp-related,
-  .apgo-mpdp-images { padding-left: 24px; padding-right: 24px; }
-  .apgo-mpdp-pain-grid { grid-template-columns: repeat(2, 1fr); }
-  .apgo-mpdp-panel[data-apgo-mpanel="review"].active { grid-template-columns: 1fr; }
+/* Tablet fallback: 769–1080px — keep horizontal layouts but tighten spacing */
+@media (min-width: 769px) and (max-width: 1080px) {
+  .apgo-mpdp { padding: 0 24px; }
+  .apgo-mpdp-ritual-wrap { gap: 40px; }
+  .apgo-mpdp-ritual-text h2 { font-size: 32px; }
+  .apgo-mpdp-ritual img { height: 440px; }
+  .apgo-mpdp-tabs { gap: 32px; margin: 56px 0 48px; }
+  .apgo-mpdp-pain-grid { max-width: 100%; }
+  .apgo-mpdp-pain-card { padding: 14px 20px; gap: 12px; }
+  .apgo-mpdp-timeline-hour { font-size: 28px; }
+  .apgo-mpdp-timeline > div:last-child::before { left: 40px; right: 40px; top: 76px; }
 }
