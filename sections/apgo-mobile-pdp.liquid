@@ -159,15 +159,35 @@
     {%- comment -%} Tab panel: 商品說明 {%- endcomment -%}
     <div class="apgo-mpdp-panel active" data-apgo-mpanel="desc">
       <div class="apgo-mpdp-ritual-wrap">
-        {%- if section.settings.ritual_image != blank -%}
+        {%- if section.settings.ritual_image != blank or section.settings.ritual_video_url != blank -%}
           <div class="apgo-mpdp-ritual">
-            <img src="{{ section.settings.ritual_image | image_url: width: 900 }}" alt="{{ section.settings.ritual_heading }}" loading="lazy">
-            <div class="apgo-mpdp-ritual-overlay">
-              <div class="apgo-mpdp-play-sm apgo-mpdp-mobile-only"><span></span></div>
-              <div class="apgo-mpdp-kicker apgo-mpdp-kicker-inv apgo-mpdp-mobile-only">— THE RITUAL —</div>
-              <div class="apgo-serif apgo-mpdp-overlay-heading">{{ section.settings.ritual_heading | default: '重新定義洗衣的日常' | replace: '<br>', '' }}</div>
-              <p class="apgo-mpdp-overlay-body apgo-mpdp-desktop-only">{{ section.settings.ritual_body | default: '追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。' }}</p>
-            </div>
+            {%- comment -%} Mobile: if video URL set, render <video>; else fall back to image with overlay {%- endcomment -%}
+            {%- if section.settings.ritual_video_url != blank -%}
+              <video class="apgo-mpdp-ritual-video apgo-mpdp-mobile-only"
+                     {% if section.settings.ritual_image != blank %}poster="{{ section.settings.ritual_image | image_url: width: 900 }}"{% endif %}
+                     src="{{ section.settings.ritual_video_url }}"
+                     controls playsinline preload="metadata">
+              </video>
+            {%- elsif section.settings.ritual_image != blank -%}
+              <img class="apgo-mpdp-ritual-img-mobile apgo-mpdp-mobile-only"
+                   src="{{ section.settings.ritual_image | image_url: width: 900 }}"
+                   alt="{{ section.settings.ritual_heading }}" loading="lazy">
+            {%- endif -%}
+
+            {%- comment -%} Desktop: always full-bleed 16:9 image (no overlay card) {%- endcomment -%}
+            {%- if section.settings.ritual_image != blank -%}
+              <img class="apgo-mpdp-ritual-img-desktop apgo-mpdp-desktop-only"
+                   src="{{ section.settings.ritual_image | image_url: width: 1920 }}"
+                   alt="{{ section.settings.ritual_heading }}" loading="lazy">
+            {%- endif -%}
+
+            {%- comment -%} Mobile-only overlay (heading on image) — hidden when video is present {%- endcomment -%}
+            {%- if section.settings.ritual_video_url == blank and section.settings.ritual_image != blank -%}
+              <div class="apgo-mpdp-ritual-overlay apgo-mpdp-mobile-only">
+                <div class="apgo-mpdp-kicker apgo-mpdp-kicker-inv">— THE RITUAL —</div>
+                <div class="apgo-serif apgo-mpdp-overlay-heading">{{ section.settings.ritual_heading | default: '重新定義洗衣的日常' | replace: '<br>', '' }}</div>
+              </div>
+            {%- endif -%}
           </div>
         {%- endif -%}
 
@@ -387,7 +407,9 @@
     { "type": "checkbox", "id": "show_installment", "label": "顯示 3 期 0 利率", "default": true },
 
     { "type": "header", "content": "商品說明區（Ritual）" },
-    { "type": "image_picker", "id": "ritual_image", "label": "Ritual 視覺圖" },
+    { "type": "image_picker", "id": "ritual_image", "label": "Ritual 視覺圖（電腦端 16:9，建議 1920×1099；手機端兼當影片封面）" },
+    { "type": "url", "id": "ritual_video_url", "label": "Ritual 影片連結（手機端，選填 — 留白則只顯示圖片）" },
+    { "type": "text", "id": "ritual_video_label", "label": "影片標籤（手機端）", "default": "▶ 觀看 Ritual 影片" },
     { "type": "textarea", "id": "ritual_heading", "label": "標題（支援 HTML <br>）", "default": "重新定義<br>洗衣的日常" },
     { "type": "textarea", "id": "ritual_body", "label": "內文", "default": "追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。" },
 
