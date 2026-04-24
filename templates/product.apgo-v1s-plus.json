@@ -384,7 +384,6 @@
       ],
       "settings": {
         "video_url": "",
-        "video_poster": "shopify://shop_images/01-hero.jpg",
         "video_label": "產品實測影片 · 60s",
         "kicker": "AROMA AESTHETICS",
         "show_rating": true,
