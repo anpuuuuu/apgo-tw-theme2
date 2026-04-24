@@ -98,6 +98,69 @@
             "apgo_value": "✓ 零添加",
             "competitor_value": "通常含"
           }
+        },
+        "spec_yLmGyH": {
+          "type": "spec",
+          "settings": {
+            "key": "商品名稱",
+            "value": "APGO 超級濃縮洗衣精"
+          }
+        },
+        "spec_mUtxUM": {
+          "type": "spec",
+          "settings": {
+            "key": "容量",
+            "value": "1L / 2L / 4L 補充包"
+          }
+        },
+        "spec_ncKcNz": {
+          "type": "spec",
+          "settings": {
+            "key": "產地",
+            "value": "台灣製造"
+          }
+        },
+        "spec_znc7Nr": {
+          "type": "spec",
+          "settings": {
+            "key": "主要成分",
+            "value": "濃縮酵素、護色因子、植萃香氛"
+          }
+        },
+        "spec_RB93Kq": {
+          "type": "spec",
+          "settings": {
+            "key": "香氛選擇",
+            "value": "6 款香氛可選"
+          }
+        },
+        "spec_6pNMkj": {
+          "type": "spec",
+          "settings": {
+            "key": "適用",
+            "value": "各式衣物、嬰幼兒、寵物用品"
+          }
+        },
+        "spec_LMBkxw": {
+          "type": "spec",
+          "settings": {
+            "key": "pH 值",
+            "value": "中性（pH 7.0 ± 0.5）"
+          }
+        },
+        "spec_77QxXd": {
+          "type": "spec",
+          "settings": {
+            "key": "保存期限",
+            "value": "未開封 3 年／開封後 18 個月"
+          }
+        },
+        "spec_g9aw4q": {
+          "type": "spec",
+          "settings": {
+            "key": "認證",
+            "value": "SGS 99.9% 抗菌合格"
+          }
         }
       },
       "block_order": [
@@ -110,7 +173,16 @@
         "compare_anDepg",
         "compare_UHM8Kq",
         "compare_zMykQH",
-        "compare_zUMRNa"
+        "compare_zUMRNa",
+        "spec_yLmGyH",
+        "spec_mUtxUM",
+        "spec_ncKcNz",
+        "spec_znc7Nr",
+        "spec_RB93Kq",
+        "spec_6pNMkj",
+        "spec_LMBkxw",
+        "spec_77QxXd",
+        "spec_g9aw4q"
       ],
       "settings": {
         "video_url": "",
