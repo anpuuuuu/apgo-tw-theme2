@@ -524,3 +524,183 @@
   cursor: pointer;
 }
 .apgo-mpdp-cta-primary[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+/* =====================================================================
+   DESKTOP TABS (apgo-desktop-tabs.liquid) — .apgo-desktop-only
+   Renders the "商品說明 / 規格 / 評價 / 常見問題" switcher on desktop
+   ===================================================================== */
+.apgo-dtabs { padding: 60px 0 80px; background: var(--apgo-bg); }
+.apgo-dtabs .apgo-container { max-width: 1280px; margin: 0 auto; padding: 0 40px; }
+
+.apgo-dtabs-nav {
+  display: flex; gap: 40px; border-bottom: 1px solid var(--apgo-line);
+  margin-bottom: 48px;
+}
+.apgo-dtabs-tab {
+  background: none; border: none; padding: 18px 0; cursor: pointer;
+  font-size: 15px; color: var(--apgo-ink); opacity: 0.55;
+  position: relative; font-family: inherit; letter-spacing: 0.04em;
+  transition: opacity 0.2s;
+}
+.apgo-dtabs-tab:hover { opacity: 0.85; }
+.apgo-dtabs-tab.active { opacity: 1; font-weight: 600; }
+.apgo-dtabs-tab.active::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px;
+  height: 2px; background: var(--apgo-ink);
+}
+.apgo-dtabs-tab .apgo-muted { margin-left: 4px; font-size: 13px; }
+
+.apgo-dtabs-panel { display: none; }
+.apgo-dtabs-panel.active { display: block; }
+
+/* --- Ritual (2-col media + text) --- */
+.apgo-dtabs-ritual {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+  align-items: center; margin-bottom: 80px;
+}
+.apgo-dtabs-ritual-media { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 4/3; background: var(--apgo-bg-alt); }
+.apgo-dtabs-ritual-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.apgo-dtabs-ritual-play {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center;
+  text-decoration: none;
+}
+.apgo-dtabs-ritual-play span {
+  width: 0; height: 0; border-left: 18px solid var(--apgo-ink);
+  border-top: 12px solid transparent; border-bottom: 12px solid transparent; margin-left: 4px;
+}
+.apgo-dtabs-ritual-text h2 { font-size: 36px; line-height: 1.3; margin: 8px 0 20px; color: var(--apgo-ink); }
+.apgo-dtabs-ritual-text p { font-size: 15px; line-height: 1.8; }
+
+/* --- Pain × Solutions (4-col) --- */
+.apgo-dtabs-pain-wrap { margin-bottom: 80px; }
+.apgo-dtabs-pain-wrap h3 { font-size: 28px; margin: 8px 0 32px; }
+.apgo-dtabs-pain-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+}
+.apgo-dtabs-pain-card {
+  background: var(--apgo-bg-alt); border: 1px solid var(--apgo-line);
+  border-radius: 16px; padding: 28px 22px; text-align: center;
+}
+.apgo-dtabs-pain-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
+.apgo-dtabs-pain-title { font-size: 17px; margin: 6px 0 14px; color: var(--apgo-ink); }
+.apgo-dtabs-pain-arrow { color: var(--apgo-sage); margin: 10px 0 14px; font-size: 18px; }
+.apgo-dtabs-pain-sol { font-size: 16px; color: var(--apgo-sage); }
+
+/* --- Timeline (horizontal absolute) --- */
+.apgo-dtabs-timeline-wrap { margin-bottom: 80px; }
+.apgo-dtabs-timeline-wrap h3 { font-size: 28px; margin: 8px 0 40px; }
+.apgo-dtabs-timeline {
+  position: relative; height: 240px; padding-top: 120px;
+  background: var(--apgo-bg-alt); border-radius: 16px; padding: 140px 60px 30px;
+}
+.apgo-dtabs-timeline-axis {
+  position: absolute; left: 60px; right: 60px; top: 140px; height: 1px;
+  background: var(--apgo-line);
+}
+.apgo-dtabs-timeline-node {
+  position: absolute; top: 140px; transform: translateX(-50%);
+  text-align: center; width: 120px;
+}
+.apgo-dtabs-timeline-bar-v {
+  position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%);
+  width: 3px; background: linear-gradient(to top, var(--apgo-sage), var(--apgo-sage-light));
+  border-radius: 2px; max-height: 100px;
+}
+.apgo-dtabs-timeline-dot {
+  width: 12px; height: 12px; border-radius: 50%; background: var(--apgo-sage);
+  margin: -6px auto 10px; position: relative; z-index: 2;
+  box-shadow: 0 0 0 4px var(--apgo-bg-alt);
+}
+.apgo-dtabs-timeline-hour { font-size: 16px; color: var(--apgo-ink); }
+.apgo-dtabs-timeline-label { font-size: 13px; margin: 4px 0 2px; }
+.apgo-dtabs-timeline-desc { font-size: 11px; line-height: 1.5; }
+
+/* --- Comparison (3-col) --- */
+.apgo-dtabs-cmp-wrap { margin-bottom: 80px; }
+.apgo-dtabs-cmp-wrap h3 { font-size: 28px; margin: 8px 0 32px; }
+.apgo-dtabs-cmp {
+  background: var(--apgo-bg-alt); border: 1px solid var(--apgo-line);
+  border-radius: 16px; overflow: hidden;
+}
+.apgo-dtabs-cmp-head, .apgo-dtabs-cmp-row {
+  display: grid; grid-template-columns: 1.4fr 1fr 1fr; padding: 18px 28px; align-items: center;
+}
+.apgo-dtabs-cmp-head {
+  background: var(--apgo-ink); color: var(--apgo-bg); font-size: 13px; letter-spacing: 0.08em;
+}
+.apgo-dtabs-cmp-head > div:first-child { opacity: 0.7; }
+.apgo-dtabs-cmp-apgo { color: var(--apgo-bg); font-size: 18px; }
+.apgo-dtabs-cmp-row { border-top: 1px solid var(--apgo-line); font-size: 14px; }
+.apgo-dtabs-cmp-win { color: var(--apgo-sage); margin-right: 6px; font-weight: bold; }
+
+/* --- UGC (3-col) --- */
+.apgo-dtabs-ugc-wrap { margin-bottom: 40px; }
+.apgo-dtabs-ugc-wrap h3 { font-size: 28px; margin: 8px 0 8px; }
+.apgo-dtabs-ugc-wrap p { margin-bottom: 24px; }
+.apgo-dtabs-ugc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.apgo-dtabs-ugc-cell {
+  position: relative; aspect-ratio: 1/1; overflow: hidden; border-radius: 12px;
+  background: var(--apgo-bg-alt); display: block;
+}
+.apgo-dtabs-ugc-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.apgo-dtabs-ugc-overlay {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 14px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.55));
+  color: #fff; font-size: 12px; display: flex; justify-content: space-between;
+}
+
+/* --- Spec panel --- */
+.apgo-dtabs-spec {
+  max-width: 820px; margin: 0 auto;
+  background: var(--apgo-bg-alt); border: 1px solid var(--apgo-line); border-radius: 16px;
+  overflow: hidden;
+}
+.apgo-dtabs-spec-row {
+  display: grid; grid-template-columns: 200px 1fr; padding: 18px 28px;
+  border-top: 1px solid var(--apgo-line); font-size: 15px;
+}
+.apgo-dtabs-spec-row:first-child { border-top: none; }
+
+/* --- Review panel --- */
+.apgo-dtabs-rev-summary {
+  display: flex; align-items: center; gap: 24px;
+  padding: 28px 32px; margin-bottom: 32px;
+  background: var(--apgo-bg-alt); border: 1px solid var(--apgo-line); border-radius: 16px;
+}
+.apgo-dtabs-rev-score { font-size: 56px; line-height: 1; color: var(--apgo-ink); }
+.apgo-dtabs-rev-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.apgo-dtabs-rev-item {
+  background: var(--apgo-bg-alt); border: 1px solid var(--apgo-line);
+  border-radius: 14px; padding: 22px 24px;
+}
+.apgo-dtabs-rev-head { display: flex; justify-content: space-between; align-items: center; }
+.apgo-dtabs-rev-head strong { font-size: 15px; }
+.apgo-dtabs-rev-meta { font-size: 12px; margin-top: 4px; }
+.apgo-dtabs-rev-item p { font-size: 14px; line-height: 1.7; margin-top: 12px; }
+
+/* --- FAQ panel --- */
+.apgo-dtabs-faq-list { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+.apgo-dtabs-faq {
+  background: var(--apgo-bg-alt); border: 1px solid var(--apgo-line); border-radius: 12px;
+  padding: 0 24px;
+}
+.apgo-dtabs-faq > summary {
+  list-style: none; cursor: pointer; padding: 18px 0;
+  display: flex; justify-content: space-between; align-items: center; font-size: 15px;
+}
+.apgo-dtabs-faq > summary::-webkit-details-marker { display: none; }
+.apgo-dtabs-faq-toggle { font-size: 22px; color: var(--apgo-sage); transition: transform 0.2s; }
+.apgo-dtabs-faq[open] .apgo-dtabs-faq-toggle { transform: rotate(45deg); }
+.apgo-dtabs-faq > p { font-size: 14px; line-height: 1.8; padding: 0 0 18px; margin: 0; }
+
+/* Tablet fallback for desktop tabs */
+@media (max-width: 1080px) and (min-width: 769px) {
+  .apgo-dtabs .apgo-container { padding: 0 24px; }
+  .apgo-dtabs-ritual { grid-template-columns: 1fr; gap: 32px; }
+  .apgo-dtabs-pain-grid { grid-template-columns: repeat(2, 1fr); }
+  .apgo-dtabs-rev-grid { grid-template-columns: 1fr; }
+  .apgo-dtabs-timeline { padding: 120px 30px 30px; }
+  .apgo-dtabs-timeline-axis { left: 30px; right: 30px; }
+}

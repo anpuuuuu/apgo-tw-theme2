@@ -208,7 +208,7 @@
     if (!track) return;
     var idxEl = $('[data-apgo-carousel-idx]', root);
     var totalEl = $('[data-apgo-carousel-total]', root);
-    var slides = $$('> *', track);
+    var slides = Array.prototype.slice.call(track.children);
     if (totalEl) totalEl.textContent = slides.length;
 
     function onScroll() {
@@ -226,7 +226,7 @@
 
   // ---------- boot ----------
   function boot() {
-    $$('form[id^="apgo-product-form"]').forEach(initForm);
+    $$('form.apgo-product-form').forEach(initForm);
     $$('[data-section-id]').forEach(function (section) {
       initTabs(section);
       initCarousel(section);

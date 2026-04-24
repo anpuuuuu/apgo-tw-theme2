@@ -17,32 +17,8 @@
       "type": "apgo-mobile-pdp",
       "settings": {}
     },
-    "editorial": {
-      "type": "apgo-editorial",
-      "settings": {}
-    },
-    "quiz": {
-      "type": "apgo-scent-quiz",
-      "settings": {}
-    },
-    "pain": {
-      "type": "apgo-pain-solutions",
-      "settings": {}
-    },
-    "timeline": {
-      "type": "apgo-scent-timeline",
-      "settings": {}
-    },
-    "comparison": {
-      "type": "apgo-comparison",
-      "settings": {}
-    },
-    "ugc": {
-      "type": "apgo-ugc-wall",
-      "settings": {}
-    },
-    "spec": {
-      "type": "apgo-spec-table",
+    "dtabs": {
+      "type": "apgo-desktop-tabs",
       "settings": {}
     },
     "related": {
@@ -53,13 +29,7 @@
   "order": [
     "hero",
     "mobile",
-    "editorial",
-    "quiz",
-    "pain",
-    "timeline",
-    "comparison",
-    "ugc",
-    "spec",
+    "dtabs",
     "related"
   ]
 }
