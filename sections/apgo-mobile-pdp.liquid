@@ -86,17 +86,27 @@
             <span class="apgo-muted" data-apgo-current-value>{{ option.selected_value }}</span>
           </div>
           {%- if is_scent -%}
+            {%- assign scent_palette = shop.metafields.apgo.scents.value -%}
             <div class="apgo-mpdp-scent-grid">
               {%- for value in option.values -%}
-                {%- assign sc = '#E8DFC9' -%}
-                {%- case value -%}
-                  {%- when '淨心棉花' -%}{%- assign sc = '#E8DFC9' -%}
-                  {%- when '花漾蒼蘭' -%}{%- assign sc = '#D4DDE0' -%}
-                  {%- when '浪漫玫瑰' -%}{%- assign sc = '#E8D4CF' -%}
-                  {%- when '海洋晨曦' -%}{%- assign sc = '#C8D6DA' -%}
-                  {%- when '清雅白茶' -%}{%- assign sc = '#DAE0CE' -%}
-                  {%- when '薰衣紫戀' -%}{%- assign sc = '#D6CFDD' -%}
-                {%- endcase -%}
+                {%- comment -%} Look up swatch hex from shop metaobject palette; fallback to hardcoded case {%- endcomment -%}
+                {%- assign sc = '' -%}
+                {%- if scent_palette != blank -%}
+                  {%- for s in scent_palette -%}
+                    {%- if s.name == value -%}{%- assign sc = s.hex -%}{%- endif -%}
+                  {%- endfor -%}
+                {%- endif -%}
+                {%- if sc == '' -%}
+                  {%- assign sc = '#E8DFC9' -%}
+                  {%- case value -%}
+                    {%- when '淨心棉花' -%}{%- assign sc = '#E8DFC9' -%}
+                    {%- when '花漾蒼蘭' -%}{%- assign sc = '#D4DDE0' -%}
+                    {%- when '浪漫玫瑰' -%}{%- assign sc = '#E8D4CF' -%}
+                    {%- when '海洋晨曦' -%}{%- assign sc = '#C8D6DA' -%}
+                    {%- when '清雅白茶' -%}{%- assign sc = '#DAE0CE' -%}
+                    {%- when '薰衣紫戀' -%}{%- assign sc = '#D6CFDD' -%}
+                  {%- endcase -%}
+                {%- endif -%}
                 <label class="apgo-mpdp-scentbtn {% if option.selected_value == value %}active{% endif %}">
                   <input type="radio" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" data-apgo-option-input {% if option.selected_value == value %}checked{% endif %}>
                   <span class="apgo-mpdp-swatch" style="background:{{ sc }}"></span>

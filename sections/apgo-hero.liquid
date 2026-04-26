@@ -137,17 +137,27 @@
               </div>
 
               {%- if is_scent -%}
+                {%- assign scent_palette = shop.metafields.apgo.scents.value -%}
                 <div class="apgo-scent-grid">
                   {%- for value in option.values -%}
-                    {%- assign swatch_color = '#E8DFC9' -%}
-                    {%- case value -%}
-                      {%- when '淨心棉花' -%}{%- assign swatch_color = '#E8DFC9' -%}
-                      {%- when '花漾蒼蘭' -%}{%- assign swatch_color = '#D4DDE0' -%}
-                      {%- when '浪漫玫瑰' -%}{%- assign swatch_color = '#E8D4CF' -%}
-                      {%- when '海洋晨曦' -%}{%- assign swatch_color = '#C8D6DA' -%}
-                      {%- when '清雅白茶' -%}{%- assign swatch_color = '#DAE0CE' -%}
-                      {%- when '薰衣紫戀' -%}{%- assign swatch_color = '#D6CFDD' -%}
-                    {%- endcase -%}
+                    {%- comment -%} Look up swatch hex from shop metaobject palette; fallback to hardcoded case {%- endcomment -%}
+                    {%- assign swatch_color = '' -%}
+                    {%- if scent_palette != blank -%}
+                      {%- for s in scent_palette -%}
+                        {%- if s.name == value -%}{%- assign swatch_color = s.hex -%}{%- endif -%}
+                      {%- endfor -%}
+                    {%- endif -%}
+                    {%- if swatch_color == '' -%}
+                      {%- assign swatch_color = '#E8DFC9' -%}
+                      {%- case value -%}
+                        {%- when '淨心棉花' -%}{%- assign swatch_color = '#E8DFC9' -%}
+                        {%- when '花漾蒼蘭' -%}{%- assign swatch_color = '#D4DDE0' -%}
+                        {%- when '浪漫玫瑰' -%}{%- assign swatch_color = '#E8D4CF' -%}
+                        {%- when '海洋晨曦' -%}{%- assign swatch_color = '#C8D6DA' -%}
+                        {%- when '清雅白茶' -%}{%- assign swatch_color = '#DAE0CE' -%}
+                        {%- when '薰衣紫戀' -%}{%- assign swatch_color = '#D6CFDD' -%}
+                      {%- endcase -%}
+                    {%- endif -%}
                     <label class="apgo-scentbtn {% if option.selected_value == value %}active{% endif %}">
                       <input type="radio"
                              name="options[{{ option.name | escape }}]"
