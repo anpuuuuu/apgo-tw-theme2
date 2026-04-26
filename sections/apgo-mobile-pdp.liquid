@@ -202,52 +202,89 @@
       {%- endif -%}
     </div>
 
-    {%- comment -%} Tab panel: 規格 {%- endcomment -%}
+    {%- comment -%} Tab panel: 規格 — prefer metafield, fallback to blocks {%- endcomment -%}
+    {%- assign mf_spec_rows = product.metafields.apgo.spec_rows.value -%}
     <div class="apgo-mpdp-panel" data-apgo-mpanel="spec">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'spec' -%}
-          <div class="apgo-mpdp-spec-row" {{ block.shopify_attributes }}>
-            <div class="apgo-muted">{{ block.settings.key }}</div>
-            <div class="apgo-serif">{{ block.settings.value }}</div>
+      {%- if mf_spec_rows != blank and mf_spec_rows.size > 0 -%}
+        {%- for entry in mf_spec_rows -%}
+          <div class="apgo-mpdp-spec-row">
+            <div class="apgo-muted">{{ entry.key }}</div>
+            <div class="apgo-serif">{{ entry.value }}</div>
           </div>
-        {%- endif -%}
-      {%- endfor -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'spec' -%}
+            <div class="apgo-mpdp-spec-row" {{ block.shopify_attributes }}>
+              <div class="apgo-muted">{{ block.settings.key }}</div>
+              <div class="apgo-serif">{{ block.settings.value }}</div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
     </div>
 
-    {%- comment -%} Tab panel: 評價 {%- endcomment -%}
+    {%- comment -%} Tab panel: 評價 — prefer metafield, fallback to blocks {%- endcomment -%}
+    {%- assign mf_reviews = product.metafields.apgo.reviews.value -%}
     <div class="apgo-mpdp-panel" data-apgo-mpanel="review">
       <div class="apgo-mpdp-rev-summary">
         <div class="apgo-serif apgo-mpdp-rev-score">{{ section.settings.rating_score }}</div>
         <div class="apgo-stars">★★★★★</div>
         <div class="apgo-muted">基於 {{ section.settings.rating_count }} 則真實評價</div>
       </div>
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'review' -%}
-          <div class="apgo-mpdp-rev-item" {{ block.shopify_attributes }}>
+      {%- if mf_reviews != blank and mf_reviews.size > 0 -%}
+        {%- for entry in mf_reviews -%}
+          <div class="apgo-mpdp-rev-item">
             <div class="apgo-mpdp-rev-head">
-              <strong>{{ block.settings.name }}</strong>
+              <strong>{{ entry.name }}</strong>
               <span class="apgo-stars">★★★★★</span>
             </div>
-            <div class="apgo-mpdp-rev-meta">{{ block.settings.date }} · 已購買：{{ block.settings.scent }}</div>
-            <p>{{ block.settings.body }}</p>
+            <div class="apgo-mpdp-rev-meta">{{ entry.date }} · 已購買：{{ entry.scent }}</div>
+            <p>{{ entry.body }}</p>
           </div>
-        {%- endif -%}
-      {%- endfor -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'review' -%}
+            <div class="apgo-mpdp-rev-item" {{ block.shopify_attributes }}>
+              <div class="apgo-mpdp-rev-head">
+                <strong>{{ block.settings.name }}</strong>
+                <span class="apgo-stars">★★★★★</span>
+              </div>
+              <div class="apgo-mpdp-rev-meta">{{ block.settings.date }} · 已購買：{{ block.settings.scent }}</div>
+              <p>{{ block.settings.body }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
     </div>
 
-    {%- comment -%} Tab panel: 問答 {%- endcomment -%}
+    {%- comment -%} Tab panel: 問答 — prefer metafield, fallback to blocks {%- endcomment -%}
+    {%- assign mf_faqs = product.metafields.apgo.faqs.value -%}
     <div class="apgo-mpdp-panel" data-apgo-mpanel="faq">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'faq' -%}
-          <details class="apgo-mpdp-faq" {{ block.shopify_attributes }}>
+      {%- if mf_faqs != blank and mf_faqs.size > 0 -%}
+        {%- for entry in mf_faqs -%}
+          <details class="apgo-mpdp-faq">
             <summary>
-              <span class="apgo-serif">Q. {{ block.settings.q }}</span>
+              <span class="apgo-serif">Q. {{ entry.question }}</span>
               <span class="apgo-mpdp-faq-toggle">+</span>
             </summary>
-            <p>A. {{ block.settings.a }}</p>
+            <p>A. {{ entry.answer }}</p>
           </details>
-        {%- endif -%}
-      {%- endfor -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'faq' -%}
+            <details class="apgo-mpdp-faq" {{ block.shopify_attributes }}>
+              <summary>
+                <span class="apgo-serif">Q. {{ block.settings.q }}</span>
+                <span class="apgo-mpdp-faq-toggle">+</span>
+              </summary>
+              <p>A. {{ block.settings.a }}</p>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
     </div>
 
     {%- comment -%} Related products (horizontal scroll) {%- endcomment -%}
