@@ -178,6 +178,28 @@
           {{ product.description }}
         </div>
       {%- endif -%}
+
+      {%- comment -%}
+        UGC grid — kept editable in theme editor (blocks of type "ugc") so
+        non-technical admin can add/remove IG cells without touching HTML.
+        Renders right after description; expects the description to already
+        contain the heading wrap (kicker + 用戶實拍 · Instagram).
+      {%- endcomment -%}
+      {%- assign ugc_blocks = section.blocks | where: 'type', 'ugc' -%}
+      {%- if ugc_blocks.size > 0 -%}
+        <div class="apgo-mpdp-ugc-wrap apgo-mpdp-ugc-wrap--grid-only">
+          <div class="apgo-mpdp-ugc-grid">
+            {%- for block in ugc_blocks -%}
+              <a href="{{ block.settings.url }}" class="apgo-mpdp-ugc-cell" {{ block.shopify_attributes }} {% if block.settings.url != blank %}target="_blank" rel="noopener"{% endif %}>
+                {%- if block.settings.image != blank -%}
+                  <img src="{{ block.settings.image | image_url: width: 400 }}" alt="@{{ block.settings.handle }}" loading="lazy">
+                {%- endif -%}
+                <span class="apgo-mpdp-ugc-like">♡ {{ block.settings.likes }}</span>
+              </a>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
     </div>
 
     {%- comment -%} Tab panel: 規格 {%- endcomment -%}
@@ -300,6 +322,17 @@
       ]
     },
     {
+      "type": "ugc",
+      "name": "UGC IG 貼文",
+      "limit": 9,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "圖片" },
+        { "type": "text", "id": "handle", "label": "IG handle（顯示在 alt）" },
+        { "type": "number", "id": "likes", "label": "讚數", "default": 100 },
+        { "type": "url", "id": "url", "label": "IG 貼文連結（選填）" }
+      ]
+    },
+    {
       "type": "spec",
       "name": "規格列",
       "limit": 12,
@@ -336,6 +369,9 @@
         { "type": "ship_row", "settings": { "numeral": "i",   "title": "滿 NT$ 799 免運",   "subtitle": "黑貓宅配 · 24 小時內出貨" }},
         { "type": "ship_row", "settings": { "numeral": "ii",  "title": "30 天鑑賞期",       "subtitle": "未拆封可無條件退換貨" }},
         { "type": "ship_row", "settings": { "numeral": "iii", "title": "SGS 國家級檢驗",    "subtitle": "99.9% 抗菌 · 八大零添加" }},
+        { "type": "ugc", "settings": { "handle": "", "likes": 100, "url": "" }},
+        { "type": "ugc", "settings": { "handle": "", "likes": 100, "url": "" }},
+        { "type": "ugc", "settings": { "handle": "", "likes": 100, "url": "" }},
         { "type": "spec", "settings": { "key": "商品名稱", "value": "APGO 超級濃縮洗衣精" }},
         { "type": "spec", "settings": { "key": "容量",     "value": "1L / 2L / 4L 補充包" }},
         { "type": "spec", "settings": { "key": "產地",     "value": "台灣製造" }},

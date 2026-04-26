@@ -533,6 +533,8 @@
 .apgo-mpdp-ugc-wrap > .apgo-mpdp-kicker { text-align: center; display: block; }
 .apgo-mpdp-ugc-sub { text-align: center; font-size: 11px; margin-bottom: 16px; }
 .apgo-mpdp-ugc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+/* When the wrap renders only the grid (heading lives in description above), kill top padding so it sits flush with the heading wrap above. */
+.apgo-mpdp-ugc-wrap--grid-only { padding-top: 0; }
 .apgo-mpdp-ugc-cell { position: relative; aspect-ratio: 1/1; border-radius: 4px; overflow: hidden; display: block; }
 .apgo-mpdp-ugc-cell img { width: 100%; height: 100%; object-fit: cover; }
 .apgo-mpdp-ugc-like {

@@ -118,6 +118,33 @@
             "subtitle": "99.9% 抗菌率 · 八大零添加"
           }
         },
+        "ugc_a6ehf8": {
+          "type": "ugc",
+          "settings": {
+            "image": "shopify://shop_images/10-closing.jpg",
+            "handle": "",
+            "likes": 100,
+            "url": ""
+          }
+        },
+        "ugc_qrcPrV": {
+          "type": "ugc",
+          "settings": {
+            "image": "shopify://shop_images/07-matrix.jpg",
+            "handle": "",
+            "likes": 100,
+            "url": ""
+          }
+        },
+        "ugc_CHBLDa": {
+          "type": "ugc",
+          "settings": {
+            "image": "shopify://shop_images/09-ritual.jpg",
+            "handle": "",
+            "likes": 100,
+            "url": ""
+          }
+        },
         "spec_yLmGyH": {
           "type": "spec",
           "settings": {
@@ -255,6 +282,9 @@
         "ship_row_tkjBxd",
         "ship_row_iXAbnM",
         "ship_row_7LqLWC",
+        "ugc_a6ehf8",
+        "ugc_qrcPrV",
+        "ugc_CHBLDa",
         "spec_yLmGyH",
         "spec_mUtxUM",
         "spec_ncKcNz",
