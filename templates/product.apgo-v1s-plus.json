@@ -12,6 +12,30 @@
     "hero": {
       "type": "apgo-hero",
       "blocks": {
+        "ship_row_MLNVbD": {
+          "type": "ship_row",
+          "settings": {
+            "numeral": "i",
+            "title": "滿 NT$ 799 免運",
+            "subtitle": "黑貓宅配 · 24 小時內出貨"
+          }
+        },
+        "ship_row_8TQedD": {
+          "type": "ship_row",
+          "settings": {
+            "numeral": "ii",
+            "title": "30 天鑑賞期 ／ 未拆封可無條件退換貨",
+            "subtitle": "未拆封可無條件退換貨"
+          }
+        },
+        "ship_row_KqcKdD": {
+          "type": "ship_row",
+          "settings": {
+            "numeral": "iii ",
+            "title": "SGS 國家級檢驗 ／ 99.9% 抗菌率 · 八大零添加",
+            "subtitle": "99.9% 抗菌率 · 八大零添加"
+          }
+        },
         "trust_cell_wAMJQb": {
           "type": "trust_cell",
           "disabled": true,
@@ -47,40 +71,16 @@
             "title": "台灣",
             "subtitle": "製造"
           }
-        },
-        "ship_row_hero_01": {
-          "type": "ship_row",
-          "settings": {
-            "numeral": "i",
-            "title": "滿 NT$ 799 免運",
-            "subtitle": "黑貓宅配 · 24 小時內出貨"
-          }
-        },
-        "ship_row_hero_02": {
-          "type": "ship_row",
-          "settings": {
-            "numeral": "ii",
-            "title": "30 天鑑賞期",
-            "subtitle": "未拆封可無條件退換貨"
-          }
-        },
-        "ship_row_hero_03": {
-          "type": "ship_row",
-          "settings": {
-            "numeral": "iii",
-            "title": "SGS 國家級檢驗",
-            "subtitle": "99.9% 抗菌率 · 八大零添加"
-          }
         }
       },
       "block_order": [
+        "ship_row_MLNVbD",
+        "ship_row_8TQedD",
+        "ship_row_KqcKdD",
         "trust_cell_wAMJQb",
         "trust_cell_hLX4TY",
         "trust_cell_m8BqfH",
-        "trust_cell_Xi7Aj7",
-        "ship_row_hero_01",
-        "ship_row_hero_02",
-        "ship_row_hero_03"
+        "trust_cell_Xi7Aj7"
       ],
       "settings": {
         "kicker": "",
@@ -127,30 +127,6 @@
           "settings": {
             "pain": "短暫的芬芳",
             "solution": "24H 留香技術"
-          }
-        },
-        "ship_row_mobile_01": {
-          "type": "ship_row",
-          "settings": {
-            "numeral": "i",
-            "title": "滿 NT$ 799 免運",
-            "subtitle": "黑貓宅配 · 24 小時內出貨"
-          }
-        },
-        "ship_row_mobile_02": {
-          "type": "ship_row",
-          "settings": {
-            "numeral": "ii",
-            "title": "30 天鑑賞期",
-            "subtitle": "未拆封可無條件退換貨"
-          }
-        },
-        "ship_row_mobile_03": {
-          "type": "ship_row",
-          "settings": {
-            "numeral": "iii",
-            "title": "SGS 國家級檢驗",
-            "subtitle": "99.9% 抗菌 · 八大零添加"
           }
         },
         "compare_hEzUej": {
@@ -360,9 +336,6 @@
         "pain_bwLixy",
         "pain_7WwNne",
         "pain_ynmwTw",
-        "ship_row_mobile_01",
-        "ship_row_mobile_02",
-        "ship_row_mobile_03",
         "compare_hEzUej",
         "compare_YBNYNt",
         "compare_anDepg",
