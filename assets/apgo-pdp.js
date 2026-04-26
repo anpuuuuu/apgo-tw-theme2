@@ -300,7 +300,7 @@
     }
   }
 
-  // ---------- mobile carousel counter ----------
+  // ---------- mobile carousel counter + thumb rail ----------
   function initCarousel(root) {
     var track = $('[data-apgo-carousel-track]', root);
     if (!track) return;
@@ -309,16 +309,45 @@
     var slides = Array.prototype.slice.call(track.children);
     if (totalEl) totalEl.textContent = slides.length;
 
+    var thumbs = $$('[data-apgo-mthumb-idx]', root);
+
+    function setActiveIndex(i) {
+      // Clamp
+      if (i < 0) i = 0;
+      if (i >= slides.length) i = slides.length - 1;
+      // Counter
+      if (idxEl) idxEl.textContent = i + 1;
+      // Thumbs
+      thumbs.forEach(function (t, j) {
+        if (j === i) t.classList.add('active');
+        else t.classList.remove('active');
+      });
+      // Scroll active thumb into view
+      if (thumbs[i] && thumbs[i].scrollIntoView) {
+        try { thumbs[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); } catch (e) {}
+      }
+    }
+
     function onScroll() {
       if (!slides.length) return;
       var w = track.clientWidth || 1;
-      var i = Math.round(track.scrollLeft / w) + 1;
-      if (i < 1) i = 1;
-      if (i > slides.length) i = slides.length;
-      if (idxEl) idxEl.textContent = i;
+      var i = Math.round(track.scrollLeft / w);
+      setActiveIndex(i);
     }
 
     track.addEventListener('scroll', onScroll, { passive: true });
+
+    // Wire thumb clicks → scroll carousel to that slide
+    thumbs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        var i = parseInt(t.getAttribute('data-apgo-mthumb-idx'), 10);
+        var slide = slides[i];
+        if (!slide) return;
+        try { track.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' }); }
+        catch (e) { track.scrollLeft = slide.offsetLeft; }
+      });
+    });
+
     onScroll();
   }
 

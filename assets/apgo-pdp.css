@@ -348,6 +348,25 @@
   border-radius: 999px; z-index: 2;
 }
 
+/* Mobile thumbnail rail (under carousel, click to jump) */
+.apgo-mpdp-thumb-rail {
+  display: flex; gap: 8px;
+  overflow-x: auto; padding: 12px 16px;
+  scroll-behavior: smooth; scrollbar-width: none;
+  background: var(--apgo-bg-ash);
+}
+.apgo-mpdp-thumb-rail::-webkit-scrollbar { display: none; }
+.apgo-mpdp-thumb {
+  flex: 0 0 auto;
+  width: 56px; height: 56px;
+  padding: 0; background: transparent;
+  border: 1.5px solid transparent; border-radius: 6px;
+  overflow: hidden; cursor: pointer;
+  transition: border-color .2s;
+}
+.apgo-mpdp-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.apgo-mpdp-thumb.active { border-color: var(--apgo-ink, #2D2E28); }
+
 /* Info */
 .apgo-mpdp-info { padding: 20px 16px 0; }
 .apgo-mpdp-kicker {

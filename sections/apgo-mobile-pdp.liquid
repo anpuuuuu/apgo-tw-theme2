@@ -46,6 +46,20 @@
       <div class="apgo-mpdp-counter"><span data-apgo-carousel-idx>1</span> / <span data-apgo-carousel-total></span></div>
     </div>
 
+    {%- comment -%} Mobile thumbnail rail — click to jump carousel to that slide {%- endcomment -%}
+    {%- if product.media.size > 1 -%}
+      <div class="apgo-mpdp-thumb-rail" data-apgo-mthumb-rail>
+        {%- for m in product.media -%}
+          <button type="button"
+                  class="apgo-mpdp-thumb {% if forloop.first %}active{% endif %}"
+                  data-apgo-mthumb-idx="{{ forloop.index0 }}"
+                  aria-label="顯示第 {{ forloop.index }} 張圖">
+            <img src="{{ m | image_url: width: 160 }}" alt="" loading="lazy">
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
     {%- comment -%} Info block {%- endcomment -%}
     <div class="apgo-mpdp-info">
       {%- if section.settings.kicker != blank -%}
