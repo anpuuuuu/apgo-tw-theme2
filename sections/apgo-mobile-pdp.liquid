@@ -34,7 +34,7 @@
         {%- endif -%}
         {%- if product.media.size > 0 -%}
           {%- for m in product.media limit: 6 -%}
-            <div class="apgo-mpdp-slide">
+            <div class="apgo-mpdp-slide" data-apgo-image-id="{{ m.preview_image.id | default: m.id }}">
               <img src="{{ m | image_url: width: 900 }}" alt="{{ m.alt | default: product.title }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
             </div>
           {%- endfor -%}

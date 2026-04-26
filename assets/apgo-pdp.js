@@ -109,11 +109,54 @@
       });
     }
 
+    // Swap the main media (desktop main img + thumb activation, mobile carousel scroll)
+    // to the variant's featured image. No-op if the variant has no featured image set.
+    function syncMediaToVariant(variant) {
+      if (!variant || !variant.featured_image || variant.featured_image.id == null) return;
+      var imgId = String(variant.featured_image.id);
+
+      // Desktop: find matching thumb, activate it, push its image into main slot.
+      var mainImg = $('[data-apgo-main-img]', form);
+      var matchedThumb = null;
+      $$('[data-apgo-thumb-idx]', form).forEach(function (t) {
+        if (String(t.getAttribute('data-apgo-image-id')) === imgId) matchedThumb = t;
+      });
+      if (matchedThumb) {
+        $$('[data-apgo-thumb-idx]', form).forEach(function (t) { t.classList.remove('active'); });
+        matchedThumb.classList.add('active');
+        if (mainImg) {
+          var thumbImg = $('img', matchedThumb);
+          if (thumbImg) {
+            var src = thumbImg.currentSrc || thumbImg.src;
+            mainImg.src = src.replace(/(\?|&)width=\d+/, '$1width=1400');
+          }
+        }
+        // Scroll the thumb into view in the rail
+        if (matchedThumb.scrollIntoView) {
+          try { matchedThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); } catch (e) {}
+        }
+      }
+
+      // Mobile: scroll the carousel track to the matching slide.
+      var track = $('[data-apgo-carousel-track]', form);
+      if (track) {
+        var slides = $$('.apgo-mpdp-slide', track);
+        for (var i = 0; i < slides.length; i++) {
+          if (String(slides[i].getAttribute('data-apgo-image-id')) === imgId) {
+            try { track.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' }); }
+            catch (e) { track.scrollLeft = slides[i].offsetLeft; }
+            break;
+          }
+        }
+      }
+    }
+
     function onOptionChange() {
       updateCurrentValueLabels();
       var values = readSelectedOptions();
       var variant = findVariant(values);
       updatePriceUI(variant);
+      syncMediaToVariant(variant);
     }
 
     // Wire radio inputs

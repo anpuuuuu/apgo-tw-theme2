@@ -67,6 +67,7 @@
                   <button type="button"
                           class="apgo-thumb {% if forloop.first %}active{% endif %}"
                           data-apgo-thumb-idx="{{ forloop.index0 }}"
+                          data-apgo-image-id="{{ m.preview_image.id | default: m.id }}"
                           aria-label="顯示第 {{ forloop.index }} 張圖">
                     <img src="{{ m | image_url: width: 200 }}"
                          alt="{{ m.alt | default: product.title }}"
