@@ -94,6 +94,30 @@
     "mobile": {
       "type": "apgo-mobile-pdp",
       "blocks": {
+        "ship_row_tkjBxd": {
+          "type": "ship_row",
+          "settings": {
+            "numeral": "i",
+            "title": "滿 NT$ 799 免運",
+            "subtitle": "黑貓宅配 · 24 小時內出貨"
+          }
+        },
+        "ship_row_iXAbnM": {
+          "type": "ship_row",
+          "settings": {
+            "numeral": "ii",
+            "title": "30 天鑑賞期 ／ 未拆封可無條件退換貨",
+            "subtitle": "未拆封可無條件退換貨"
+          }
+        },
+        "ship_row_7LqLWC": {
+          "type": "ship_row",
+          "settings": {
+            "numeral": "iii",
+            "title": "SGS 國家級檢驗 ／ 99.9% 抗菌率 · 八大零添加",
+            "subtitle": "99.9% 抗菌率 · 八大零添加"
+          }
+        },
         "image_3XkXAz": {
           "type": "image",
           "settings": {
@@ -331,6 +355,9 @@
         }
       },
       "block_order": [
+        "ship_row_tkjBxd",
+        "ship_row_iXAbnM",
+        "ship_row_7LqLWC",
         "image_3XkXAz",
         "pain_LDhBMY",
         "pain_bwLixy",
