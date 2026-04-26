@@ -54,8 +54,8 @@
       "settings": {
         "kicker": "",
         "show_rating": true,
-        "rating_score": "4.9",
-        "rating_count": "2,847",
+        "rating_score": "",
+        "rating_count": "",
         "show_installment": true,
         "show_buy_now": false
       }
