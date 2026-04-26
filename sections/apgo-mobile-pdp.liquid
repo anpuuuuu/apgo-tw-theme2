@@ -198,7 +198,7 @@
       {%- assign ugc_blocks = section.blocks | where: 'type', 'ugc' -%}
       {%- if ugc_blocks.size > 0 -%}
         {%- assign ugc_has_heading = false -%}
-        {%- if section.settings.ugc_kicker != blank or section.settings.ugc_title != blank or section.settings.ugc_sub != blank -%}
+        {%- if section.settings.ugc_kicker != blank or section.settings.ugc_title != blank -%}
           {%- assign ugc_has_heading = true -%}
         {%- endif -%}
         <div class="apgo-mpdp-ugc-wrap{% unless ugc_has_heading %} apgo-mpdp-ugc-wrap--grid-only{% endunless %}">
@@ -207,9 +207,6 @@
           {%- endif -%}
           {%- if section.settings.ugc_title != blank -%}
             <h3>{{ section.settings.ugc_title }}</h3>
-          {%- endif -%}
-          {%- if section.settings.ugc_sub != blank -%}
-            <div class="apgo-mpdp-ugc-sub apgo-muted">{{ section.settings.ugc_sub }}</div>
           {%- endif -%}
           <div class="apgo-mpdp-ugc-grid">
             {%- for block in ugc_blocks -%}
@@ -371,7 +368,6 @@
     { "type": "header", "content": "UGC 區標題（描述下方）" },
     { "type": "text", "id": "ugc_kicker", "label": "上方小字（kicker）", "default": "APGO 用戶實拍" },
     { "type": "text", "id": "ugc_title",  "label": "主標題", "default": "@apgo_official · Instagram" },
-    { "type": "text", "id": "ugc_sub",    "label": "副標題", "default": "點擊圖片可前往 Instagram 觀看原始貼文" },
 
     { "type": "header", "content": "相關商品" },
     { "type": "collection", "id": "related_collection", "label": "相關商品集合" }
