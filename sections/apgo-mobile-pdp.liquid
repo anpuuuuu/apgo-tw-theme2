@@ -47,7 +47,7 @@
     </div>
 
     {%- comment -%} Mobile thumbnail rail — click to jump carousel; swipeable; ◀ ▶ to step {%- endcomment -%}
-    {%- if product.media.size > 1 -%}
+    {%- if section.settings.show_thumb_rail and product.media.size > 1 -%}
       <div class="apgo-mpdp-thumb-rail-wrap">
         <button type="button" class="apgo-mpdp-thumb-nav apgo-mpdp-thumb-nav--prev" data-apgo-mthumb-nav="prev" aria-label="上一張">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -376,6 +376,7 @@
     { "type": "url",          "id": "video_url",      "label": "影片連結（選填）" },
     { "type": "image_picker", "id": "video_poster",   "label": "影片封面（選填）" },
     { "type": "text",         "id": "video_label",    "label": "影片標籤", "default": "產品實測影片 · 60s" },
+    { "type": "checkbox",     "id": "show_thumb_rail", "label": "顯示主圖下方縮圖列", "default": true },
 
     { "type": "header", "content": "基本資訊" },
     { "type": "text",     "id": "kicker",       "label": "英文副標", "default": "AROMA AESTHETICS" },

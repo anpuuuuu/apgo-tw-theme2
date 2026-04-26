@@ -84,6 +84,7 @@
       ],
       "settings": {
         "kicker": "",
+        "show_thumb_rail": true,
         "show_rating": false,
         "rating_score": "",
         "rating_count": "",
@@ -157,6 +158,7 @@
       "settings": {
         "video_url": "",
         "video_label": "產品實測影片 · 60s",
+        "show_thumb_rail": true,
         "kicker": "",
         "show_rating": false,
         "rating_score": "",

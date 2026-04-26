@@ -57,6 +57,7 @@
           </div>
 
           {%- comment -%} Thumbnail rail — horizontal carousel, shows ~5 at a time {%- endcomment -%}
+          {%- if section.settings.show_thumb_rail -%}
           <div class="apgo-thumb-rail-wrap">
             <button type="button" class="apgo-thumb-nav apgo-thumb-nav--prev" data-apgo-thumb-nav="prev" aria-label="上一張">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -84,6 +85,7 @@
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
           </div>
+          {%- endif -%}
 
         </div>
 
@@ -268,6 +270,7 @@
   "class": "apgo-section apgo-section-hero",
   "settings": [
     { "type": "text", "id": "kicker", "label": "英文副標", "default": "Aroma Aesthetics" },
+    { "type": "checkbox", "id": "show_thumb_rail", "label": "顯示主圖下方縮圖列", "default": true },
     { "type": "checkbox", "id": "show_rating", "label": "顯示評分", "default": true },
     { "type": "text", "id": "rating_score", "label": "評分", "default": "4.9" },
     { "type": "text", "id": "rating_count", "label": "評價數", "default": "2,847" },
