@@ -52,12 +52,12 @@
         "trust_cell_Xi7Aj7"
       ],
       "settings": {
-        "kicker": "",
+        "kicker": "Aroma Aesthetics",
         "show_rating": true,
-        "rating_score": "",
-        "rating_count": "",
-        "show_installment": false,
-        "show_buy_now": false
+        "rating_score": "4.9",
+        "rating_count": "2,847",
+        "show_installment": true,
+        "show_buy_now": true
       }
     },
     "mobile": {
@@ -343,7 +343,8 @@
         "ritual_image": "shopify://shop_images/02-fabric.jpg",
         "ritual_video_url": "",
         "ritual_video_label": "▶ 觀看 Ritual 影片",
-        "timeline_subtitle": "獨家微膠囊鎖香技術，經摩擦釋放香氛，24 小時後仍可辨識。",
+        "ritual_heading": "",
+        "ritual_body": "",
         "cmp_col0": "比較項目",
         "cmp_col1": "APGO 超級洗衣精",
         "cmp_col2": "一般市售洗衣精",

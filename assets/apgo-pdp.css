@@ -450,21 +450,53 @@
 }
 .apgo-mpdp-pain-arrow { font-family: var(--apgo-display); color: var(--apgo-sage); font-size: 16px; }
 
-/* Timeline (mobile) */
-.apgo-mpdp-timeline { padding: 36px 16px; background: var(--apgo-bg-alt); }
-.apgo-mpdp-timeline h3 { font-size: 18px; text-align: center; margin: 8px 0 24px; font-weight: 400; }
-.apgo-mpdp-timeline > .apgo-mpdp-kicker { text-align: center; display: block; margin-bottom: 8px; }
-.apgo-mpdp-timeline-row {
-  display: grid; grid-template-columns: 44px 1fr 60px; gap: 12px; align-items: center;
-  padding: 10px 0; border-bottom: 1px solid rgba(94,111,93,0.12);
+/* ----------------------------------------------------------------------
+   Product description (mobile) — renders {{ product.description }} from
+   Shopify admin's rich-text editor. Each product writes its own copy here.
+   Supports h2 / h3 / p / ul / ol / strong / em / img / a from the editor.
+   ---------------------------------------------------------------------- */
+.apgo-mpdp-description {
+  padding: 36px 16px;
+  background: var(--apgo-bg-alt);
+  color: var(--apgo-ink);
+  font-size: 14px;
+  line-height: 1.8;
 }
-.apgo-mpdp-timeline-row:last-child { border-bottom: none; }
-.apgo-mpdp-timeline-hour { font-family: var(--apgo-display); font-size: 20px; color: var(--apgo-sage); font-style: italic; }
-.apgo-mpdp-timeline-row .apgo-serif { font-size: 13px; }
-.apgo-mpdp-timeline-row .apgo-muted { font-size: 10px; margin-top: 1px; }
-.apgo-mpdp-timeline-bar { height: 4px; background: rgba(94,111,93,0.15); border-radius: 2px; overflow: hidden; }
-.apgo-mpdp-timeline-bar > div { height: 100%; background: var(--apgo-sage); }
-.apgo-mpdp-timeline-pct { font-size: 9px; color: rgba(45,46,40,0.5); margin-top: 3px; text-align: right; }
+.apgo-mpdp-description > * + * { margin-top: 14px; }
+.apgo-mpdp-description h1,
+.apgo-mpdp-description h2,
+.apgo-mpdp-description h3,
+.apgo-mpdp-description h4 {
+  font-family: var(--apgo-display);
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: 0.02em;
+  margin-top: 28px;
+}
+.apgo-mpdp-description h1 { font-size: 24px; }
+.apgo-mpdp-description h2 { font-size: 20px; }
+.apgo-mpdp-description h3 { font-size: 17px; }
+.apgo-mpdp-description h4 { font-size: 15px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--apgo-sage); font-family: inherit; }
+.apgo-mpdp-description p { margin: 0; }
+.apgo-mpdp-description strong { font-weight: 600; color: var(--apgo-ink); }
+.apgo-mpdp-description em { font-style: italic; }
+.apgo-mpdp-description ul,
+.apgo-mpdp-description ol { padding-left: 1.4em; }
+.apgo-mpdp-description li + li { margin-top: 6px; }
+.apgo-mpdp-description a { color: var(--apgo-sage); text-decoration: underline; }
+.apgo-mpdp-description img {
+  display: block; width: 100%; height: auto;
+  border-radius: 12px; margin: 18px auto;
+}
+.apgo-mpdp-description blockquote {
+  border-left: 3px solid var(--apgo-sage);
+  padding-left: 14px;
+  color: var(--apgo-muted);
+  font-style: italic;
+}
+.apgo-mpdp-description hr {
+  border: none; border-top: 1px solid var(--apgo-line); margin: 28px 0;
+}
 
 /* Comparison (mobile) */
 .apgo-mpdp-cmp-wrap { padding: 32px 16px; }
@@ -590,8 +622,6 @@
 .apgo-mpdp-overlay-heading { font-size: 22px; line-height: 1.3; color: var(--apgo-bg); margin-bottom: 8px; font-weight: 400; }
 .apgo-mpdp-overlay-body    { font-size: 13px; line-height: 1.7; color: var(--apgo-bg); opacity: 0.92; margin: 0; }
 
-/* Timeline subtitle (only shown on desktop) */
-.apgo-mpdp-timeline-sub { display: none; }
 
 /* =====================================================================
    DESKTOP OVERRIDES — match Claude Design handoff specs
@@ -636,13 +666,9 @@
   .apgo-mpdp-images { max-width: 1240px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px; }
   /* Full-bleed blocks — bg spans the whole viewport, inner content stays centered to 1240 */
   .apgo-mpdp-pain-wrap,
-  .apgo-mpdp-timeline { width: 100%; max-width: none; margin: 0; padding-left: 0; padding-right: 0; }
+  .apgo-mpdp-description { width: 100%; max-width: none; margin: 0; padding-left: 0; padding-right: 0; }
   .apgo-mpdp-pain-wrap > h3,
-  .apgo-mpdp-pain-wrap > .apgo-mpdp-pain-grid,
-  .apgo-mpdp-timeline > .apgo-mpdp-kicker,
-  .apgo-mpdp-timeline > h3,
-  .apgo-mpdp-timeline > .apgo-mpdp-timeline-sub,
-  .apgo-mpdp-timeline > div:last-child { max-width: 1240px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px; }
+  .apgo-mpdp-pain-wrap > .apgo-mpdp-pain-grid { max-width: 1240px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px; }
 
   /* ---------- RITUAL (Tabs下 Editorial): 2-col grid — 16:9 image w/ overlay card | text ---------- */
   .apgo-mpdp-ritual-wrap {
@@ -685,51 +711,26 @@
   .apgo-mpdp-pain-card > .apgo-serif { font-size: 15px; text-align: left; color: var(--apgo-ink); }
   .apgo-mpdp-pain-arrow { color: var(--apgo-muted); font-size: 14px; }
 
-  /* ---------- TIMELINE (24H 留香時間軸): full-bleed bg, padding 80px 0 60px ---------- */
-  .apgo-mpdp-timeline { padding: 80px 0 60px; text-align: center; background: var(--apgo-bg-alt); }
-  .apgo-mpdp-timeline > .apgo-mpdp-kicker { font-size: 12px; letter-spacing: 0.4em; color: var(--apgo-sage); margin-bottom: 14px; }
-  .apgo-mpdp-timeline > h3 { font-size: 28px; margin: 0 auto 12px; font-weight: 400; }
-  .apgo-mpdp-timeline-sub { display: block; font-size: 13px; max-width: 560px; margin: 0 auto 48px; line-height: 1.8; color: var(--apgo-muted); }
-  .apgo-mpdp-timeline > div:last-child {
-    position: relative;
-    display: flex; justify-content: space-between; align-items: stretch;
-    gap: 16px; max-width: 1080px; margin: 0 auto; padding: 0 20px;
+  /* ---------- DESCRIPTION (產品說明，從後台 product.description 渲染): full-bleed bg ---------- */
+  .apgo-mpdp-description {
+    padding: 80px 0;
+    text-align: left;
+    background: var(--apgo-bg-alt);
+    font-size: 15px;
+    line-height: 1.95;
   }
-  /* Horizontal axis line — sits behind the dots, after the hour text */
-  .apgo-mpdp-timeline > div:last-child::before {
-    content: ''; position: absolute; left: 60px; right: 60px; top: 56px;
-    height: 1px; background: var(--apgo-line); z-index: 0;
+  /* Inner content centered to a comfortable reading width */
+  .apgo-mpdp-description > * {
+    max-width: 760px; margin-left: auto; margin-right: auto;
+    padding-left: 32px; padding-right: 32px;
   }
-  .apgo-mpdp-timeline-row {
-    position: relative; display: flex; flex-direction: column; align-items: center;
-    flex: 1; gap: 0; padding: 0; border: none; background: none;
-    grid-template-columns: none; z-index: 1;
+  .apgo-mpdp-description h1 { font-size: 36px; margin-top: 48px; }
+  .apgo-mpdp-description h2 { font-size: 28px; margin-top: 40px; }
+  .apgo-mpdp-description h3 { font-size: 22px; margin-top: 32px; }
+  .apgo-mpdp-description h4 { font-size: 13px; margin-top: 28px; }
+  .apgo-mpdp-description img {
+    max-width: 1080px; padding: 0; border-radius: 14px; margin: 32px auto;
   }
-  .apgo-mpdp-timeline-hour {
-    font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
-    font-size: 28px; font-style: italic; font-weight: 400;
-    color: var(--apgo-ink); line-height: 1; margin-bottom: 24px;
-    width: auto; height: auto; background: none; border: none;
-  }
-  /* Dot on axis */
-  .apgo-mpdp-timeline-row::before {
-    content: ''; width: 10px; height: 10px; border-radius: 50%;
-    background: var(--apgo-ink); margin-bottom: 20px;
-    box-shadow: 0 0 0 4px var(--apgo-bg);
-  }
-  .apgo-mpdp-timeline-row > div:nth-child(2) {
-    text-align: center; margin-bottom: 18px;
-  }
-  .apgo-mpdp-timeline-row > div:nth-child(2) .apgo-serif { font-size: 14px; margin-bottom: 4px; }
-  .apgo-mpdp-timeline-row > div:nth-child(2) .apgo-muted { font-size: 12px; }
-  .apgo-mpdp-timeline-row > div:nth-child(3) { width: 100%; max-width: 140px; text-align: center; }
-  .apgo-mpdp-timeline-bar {
-    width: 100%; height: 4px; background: var(--apgo-line);
-    border-radius: 4px; overflow: hidden; margin-bottom: 8px;
-  }
-  .apgo-mpdp-timeline-bar > div { height: 100%; background: var(--apgo-ink); }
-  .apgo-mpdp-timeline-pct { font-size: 11px; color: var(--apgo-muted); letter-spacing: 0.05em; }
-  .apgo-mpdp-timeline-pct::before { content: '香氛強度 '; }
 
   /* ---------- COMPARISON (對比表): padding 60px 32px, table max 880px ---------- */
   .apgo-mpdp-cmp-wrap { padding: 60px 32px; text-align: center; }
@@ -809,14 +810,9 @@
   .apgo-mpdp-pain-grid { max-width: 100%; }
   .apgo-mpdp-pain-card { padding: 14px 20px; gap: 12px; }
   .apgo-mpdp-pain-wrap > h3,
-  .apgo-mpdp-pain-wrap > .apgo-mpdp-pain-grid,
-  .apgo-mpdp-timeline > .apgo-mpdp-kicker,
-  .apgo-mpdp-timeline > h3,
-  .apgo-mpdp-timeline > .apgo-mpdp-timeline-sub,
-  .apgo-mpdp-timeline > div:last-child { padding-left: 24px; padding-right: 24px; }
-  .apgo-mpdp-timeline { padding: 64px 0 48px; }
-  .apgo-mpdp-timeline-hour { font-size: 24px; }
-  .apgo-mpdp-timeline > div:last-child::before { left: 40px; right: 40px; top: 50px; }
+  .apgo-mpdp-pain-wrap > .apgo-mpdp-pain-grid { padding-left: 24px; padding-right: 24px; }
+  .apgo-mpdp-description { padding: 64px 0; }
+  .apgo-mpdp-description > * { padding-left: 24px; padding-right: 24px; }
   .apgo-mpdp-cmp-wrap { padding: 48px 24px; }
 }
 

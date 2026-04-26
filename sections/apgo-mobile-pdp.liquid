@@ -225,33 +225,16 @@
         </div>
       {%- endif -%}
 
-      {%- comment -%} 24H Timeline (mobile vertical / desktop horizontal) {%- endcomment -%}
-      <div class="apgo-mpdp-timeline">
-        <div class="apgo-mpdp-kicker">— 24H LASTING —</div>
-        <h3 class="apgo-serif">持續一整天的香氛</h3>
-        {%- if section.settings.timeline_subtitle != blank -%}
-          <p class="apgo-muted apgo-mpdp-timeline-sub">{{ section.settings.timeline_subtitle }}</p>
-        {%- endif -%}
-        <div>
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'timeline' -%}
-              <div class="apgo-mpdp-timeline-row" {{ block.shopify_attributes }}>
-                <div class="apgo-mpdp-timeline-hour">{{ block.settings.hour }}</div>
-                <div>
-                  <div class="apgo-serif">{{ block.settings.label }}</div>
-                  <div class="apgo-muted">{{ block.settings.description }}</div>
-                </div>
-                <div>
-                  <div class="apgo-mpdp-timeline-bar">
-                    <div style="width:{{ block.settings.strength }}%"></div>
-                  </div>
-                  <div class="apgo-mpdp-timeline-pct">{{ block.settings.strength }}%</div>
-                </div>
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
+      {%- comment -%}
+        Product description — pulled from Shopify admin Product page (Description rich-text editor).
+        Each product writes its own intro / story / specs here, styled by .apgo-mpdp-description CSS.
+        Supports h2/h3/p/ul/ol/img/strong/em from the admin rich-text editor.
+      {%- endcomment -%}
+      {%- if product.description != blank -%}
+        <div class="apgo-mpdp-description rte">
+          {{ product.description }}
         </div>
-      </div>
+      {%- endif -%}
 
       {%- comment -%} Comparison table (mobile) {%- endcomment -%}
       <div class="apgo-mpdp-cmp-wrap">
@@ -426,9 +409,6 @@
     { "type": "url", "id": "ritual_video_url", "label": "Ritual 影片連結（手機端，選填 — 留白則只顯示圖片）" },
     { "type": "text", "id": "ritual_video_label", "label": "影片標籤（手機端）", "default": "▶ 觀看 Ritual 影片" },
 
-    { "type": "header", "content": "24H Timeline" },
-    { "type": "text", "id": "timeline_subtitle", "label": "副標說明", "default": "獨家微膠囊鎖香技術，經摩擦釋放香氛，24 小時後仍可辨識。" },
-
     { "type": "header", "content": "比較表 欄位標題" },
     { "type": "text", "id": "cmp_col0", "label": "第一欄（項目）", "default": "比較項目" },
     { "type": "text", "id": "cmp_col1", "label": "第二欄（APGO）", "default": "APGO 超級洗衣精" },
@@ -462,17 +442,6 @@
       "settings": [
         { "type": "text", "id": "pain", "label": "痛點", "default": "洗不掉的頑垢" },
         { "type": "text", "id": "solution", "label": "解方", "default": "超濃縮酵素活性" }
-      ]
-    },
-    {
-      "type": "timeline",
-      "name": "留香時間點",
-      "limit": 5,
-      "settings": [
-        { "type": "text", "id": "hour", "label": "時間", "default": "0H" },
-        { "type": "text", "id": "label", "label": "標籤", "default": "洗滌完成" },
-        { "type": "text", "id": "description", "label": "描述", "default": "前段花香綻放" },
-        { "type": "range", "id": "strength", "label": "強度 %", "min": 0, "max": 100, "step": 5, "default": 100 }
       ]
     },
     {
@@ -534,11 +503,6 @@
         { "type": "pain",     "settings": { "pain": "室內晾衣的霉味", "solution": "奈米消臭技術" }},
         { "type": "pain",     "settings": { "pain": "護衣護色的掙扎", "solution": "中性護色配方" }},
         { "type": "pain",     "settings": { "pain": "短暫的芬芳", "solution": "24H 留香技術" }},
-        { "type": "timeline", "settings": { "hour": "0H",  "label": "洗滌完成", "description": "前段花香綻放",   "strength": 100 }},
-        { "type": "timeline", "settings": { "hour": "6H",  "label": "日常穿著", "description": "中段木質底香",   "strength": 85  }},
-        { "type": "timeline", "settings": { "hour": "12H", "label": "午後",     "description": "後調溫潤麝香",   "strength": 65  }},
-        { "type": "timeline", "settings": { "hour": "18H", "label": "傍晚",     "description": "尾調淡雅純淨",   "strength": 45  }},
-        { "type": "timeline", "settings": { "hour": "24H", "label": "隔日",     "description": "依然清爽可辨識", "strength": 30  }},
         { "type": "compare",  "settings": { "feature": "濃縮倍數", "apgo_value": "8 倍",    "competitor_value": "1-2 倍" }},
         { "type": "compare",  "settings": { "feature": "留香時間", "apgo_value": "24 小時",  "competitor_value": "2-4 小時" }},
         { "type": "compare",  "settings": { "feature": "pH 值",    "apgo_value": "中性 7.0", "competitor_value": "鹼性 9-10" }},
