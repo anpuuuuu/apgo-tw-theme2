@@ -239,7 +239,8 @@
               <strong>{{ entry.name }}</strong>
               <span class="apgo-stars">★★★★★</span>
             </div>
-            <div class="apgo-mpdp-rev-meta">{{ entry.date }} · 已購買：{{ entry.scent }}</div>
+            {%- assign rev_date = entry.date | default: entry.data -%}
+            <div class="apgo-mpdp-rev-meta">{{ rev_date }} · 已購買：{{ entry.scent }}</div>
             <p>{{ entry.body }}</p>
           </div>
         {%- endfor -%}
