@@ -462,39 +462,52 @@
   font-size: 14px;
   line-height: 1.8;
 }
-.apgo-mpdp-description > * + * { margin-top: 14px; }
-.apgo-mpdp-description h1,
-.apgo-mpdp-description h2,
-.apgo-mpdp-description h3,
-.apgo-mpdp-description h4 {
+/* Direct children only — typographic tags from the rich-text editor get this typography.
+   Pasted structured snippets (e.g. <div class="apgo-mpdp-pain-wrap">) are direct-child divs,
+   they're NOT styled here so they keep their original full-bleed UI. */
+.apgo-mpdp-description > p + p,
+.apgo-mpdp-description > p + h1, .apgo-mpdp-description > p + h2,
+.apgo-mpdp-description > p + h3, .apgo-mpdp-description > p + h4,
+.apgo-mpdp-description > h1 + p, .apgo-mpdp-description > h2 + p,
+.apgo-mpdp-description > h3 + p, .apgo-mpdp-description > h4 + p,
+.apgo-mpdp-description > p + ul, .apgo-mpdp-description > p + ol,
+.apgo-mpdp-description > ul + p, .apgo-mpdp-description > ol + p { margin-top: 14px; }
+.apgo-mpdp-description > h1,
+.apgo-mpdp-description > h2,
+.apgo-mpdp-description > h3,
+.apgo-mpdp-description > h4 {
   font-family: var(--apgo-display);
   font-weight: 400;
   text-align: center;
   letter-spacing: 0.02em;
   margin-top: 28px;
 }
-.apgo-mpdp-description h1 { font-size: 24px; }
-.apgo-mpdp-description h2 { font-size: 20px; }
-.apgo-mpdp-description h3 { font-size: 17px; }
-.apgo-mpdp-description h4 { font-size: 15px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--apgo-sage); font-family: inherit; }
-.apgo-mpdp-description p { margin: 0; }
-.apgo-mpdp-description strong { font-weight: 600; color: var(--apgo-ink); }
-.apgo-mpdp-description em { font-style: italic; }
-.apgo-mpdp-description ul,
-.apgo-mpdp-description ol { padding-left: 1.4em; }
-.apgo-mpdp-description li + li { margin-top: 6px; }
-.apgo-mpdp-description a { color: var(--apgo-sage); text-decoration: underline; }
-.apgo-mpdp-description img {
+.apgo-mpdp-description > h1 { font-size: 24px; }
+.apgo-mpdp-description > h2 { font-size: 20px; }
+.apgo-mpdp-description > h3 { font-size: 17px; }
+.apgo-mpdp-description > h4 { font-size: 15px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--apgo-sage); font-family: inherit; }
+.apgo-mpdp-description > p { margin: 0; }
+.apgo-mpdp-description > p strong,
+.apgo-mpdp-description > h1 strong, .apgo-mpdp-description > h2 strong,
+.apgo-mpdp-description > h3 strong, .apgo-mpdp-description > h4 strong { font-weight: 600; color: var(--apgo-ink); }
+.apgo-mpdp-description > p em { font-style: italic; }
+.apgo-mpdp-description > ul,
+.apgo-mpdp-description > ol { padding-left: 1.4em; }
+.apgo-mpdp-description > ul li + li,
+.apgo-mpdp-description > ol li + li { margin-top: 6px; }
+.apgo-mpdp-description > p a { color: var(--apgo-sage); text-decoration: underline; }
+.apgo-mpdp-description > img,
+.apgo-mpdp-description > p > img {
   display: block; width: 100%; height: auto;
   border-radius: 12px; margin: 18px auto;
 }
-.apgo-mpdp-description blockquote {
+.apgo-mpdp-description > blockquote {
   border-left: 3px solid var(--apgo-sage);
   padding-left: 14px;
   color: var(--apgo-muted);
   font-style: italic;
 }
-.apgo-mpdp-description hr {
+.apgo-mpdp-description > hr {
   border: none; border-top: 1px solid var(--apgo-line); margin: 28px 0;
 }
 
@@ -719,16 +732,28 @@
     font-size: 15px;
     line-height: 1.95;
   }
-  /* Inner content centered to a comfortable reading width */
-  .apgo-mpdp-description > * {
+  /* Inner typographic content centered to a comfortable reading width.
+     Direct-child <div> snippets (Ritual / Pain / Cmp / Ugc / Longimg) are NOT constrained,
+     so they keep their original full-bleed UI when pasted in description HTML mode. */
+  .apgo-mpdp-description > p,
+  .apgo-mpdp-description > h1,
+  .apgo-mpdp-description > h2,
+  .apgo-mpdp-description > h3,
+  .apgo-mpdp-description > h4,
+  .apgo-mpdp-description > ul,
+  .apgo-mpdp-description > ol,
+  .apgo-mpdp-description > blockquote,
+  .apgo-mpdp-description > hr,
+  .apgo-mpdp-description > table {
     max-width: 760px; margin-left: auto; margin-right: auto;
     padding-left: 32px; padding-right: 32px;
   }
-  .apgo-mpdp-description h1 { font-size: 36px; margin-top: 48px; }
-  .apgo-mpdp-description h2 { font-size: 28px; margin-top: 40px; }
-  .apgo-mpdp-description h3 { font-size: 22px; margin-top: 32px; }
-  .apgo-mpdp-description h4 { font-size: 13px; margin-top: 28px; }
-  .apgo-mpdp-description img {
+  .apgo-mpdp-description > h1 { font-size: 36px; margin-top: 48px; }
+  .apgo-mpdp-description > h2 { font-size: 28px; margin-top: 40px; }
+  .apgo-mpdp-description > h3 { font-size: 22px; margin-top: 32px; }
+  .apgo-mpdp-description > h4 { font-size: 13px; margin-top: 28px; }
+  .apgo-mpdp-description > img,
+  .apgo-mpdp-description > p > img {
     max-width: 1080px; padding: 0; border-radius: 14px; margin: 32px auto;
   }
 
@@ -812,7 +837,16 @@
   .apgo-mpdp-pain-wrap > h3,
   .apgo-mpdp-pain-wrap > .apgo-mpdp-pain-grid { padding-left: 24px; padding-right: 24px; }
   .apgo-mpdp-description { padding: 64px 0; }
-  .apgo-mpdp-description > * { padding-left: 24px; padding-right: 24px; }
+  .apgo-mpdp-description > p,
+  .apgo-mpdp-description > h1,
+  .apgo-mpdp-description > h2,
+  .apgo-mpdp-description > h3,
+  .apgo-mpdp-description > h4,
+  .apgo-mpdp-description > ul,
+  .apgo-mpdp-description > ol,
+  .apgo-mpdp-description > blockquote,
+  .apgo-mpdp-description > hr,
+  .apgo-mpdp-description > table { padding-left: 24px; padding-right: 24px; }
   .apgo-mpdp-cmp-wrap { padding: 48px 24px; }
 }
 

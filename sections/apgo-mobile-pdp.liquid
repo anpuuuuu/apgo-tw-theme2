@@ -156,148 +156,26 @@
       <button type="button" class="apgo-mpdp-tab" data-apgo-mtab="faq" role="tab">問答</button>
     </div>
 
-    {%- comment -%} Tab panel: 商品說明 {%- endcomment -%}
+    {%- comment -%}
+      Tab panel: 商品說明
+      ----------------------------------------------------------------
+      STRICT MODE: this entire panel is driven by Shopify admin →
+      Product → Description (rich-text editor, HTML mode capable).
+
+      To reproduce the original UI (Ritual hero / 痛點 × 解方 / 比較表 /
+      UGC / 長圖) the user pastes structured HTML using the existing
+      class hooks (.apgo-mpdp-ritual-wrap, .apgo-mpdp-pain-wrap,
+      .apgo-mpdp-cmp-wrap, .apgo-mpdp-ugc-wrap, .apgo-mpdp-longimg-wrap).
+      A reference snippet is kept in the team handbook.
+
+      Direct-child <div> snippets in description are NOT constrained by
+      .apgo-mpdp-description's reading-width rules — they keep their
+      original full-bleed look (see apgo-pdp.css line ~735).
+    {%- endcomment -%}
     <div class="apgo-mpdp-panel active" data-apgo-mpanel="desc">
-      <div class="apgo-mpdp-ritual-wrap">
-        {%- if section.settings.ritual_image != blank or section.settings.ritual_video_url != blank -%}
-          <div class="apgo-mpdp-ritual">
-            {%- comment -%} Mobile: video if URL set, else image (desktop hides both) {%- endcomment -%}
-            {%- if section.settings.ritual_video_url != blank -%}
-              <video class="apgo-mpdp-ritual-video apgo-mpdp-mobile-only"
-                     {% if section.settings.ritual_image != blank %}poster="{{ section.settings.ritual_image | image_url: width: 900 }}"{% endif %}
-                     src="{{ section.settings.ritual_video_url }}"
-                     controls playsinline preload="metadata">
-              </video>
-            {%- elsif section.settings.ritual_image != blank -%}
-              <img class="apgo-mpdp-ritual-img-mobile apgo-mpdp-mobile-only"
-                   src="{{ section.settings.ritual_image | image_url: width: 900 }}"
-                   alt="重新定義洗衣的日常" loading="lazy">
-            {%- endif -%}
-
-            {%- comment -%} Desktop: 1:1 image on the left of the 2-col grid {%- endcomment -%}
-            {%- if section.settings.ritual_image != blank -%}
-              <img class="apgo-mpdp-ritual-img-desktop apgo-mpdp-desktop-only"
-                   src="{{ section.settings.ritual_image | image_url: width: 1200 }}"
-                   alt="重新定義洗衣的日常" loading="lazy">
-            {%- endif -%}
-
-          </div>
-        {%- endif -%}
-
-        <div class="apgo-mpdp-ritual-text">
-          <div class="apgo-mpdp-kicker">— THE RITUAL —</div>
-          <h2 class="apgo-serif">重新定義<br>洗衣的日常</h2>
-          <p>追求的不只是乾淨，更是洗滌過程中的「儀式感」。以溫和純淨的配方，打理屬於您的自我空間。</p>
-        </div>
-      </div>
-
-      {%- comment -%} Pain × Solutions {%- endcomment -%}
-      <div class="apgo-mpdp-pain-wrap">
-        <h3 class="apgo-serif">日常痛點 · 專屬科學解方</h3>
-        <div class="apgo-mpdp-pain-grid">
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'pain' -%}
-              <div class="apgo-mpdp-pain-card" {{ block.shopify_attributes }}>
-                <div class="apgo-muted">{{ block.settings.pain }}</div>
-                <div class="apgo-mpdp-pain-arrow">→</div>
-                <div class="apgo-serif">{{ block.settings.solution }}</div>
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-      </div>
-
-      {%- comment -%} Free image gallery (image blocks render here, after pain) {%- endcomment -%}
-      {%- assign has_imgs = false -%}
-      {%- for block in section.blocks -%}{%- if block.type == 'image' and block.settings.image != blank -%}{%- assign has_imgs = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
-      {%- if has_imgs -%}
-        <div class="apgo-mpdp-images">
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'image' and block.settings.image != blank -%}
-              <figure class="apgo-mpdp-image-block" {{ block.shopify_attributes }}>
-                <img src="{{ block.settings.image | image_url: width: 1400 }}" alt="{{ block.settings.caption | default: product.title }}" loading="lazy">
-                {%- if block.settings.caption != blank -%}
-                  <figcaption class="apgo-muted">{{ block.settings.caption }}</figcaption>
-                {%- endif -%}
-              </figure>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
-
-      {%- comment -%}
-        Product description — pulled from Shopify admin Product page (Description rich-text editor).
-        Each product writes its own intro / story / specs here, styled by .apgo-mpdp-description CSS.
-        Supports h2/h3/p/ul/ol/img/strong/em from the admin rich-text editor.
-      {%- endcomment -%}
       {%- if product.description != blank -%}
         <div class="apgo-mpdp-description rte">
           {{ product.description }}
-        </div>
-      {%- endif -%}
-
-      {%- comment -%} Comparison table (mobile) {%- endcomment -%}
-      <div class="apgo-mpdp-cmp-wrap">
-        <div class="apgo-mpdp-kicker">— THE DIFFERENCE —</div>
-        <h3 class="apgo-serif">為什麼選 APGO？</h3>
-        <div class="apgo-mpdp-cmp">
-          <div class="apgo-mpdp-cmp-head">
-            <div>{{ section.settings.cmp_col0 | default: '比較項目' }}</div>
-            <div class="apgo-serif">{{ section.settings.cmp_col1 | default: 'APGO 超級洗衣精' }}</div>
-            <div>{{ section.settings.cmp_col2 | default: '一般市售洗衣精' }}</div>
-          </div>
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'compare' -%}
-              <div class="apgo-mpdp-cmp-row" {{ block.shopify_attributes }}>
-                <div class="apgo-muted">{{ block.settings.feature }}</div>
-                <div class="apgo-serif"><span class="apgo-mpdp-win">✓</span>{{ block.settings.apgo_value }}</div>
-                <div class="apgo-muted">{{ block.settings.competitor_value }}</div>
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-      </div>
-
-      {%- comment -%} UGC (mobile 3-col) {%- endcomment -%}
-      {%- if section.settings.ugc_enabled -%}
-        <div class="apgo-mpdp-ugc-wrap">
-          <div class="apgo-mpdp-kicker">— #APGOLAUNDRY —</div>
-          <h3 class="apgo-serif">用戶實拍 · Instagram</h3>
-          <p class="apgo-muted apgo-mpdp-ugc-sub">2,100+ 位顧客分享</p>
-          <div class="apgo-mpdp-ugc-grid">
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'ugc' -%}
-                <a href="{{ block.settings.url }}" class="apgo-mpdp-ugc-cell" {{ block.shopify_attributes }} target="_blank" rel="noopener">
-                  {%- if block.settings.image != blank -%}
-                    <img src="{{ block.settings.image | image_url: width: 400 }}" alt="@{{ block.settings.handle }}" loading="lazy">
-                  {%- endif -%}
-                  <span class="apgo-mpdp-ugc-like">♡ {{ block.settings.likes }}</span>
-                </a>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        </div>
-      {%- endif -%}
-
-      {%- comment -%} Long image (below UGC) — full-width, natural aspect {%- endcomment -%}
-      {%- if section.settings.long_image != blank -%}
-        <div class="apgo-mpdp-longimg-wrap">
-          {%- assign _limg = section.settings.long_image -%}
-          {%- if section.settings.long_image_link != blank -%}
-            <a href="{{ section.settings.long_image_link }}" class="apgo-mpdp-longimg-link">
-              <img class="apgo-mpdp-longimg"
-                   src="{{ _limg | image_url: width: 1600 }}"
-                   alt="{{ section.settings.long_image_alt | default: _limg.alt | default: '' }}"
-                   loading="lazy"
-                   width="{{ _limg.width }}" height="{{ _limg.height }}">
-            </a>
-          {%- else -%}
-            <img class="apgo-mpdp-longimg"
-                 src="{{ _limg | image_url: width: 1600 }}"
-                 alt="{{ section.settings.long_image_alt | default: _limg.alt | default: '' }}"
-                 loading="lazy"
-                 width="{{ _limg.width }}" height="{{ _limg.height }}">
-          {%- endif -%}
         </div>
       {%- endif -%}
     </div>
@@ -404,46 +282,13 @@
     { "type": "text",     "id": "rating_count", "label": "評價數", "default": "2,847" },
     { "type": "checkbox", "id": "show_installment", "label": "顯示 3 期 0 利率", "default": true },
 
-    { "type": "header", "content": "商品說明區（Ritual）" },
-    { "type": "image_picker", "id": "ritual_image", "label": "Ritual 視覺圖（電腦端 16:9，建議 1920×1099；手機端兼當影片封面）" },
-    { "type": "url", "id": "ritual_video_url", "label": "Ritual 影片連結（手機端，選填 — 留白則只顯示圖片）" },
-    { "type": "text", "id": "ritual_video_label", "label": "影片標籤（手機端）", "default": "▶ 觀看 Ritual 影片" },
-
-    { "type": "header", "content": "比較表 欄位標題" },
-    { "type": "text", "id": "cmp_col0", "label": "第一欄（項目）", "default": "比較項目" },
-    { "type": "text", "id": "cmp_col1", "label": "第二欄（APGO）", "default": "APGO 超級洗衣精" },
-    { "type": "text", "id": "cmp_col2", "label": "第三欄（對手）", "default": "一般市售洗衣精" },
-
-    { "type": "header", "content": "UGC" },
-    { "type": "checkbox", "id": "ugc_enabled", "label": "顯示 UGC 牆", "default": false },
-
-    { "type": "header", "content": "UGC 下方長圖" },
-    { "type": "paragraph", "content": "可上傳一張長圖（如品牌故事、規格長圖），會顯示在 UGC 牆下方、保持原始比例自適應寬度。" },
-    { "type": "image_picker", "id": "long_image", "label": "長圖" },
-    { "type": "text", "id": "long_image_alt", "label": "圖片替代文字（SEO）" },
-    { "type": "url", "id": "long_image_link", "label": "點擊連結（選填）" },
+    { "type": "header", "content": "商品說明 tab" },
+    { "type": "paragraph", "content": "「商品說明」整段內容（Ritual 視覺、痛點 × 解方、比較表、UGC、長圖）一律由 Shopify 後台 → 商品 → Description 提供。可在 Description 編輯器的 </> HTML 模式貼入結構化片段（class：apgo-mpdp-ritual-wrap / apgo-mpdp-pain-wrap / apgo-mpdp-cmp-wrap / apgo-mpdp-ugc-wrap / apgo-mpdp-longimg-wrap）。" },
 
     { "type": "header", "content": "相關商品" },
     { "type": "collection", "id": "related_collection", "label": "相關商品集合" }
   ],
   "blocks": [
-    {
-      "type": "image",
-      "name": "圖片",
-      "settings": [
-        { "type": "image_picker", "id": "image", "label": "圖片" },
-        { "type": "text", "id": "caption", "label": "說明（選填）" }
-      ]
-    },
-    {
-      "type": "pain",
-      "name": "痛點 × 解方",
-      "limit": 4,
-      "settings": [
-        { "type": "text", "id": "pain", "label": "痛點", "default": "洗不掉的頑垢" },
-        { "type": "text", "id": "solution", "label": "解方", "default": "超濃縮酵素活性" }
-      ]
-    },
     {
       "type": "ship_row",
       "name": "運送/保障資訊列",
@@ -452,27 +297,6 @@
         { "type": "text", "id": "numeral", "label": "編號標記", "default": "i", "info": "顯示在最左邊的小符號（如 i / ii / iii）" },
         { "type": "text", "id": "title", "label": "主標", "default": "滿 NT$ 799 免運" },
         { "type": "text", "id": "subtitle", "label": "副標", "default": "黑貓宅配 · 24 小時內出貨" }
-      ]
-    },
-    {
-      "type": "compare",
-      "name": "比較表 - 一列",
-      "limit": 8,
-      "settings": [
-        { "type": "text", "id": "feature", "label": "項目", "default": "濃縮倍數" },
-        { "type": "text", "id": "apgo_value", "label": "APGO", "default": "8 倍" },
-        { "type": "text", "id": "competitor_value", "label": "一般", "default": "1-2 倍" }
-      ]
-    },
-    {
-      "type": "ugc",
-      "name": "UGC 貼文",
-      "limit": 9,
-      "settings": [
-        { "type": "image_picker", "id": "image", "label": "圖片" },
-        { "type": "text", "id": "handle", "label": "IG handle" },
-        { "type": "number", "id": "likes", "label": "讚數", "default": 100 },
-        { "type": "url", "id": "url", "label": "IG 貼文連結" }
       ]
     },
     {
@@ -509,19 +333,9 @@
     {
       "name": "APGO · Mobile PDP",
       "blocks": [
-        { "type": "pain",     "settings": { "pain": "洗不掉的頑垢", "solution": "超濃縮酵素活性" }},
-        { "type": "pain",     "settings": { "pain": "室內晾衣的霉味", "solution": "奈米消臭技術" }},
-        { "type": "pain",     "settings": { "pain": "護衣護色的掙扎", "solution": "中性護色配方" }},
-        { "type": "pain",     "settings": { "pain": "短暫的芬芳", "solution": "24H 留香技術" }},
         { "type": "ship_row", "settings": { "numeral": "i",   "title": "滿 NT$ 799 免運",   "subtitle": "黑貓宅配 · 24 小時內出貨" }},
         { "type": "ship_row", "settings": { "numeral": "ii",  "title": "30 天鑑賞期",       "subtitle": "未拆封可無條件退換貨" }},
         { "type": "ship_row", "settings": { "numeral": "iii", "title": "SGS 國家級檢驗",    "subtitle": "99.9% 抗菌 · 八大零添加" }},
-        { "type": "compare",  "settings": { "feature": "濃縮倍數", "apgo_value": "8 倍",    "competitor_value": "1-2 倍" }},
-        { "type": "compare",  "settings": { "feature": "留香時間", "apgo_value": "24 小時",  "competitor_value": "2-4 小時" }},
-        { "type": "compare",  "settings": { "feature": "pH 值",    "apgo_value": "中性 7.0", "competitor_value": "鹼性 9-10" }},
-        { "type": "compare",  "settings": { "feature": "嬰幼兒",   "apgo_value": "適用",     "competitor_value": "視品牌" }},
-        { "type": "compare",  "settings": { "feature": "香氛數",   "apgo_value": "6 款",    "competitor_value": "1-2 款" }},
-        { "type": "compare",  "settings": { "feature": "螢光劑",   "apgo_value": "零添加",   "competitor_value": "通常含" }},
         { "type": "spec", "settings": { "key": "商品名稱", "value": "APGO 超級濃縮洗衣精" }},
         { "type": "spec", "settings": { "key": "容量",     "value": "1L / 2L / 4L 補充包" }},
         { "type": "spec", "settings": { "key": "產地",     "value": "台灣製造" }},
