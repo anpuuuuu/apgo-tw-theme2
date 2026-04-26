@@ -187,7 +187,20 @@
       {%- endcomment -%}
       {%- assign ugc_blocks = section.blocks | where: 'type', 'ugc' -%}
       {%- if ugc_blocks.size > 0 -%}
-        <div class="apgo-mpdp-ugc-wrap apgo-mpdp-ugc-wrap--grid-only">
+        {%- assign ugc_has_heading = false -%}
+        {%- if section.settings.ugc_kicker != blank or section.settings.ugc_title != blank or section.settings.ugc_sub != blank -%}
+          {%- assign ugc_has_heading = true -%}
+        {%- endif -%}
+        <div class="apgo-mpdp-ugc-wrap{% unless ugc_has_heading %} apgo-mpdp-ugc-wrap--grid-only{% endunless %}">
+          {%- if section.settings.ugc_kicker != blank -%}
+            <span class="apgo-mpdp-kicker">{{ section.settings.ugc_kicker }}</span>
+          {%- endif -%}
+          {%- if section.settings.ugc_title != blank -%}
+            <h3>{{ section.settings.ugc_title }}</h3>
+          {%- endif -%}
+          {%- if section.settings.ugc_sub != blank -%}
+            <div class="apgo-mpdp-ugc-sub apgo-muted">{{ section.settings.ugc_sub }}</div>
+          {%- endif -%}
           <div class="apgo-mpdp-ugc-grid">
             {%- for block in ugc_blocks -%}
               <a href="{{ block.settings.url }}" class="apgo-mpdp-ugc-cell" {{ block.shopify_attributes }} {% if block.settings.url != blank %}target="_blank" rel="noopener"{% endif %}>
@@ -343,7 +356,12 @@
     { "type": "checkbox", "id": "show_installment", "label": "顯示 3 期 0 利率", "default": true },
 
     { "type": "header", "content": "商品說明 tab" },
-    { "type": "paragraph", "content": "「商品說明」整段內容（Ritual 視覺、痛點 × 解方、比較表、UGC、長圖）一律由 Shopify 後台 → 商品 → Description 提供。可在 Description 編輯器的 </> HTML 模式貼入結構化片段（class：apgo-mpdp-ritual-wrap / apgo-mpdp-pain-wrap / apgo-mpdp-cmp-wrap / apgo-mpdp-ugc-wrap / apgo-mpdp-longimg-wrap）。" },
+    { "type": "paragraph", "content": "「商品說明」整段內容（Ritual 視覺、痛點 × 解方、比較表、長圖）一律由 Shopify 後台 → 商品 → Description 提供。可在 Description 編輯器的 </> HTML 模式貼入結構化片段（class：apgo-mpdp-ritual-wrap / apgo-mpdp-pain-wrap / apgo-mpdp-cmp-wrap / apgo-mpdp-longimg-wrap）。" },
+
+    { "type": "header", "content": "UGC 區標題（描述下方）" },
+    { "type": "text", "id": "ugc_kicker", "label": "上方小字（kicker）", "default": "APGO 用戶實拍" },
+    { "type": "text", "id": "ugc_title",  "label": "主標題", "default": "@apgo_official · Instagram" },
+    { "type": "text", "id": "ugc_sub",    "label": "副標題", "default": "點擊圖片可前往 Instagram 觀看原始貼文" },
 
     { "type": "header", "content": "相關商品" },
     { "type": "collection", "id": "related_collection", "label": "相關商品集合" }
