@@ -46,17 +46,25 @@
       <div class="apgo-mpdp-counter"><span data-apgo-carousel-idx>1</span> / <span data-apgo-carousel-total></span></div>
     </div>
 
-    {%- comment -%} Mobile thumbnail rail — click to jump carousel to that slide {%- endcomment -%}
+    {%- comment -%} Mobile thumbnail rail — click to jump carousel; swipeable; ◀ ▶ to step {%- endcomment -%}
     {%- if product.media.size > 1 -%}
-      <div class="apgo-mpdp-thumb-rail" data-apgo-mthumb-rail>
-        {%- for m in product.media -%}
-          <button type="button"
-                  class="apgo-mpdp-thumb {% if forloop.first %}active{% endif %}"
-                  data-apgo-mthumb-idx="{{ forloop.index0 }}"
-                  aria-label="顯示第 {{ forloop.index }} 張圖">
-            <img src="{{ m | image_url: width: 160 }}" alt="" loading="lazy">
-          </button>
-        {%- endfor -%}
+      <div class="apgo-mpdp-thumb-rail-wrap">
+        <button type="button" class="apgo-mpdp-thumb-nav apgo-mpdp-thumb-nav--prev" data-apgo-mthumb-nav="prev" aria-label="上一張">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="apgo-mpdp-thumb-rail" data-apgo-mthumb-rail>
+          {%- for m in product.media -%}
+            <button type="button"
+                    class="apgo-mpdp-thumb {% if forloop.first %}active{% endif %}"
+                    data-apgo-mthumb-idx="{{ forloop.index0 }}"
+                    aria-label="顯示第 {{ forloop.index }} 張圖">
+              <img src="{{ m | image_url: width: 160 }}" alt="" loading="lazy">
+            </button>
+          {%- endfor -%}
+        </div>
+        <button type="button" class="apgo-mpdp-thumb-nav apgo-mpdp-thumb-nav--next" data-apgo-mthumb-nav="next" aria-label="下一張">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
       </div>
     {%- endif -%}
 

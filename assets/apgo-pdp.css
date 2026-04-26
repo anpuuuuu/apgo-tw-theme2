@@ -77,7 +77,7 @@
 .apgo-hero-left {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 20px;
   min-width: 0;           /* allow shrink inside grid track */
 }
 
@@ -348,19 +348,39 @@
   border-radius: 999px; z-index: 2;
 }
 
-/* Mobile thumbnail rail (under carousel, click to jump) */
+/* Mobile thumbnail rail — 5 visible at once, swipeable, with prev/next chevrons.
+   Top padding 16px provides breathing room from the carousel above. */
+.apgo-mpdp-thumb-rail-wrap {
+  display: flex; align-items: center; gap: 8px;
+  padding: 16px 12px 4px;
+}
+.apgo-mpdp-thumb-nav {
+  flex: 0 0 28px;
+  width: 28px; height: 28px;
+  border: 1px solid var(--apgo-line);
+  background: var(--apgo-bg);
+  color: var(--apgo-ink);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0;
+  transition: background .15s, border-color .15s, opacity .15s;
+}
+.apgo-mpdp-thumb-nav:disabled { opacity: 0.3; cursor: default; }
 .apgo-mpdp-thumb-rail {
+  flex: 1 1 auto; min-width: 0;
   display: flex; gap: 8px;
-  overflow-x: auto; padding: 12px 16px;
+  overflow-x: auto;
   scroll-behavior: smooth; scrollbar-width: none;
-  background: var(--apgo-bg-ash);
+  -webkit-overflow-scrolling: touch;
 }
 .apgo-mpdp-thumb-rail::-webkit-scrollbar { display: none; }
 .apgo-mpdp-thumb {
-  flex: 0 0 auto;
-  width: 56px; height: 56px;
+  /* Exactly 5 visible: (100% - 4*8px gap) / 5 */
+  flex: 0 0 calc((100% - 32px) / 5);
+  aspect-ratio: 1/1;
   padding: 0; background: transparent;
-  border: 1.5px solid transparent; border-radius: 6px;
+  border: 1.5px solid transparent; border-radius: 8px;
   overflow: hidden; cursor: pointer;
   transition: border-color .2s;
 }

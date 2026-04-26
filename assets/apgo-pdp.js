@@ -348,6 +348,41 @@
       });
     });
 
+    // Mobile thumb-rail prev/next nav — scroll thumb rail by 5 thumbs at a time
+    (function () {
+      var rail = $('[data-apgo-mthumb-rail]', root);
+      if (!rail) return;
+      var prevBtn = $('[data-apgo-mthumb-nav="prev"]', root);
+      var nextBtn = $('[data-apgo-mthumb-nav="next"]', root);
+
+      function stepSize() {
+        var firstThumb = rail.querySelector('.apgo-mpdp-thumb');
+        if (!firstThumb) return rail.clientWidth;
+        var gap = 8; // matches CSS .apgo-mpdp-thumb-rail gap
+        return (firstThumb.offsetWidth + gap) * 5;
+      }
+
+      function updateNav() {
+        if (!prevBtn || !nextBtn) return;
+        var overflow = rail.scrollWidth - rail.clientWidth > 1;
+        if (!overflow) {
+          prevBtn.setAttribute('disabled', 'disabled');
+          nextBtn.setAttribute('disabled', 'disabled');
+          return;
+        }
+        if (rail.scrollLeft <= 1) prevBtn.setAttribute('disabled', 'disabled');
+        else prevBtn.removeAttribute('disabled');
+        if (rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 1) nextBtn.setAttribute('disabled', 'disabled');
+        else nextBtn.removeAttribute('disabled');
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', function () { rail.scrollBy({ left: -stepSize(), behavior: 'smooth' }); });
+      if (nextBtn) nextBtn.addEventListener('click', function () { rail.scrollBy({ left: stepSize(), behavior: 'smooth' }); });
+      rail.addEventListener('scroll', updateNav, { passive: true });
+      window.addEventListener('resize', updateNav);
+      setTimeout(updateNav, 50);
+    })();
+
     onScroll();
   }
 
