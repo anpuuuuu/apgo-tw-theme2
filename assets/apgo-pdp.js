@@ -109,17 +109,30 @@
       });
     }
 
+    // Extract the filename portion of a Shopify CDN URL (strip query + path).
+    // Used to match variant.featured_image.src against thumb/slide <img src>
+    // because the two ID systems (variant image id vs product media image id)
+    // don't share numeric IDs in Shopify, but the filename in src does match.
+    function srcFilename(url) {
+      if (!url) return '';
+      var noQuery = url.split('?')[0];
+      return noQuery.substring(noQuery.lastIndexOf('/') + 1).toLowerCase();
+    }
+
     // Swap the main media (desktop main img + thumb activation, mobile carousel scroll)
     // to the variant's featured image. No-op if the variant has no featured image set.
     function syncMediaToVariant(variant) {
-      if (!variant || !variant.featured_image || variant.featured_image.id == null) return;
-      var imgId = String(variant.featured_image.id);
+      if (!variant || !variant.featured_image || !variant.featured_image.src) return;
+      var targetFile = srcFilename(variant.featured_image.src);
+      if (!targetFile) return;
 
       // Desktop: find matching thumb, activate it, push its image into main slot.
       var mainImg = $('[data-apgo-main-img]', form);
       var matchedThumb = null;
       $$('[data-apgo-thumb-idx]', form).forEach(function (t) {
-        if (String(t.getAttribute('data-apgo-image-id')) === imgId) matchedThumb = t;
+        var img = $('img', t);
+        if (!img) return;
+        if (srcFilename(img.currentSrc || img.src) === targetFile) matchedThumb = t;
       });
       if (matchedThumb) {
         $$('[data-apgo-thumb-idx]', form).forEach(function (t) { t.classList.remove('active'); });
@@ -131,10 +144,13 @@
             mainImg.src = src.replace(/(\?|&)width=\d+/, '$1width=1400');
           }
         }
-        // Scroll the thumb into view in the rail
         if (matchedThumb.scrollIntoView) {
           try { matchedThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); } catch (e) {}
         }
+      } else if (mainImg) {
+        // No matching thumb (image only attached to variant, not in product.media gallery).
+        // Still swap the main img directly to the variant featured image.
+        mainImg.src = variant.featured_image.src.replace(/(\?|&)width=\d+/, '$1width=1400');
       }
 
       // Mobile: scroll the carousel track to the matching slide.
@@ -142,7 +158,9 @@
       if (track) {
         var slides = $$('.apgo-mpdp-slide', track);
         for (var i = 0; i < slides.length; i++) {
-          if (String(slides[i].getAttribute('data-apgo-image-id')) === imgId) {
+          var simg = $('img', slides[i]);
+          if (!simg) continue;
+          if (srcFilename(simg.currentSrc || simg.src) === targetFile) {
             try { track.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' }); }
             catch (e) { track.scrollLeft = slides[i].offsetLeft; }
             break;
