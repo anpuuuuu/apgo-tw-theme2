@@ -56,7 +56,7 @@
         "show_rating": true,
         "rating_score": "",
         "rating_count": "",
-        "show_installment": true,
+        "show_installment": false,
         "show_buy_now": false
       }
     },
