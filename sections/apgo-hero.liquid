@@ -204,8 +204,6 @@
                 立即購買 · 快速結帳
               </button>
             {%- endif -%}
-
-            <button type="button" class="apgo-wishlist-link">♡ 加入收藏</button>
           </div>
 
           {%- comment -%} Trust badges 4-col {%- endcomment -%}
@@ -223,26 +221,22 @@
             </div>
           {%- endif -%}
 
-          {%- comment -%} Ship info card {%- endcomment -%}
-          <div class="apgo-ship-card">
-            {%- assign ship_rows = 'i:滿 NT$ 799 免運|黑貓宅配 · 24 小時內出貨;ii:30 天鑑賞期|未拆封可無條件退換貨;iii:SGS 國家級檢驗|99.9% 抗菌率 · 八大零添加' | split: ';' -%}
-            {%- for row in ship_rows -%}
-              {%- assign parts = row | split: ':' -%}
-              {%- assign n = parts[0] -%}
-              {%- assign text_parts = parts[1] | split: '|' -%}
-              <div class="apgo-ship-row">
-                <span class="apgo-ship-icon">{{ n }}</span>
-                <div>
-                  <strong>{{ text_parts[0] }}</strong>
-                  <div class="apgo-muted">{{ text_parts[1] }}</div>
+          {%- comment -%} Ship info card (editable via blocks of type "ship_row") {%- endcomment -%}
+          {%- assign ship_blocks = section.blocks | where: 'type', 'ship_row' -%}
+          {%- if ship_blocks.size > 0 -%}
+            <div class="apgo-ship-card">
+              {%- for block in ship_blocks -%}
+                <div class="apgo-ship-row" {{ block.shopify_attributes }}>
+                  <span class="apgo-ship-icon">{{ block.settings.numeral }}</span>
+                  <div>
+                    <strong>{{ block.settings.title }}</strong>
+                    <div class="apgo-muted">{{ block.settings.subtitle }}</div>
+                  </div>
                 </div>
-              </div>
-              {%- unless forloop.last -%}<div class="apgo-ship-sep"></div>{%- endunless -%}
-            {%- endfor -%}
-          </div>
-
-          {%- comment -%} Share {%- endcomment -%}
-          <div class="apgo-share">分享 <span>Facebook</span>·<span>Line</span>·<span>複製連結</span></div>
+                {%- unless forloop.last -%}<div class="apgo-ship-sep"></div>{%- endunless -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
 
         </aside>
       </div>
@@ -279,6 +273,16 @@
         { "type": "text", "id": "title", "label": "主標", "default": "SGS" },
         { "type": "text", "id": "subtitle", "label": "副標", "default": "國家級認證" }
       ]
+    },
+    {
+      "type": "ship_row",
+      "name": "運送/保障資訊列",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "numeral", "label": "編號標記", "default": "i", "info": "顯示在最左邊的小符號（如 i / ii / iii）" },
+        { "type": "text", "id": "title", "label": "主標", "default": "滿 NT$ 799 免運" },
+        { "type": "text", "id": "subtitle", "label": "副標", "default": "黑貓宅配 · 24 小時內出貨" }
+      ]
     }
   ],
   "presets": [
@@ -288,7 +292,10 @@
         { "type": "trust_cell", "settings": { "icon": "🛡", "title": "SGS", "subtitle": "國家級認證" }},
         { "type": "trust_cell", "settings": { "icon": "✈", "title": "免運", "subtitle": "滿 799" }},
         { "type": "trust_cell", "settings": { "icon": "↻", "title": "30 天", "subtitle": "鑑賞退換" }},
-        { "type": "trust_cell", "settings": { "icon": "☘", "title": "台灣", "subtitle": "製造" }}
+        { "type": "trust_cell", "settings": { "icon": "☘", "title": "台灣", "subtitle": "製造" }},
+        { "type": "ship_row", "settings": { "numeral": "i",   "title": "滿 NT$ 799 免運",   "subtitle": "黑貓宅配 · 24 小時內出貨" }},
+        { "type": "ship_row", "settings": { "numeral": "ii",  "title": "30 天鑑賞期",       "subtitle": "未拆封可無條件退換貨" }},
+        { "type": "ship_row", "settings": { "numeral": "iii", "title": "SGS 國家級檢驗",    "subtitle": "99.9% 抗菌率 · 八大零添加" }}
       ]
     }
   ]
