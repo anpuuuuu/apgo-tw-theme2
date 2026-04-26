@@ -14,6 +14,7 @@
       "blocks": {
         "trust_cell_wAMJQb": {
           "type": "trust_cell",
+          "disabled": true,
           "settings": {
             "icon": "✓",
             "title": "SGS",
@@ -22,6 +23,7 @@
         },
         "trust_cell_hLX4TY": {
           "type": "trust_cell",
+          "disabled": true,
           "settings": {
             "icon": "✈",
             "title": "免運",
@@ -30,6 +32,7 @@
         },
         "trust_cell_m8BqfH": {
           "type": "trust_cell",
+          "disabled": true,
           "settings": {
             "icon": "↻",
             "title": "30 天",
@@ -38,6 +41,7 @@
         },
         "trust_cell_Xi7Aj7": {
           "type": "trust_cell",
+          "disabled": true,
           "settings": {
             "icon": "☘",
             "title": "台灣",
