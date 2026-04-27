@@ -1249,29 +1249,32 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
 
 .apgo-sgs-chips {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
 }
 .apgo-sgs-chip {
-  flex: 0 0 auto;
-  min-width: 64px;
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 12px 10px;
+  padding: 12px 6px;
   background: #fff;
   border: 1px solid var(--apgo-line);
   border-radius: 999px;
 }
-.apgo-sgs-chip-val { font-size: 14px; font-style: italic; color: var(--apgo-sage); }
-.apgo-sgs-chip-label { font-size: 10px; color: var(--apgo-muted); letter-spacing: 0.1em; }
+.apgo-sgs-chip-val { font-size: 14px; font-style: italic; color: var(--apgo-sage); white-space: nowrap; }
+.apgo-sgs-chip-label { font-size: 10px; color: var(--apgo-muted); letter-spacing: 0.05em; white-space: nowrap; }
 
 /* Mobile tweaks */
 @media (max-width: 480px) {
   .apgo-sgs-title { font-size: 24px; }
   .apgo-sgs-thumb { flex-basis: 72px; width: 72px; height: 92px; }
   .apgo-sgs-card-test { font-size: 15px; }
-  .apgo-sgs-chip { min-width: 58px; padding: 10px 8px; }
+  .apgo-sgs-chips { gap: 4px; }
+  .apgo-sgs-chip { padding: 10px 4px; }
+  .apgo-sgs-chip-val { font-size: 12px; }
+  .apgo-sgs-chip-label { font-size: 9px; letter-spacing: 0.02em; }
 }

@@ -347,40 +347,30 @@
 
         <div class="apgo-sgs-cards">
           {%- for r in sgs_reports -%}
-            {%- assign img        = r.report_image.value | default: r.report_image -%}
-            {%- assign pdf        = r.report_pdf.value   | default: r.report_pdf   -%}
-            {%- assign report_no  = r.report_no          -%}
-            {%- assign date_str   = r.report_date        -%}
-            {%- assign test_name  = r.test_name          -%}
-            {%- assign result_str = r.test_result        -%}
-            {%- assign what_is_it = r.what_is_it         -%}
-            {%- assign impact_txt = r.impact             -%}
-            {%- assign why_test   = r.why_we_test        -%}
-
             <article class="apgo-sgs-card" data-sgs-card>
               <div class="apgo-sgs-card-head">
-                {%- if pdf != blank -%}
-                  <a class="apgo-sgs-thumb" href="{{ pdf }}" target="_blank" rel="noopener" aria-label="開啟 SGS 報告 PDF">
-                    {%- if img != blank -%}
-                      <img src="{{ img | image_url: width: 240 }}" alt="SGS 報告 {{ report_no }}" loading="lazy">
+                {%- if r.report_pdf != blank -%}
+                  <a class="apgo-sgs-thumb" href="{{ r.report_pdf }}" target="_blank" rel="noopener" aria-label="開啟 SGS 報告 PDF">
+                    {%- if r.report_image != blank -%}
+                      <img src="{{ r.report_image | image_url: width: 240 }}" alt="SGS 報告 {{ r.report_no }}" loading="lazy">
                     {%- endif -%}
                     <span class="apgo-sgs-thumb-badge">PDF</span>
                   </a>
                 {%- else -%}
                   <div class="apgo-sgs-thumb apgo-sgs-thumb--static">
-                    {%- if img != blank -%}
-                      <img src="{{ img | image_url: width: 240 }}" alt="SGS 報告 {{ report_no }}" loading="lazy">
+                    {%- if r.report_image != blank -%}
+                      <img src="{{ r.report_image | image_url: width: 240 }}" alt="SGS 報告 {{ r.report_no }}" loading="lazy">
                     {%- endif -%}
                   </div>
                 {%- endif -%}
 
                 <button type="button" class="apgo-sgs-card-meta" data-sgs-toggle aria-expanded="false">
                   <div class="apgo-sgs-card-no">
-                    <span>{{ report_no }}</span>
-                    <span class="apgo-sgs-card-date">{{ date_str }}</span>
+                    <span>{{ r.report_no }}</span>
+                    <span class="apgo-sgs-card-date">{{ r.report_date }}</span>
                   </div>
-                  <div class="apgo-sgs-card-test apgo-serif">{{ test_name }}</div>
-                  <div class="apgo-sgs-card-result apgo-display">{{ result_str }}</div>
+                  <div class="apgo-sgs-card-test apgo-serif">{{ r.test_name }}</div>
+                  <div class="apgo-sgs-card-result apgo-display">{{ r.test_result }}</div>
                   <div class="apgo-sgs-card-why">
                     <span>WHY</span>
                     <span class="apgo-sgs-card-arrow">↓</span>
@@ -389,22 +379,22 @@
               </div>
 
               <div class="apgo-sgs-card-body" hidden>
-                {%- if what_is_it != blank -%}
+                {%- if r.what_is_it != blank -%}
                   <div class="apgo-sgs-card-row">
                     <div class="apgo-sgs-card-row-label apgo-display">WHAT IS IT · 這是什麼</div>
-                    <div class="apgo-sgs-card-row-text">{{ what_is_it }}</div>
+                    <div class="apgo-sgs-card-row-text">{{ r.what_is_it }}</div>
                   </div>
                 {%- endif -%}
-                {%- if impact_txt != blank -%}
+                {%- if r.impact != blank -%}
                   <div class="apgo-sgs-card-row">
                     <div class="apgo-sgs-card-row-label apgo-display">IMPACT · 對人體的影響</div>
-                    <div class="apgo-sgs-card-row-text">{{ impact_txt }}</div>
+                    <div class="apgo-sgs-card-row-text">{{ r.impact }}</div>
                   </div>
                 {%- endif -%}
-                {%- if why_test != blank -%}
+                {%- if r.why_we_test != blank -%}
                   <div class="apgo-sgs-card-row">
                     <div class="apgo-sgs-card-row-label apgo-display">WHY WE TEST · 為什麼檢驗</div>
-                    <div class="apgo-sgs-card-row-text">{{ why_test }}</div>
+                    <div class="apgo-sgs-card-row-text">{{ r.why_we_test }}</div>
                   </div>
                 {%- endif -%}
               </div>
