@@ -1,9 +1,13 @@
-# Collection Page · Tactical Skin 計畫書
+# Collection Page · Tactical Skin 計畫書 [SUPERSEDED]
+
+> ⚠️ **STATUS: SUPERSEDED — 2026-04-27**
+> 本方案被 **`docs/CAR_CARE_REDESIGN_PLAN.md`** 取代。User 決定全站改成 Car Care Colors 設計，戰術風會在 Car Care 計畫的 Phase 1 被拆掉。
+> 文件保留作為 git history reference，不要再依此實作。最後一個戰術風 commit：`7e75584`（Phase 4 撤除）。
 
 > **本文件用途**：context 視窗超過 / Claude 換 session 時，下一個 Claude 看這份就能無縫接手。User 也可以回來看流程進度。
 >
 > **建立日期**：2026-04-27
-> **目前狀態**：Phase 1 待動工
+> **目前狀態**：SUPERSEDED — Phase 1-3 已完成、Phase 4 已撤除
 > **Approach**：方案 B（保留現有 product card block 結構，外圍套戰術風）
 
 ---
