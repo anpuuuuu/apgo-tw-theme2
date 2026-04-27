@@ -41,23 +41,127 @@ body.apgo-tactical-skin .shopify-section--footer {
   color: #ffffff !important;
 }
 
-/* The collection_links sub-nav (鍍膜全系列 / 清潔藥劑 / ...) — keep the
-   container dark, recolor links muted gray with brand-orange hover/active. */
+/* ============================================================================
+   Tactical Tabs — re-skin Horizon's collection-links section as the pill-shaped
+   sticky nav from the mockup. Active state: orange fill, black text, glow.
+   ============================================================================ */
 body.apgo-tactical-skin .collection-links {
   background: var(--apgo-tac-bg-screen) !important;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(12px);
 }
 body.apgo-tactical-skin .collection-links__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 2px solid var(--apgo-tac-border);
+  background: var(--apgo-tac-bg-input);
   color: var(--apgo-tac-text-secondary) !important;
   font-family: var(--apgo-tac-font-mono);
-  font-weight: 700;
+  font-weight: 900;
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  transition: color .2s;
+  transition: color .2s, background .2s, border-color .2s, box-shadow .2s;
 }
-body.apgo-tactical-skin .collection-links__link:hover,
+body.apgo-tactical-skin .collection-links__link:hover {
+  color: #fff !important;
+  border-color: rgba(240, 132, 24, 0.5) !important;
+}
 body.apgo-tactical-skin .collection-links__link.is-active,
 body.apgo-tactical-skin .collection-links__link[aria-current="page"] {
-  color: var(--apgo-tac-orange) !important;
+  background: var(--apgo-tac-orange) !important;
+  color: #000 !important;
+  border-color: var(--apgo-tac-orange) !important;
+  box-shadow: 0 0 20px var(--apgo-tac-orange-glow);
+}
+
+/* ============================================================================
+   Tactical Hero Banner section — full-bleed banner with bg image + dark
+   left-fade overlay so headline text reads cleanly over busy product photos.
+   ============================================================================ */
+.apgo-tac-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-height: 300px;
+  padding: 40px;
+  background-color: var(--apgo-tac-bg-surface, #121212);
+  background-image:
+    linear-gradient(to right, #000 0%, transparent calc(100% - var(--hero-overlay-strength, 60%) + 60%)),
+    var(--hero-img, none);
+  background-size: cover;
+  background-position: center;
+  border: 2px solid var(--apgo-tac-orange, #f08418);
+  border-radius: var(--apgo-tac-radius, 12px);
+  margin: 24px;
+  overflow: hidden;
+}
+@media (min-width: 1024px) {
+  .apgo-tac-hero {
+    min-height: 450px;
+    padding: 60px;
+    margin: 32px;
+  }
+}
+.apgo-tac-hero__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.apgo-tac-hero__kicker {
+  font-family: var(--apgo-tac-font-mono, 'JetBrains Mono', monospace);
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--apgo-tac-orange, #f08418);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.apgo-tac-hero__title {
+  font-family: var(--apgo-tac-font-display, 'Inter', sans-serif);
+  font-size: clamp(32px, 6vw, 64px);
+  font-weight: 900;
+  font-style: italic;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin: 0 0 8px;
+}
+.apgo-tac-hero__desc {
+  font-size: clamp(13px, 1.5vw, 16px);
+  font-weight: 700;
+  color: #d4d4d4;
+  line-height: 1.55;
+  margin: 0 0 24px;
+  max-width: 30em;
+}
+.apgo-tac-hero__cta {
+  display: inline-block;
+  width: fit-content;
+  padding: 12px 32px;
+  background: #fff;
+  color: #000;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background .2s, color .2s;
+}
+.apgo-tac-hero__cta:hover {
+  background: var(--apgo-tac-orange, #f08418);
+  color: #000;
 }
 
 /* Section background bleed (Horizon paints this absolute-positioned div behind

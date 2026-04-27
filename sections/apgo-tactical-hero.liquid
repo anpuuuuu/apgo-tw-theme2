@@ -1,0 +1,57 @@
+{%- comment -%}
+  APGO · Tactical Hero Banner
+  Renders the big promo banner at the top of collection pages, mirroring the
+  mockup's GRAPHENE_REV7 hero card.
+  All copy + image + CTA URL editable in theme editor.
+  See docs/COLLECTION_TACTICAL_PLAN.md (Phase 2).
+{%- endcomment -%}
+
+<section class="apgo-tac-hero" style="
+  --hero-img: url('{% if section.settings.bg_image != blank %}{{ section.settings.bg_image | image_url: width: 1800 }}{% endif %}');
+  --hero-overlay-strength: {{ section.settings.overlay_strength | default: 60 }}%;
+">
+  <div class="apgo-tac-hero__inner">
+    {%- if section.settings.kicker != blank -%}
+      <span class="apgo-tac-hero__kicker">{{ section.settings.kicker }}</span>
+    {%- endif -%}
+    {%- if section.settings.title != blank -%}
+      <h2 class="apgo-tac-hero__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+    {%- if section.settings.description != blank -%}
+      <p class="apgo-tac-hero__desc">{{ section.settings.description }}</p>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_url | default: '#' }}" class="apgo-tac-hero__cta">
+        {{ section.settings.button_label }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "APGO · 戰術 Hero Banner",
+  "tag": "section",
+  "class": "apgo-tac-hero-section",
+  "settings": [
+    { "type": "header", "content": "背景" },
+    { "type": "image_picker", "id": "bg_image", "label": "背景圖（建議 1800×600+）" },
+    { "type": "range", "id": "overlay_strength", "label": "黑色遮罩強度（%）", "min": 0, "max": 80, "step": 5, "default": 60, "info": "圖片左側漸層黑遮罩，越大越能襯出文字" },
+
+    { "type": "header", "content": "文字內容" },
+    { "type": "text",     "id": "kicker",      "label": "上方小字（kicker）", "default": "// NEW_DEPLOYMENT" },
+    { "type": "text",     "id": "title",       "label": "大標", "default": "GRAPHENE_REV7" },
+    { "type": "textarea", "id": "description", "label": "副標說明", "default": "次世代石墨烯防護技術，為您的座駕打造不可逾越的硬度屏障。" },
+
+    { "type": "header", "content": "按鈕（CTA）" },
+    { "type": "text", "id": "button_label", "label": "按鈕文字", "default": "檢視完整系列" },
+    { "type": "url",  "id": "button_url",   "label": "按鈕連結" }
+  ],
+  "presets": [
+    { "name": "APGO · 戰術 Hero Banner" }
+  ],
+  "enabled_on": {
+    "templates": ["collection"]
+  }
+}
+{% endschema %}
