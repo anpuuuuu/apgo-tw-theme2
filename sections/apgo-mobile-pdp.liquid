@@ -238,7 +238,7 @@
       {%- endif -%}
 
       {%- comment -%} Optional decorative image between pain and cmp sections {%- endcomment -%}
-      {%- assign mf_pic = product.metafields.apgo.pic.value -%}
+      {%- assign mf_pic = product.metafields.custom.pic.value -%}
       {%- if mf_pic != blank -%}
         <div class="apgo-mpdp-pic-wrap">
           <img src="{{ mf_pic | image_url: width: 1600 }}" alt="{{ product.title }}" loading="lazy">
