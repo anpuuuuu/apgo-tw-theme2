@@ -1119,13 +1119,12 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
 /* Report cards */
 .apgo-sgs-cards { display: flex; flex-direction: column; gap: 12px; }
 .apgo-sgs-card {
-  background: var(--apgo-bg-alt);
-  border: 1px solid var(--apgo-line);
-  border-radius: 6px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
   overflow: hidden;
-  transition: border-color .2s ease;
 }
-.apgo-sgs-card.is-open { border-color: var(--apgo-sage); }
+.apgo-sgs-card + .apgo-sgs-card { border-top: 1px solid var(--apgo-line); padding-top: 16px; margin-top: 4px; }
 
 .apgo-sgs-card-head { display: flex; gap: 12px; padding: 12px; align-items: stretch; }
 
@@ -1208,9 +1207,8 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
 .apgo-sgs-card.is-open .apgo-sgs-card-arrow { transform: rotate(180deg); }
 
 .apgo-sgs-card-body {
-  border-top: 1px solid var(--apgo-line);
-  padding: 16px;
-  background: rgba(255,255,255,0.4);
+  padding: 12px 0 4px;
+  background: transparent;
 }
 .apgo-sgs-card-row + .apgo-sgs-card-row { margin-top: 14px; }
 .apgo-sgs-card-row-label {
@@ -1220,9 +1218,23 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
   font-style: italic;
   margin-bottom: 6px;
 }
-.apgo-sgs-card-row-text { font-size: 13px; line-height: 1.75; color: rgba(45,46,40,0.85); }
-.apgo-sgs-card-row-text p { margin: 0 0 6px; }
+.apgo-sgs-card-row-text {
+  font-family: var(--apgo-sans);
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--apgo-ink);
+  font-weight: 400;
+}
+.apgo-sgs-card-row-text p {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  margin: 0 0 6px;
+}
 .apgo-sgs-card-row-text p:last-child { margin-bottom: 0; }
+.apgo-sgs-card-row-text strong { font-weight: 600; }
+.apgo-sgs-card-row-text a { color: var(--apgo-sage); text-decoration: underline; }
 
 /* Result Overview */
 .apgo-sgs-overview {
