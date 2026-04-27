@@ -1,0 +1,206 @@
+/* ============================================================================
+ * APGO · Collection page tactical skin
+ *
+ * Activated by adding `apgo-tactical-skin` class to <body> on collection
+ * templates only (see layout/theme.liquid). All rules are scoped under that
+ * class so this file cannot bleed into the PDP, cart, or homepage.
+ *
+ * Source mockup: C:/Users/chiaz/Downloads/馬來西亞代碼_子平/_.html
+ * Phase 1 of the Collection Tactical Skin plan (docs/COLLECTION_TACTICAL_PLAN.md)
+ * ============================================================================ */
+
+body.apgo-tactical-skin {
+  /* Tactical palette tokens — local copies of mockup's --dt-* vars, namespaced
+     so they don't collide with Horizon's --color-* system. */
+  --apgo-tac-bg-screen: #050505;
+  --apgo-tac-bg-surface: #121212;
+  --apgo-tac-bg-input: #1a1a1a;
+  --apgo-tac-orange: #f08418;
+  --apgo-tac-orange-glow: rgba(240, 132, 24, 0.5);
+  --apgo-tac-text-secondary: #999999;
+  --apgo-tac-border: #333333;
+  --apgo-tac-radius: 12px;
+  --apgo-tac-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --apgo-tac-font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  background: var(--apgo-tac-bg-screen) !important;
+  color: #ffffff;
+}
+
+/* Page chrome — header/footer/promo bar adapt so the page reads as one
+   continuous dark surface. */
+body.apgo-tactical-skin announcement-bar-component,
+body.apgo-tactical-skin header-component,
+body.apgo-tactical-skin .header,
+body.apgo-tactical-skin .announcement-bar,
+body.apgo-tactical-skin footer,
+body.apgo-tactical-skin .shopify-section--footer {
+  --color-background: 5, 5, 5;
+  --color-foreground: 255, 255, 255;
+  background: var(--apgo-tac-bg-screen) !important;
+  color: #ffffff !important;
+}
+
+/* The collection_links sub-nav (鍍膜全系列 / 清潔藥劑 / ...) — keep the
+   container dark, recolor links muted gray with brand-orange hover/active. */
+body.apgo-tactical-skin .collection-links {
+  background: var(--apgo-tac-bg-screen) !important;
+}
+body.apgo-tactical-skin .collection-links__link {
+  color: var(--apgo-tac-text-secondary) !important;
+  font-family: var(--apgo-tac-font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color .2s;
+}
+body.apgo-tactical-skin .collection-links__link:hover,
+body.apgo-tactical-skin .collection-links__link.is-active,
+body.apgo-tactical-skin .collection-links__link[aria-current="page"] {
+  color: var(--apgo-tac-orange) !important;
+}
+
+/* Section background bleed (Horizon paints this absolute-positioned div behind
+   each section using the section's color-scheme). Force black so the cream
+   color scheme from JSON doesn't peek through. */
+body.apgo-tactical-skin .section-background {
+  background: var(--apgo-tac-bg-screen) !important;
+}
+
+/* Main content surface — make sure the wrapper isn't cream either. */
+body.apgo-tactical-skin #MainContent,
+body.apgo-tactical-skin .product-grid-container {
+  background: var(--apgo-tac-bg-screen) !important;
+}
+
+/* ----------------------------------------------------------------------------
+   Product card — the heart of the tactical look
+   ---------------------------------------------------------------------------- */
+body.apgo-tactical-skin .product-card {
+  background: var(--apgo-tac-bg-surface) !important;
+  border: 2px solid var(--apgo-tac-border) !important;
+  border-radius: var(--apgo-tac-radius) !important;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .2s cubic-bezier(0.4, 0, 0.2, 1),
+              transform .2s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow .2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+body.apgo-tactical-skin .product-card:hover {
+  border-color: var(--apgo-tac-orange) !important;
+  box-shadow: 0 0 24px var(--apgo-tac-orange-glow);
+}
+body.apgo-tactical-skin .product-card:active {
+  transform: scale(0.985);
+}
+
+/* Image wrapper inside card — give the photo a subtle dark plate so cream-bg
+   product photos don't look like floating boxes. */
+body.apgo-tactical-skin .product-card .product-card-gallery,
+body.apgo-tactical-skin .product-card-gallery {
+  background: #000 !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+/* Product title — uppercase italic Inter Black. Override Horizon's text
+   block defaults, which inherit from --color-foreground. */
+body.apgo-tactical-skin .product-card .product-title,
+body.apgo-tactical-skin .product-card .product-title *,
+body.apgo-tactical-skin .product-grid__item .product-title,
+body.apgo-tactical-skin .product-grid__item .product-title * {
+  font-family: var(--apgo-tac-font-display) !important;
+  font-weight: 900 !important;
+  font-style: italic !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.02em !important;
+  color: #ffffff !important;
+  line-height: 1.1 !important;
+}
+
+/* Price — JetBrains Mono Black in brand orange. Tactical NT$ readout. */
+body.apgo-tactical-skin .product-card .price,
+body.apgo-tactical-skin .product-card .price *,
+body.apgo-tactical-skin .product-grid__item .price,
+body.apgo-tactical-skin .product-grid__item .price * {
+  font-family: var(--apgo-tac-font-mono) !important;
+  font-weight: 900 !important;
+  color: var(--apgo-tac-orange) !important;
+  letter-spacing: -0.5px !important;
+}
+/* Compare-at price (sale strike-through) — keep mono + orange but dimmed. */
+body.apgo-tactical-skin .price__compare,
+body.apgo-tactical-skin .price__compare * {
+  color: rgba(240, 132, 24, 0.4) !important;
+  text-decoration: line-through;
+}
+
+/* Subtitle text block (the metafield-driven descriptors.subtitle line). */
+body.apgo-tactical-skin .product-card .text-block,
+body.apgo-tactical-skin .product-grid__item .text-block,
+body.apgo-tactical-skin .product-card p {
+  color: var(--apgo-tac-text-secondary) !important;
+  font-family: var(--apgo-tac-font-mono) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+}
+
+/* Sale / sold-out / etc badges — re-skin to the tactical orange chip. */
+body.apgo-tactical-skin .badge,
+body.apgo-tactical-skin .product-card__badge,
+body.apgo-tactical-skin [class*="-badge"] {
+  background: var(--apgo-tac-orange) !important;
+  color: #000 !important;
+  font-family: var(--apgo-tac-font-mono) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+/* Quick-add / add-to-cart buttons inside cards (if any exist). */
+body.apgo-tactical-skin .product-card .button,
+body.apgo-tactical-skin .product-card button[type="submit"] {
+  background: var(--apgo-tac-orange) !important;
+  color: #000 !important;
+  font-family: var(--apgo-tac-font-mono) !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+/* Pagination links at the bottom of the grid. */
+body.apgo-tactical-skin .pagination a,
+body.apgo-tactical-skin .pagination span {
+  color: var(--apgo-tac-text-secondary) !important;
+  font-family: var(--apgo-tac-font-mono) !important;
+}
+body.apgo-tactical-skin .pagination a:hover,
+body.apgo-tactical-skin .pagination .pagination__current {
+  color: var(--apgo-tac-orange) !important;
+}
+
+/* Filter / sort controls if present — match the dark surface treatment. */
+body.apgo-tactical-skin .facets,
+body.apgo-tactical-skin .facets * {
+  --color-background: 18, 18, 18;
+  --color-foreground: 255, 255, 255;
+  color: #ffffff !important;
+}
+body.apgo-tactical-skin .facets__summary,
+body.apgo-tactical-skin .facets button {
+  background: var(--apgo-tac-bg-input) !important;
+  border-color: var(--apgo-tac-border) !important;
+  color: #fff !important;
+}
+
+/* Empty-collection state — keep readable on dark. */
+body.apgo-tactical-skin .results-list__empty,
+body.apgo-tactical-skin .empty-state {
+  color: var(--apgo-tac-text-secondary) !important;
+}

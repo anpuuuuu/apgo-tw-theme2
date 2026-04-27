@@ -128,13 +128,13 @@ CSS 把現有 product card 內的 `.product-title` / `.price` 等 selector 在 `
 
 | # | 問題 | 選項 | 決定 |
 |---|---|---|---|
-| 1 | 方案選擇 | A / B / C | **B**（已決定 2026-04-27）|
-| 2 | 戰術風套用範圍 | (a) 全部 collection<br>(b) 只套某幾個（新建 collection.tactical.json） | **待決定** |
-| 3 | 貨幣顯示 | NT$ / CRD（純文字）/ CRD（真做點數系統） | **待決定** |
-| 4 | Tactical Tabs 文案 | (a) mockup 英文 ALL_SYSTEMS / GRAPHENE_LAB...<br>(b) 中文戰術風 全戰系列 / 鍍膜實驗室...<br>(c) 維持現有 鍍膜全系列 / 清潔藥劑... | **待決定** |
-| 5 | Hero Banner 素材 | 圖、文案 | **待提供** |
-| 6 | Phase 4 推薦商品 | 一個 product handle | **待提供** |
-| 7 | 4 格 sectors 分類 | 4 張圖 + 4 個名稱 + 4 個連結 | **待提供** |
+| 1 | 方案選擇 | A / B / C | **B**（決定 2026-04-27）|
+| 2 | 戰術風套用範圍 | (a) 全部 collection<br>(b) 只套某幾個 | **(a) 全部**（決定 2026-04-27）|
+| 3 | 貨幣顯示 | NT$ / CRD（純文字）/ CRD（真做點數系統） | **NT$ 維持不變**（決定 2026-04-27）|
+| 4 | Tactical Tabs 文案 | (a) mockup 英文<br>(b) 中文戰術風<br>(c) 維持現有 | **(b) 中文戰術風**（決定 2026-04-27）|
+| 5 | Hero Banner 素材 | 圖、文案 | **待提供**（Phase 2 才需要） |
+| 6 | Phase 4 推薦商品 | 一個 product handle | **待提供**（Phase 4 才需要） |
+| 7 | 4 格 sectors 分類 | 4 張圖 + 4 個名稱 + 4 個連結 | **待提供**（Phase 4 才需要） |
 
 ---
 
@@ -160,9 +160,9 @@ CSS 把現有 product card 內的 `.product-title` / `.price` 等 selector 在 `
 
 | Phase | 狀態 | Commit hash | 備註 |
 |---|---|---|---|
-| 0 計畫書 | ✅ 已完成 | (本 commit) | 文件就緒 |
-| 1 CSS 化妝 | ⏳ 待動工 | - | 等 user 決定第 5 節剩餘問題後開始 |
-| 2 Hero + Tabs | ⏸ 未開始 | - | - |
+| 0 計畫書 | ✅ 已完成 | e9759d6 | 文件就緒 |
+| 1 CSS 化妝 | ✅ 已完成 | (本 commit) | apgo-tactical.css + theme.liquid 條件載入 + body class |
+| 2 Hero + Tabs | ⏸ 未開始 | - | 等 user 看 Phase 1 效果決定是否續推 |
 | 3 Cart Bar | ⏸ 未開始 | - | - |
 | 4 Bottom Sheet | ⏸ 未開始 | - | - |
 
