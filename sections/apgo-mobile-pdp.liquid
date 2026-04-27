@@ -205,9 +205,68 @@
       original full-bleed look (see apgo-pdp.css line ~735).
     {%- endcomment -%}
     <div class="apgo-mpdp-panel active" data-apgo-mpanel="desc">
-      {%- if product.description != blank -%}
+      {%- comment -%}
+        Description split on marker '<!-- apgo:sections -->'. The two metaobject
+        sections (pain × solution + comparison table) render in the gap, so the
+        admin can keep the rest of the description (Ritual hero, long image, etc)
+        in either half of the marker without losing the original visual order.
+      {%- endcomment -%}
+      {%- assign desc_parts = product.description | split: '<!-- apgo:sections -->' -%}
+      {%- if desc_parts[0] != blank -%}
         <div class="apgo-mpdp-description rte">
-          {{ product.description }}
+          {{ desc_parts[0] }}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Pain × solution section (metaobject-driven) {%- endcomment -%}
+      {%- assign mf_pain = product.metafields.apgo.pain_solutions.value -%}
+      {%- if mf_pain != blank and mf_pain.size > 0 -%}
+        <div class="apgo-mpdp-pain-wrap">
+          {%- if section.settings.pain_heading != blank -%}
+            <h3>{{ section.settings.pain_heading }}</h3>
+          {%- endif -%}
+          <div class="apgo-mpdp-pain-grid">
+            {%- for entry in mf_pain -%}
+              <div class="apgo-mpdp-pain-card">
+                <div class="apgo-muted">{{ entry.pain }}</div>
+                <span class="apgo-mpdp-pain-arrow">→</span>
+                <div class="apgo-serif">{{ entry.solution }}</div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Comparison table section (metaobject-driven) {%- endcomment -%}
+      {%- assign mf_cmp = product.metafields.apgo.comparison_rows.value -%}
+      {%- if mf_cmp != blank and mf_cmp.size > 0 -%}
+        <div class="apgo-mpdp-cmp-wrap">
+          {%- if section.settings.cmp_kicker != blank -%}
+            <span class="apgo-mpdp-kicker">— {{ section.settings.cmp_kicker }} —</span>
+          {%- endif -%}
+          {%- if section.settings.cmp_title != blank -%}
+            <h3>{{ section.settings.cmp_title }}</h3>
+          {%- endif -%}
+          <div class="apgo-mpdp-cmp">
+            <div class="apgo-mpdp-cmp-head">
+              <div>{{ section.settings.cmp_col_feature | default: '比較項目' }}</div>
+              <div>{{ section.settings.cmp_col_apgo | default: 'APGO 超級洗衣精' }}</div>
+              <div>{{ section.settings.cmp_col_competitor | default: '一般市售洗衣精' }}</div>
+            </div>
+            {%- for entry in mf_cmp -%}
+              <div class="apgo-mpdp-cmp-row">
+                <div>{{ entry.feature }}</div>
+                <div>{{ entry.apgo_value }}</div>
+                <div>{{ entry.competitor_value }}</div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if desc_parts[1] != blank -%}
+        <div class="apgo-mpdp-description rte">
+          {{ desc_parts[1] }}
         </div>
       {%- endif -%}
 
@@ -386,7 +445,17 @@
     { "type": "checkbox", "id": "show_installment", "label": "顯示 3 期 0 利率", "default": true },
 
     { "type": "header", "content": "商品說明 tab" },
-    { "type": "paragraph", "content": "「商品說明」整段內容（Ritual 視覺、痛點 × 解方、比較表、長圖）一律由 Shopify 後台 → 商品 → Description 提供。可在 Description 編輯器的 </> HTML 模式貼入結構化片段（class：apgo-mpdp-ritual-wrap / apgo-mpdp-pain-wrap / apgo-mpdp-cmp-wrap / apgo-mpdp-longimg-wrap）。" },
+    { "type": "paragraph", "content": "「Ritual 視覺」「長圖」由 Description 提供（HTML 模式貼入 .apgo-mpdp-ritual-wrap / .apgo-mpdp-longimg-wrap）。「痛點 × 解方」「比較表」由產品 metafield 驅動（apgo.pain_solutions / apgo.comparison_rows）。在 Description 中插入 <!-- apgo:sections --> 這行 HTML 註解，pain + cmp 兩段就會渲染在那個位置。" },
+
+    { "type": "header", "content": "痛點 × 解方標題" },
+    { "type": "text", "id": "pain_heading", "label": "區塊主標", "default": "日常痛點 · 專屬科學解方" },
+
+    { "type": "header", "content": "比較表標題與欄位" },
+    { "type": "text", "id": "cmp_kicker",          "label": "上方小字（kicker）", "default": "THE DIFFERENCE" },
+    { "type": "text", "id": "cmp_title",           "label": "區塊主標", "default": "為什麼選 APGO？" },
+    { "type": "text", "id": "cmp_col_feature",     "label": "欄位 1 標籤", "default": "比較項目" },
+    { "type": "text", "id": "cmp_col_apgo",        "label": "欄位 2 標籤", "default": "APGO 超級洗衣精" },
+    { "type": "text", "id": "cmp_col_competitor",  "label": "欄位 3 標籤", "default": "一般市售洗衣精" },
 
     { "type": "header", "content": "UGC 區標題（描述下方）" },
     { "type": "text", "id": "ugc_kicker", "label": "上方小字（kicker）", "default": "APGO 用戶實拍" },
