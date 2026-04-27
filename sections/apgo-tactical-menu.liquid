@@ -1,0 +1,166 @@
+{%- comment -%}
+  APGO · Command Center bottom sheet
+  Fixed top-right hamburger trigger + slide-up modal sheet with:
+    - 4-tile sectors grid (image + label, links to a collection)
+    - Featured product card (manual product picker)
+    - Text-link list (orders, support, etc)
+  Phase 4 of docs/COLLECTION_TACTICAL_PLAN.md
+{%- endcomment -%}
+
+{%- comment -%} Floating trigger button — fixed top-right, always visible {%- endcomment -%}
+<button
+  type="button"
+  class="apgo-tac-menu-trigger"
+  data-apgo-tac-sheet-trigger
+  aria-label="開啟戰術選單"
+  aria-controls="apgo-tac-sheet"
+>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+    <line x1="3" y1="6"  x2="21" y2="6"/>
+    <line x1="3" y1="12" x2="21" y2="12"/>
+    <line x1="3" y1="18" x2="21" y2="18"/>
+  </svg>
+  {%- if section.settings.trigger_label != blank -%}
+    <span class="apgo-tac-menu-trigger__label">{{ section.settings.trigger_label }}</span>
+  {%- endif -%}
+</button>
+
+<div class="apgo-tac-sheet-overlay" data-apgo-tac-sheet-overlay aria-hidden="true"></div>
+
+<aside
+  id="apgo-tac-sheet"
+  class="apgo-tac-sheet"
+  data-apgo-tac-sheet
+  role="dialog"
+  aria-modal="true"
+  aria-label="戰術選單"
+>
+  <div class="apgo-tac-sheet__handle" aria-hidden="true"></div>
+
+  <header class="apgo-tac-sheet__header">
+    <div>
+      <h2 class="apgo-tac-sheet__title">{{ section.settings.title | default: 'Command_Center' }}</h2>
+      <p class="apgo-tac-sheet__subtitle">{{ section.settings.subtitle | default: '// Accessing_Core_Systems' }}</p>
+    </div>
+    <button type="button" class="apgo-tac-sheet__close" data-apgo-tac-sheet-close aria-label="關閉">
+      [ Close_X ]
+    </button>
+  </header>
+
+  {%- comment -%} Section 1: Tactical Sectors (4-tile grid) — section blocks {%- endcomment -%}
+  {%- assign sector_blocks = section.blocks | where: 'type', 'sector' -%}
+  {%- if sector_blocks.size > 0 -%}
+    <div class="apgo-tac-sheet__group">
+      <span class="apgo-tac-sheet__group-label">// {{ section.settings.sectors_heading | default: 'TACTICAL_SECTORS' }}</span>
+      <div class="apgo-tac-sheet__sectors">
+        {%- for block in sector_blocks -%}
+          <a href="{{ block.settings.link | default: '#' }}" class="apgo-tac-sheet__sector" {{ block.shopify_attributes }} data-apgo-tac-sheet-close>
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ block.settings.label | escape }}" loading="lazy">
+            {%- else -%}
+              <div class="apgo-tac-sheet__sector-placeholder" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+              </div>
+            {%- endif -%}
+            <span class="apgo-tac-sheet__sector-label">{{ block.settings.label }}</span>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Section 2: Featured product (manual product picker) {%- endcomment -%}
+  {%- if section.settings.featured_product != blank -%}
+    {%- assign p = all_products[section.settings.featured_product] -%}
+    {%- if p != blank -%}
+      <div class="apgo-tac-sheet__group">
+        <span class="apgo-tac-sheet__group-label">// {{ section.settings.featured_heading | default: 'MISSION_RECOMMEND' }}</span>
+        <a href="{{ p.url }}" class="apgo-tac-sheet__featured" data-apgo-tac-sheet-close>
+          {%- if p.featured_image != blank -%}
+            <img src="{{ p.featured_image | image_url: width: 200 }}" alt="{{ p.title | escape }}" loading="lazy">
+          {%- endif -%}
+          <div class="apgo-tac-sheet__featured-info">
+            <h4>{{ p.title }}</h4>
+            <p>// HIGH_CONVERSION_ITEM</p>
+            <span class="apgo-tac-sheet__featured-cta">Quick_View</span>
+          </div>
+        </a>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- comment -%} Section 3: System links (text links) — section blocks {%- endcomment -%}
+  {%- assign link_blocks = section.blocks | where: 'type', 'system_link' -%}
+  {%- if link_blocks.size > 0 -%}
+    <div class="apgo-tac-sheet__group">
+      <div class="apgo-tac-sheet__links">
+        {%- for block in link_blocks -%}
+          <a href="{{ block.settings.url | default: '#' }}" class="apgo-tac-sheet__link" {{ block.shopify_attributes }}>
+            <span>{{ block.settings.label }}</span>
+            <span class="apgo-tac-sheet__link-arrow">➔</span>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</aside>
+
+{% schema %}
+{
+  "name": "APGO · 戰術選單（Command Center）",
+  "tag": "div",
+  "class": "apgo-tac-menu-section",
+  "settings": [
+    { "type": "header", "content": "觸發按鈕" },
+    { "type": "text", "id": "trigger_label", "label": "按鈕文字（桌機顯示）", "default": "COMMAND_CENTER" },
+
+    { "type": "header", "content": "選單標題" },
+    { "type": "text", "id": "title",    "label": "標題", "default": "Command_Center" },
+    { "type": "text", "id": "subtitle", "label": "副標", "default": "// Accessing_Core_Systems" },
+
+    { "type": "header", "content": "分類網格（Tactical Sectors）" },
+    { "type": "text", "id": "sectors_heading", "label": "區塊標題", "default": "TACTICAL_SECTORS" },
+
+    { "type": "header", "content": "推薦商品" },
+    { "type": "text",    "id": "featured_heading", "label": "區塊標題", "default": "MISSION_RECOMMEND" },
+    { "type": "product", "id": "featured_product", "label": "選擇商品" }
+  ],
+  "blocks": [
+    {
+      "type": "sector",
+      "name": "分類格（Sector）",
+      "limit": 6,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "圖片（建議 16:9）" },
+        { "type": "text",         "id": "label", "label": "名稱（戰術風）", "default": "01_GRAPHENE" },
+        { "type": "url",          "id": "link",  "label": "連結到 collection" }
+      ]
+    },
+    {
+      "type": "system_link",
+      "name": "系統鏈接（文字連結）",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "label", "label": "文字", "default": "Loadout_Tracker（訂單）" },
+        { "type": "url",  "id": "url",   "label": "連結" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO · 戰術選單",
+      "blocks": [
+        { "type": "sector", "settings": { "label": "01_GRAPHENE" }},
+        { "type": "sector", "settings": { "label": "02_INTERIOR" }},
+        { "type": "sector", "settings": { "label": "03_PURIFY" }},
+        { "type": "sector", "settings": { "label": "04_HARDWARE" }},
+        { "type": "system_link", "settings": { "label": "Loadout_Tracker（訂單）" }},
+        { "type": "system_link", "settings": { "label": "Tactical_Support（客服）" }}
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": ["collection"]
+  }
+}
+{% endschema %}

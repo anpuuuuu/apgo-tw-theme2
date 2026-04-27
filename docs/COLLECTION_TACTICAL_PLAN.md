@@ -162,9 +162,9 @@ CSS 把現有 product card 內的 `.product-title` / `.price` 等 selector 在 `
 |---|---|---|---|
 | 0 計畫書 | ✅ 已完成 | e9759d6 | 文件就緒 |
 | 1 CSS 化妝 | ✅ 已完成 | 5102045 | apgo-tactical.css + theme.liquid 條件載入 + body class |
-| 2 Hero + Tabs | ✅ 已完成 | (本 commit) | 新建 apgo-tactical-hero section + 強化 collection-links pill 樣式；hero 已 seed 進 collection.json |
-| 3 Cart Bar | ⏸ 未開始 | - | - |
-| 4 Bottom Sheet | ⏸ 未開始 | - | - |
+| 2 Hero + Tabs | ✅ 已完成 | afd9e00 | 新建 apgo-tactical-hero section + 強化 collection-links pill 樣式；hero 已 seed 進 collection.json |
+| 3 Cart Bar | ✅ 已完成 | (本 commit) | 新建 apgo-tactical-cart-bar section + apgo-tactical.js（cart 即時總額、fetch 攔截更新、checkout 跳轉） |
+| 4 Bottom Sheet | ✅ 已完成 | (本 commit) | 新建 apgo-tactical-menu section（hamburger trigger + sectors blocks + featured product + system_link blocks）|
 
 ---
 

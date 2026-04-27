@@ -1,0 +1,57 @@
+{%- comment -%}
+  APGO · Floating Tactical Cart Bar
+  Fixed-bottom HUD showing live cart total + FINALIZE_MISSION CTA.
+  Hidden when cart is empty (handled in apgo-tactical.js).
+  Phase 3 of docs/COLLECTION_TACTICAL_PLAN.md
+{%- endcomment -%}
+
+<div
+  class="apgo-tac-cart-bar{% if cart.item_count == 0 %} apgo-tac-cart-bar--empty{% endif %}"
+  data-apgo-tac-cart-bar
+  role="region"
+  aria-label="購物車總額"
+>
+  <div class="apgo-tac-cart-bar__inner">
+    <div class="apgo-tac-cart-bar__info">
+      <span class="apgo-tac-cart-bar__label">{{ section.settings.label | default: 'Mission_Loadout_Total' }}</span>
+      <span class="apgo-tac-cart-bar__total">
+        <span data-apgo-tac-cart-total>{{ cart.total_price | money }}</span>
+        {%- if section.settings.show_count -%}
+          <small class="apgo-tac-cart-bar__count">
+            ×<span data-apgo-tac-cart-count>{{ cart.item_count }}</span>
+          </small>
+        {%- endif -%}
+      </span>
+    </div>
+    <button
+      type="button"
+      class="apgo-tac-cart-bar__cta"
+      data-apgo-tac-checkout
+      aria-label="前往結帳"
+    >
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" class="apgo-tac-cart-bar__icon" aria-hidden="true">
+        <path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>
+      </svg>
+      {{ section.settings.cta_label | default: 'FINALIZE_MISSION' }}
+    </button>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "APGO · 戰術購物車列",
+  "tag": "div",
+  "class": "apgo-tac-cart-bar-section",
+  "settings": [
+    { "type": "text",     "id": "label",      "label": "左側標籤", "default": "Mission_Loadout_Total" },
+    { "type": "text",     "id": "cta_label",  "label": "按鈕文字", "default": "FINALIZE_MISSION" },
+    { "type": "checkbox", "id": "show_count", "label": "顯示商品數量", "default": true }
+  ],
+  "presets": [
+    { "name": "APGO · 戰術購物車列" }
+  ],
+  "enabled_on": {
+    "templates": ["collection"]
+  }
+}
+{% endschema %}
