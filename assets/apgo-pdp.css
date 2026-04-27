@@ -1059,3 +1059,218 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
     gap: 16px !important;
   }
 }
+
+/* ==========================================================================
+   APGO · SGS Certification Section
+   ========================================================================== */
+.apgo-sgs { background: var(--apgo-bg); padding: 40px 0 48px; }
+.apgo-sgs-inner { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+
+/* Header */
+.apgo-sgs-header { text-align: center; margin-bottom: 28px; }
+.apgo-sgs-kicker {
+  font-family: var(--apgo-display);
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: 0.4em;
+  color: var(--apgo-sage);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.apgo-sgs-title { font-size: 28px; font-weight: 400; color: var(--apgo-ink); margin: 0 0 16px; line-height: 1.25; }
+.apgo-sgs-meta { font-size: 13px; color: var(--apgo-muted); line-height: 1.7; }
+
+/* Definition cards (N.D. / LOQ) */
+.apgo-sgs-defs { display: flex; flex-direction: column; gap: 12px; margin: 24px 0 28px; }
+.apgo-sgs-def {
+  background: var(--apgo-bg-alt);
+  border-left: 3px solid var(--apgo-sage);
+  border-radius: 4px;
+  padding: 14px 16px;
+}
+.apgo-sgs-def-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+.apgo-sgs-def-abbr { font-size: 18px; font-style: italic; color: var(--apgo-sage); }
+.apgo-sgs-def-name { font-size: 13px; color: var(--apgo-ink); letter-spacing: 0.05em; }
+.apgo-sgs-def-body { font-size: 13px; line-height: 1.7; color: rgba(45,46,40,0.8); margin: 0; }
+
+/* CTA line */
+.apgo-sgs-cta-line {
+  text-align: center;
+  font-size: 14px;
+  color: var(--apgo-ink);
+  letter-spacing: 0.15em;
+  margin: 28px 0 16px;
+  position: relative;
+  padding: 0 16px;
+}
+.apgo-sgs-cta-line::before,
+.apgo-sgs-cta-line::after {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--apgo-sage);
+  vertical-align: middle;
+  margin: 0 12px;
+  opacity: 0.5;
+}
+
+/* Report cards */
+.apgo-sgs-cards { display: flex; flex-direction: column; gap: 12px; }
+.apgo-sgs-card {
+  background: var(--apgo-bg-alt);
+  border: 1px solid var(--apgo-line);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color .2s ease;
+}
+.apgo-sgs-card.is-open { border-color: var(--apgo-sage); }
+
+.apgo-sgs-card-head { display: flex; gap: 12px; padding: 12px; align-items: stretch; }
+
+.apgo-sgs-thumb {
+  position: relative;
+  flex: 0 0 84px;
+  width: 84px;
+  height: 108px;
+  border: 1px solid var(--apgo-line);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+  display: block;
+  text-decoration: none;
+}
+.apgo-sgs-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.apgo-sgs-thumb-badge {
+  position: absolute; bottom: 4px; right: 4px;
+  background: rgba(45,46,40,0.85); color: #fff;
+  font-size: 9px; letter-spacing: 0.1em;
+  padding: 2px 5px; border-radius: 2px;
+  font-family: var(--apgo-sans);
+}
+.apgo-sgs-thumb--static { cursor: default; }
+
+.apgo-sgs-card-meta {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto auto;
+  gap: 4px 8px;
+  align-items: start;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.apgo-sgs-card-no {
+  grid-column: 1 / 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  color: var(--apgo-muted);
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+}
+.apgo-sgs-card-date { color: var(--apgo-muted); }
+.apgo-sgs-card-test {
+  grid-column: 1 / 2;
+  grid-row: 2;
+  font-size: 17px;
+  color: var(--apgo-ink);
+  line-height: 1.3;
+}
+.apgo-sgs-card-result {
+  grid-column: 1 / 2;
+  grid-row: 3;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--apgo-sage);
+  margin-top: 2px;
+}
+.apgo-sgs-card-why {
+  grid-column: 2 / 3;
+  grid-row: 3;
+  align-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--apgo-sage);
+  white-space: nowrap;
+}
+.apgo-sgs-card-arrow { transition: transform .2s ease; display: inline-block; }
+.apgo-sgs-card.is-open .apgo-sgs-card-arrow { transform: rotate(180deg); }
+
+.apgo-sgs-card-body {
+  border-top: 1px solid var(--apgo-line);
+  padding: 16px;
+  background: rgba(255,255,255,0.4);
+}
+.apgo-sgs-card-row + .apgo-sgs-card-row { margin-top: 14px; }
+.apgo-sgs-card-row-label {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--apgo-sage);
+  font-style: italic;
+  margin-bottom: 6px;
+}
+.apgo-sgs-card-row-text { font-size: 13px; line-height: 1.75; color: rgba(45,46,40,0.85); }
+.apgo-sgs-card-row-text p { margin: 0 0 6px; }
+.apgo-sgs-card-row-text p:last-child { margin-bottom: 0; }
+
+/* Result Overview */
+.apgo-sgs-overview {
+  margin-top: 32px;
+  padding: 28px 16px;
+  background: var(--apgo-bg-alt);
+  border-radius: 6px;
+  text-align: center;
+}
+.apgo-sgs-overview-title { font-size: 20px; font-weight: 400; color: var(--apgo-ink); margin: 0 0 8px; position: relative; display: inline-block; padding: 0 24px; }
+.apgo-sgs-overview-title::before,
+.apgo-sgs-overview-title::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 1px;
+  background: var(--apgo-sage);
+  opacity: 0.6;
+}
+.apgo-sgs-overview-title::before { left: 0; }
+.apgo-sgs-overview-title::after { right: 0; }
+.apgo-sgs-overview-sub { font-size: 13px; color: var(--apgo-muted); margin: 0 0 22px; }
+
+.apgo-sgs-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.apgo-sgs-chip {
+  flex: 0 0 auto;
+  min-width: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 10px;
+  background: #fff;
+  border: 1px solid var(--apgo-line);
+  border-radius: 999px;
+}
+.apgo-sgs-chip-val { font-size: 14px; font-style: italic; color: var(--apgo-sage); }
+.apgo-sgs-chip-label { font-size: 10px; color: var(--apgo-muted); letter-spacing: 0.1em; }
+
+/* Mobile tweaks */
+@media (max-width: 480px) {
+  .apgo-sgs-title { font-size: 24px; }
+  .apgo-sgs-thumb { flex-basis: 72px; width: 72px; height: 92px; }
+  .apgo-sgs-card-test { font-size: 15px; }
+  .apgo-sgs-chip { min-width: 58px; padding: 10px 8px; }
+}

@@ -1,0 +1,177 @@
+{% comment %}
+  APGO · SGS 國家級檢驗認證 Section
+  Renders only when product.metafields.apgo.sgs_reports has at least one entry.
+  Each report is a metaobject (sgs_report) with: report_image, report_pdf,
+  report_no, report_date, test_name, test_result, what_is_it, impact, why_we_test.
+{% endcomment %}
+
+{%- assign sgs_reports = product.metafields.custom.sgs_reports.value -%}
+{%- if sgs_reports == blank or sgs_reports.size == 0 -%}{%- else -%}
+
+<section class="apgo-section apgo-sgs" data-section-id="{{ section.id }}">
+  <div class="apgo-sgs-inner">
+
+    {%- comment -%} ====== Header ====== {%- endcomment -%}
+    <div class="apgo-sgs-header">
+      <div class="apgo-sgs-kicker">— CERTIFIED BY SGS —</div>
+      <h2 class="apgo-sgs-title apgo-serif">SGS 國家級檢驗認證</h2>
+      <div class="apgo-sgs-meta">委託單位：光世代科技有限公司</div>
+      <div class="apgo-sgs-meta">共五份完整 SGS 檢驗報告</div>
+    </div>
+
+    {%- comment -%} ====== Two definition cards (N.D. / LOQ) ====== {%- endcomment -%}
+    <div class="apgo-sgs-defs">
+      <div class="apgo-sgs-def">
+        <div class="apgo-sgs-def-head">
+          <span class="apgo-display apgo-sgs-def-abbr">N.D.</span>
+          <span class="apgo-sgs-def-name">Not Detected · 未檢出</span>
+        </div>
+        <p class="apgo-sgs-def-body">濃度低於儀器準確量化下限，視同「未含有」。</p>
+      </div>
+      <div class="apgo-sgs-def">
+        <div class="apgo-sgs-def-head">
+          <span class="apgo-display apgo-sgs-def-abbr">LOQ</span>
+          <span class="apgo-sgs-def-name">定量極限</span>
+        </div>
+        <p class="apgo-sgs-def-body">儀器能準確量化的最低濃度。SGS 的 LOQ 通常比法規嚴格 10–100 倍。</p>
+      </div>
+    </div>
+
+    {%- comment -%} ====== Sub-heading ====== {%- endcomment -%}
+    <div class="apgo-sgs-cta-line">點擊查看為什麼要檢驗</div>
+
+    {%- comment -%} ====== Report cards (from metafield) ====== {%- endcomment -%}
+    <div class="apgo-sgs-cards">
+      {%- for r in sgs_reports -%}
+        {%- assign img        = r.report_image.value | default: r.report_image -%}
+        {%- assign pdf        = r.report_pdf.value   | default: r.report_pdf   -%}
+        {%- assign report_no  = r.report_no          -%}
+        {%- assign date_str   = r.report_date        -%}
+        {%- assign test_name  = r.test_name          -%}
+        {%- assign result_str = r.test_result        -%}
+        {%- assign what_is_it = r.what_is_it         -%}
+        {%- assign impact     = r.impact             -%}
+        {%- assign why_test   = r.why_we_test        -%}
+
+        <article class="apgo-sgs-card" data-sgs-card>
+          <div class="apgo-sgs-card-head">
+            {%- if pdf != blank -%}
+              <a class="apgo-sgs-thumb" href="{{ pdf }}" target="_blank" rel="noopener" aria-label="開啟 SGS 報告 PDF">
+                {%- if img != blank -%}
+                  <img src="{{ img | image_url: width: 240 }}" alt="SGS 報告 {{ report_no }}" loading="lazy">
+                {%- endif -%}
+                <span class="apgo-sgs-thumb-badge">PDF</span>
+              </a>
+            {%- else -%}
+              <div class="apgo-sgs-thumb apgo-sgs-thumb--static">
+                {%- if img != blank -%}
+                  <img src="{{ img | image_url: width: 240 }}" alt="SGS 報告 {{ report_no }}" loading="lazy">
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            <button type="button" class="apgo-sgs-card-meta" data-sgs-toggle aria-expanded="false">
+              <div class="apgo-sgs-card-no">
+                <span>{{ report_no }}</span>
+                <span class="apgo-sgs-card-date">{{ date_str }}</span>
+              </div>
+              <div class="apgo-sgs-card-test apgo-serif">{{ test_name }}</div>
+              <div class="apgo-sgs-card-result apgo-display">{{ result_str }}</div>
+              <div class="apgo-sgs-card-why">
+                <span>WHY</span>
+                <span class="apgo-sgs-card-arrow">↓</span>
+              </div>
+            </button>
+          </div>
+
+          <div class="apgo-sgs-card-body" hidden>
+            {%- if what_is_it != blank -%}
+              <div class="apgo-sgs-card-row">
+                <div class="apgo-sgs-card-row-label apgo-display">WHAT IS IT · 這是什麼</div>
+                <div class="apgo-sgs-card-row-text">{{ what_is_it }}</div>
+              </div>
+            {%- endif -%}
+            {%- if impact != blank -%}
+              <div class="apgo-sgs-card-row">
+                <div class="apgo-sgs-card-row-label apgo-display">IMPACT · 對人體的影響</div>
+                <div class="apgo-sgs-card-row-text">{{ impact }}</div>
+              </div>
+            {%- endif -%}
+            {%- if why_test != blank -%}
+              <div class="apgo-sgs-card-row">
+                <div class="apgo-sgs-card-row-label apgo-display">WHY WE TEST · 為什麼檢驗</div>
+                <div class="apgo-sgs-card-row-text">{{ why_test }}</div>
+              </div>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} ====== Result Overview (hardcoded) ====== {%- endcomment -%}
+    <div class="apgo-sgs-overview">
+      <h3 class="apgo-sgs-overview-title apgo-serif">檢驗結果總覽</h3>
+      <p class="apgo-sgs-overview-sub">有害物質皆 N.D.，pH 6.4 弱酸親膚</p>
+
+      <div class="apgo-sgs-chips">
+        <div class="apgo-sgs-chip">
+          <span class="apgo-sgs-chip-val apgo-display">N.D.</span>
+          <span class="apgo-sgs-chip-label">壬基苯酚</span>
+        </div>
+        <div class="apgo-sgs-chip">
+          <span class="apgo-sgs-chip-val apgo-display">N.D.</span>
+          <span class="apgo-sgs-chip-label">甲醛</span>
+        </div>
+        <div class="apgo-sgs-chip">
+          <span class="apgo-sgs-chip-val apgo-display">6.4</span>
+          <span class="apgo-sgs-chip-label">pH</span>
+        </div>
+        <div class="apgo-sgs-chip">
+          <span class="apgo-sgs-chip-val apgo-display">陰性</span>
+          <span class="apgo-sgs-chip-label">螢光劑</span>
+        </div>
+        <div class="apgo-sgs-chip">
+          <span class="apgo-sgs-chip-val apgo-display">陰性</span>
+          <span class="apgo-sgs-chip-label">大腸菌</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  (function () {
+    var section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!section) return;
+    section.querySelectorAll('[data-sgs-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var card = btn.closest('[data-sgs-card]');
+        if (!card) return;
+        var body = card.querySelector('.apgo-sgs-card-body');
+        if (!body) return;
+        var open = card.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) {
+          body.removeAttribute('hidden');
+        } else {
+          body.setAttribute('hidden', '');
+        }
+      });
+    });
+  })();
+</script>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "APGO · SGS 認證",
+  "tag": "section",
+  "class": "apgo-section-pdp-content",
+  "settings": [],
+  "presets": [
+    { "name": "APGO · SGS 認證" }
+  ]
+}
+{% endschema %}

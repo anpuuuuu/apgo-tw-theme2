@@ -175,6 +175,10 @@
         "related_collection": "所有產品"
       }
     },
+    "apgo_sgs_cert": {
+      "type": "apgo-sgs-certification",
+      "settings": {}
+    },
     "apgo_related_qqpb6W": {
       "type": "apgo-related",
       "settings": {
@@ -188,6 +192,7 @@
   "order": [
     "hero",
     "mobile",
+    "apgo_sgs_cert",
     "apgo_related_qqpb6W"
   ]
 }
