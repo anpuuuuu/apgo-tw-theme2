@@ -1120,12 +1120,12 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
 .apgo-sgs-cards { display: flex; flex-direction: column; gap: 12px; }
 .apgo-sgs-card {
   background: var(--apgo-bg-alt);
-  border: 1px solid rgba(45,46,40,0.45);
-  border-radius: 4px;
+  border: 1px solid var(--apgo-sage-light);
+  border-radius: 12px;
   overflow: hidden;
   transition: border-color .2s ease;
 }
-.apgo-sgs-card.is-open { border-color: rgba(45,46,40,0.7); }
+.apgo-sgs-card.is-open { border-color: var(--apgo-sage); }
 
 .apgo-sgs-card-head { display: flex; gap: 12px; padding: 12px; align-items: stretch; }
 
@@ -1134,8 +1134,8 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
   flex: 0 0 84px;
   width: 84px;
   height: 108px;
-  border: 1px solid rgba(45,46,40,0.45);
-  border-radius: 3px;
+  border: 1px solid var(--apgo-sage-light);
+  border-radius: 8px;
   overflow: hidden;
   background: #fff;
   display: block;
@@ -1208,7 +1208,7 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
 .apgo-sgs-card.is-open .apgo-sgs-card-arrow { transform: rotate(180deg); }
 
 .apgo-sgs-card-body {
-  border-top: 1px solid rgba(45,46,40,0.18);
+  border-top: 1px solid var(--apgo-sage-light);
   padding: 16px;
   background: transparent;
 }
