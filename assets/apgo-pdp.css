@@ -551,6 +551,10 @@
 }
 
 /* Comparison (mobile) */
+/* Decorative image between pain and cmp sections (product.metafields.apgo.pic) */
+.apgo-mpdp-pic-wrap { padding: 0 16px; }
+.apgo-mpdp-pic-wrap img { display: block; width: 100%; height: auto; border-radius: 12px; }
+
 .apgo-mpdp-cmp-wrap { padding: 32px 16px; }
 .apgo-mpdp-cmp-wrap h3 { font-size: 18px; text-align: center; margin: 8px 0 20px; font-weight: 400; }
 .apgo-mpdp-cmp-wrap > .apgo-mpdp-kicker { text-align: center; display: block; margin-bottom: 8px; }
@@ -717,6 +721,7 @@
   .apgo-mpdp-cmp-wrap,
   .apgo-mpdp-ugc-wrap,
   .apgo-mpdp-longimg-wrap,
+  .apgo-mpdp-pic-wrap,
   .apgo-mpdp-images { max-width: 1240px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px; }
   /* Full-bleed blocks — bg spans the whole viewport, inner content stays centered to 1240 */
   .apgo-mpdp-pain-wrap,
