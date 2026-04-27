@@ -89,40 +89,8 @@
     }
   }
 
-  // ----------------- Bottom-sheet (Command Center) -----------------
-  function initBottomSheet() {
-    var sheet = $('[data-apgo-tac-sheet]');
-    if (!sheet) return;
-    var trigger = $('[data-apgo-tac-sheet-trigger]');
-    var overlay = $('[data-apgo-tac-sheet-overlay]');
-    var closers = $$('[data-apgo-tac-sheet-close]');
-
-    function open() {
-      vibrate(15);
-      sheet.classList.add('is-open');
-      if (overlay) overlay.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-    }
-    function close() {
-      vibrate(10);
-      sheet.classList.remove('is-open');
-      if (overlay) overlay.classList.remove('is-open');
-      document.body.style.overflow = '';
-    }
-
-    if (trigger) trigger.addEventListener('click', open);
-    if (overlay) overlay.addEventListener('click', close);
-    closers.forEach(function (b) { b.addEventListener('click', close); });
-
-    // Esc closes
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && sheet.classList.contains('is-open')) close();
-    });
-  }
-
   function boot() {
     initCartBar();
-    initBottomSheet();
   }
 
   if (document.readyState === 'loading') {
