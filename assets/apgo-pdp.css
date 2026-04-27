@@ -1061,10 +1061,11 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
 }
 
 /* ==========================================================================
-   APGO · SGS Certification Section
+   APGO · SGS Certification (rendered inside the SGS tab panel)
    ========================================================================== */
-.apgo-sgs { background: var(--apgo-bg); padding: 40px 0 48px; }
-.apgo-sgs-inner { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+.apgo-mpdp-panel[data-apgo-mpanel="sgs"] { padding: 0; }
+.apgo-sgs { padding: 24px 16px 32px; max-width: 720px; margin: 0 auto; }
+.apgo-sgs-empty { text-align: center; padding: 48px 16px; font-size: 13px; }
 
 /* Header */
 .apgo-sgs-header { text-align: center; margin-bottom: 28px; }
