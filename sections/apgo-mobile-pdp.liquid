@@ -382,19 +382,19 @@
                 {%- if r.what_is_it != blank -%}
                   <div class="apgo-sgs-card-row">
                     <div class="apgo-sgs-card-row-label apgo-display">WHAT IS IT · 這是什麼</div>
-                    <div class="apgo-sgs-card-row-text">{{ r.what_is_it }}</div>
+                    <div class="apgo-sgs-card-row-text">{% render 'apgo-richtext', content: r.what_is_it %}</div>
                   </div>
                 {%- endif -%}
                 {%- if r.impact != blank -%}
                   <div class="apgo-sgs-card-row">
                     <div class="apgo-sgs-card-row-label apgo-display">IMPACT · 對人體的影響</div>
-                    <div class="apgo-sgs-card-row-text">{{ r.impact }}</div>
+                    <div class="apgo-sgs-card-row-text">{% render 'apgo-richtext', content: r.impact %}</div>
                   </div>
                 {%- endif -%}
                 {%- if r.why_we_test != blank -%}
                   <div class="apgo-sgs-card-row">
                     <div class="apgo-sgs-card-row-label apgo-display">WHY WE TEST · 為什麼檢驗</div>
-                    <div class="apgo-sgs-card-row-text">{{ r.why_we_test }}</div>
+                    <div class="apgo-sgs-card-row-text">{% render 'apgo-richtext', content: r.why_we_test %}</div>
                   </div>
                 {%- endif -%}
               </div>
