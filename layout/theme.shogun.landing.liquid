@@ -44,7 +44,59 @@ This file can be re-written at any time.
   {% render 'shogun-head' %}
 
   {%- if template.suffix == 'apgo-v1s-plus' -%}
+    {%- comment -%}
+      Critical paint-prevention styles — inlined so they apply on the very first
+      frame, before external CSS finishes loading. Stops the promo bar + tactical
+      hub from flashing their default dark bg before our scoped overrides hit.
+    {%- endcomment -%}
+    <style id="apgo-v1s-plus-critical">
+      /* --------------------------------------------------------------
+         Promo bar (戰術廣播條) — on first paint, before Tailwind CDN is
+         ready, the <a> has no flex/padding classes applied so it stacks
+         tall and shows its inline background-color (#050505) as a big
+         black block, then collapses ("small black") once Tailwind paints.
+         Fix: hide the entire section until JS removes .apgo-promo--hidden
+         (that handler already runs after DOMContentLoaded + Tailwind).
+         --------------------------------------------------------------- */
+      #apgo-promo-bar.apgo-promo--hidden {
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+      }
+      /* Also neutralize the <a>'s inline bg-color with a more specific
+         attribute selector so even if the hide above is bypassed, the
+         element paints cream not black. */
+      #apgo-promo-bar a[style],
+      #apgo-promo-bar a[class*="tw-bg-"] {
+        background: #fdfaf2 !important;
+        background-color: #fdfaf2 !important;
+      }
+
+      /* Tactical Hub — their scoped rule #apgo-hub-<id> beats our class
+         selector, so we target the id-prefix pattern to match specificity. */
+      [id^="apgo-hub-"],
+      .apgo-widget-container {
+        --dt-bg-screen: #fdfaf2 !important;
+        --dt-bg-surface: #fdfaf2 !important;
+        --dt-bg-input: #f2ece0 !important;
+        --dt-border: #d9d3c3 !important;
+      }
+      [id^="shopify-section-apgo_tactical_hub"] {
+        background: transparent !important;
+      }
+
+      /* Announcement + header — color-scheme CSS vars */
+      announcement-bar-component,
+      header-component,
+      .header,
+      .announcement-bar {
+        --color-background: 253, 250, 242;
+        --color-foreground: 45, 46, 40;
+        background: #fdfaf2 !important;
+      }
+    </style>
     {{ 'apgo-pdp.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'apgo-pdp.js' | asset_url }}" defer></script>
   {%- endif -%}
 </head>
   <body>
