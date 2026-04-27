@@ -1120,12 +1120,12 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
 .apgo-sgs-cards { display: flex; flex-direction: column; gap: 12px; }
 .apgo-sgs-card {
   background: var(--apgo-bg-alt);
-  border: 1px solid var(--apgo-sage-light);
-  border-radius: 12px;
+  border: 1px solid var(--apgo-muted);
+  border-radius: 8px;
   overflow: hidden;
   transition: border-color .2s ease;
 }
-.apgo-sgs-card.is-open { border-color: var(--apgo-sage); }
+.apgo-sgs-card.is-open { border-color: var(--apgo-ink); }
 
 .apgo-sgs-card-head { display: flex; gap: 12px; padding: 12px; align-items: stretch; }
 
@@ -1134,8 +1134,8 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
   flex: 0 0 84px;
   width: 84px;
   height: 108px;
-  border: 1px solid var(--apgo-sage-light);
-  border-radius: 8px;
+  border: 1px solid var(--apgo-muted);
+  border-radius: 4px;
   overflow: hidden;
   background: #fff;
   display: block;
@@ -1153,11 +1153,11 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
 
 .apgo-sgs-card-meta {
   flex: 1;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: auto auto auto;
-  gap: 4px 8px;
-  align-items: start;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: stretch;
   background: transparent;
   border: 0;
   padding: 0;
@@ -1167,35 +1167,35 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
   cursor: pointer;
 }
 .apgo-sgs-card-no {
-  grid-column: 1 / 2;
-  grid-row: 1;
   display: flex;
-  flex-direction: column;
+  align-items: baseline;
+  gap: 6px;
   font-size: 11px;
   color: var(--apgo-muted);
   letter-spacing: 0.05em;
   line-height: 1.5;
+  flex-wrap: wrap;
 }
+.apgo-sgs-card-sep { color: var(--apgo-muted); opacity: 0.7; }
 .apgo-sgs-card-date { color: var(--apgo-muted); }
 .apgo-sgs-card-test {
-  grid-column: 1 / 2;
-  grid-row: 2;
   font-size: 17px;
   color: var(--apgo-ink);
   line-height: 1.3;
 }
+.apgo-sgs-card-result-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 2px;
+}
 .apgo-sgs-card-result {
-  grid-column: 1 / 2;
-  grid-row: 3;
   font-size: 16px;
   font-style: italic;
   color: var(--apgo-sage);
-  margin-top: 2px;
 }
 .apgo-sgs-card-why {
-  grid-column: 2 / 3;
-  grid-row: 3;
-  align-self: end;
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -1203,12 +1203,13 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
   letter-spacing: 0.2em;
   color: var(--apgo-sage);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 .apgo-sgs-card-arrow { transition: transform .2s ease; display: inline-block; }
 .apgo-sgs-card.is-open .apgo-sgs-card-arrow { transform: rotate(180deg); }
 
 .apgo-sgs-card-body {
-  border-top: 1px solid var(--apgo-sage-light);
+  border-top: 1px solid var(--apgo-line);
   padding: 16px;
   background: transparent;
 }

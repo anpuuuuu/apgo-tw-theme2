@@ -367,13 +367,18 @@
                 <button type="button" class="apgo-sgs-card-meta" data-sgs-toggle aria-expanded="false">
                   <div class="apgo-sgs-card-no">
                     <span>{{ r.report_no }}</span>
-                    <span class="apgo-sgs-card-date">{{ r.report_date }}</span>
+                    {%- if r.report_date != blank -%}
+                      <span class="apgo-sgs-card-sep" aria-hidden="true">·</span>
+                      <span class="apgo-sgs-card-date">{{ r.report_date }}</span>
+                    {%- endif -%}
                   </div>
                   <div class="apgo-sgs-card-test apgo-serif">{{ r.test_name }}</div>
-                  <div class="apgo-sgs-card-result apgo-display">{{ r.test_result }}</div>
-                  <div class="apgo-sgs-card-why">
-                    <span>WHY</span>
-                    <span class="apgo-sgs-card-arrow">↓</span>
+                  <div class="apgo-sgs-card-result-row">
+                    <div class="apgo-sgs-card-result apgo-display">{{ r.test_result }}</div>
+                    <div class="apgo-sgs-card-why">
+                      <span>WHY</span>
+                      <span class="apgo-sgs-card-arrow">↓</span>
+                    </div>
                   </div>
                 </button>
               </div>
