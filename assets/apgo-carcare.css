@@ -403,8 +403,13 @@ body.apgo-cc-skin .pagination [aria-disabled="true"] {
 .apgo-cc-sort__summary::-webkit-details-marker { display: none; }
 .apgo-cc-sort__summary::marker { content: ""; }
 .apgo-cc-sort__summary:hover {
-  border-color: var(--cc-orange-soft);
-  background: var(--cc-bg-deep);
+  border-color: rgba(255, 107, 26, .35);
+  background: var(--cc-surface);   /* 比 bg-alt 略亮，不再變更深近黑 */
+}
+.apgo-cc-sort__summary:focus,
+.apgo-cc-sort__summary:focus-visible {
+  outline: none;
+  border-color: rgba(255, 107, 26, .5);
 }
 .apgo-cc-sort__dropdown[open] .apgo-cc-sort__summary {
   border-color: var(--cc-orange);
