@@ -233,22 +233,33 @@
       });
     });
 
-    // Qty stepper
+    // Qty stepper. The form may contain two qty inputs (one in each
+    // shell on the unified PDP), so always sync ALL qty inputs to the
+    // same value on +/- click and on direct keyboard edit.
+    function syncQtyInputs(q) {
+      $$('[data-apgo-qty-input]', form).forEach(function (inp) { inp.value = q; });
+    }
     $$('[data-apgo-qty]', form).forEach(function (btn) {
       btn.addEventListener('click', function () {
         var dir = btn.getAttribute('data-apgo-qty');
-        var input = $('[data-apgo-qty-input]', form);
-        if (!input) return;
-        var q = parseInt(input.value, 10);
+        var inputs = $$('[data-apgo-qty-input]', form);
+        if (!inputs.length) return;
+        var q = parseInt(inputs[0].value, 10);
         if (isNaN(q) || q < 1) q = 1;
         if (dir === 'up') q += 1;
         if (dir === 'down') q = Math.max(1, q - 1);
-        input.value = q;
+        syncQtyInputs(q);
         onOptionChange();
       });
     });
-    var qtyInput = $('[data-apgo-qty-input]', form);
-    if (qtyInput) qtyInput.addEventListener('change', onOptionChange);
+    $$('[data-apgo-qty-input]', form).forEach(function (inp) {
+      inp.addEventListener('change', function () {
+        var q = parseInt(inp.value, 10);
+        if (isNaN(q) || q < 1) q = 1;
+        syncQtyInputs(q);
+        onOptionChange();
+      });
+    });
 
     // Buy now — submit to /cart/add then redirect /checkout
     $$('[data-apgo-buy-now]', form).forEach(function (btn) {
