@@ -1154,7 +1154,16 @@ body.apgo-cc-skin .product-card { position: relative; }
   text-decoration: line-through;
 }
 
-.apgo-cc-qa-modal__opt-group { margin-bottom: 6px; }
+/* Options block — full-width row below the image+info top.
+   When there are no options (single-variant product, single 'Title' option)
+   the inner JS keeps this container empty so it collapses. */
+.apgo-cc-qa-modal__options:empty { display: none; }
+.apgo-cc-qa-modal__options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.apgo-cc-qa-modal__opt-group { margin-bottom: 0; }
 .apgo-cc-qa-modal__opt-name {
   font-size: 12px;
   color: #b8b3a8;
