@@ -1,0 +1,281 @@
+/* ============================================================================
+ * APGO · Car Care Colors collection page skin
+ *
+ * Activated by adding `apgo-cc-skin` class to <body> on collection templates
+ * only (see layout/theme.liquid). All rules scoped under that class so the
+ * palette cannot leak into PDP, cart, or homepage.
+ *
+ * Design source: Claude Design bundle (Car Care Colors.html / palettes.jsx /
+ * merged-list.jsx / mobile-list.jsx).
+ * Phase 1 of docs/CAR_CARE_REDESIGN_PLAN.md
+ * ============================================================================ */
+
+body.apgo-cc-skin {
+  /* Brand palette tokens — local copies of palettes.jsx BRAND, namespaced
+     so they don't collide with Horizon's --color-* or the (now retired)
+     tactical --apgo-tac-* set. */
+  --cc-bg:        #16181c;
+  --cc-bg-alt:    #1c1f24;
+  --cc-bg-deep:   #0f1115;
+  --cc-surface:   #22262d;
+  --cc-surface-hi:#2a2e35;
+  --cc-divider:   #2a2e35;
+  --cc-divider-dim:#23262c;
+
+  /* warm cream photo bg — the signature look that distinguishes Car Care
+     Colors from the previous tactical (pure black) treatment */
+  --cc-photo-bg:       #f1ede4;
+  --cc-photo-bg-warm:  #f1ede4;
+  --cc-photo-bg-alt:   #e8e2d4;
+  --cc-photo-bg-cool:  #eef0f3;
+  --cc-photo-bg-dark:  #2a2e35;
+
+  --cc-fg:        #f0ece4;
+  --cc-fg-mid:    #b8b3a8;
+  --cc-fg-dim:    #8a857b;
+  --cc-fg-faint:  #5c584f;
+
+  --cc-orange:        #ff6b1a;
+  --cc-orange-hi:     #ff8240;
+  --cc-orange-dim:    #c4541a;
+  --cc-orange-soft:   rgba(255,107,26,.12);
+  --cc-orange-soft-hi:rgba(255,107,26,.2);
+
+  --cc-red:   #e74c3c;
+  --cc-green: #52c878;
+
+  --cc-r1: 6px;
+  --cc-r2: 10px;
+  --cc-r3: 14px;
+  --cc-r4: 20px;
+  --cc-r5: 999px;
+
+  --cc-font-display: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
+  --cc-font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --cc-font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  background: var(--cc-bg) !important;
+  color: var(--cc-fg);
+  font-family: var(--cc-font-body);
+}
+
+/* ----------------------------------------------------------------------------
+   Page chrome — header / promo bar / footer adopt the cool-dark palette so
+   the entire collection page reads as one continuous surface.
+   ---------------------------------------------------------------------------- */
+body.apgo-cc-skin announcement-bar-component,
+body.apgo-cc-skin header-component,
+body.apgo-cc-skin .header,
+body.apgo-cc-skin .announcement-bar,
+body.apgo-cc-skin footer,
+body.apgo-cc-skin .shopify-section--footer {
+  --color-background: 22, 24, 28;        /* matches --cc-bg in rgb */
+  --color-foreground: 240, 236, 228;     /* matches --cc-fg */
+  background: var(--cc-bg) !important;
+  color: var(--cc-fg) !important;
+}
+
+/* ----------------------------------------------------------------------------
+   Section background helper (Horizon paints an absolute-positioned div behind
+   each section using its color-scheme). Force it to match --cc-bg.
+   ---------------------------------------------------------------------------- */
+body.apgo-cc-skin .section-background,
+body.apgo-cc-skin #MainContent,
+body.apgo-cc-skin .product-grid-container {
+  background: var(--cc-bg) !important;
+}
+
+/* ----------------------------------------------------------------------------
+   Sub-nav (Horizon's collection-links section: 鍍膜全系列 / 清潔藥劑 / ...)
+   Refined refined pill-button style — orange highlight on active, soft
+   border, sticky-top so it follows the user as they scroll.
+   ---------------------------------------------------------------------------- */
+body.apgo-cc-skin .collection-links {
+  background: var(--cc-bg) !important;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--cc-divider);
+}
+body.apgo-cc-skin .collection-links__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: var(--cc-r5);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--cc-fg-mid) !important;
+  font-family: var(--cc-font-body);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: .02em;
+  transition: color .2s, background .2s, border-color .2s;
+}
+body.apgo-cc-skin .collection-links__link:hover {
+  color: var(--cc-fg) !important;
+  border-color: var(--cc-divider) !important;
+}
+body.apgo-cc-skin .collection-links__link.is-active,
+body.apgo-cc-skin .collection-links__link[aria-current="page"] {
+  background: var(--cc-orange-soft) !important;
+  color: var(--cc-orange) !important;
+  border-color: transparent !important;
+}
+
+/* ----------------------------------------------------------------------------
+   Product card — the heart of Car Care Colors
+   - Photo area: warm cream (#f1ede4) — feels editorial, not aggressive
+   - Card body: darker surface
+   - Title: Inter 500 (clean, calm) — no all-caps shouting
+   - Price: tabular-nums for clean alignment
+   ---------------------------------------------------------------------------- */
+body.apgo-cc-skin .product-card {
+  background: var(--cc-bg-alt) !important;
+  border: 1px solid var(--cc-divider) !important;
+  border-radius: var(--cc-r3) !important;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .25s, transform .25s, background .25s;
+}
+body.apgo-cc-skin .product-card:hover {
+  border-color: var(--cc-orange-soft-hi) !important;
+  background: var(--cc-surface) !important;
+}
+
+/* The photo wrapper — give it the warm cream signature look. */
+body.apgo-cc-skin .product-card .product-card-gallery,
+body.apgo-cc-skin .product-card-gallery,
+body.apgo-cc-skin .product-card .media,
+body.apgo-cc-skin .product-card-gallery__image-wrapper {
+  background: var(--cc-photo-bg) !important;
+  border-radius: var(--cc-r2) var(--cc-r2) 0 0 !important;
+  overflow: hidden;
+}
+
+/* Product title — clean Inter, no italic shouting. Keep it readable. */
+body.apgo-cc-skin .product-card .product-title,
+body.apgo-cc-skin .product-card .product-title *,
+body.apgo-cc-skin .product-grid__item .product-title,
+body.apgo-cc-skin .product-grid__item .product-title * {
+  font-family: var(--cc-font-body) !important;
+  font-weight: 500 !important;
+  font-style: normal !important;
+  text-transform: none !important;
+  letter-spacing: .01em !important;
+  color: var(--cc-fg) !important;
+  line-height: 1.4 !important;
+  font-size: 14px !important;
+}
+
+/* Price — Inter tabular-nums, brand orange, calm sizing. The mono treatment
+   stays for the SUBTITLE / spec-row text below, not the headline price. */
+body.apgo-cc-skin .product-card .price,
+body.apgo-cc-skin .product-grid__item .price {
+  font-family: var(--cc-font-body) !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  color: var(--cc-fg) !important;
+  letter-spacing: .02em !important;
+  font-variant-numeric: tabular-nums;
+}
+body.apgo-cc-skin .product-card .price *,
+body.apgo-cc-skin .product-grid__item .price * {
+  font-family: var(--cc-font-body) !important;
+  color: inherit;
+}
+/* Compare-at strike — faint, no orange screaming */
+body.apgo-cc-skin .price__compare,
+body.apgo-cc-skin .price__compare * {
+  color: var(--cc-fg-faint) !important;
+  font-weight: 300 !important;
+  text-decoration: line-through;
+}
+/* Sale price gets the brand orange, but only when there's a compare-at */
+body.apgo-cc-skin .price--on-sale .price__sale,
+body.apgo-cc-skin .price--on-sale .price__sale * {
+  color: var(--cc-orange) !important;
+}
+
+/* Subtitle text-block (the metafield-driven descriptors.subtitle line) — mono,
+   small, dim. This is the only place where mono shouts. */
+body.apgo-cc-skin .product-card .text-block,
+body.apgo-cc-skin .product-grid__item .text-block,
+body.apgo-cc-skin .product-card p:not(.price) {
+  color: var(--cc-fg-dim) !important;
+  font-family: var(--cc-font-mono) !important;
+  font-size: 10px !important;
+  font-weight: 400 !important;
+  letter-spacing: .04em !important;
+  text-transform: uppercase !important;
+}
+
+/* Badges — refined: orange chip, mono caps, small radius. No glow. */
+body.apgo-cc-skin .badge,
+body.apgo-cc-skin .product-card__badge,
+body.apgo-cc-skin [class*="-badge"] {
+  background: var(--cc-orange) !important;
+  color: #fff !important;
+  font-family: var(--cc-font-mono) !important;
+  font-weight: 500 !important;
+  font-size: 9px !important;
+  text-transform: uppercase !important;
+  letter-spacing: .12em !important;
+  border-radius: 2px !important;
+  border: none !important;
+  padding: 4px 7px !important;
+}
+
+/* Buy / quick-add buttons inside cards (if any) — solid orange. */
+body.apgo-cc-skin .product-card .button,
+body.apgo-cc-skin .product-card button[type="submit"] {
+  background: var(--cc-orange) !important;
+  color: #fff !important;
+  font-family: var(--cc-font-body) !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  letter-spacing: .02em !important;
+  border-radius: var(--cc-r2) !important;
+  border: none !important;
+}
+body.apgo-cc-skin .product-card .button:hover,
+body.apgo-cc-skin .product-card button[type="submit"]:hover {
+  background: var(--cc-orange-hi) !important;
+}
+
+/* ----------------------------------------------------------------------------
+   Pagination — calm dim text, orange for current/hover
+   ---------------------------------------------------------------------------- */
+body.apgo-cc-skin .pagination a,
+body.apgo-cc-skin .pagination span {
+  color: var(--cc-fg-dim) !important;
+  font-family: var(--cc-font-body) !important;
+}
+body.apgo-cc-skin .pagination a:hover,
+body.apgo-cc-skin .pagination .pagination__current {
+  color: var(--cc-orange) !important;
+}
+
+/* ----------------------------------------------------------------------------
+   Filter / sort facets if present — match the bg-alt surface treatment
+   ---------------------------------------------------------------------------- */
+body.apgo-cc-skin .facets,
+body.apgo-cc-skin .facets * {
+  --color-background: 28, 31, 36;
+  --color-foreground: 240, 236, 228;
+  color: var(--cc-fg) !important;
+}
+body.apgo-cc-skin .facets__summary,
+body.apgo-cc-skin .facets button {
+  background: var(--cc-surface) !important;
+  border-color: var(--cc-divider) !important;
+  color: var(--cc-fg) !important;
+}
+
+/* ----------------------------------------------------------------------------
+   Empty / error states
+   ---------------------------------------------------------------------------- */
+body.apgo-cc-skin .results-list__empty,
+body.apgo-cc-skin .empty-state {
+  color: var(--cc-fg-dim) !important;
+}

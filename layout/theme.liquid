@@ -64,15 +64,24 @@
   {% render 'shogun-head' %}
 
   {%- comment -%}
-    Collection page tactical skin — only loads on collection templates so
-    the dark/orange overrides cannot leak into PDP, cart, or homepage.
-    See docs/COLLECTION_TACTICAL_PLAN.md (Phase 1).
+    Collection page Car Care Colors skin — only loads on collection templates
+    so the warm-cream/dark-gray palette cannot leak into PDP, cart, or
+    homepage. See docs/CAR_CARE_REDESIGN_PLAN.md (Phase 1).
+
+    Tactical (previous skin) load is preserved as a commented block below
+    in case we ever need to revert. Files in assets/ + sections/ are kept
+    on disk too. See docs/COLLECTION_TACTICAL_PLAN.md (SUPERSEDED).
   {%- endcomment -%}
   {%- if template.name == 'collection' -%}
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;0,900;1,900&family=JetBrains+Mono:wght@700;800;900&display=swap" rel="stylesheet">
-    {{ 'apgo-tactical.css' | asset_url | stylesheet_tag }}
-    <script src="{{ 'apgo-tactical.js' | asset_url }}" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    {{ 'apgo-carcare.css' | asset_url | stylesheet_tag }}
+    {%- comment -%}
+      ARCHIVED tactical load (superseded 2026-04-28):
+      <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;0,900;1,900&family=JetBrains+Mono:wght@700;800;900&display=swap" rel="stylesheet">
+      {{ 'apgo-tactical.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'apgo-tactical.js' | asset_url }}" defer></script>
+    {%- endcomment -%}
   {%- endif -%}
 
   {%- if template.suffix == 'apgo-v1s-plus' -%}
@@ -132,7 +141,7 @@
   {%- endif -%}
 </head>
 
-  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}{% if template.suffix != blank %} template-suffix-{{ template.suffix }}{% endif %}{% if template.name == 'collection' %} apgo-tactical-skin{% endif %}" data-shop-host="{{ shop.permanent_domain }}">
+  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}{% if template.suffix != blank %} template-suffix-{{ template.suffix }}{% endif %}{% if template.name == 'collection' %} apgo-cc-skin{% endif %}" data-shop-host="{{ shop.permanent_domain }}">
     {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
     {% comment %} 本機預覽時強制留在 127.0.0.1/localhost，不跳轉到線上商店 {% endcomment %}
     <script>
