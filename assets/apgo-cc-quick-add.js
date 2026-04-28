@@ -81,6 +81,11 @@
 
       var jsonUrl = buildProductJsonUrl(link);
       if (!jsonUrl) return;
+      // First-time only debug helper to surface what URLs we're going to hit
+      if (!window._apgoCcLogged) {
+        console.log('[apgo-cc-quick-add] sample jsonUrl from card:', jsonUrl, ' linkHref:', link.href, ' linkRaw:', link.getAttribute('href'));
+        window._apgoCcLogged = true;
+      }
 
       var btn = document.createElement('button');
       btn.type = 'button';
@@ -291,8 +296,11 @@
     triggerBtn.classList.add('is-loading');
     triggerBtn.disabled = true;
 
-    fetch(jsonUrl, { headers: { 'Accept': 'application/json' } })
+    console.log('[apgo-cc-quick-add] fetching:', jsonUrl);
+
+    fetch(jsonUrl, { headers: { 'Accept': 'application/json' }, credentials: 'same-origin' })
       .then(function (r) {
+        console.log('[apgo-cc-quick-add] response', { status: r.status, url: r.url, redirected: r.redirected, contentType: r.headers.get('content-type') });
         if (!r.ok) {
           throw new Error('HTTP ' + r.status + ' on ' + jsonUrl);
         }
