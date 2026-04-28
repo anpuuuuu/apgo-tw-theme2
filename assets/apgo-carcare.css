@@ -136,57 +136,11 @@ body.apgo-cc-skin .product-card {
   border-radius: var(--cc-r3) !important;
   position: relative;
   overflow: hidden;
-  transition: border-color .25s, transform .25s, background .25s, box-shadow .25s;
+  transition: border-color .25s, background .25s;
 }
 body.apgo-cc-skin .product-card:hover {
-  border-color: var(--cc-orange) !important;
+  border-color: var(--cc-orange-soft-hi) !important;
   background: var(--cc-surface) !important;
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--cc-orange-soft-hi);
-}
-
-/* Image zoom on card hover — gallery wrapper has overflow:hidden so the
-   transform stays inside the rounded corners. Targets any <img> Horizon
-   places inside the gallery slot, regardless of its actual class name. */
-body.apgo-cc-skin .product-card .product-card-gallery img,
-body.apgo-cc-skin .product-card-gallery img {
-  transition: transform .45s cubic-bezier(.2, .7, .2, 1);
-  will-change: transform;
-}
-body.apgo-cc-skin .product-card:hover .product-card-gallery img,
-body.apgo-cc-skin .product-card:hover .product-card-gallery img {
-  transform: scale(1.04);
-}
-
-/* Quick "view details" hint sliding up from card bottom on hover.
-   Pure CSS — no quick-add wiring (deferred to Phase 6 where bundle/cart
-   behaviour is rebuilt). Just a visual affordance. */
-body.apgo-cc-skin .product-card::after {
-  content: "查看詳情 →";
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 10px 16px;
-  background: linear-gradient(180deg, transparent 0%, rgba(255, 107, 26, 0.92) 60%);
-  color: #fff;
-  font-family: var(--cc-font-body);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: .04em;
-  text-align: center;
-  transform: translateY(110%);
-  transition: transform .35s cubic-bezier(.2, .7, .2, 1);
-  pointer-events: none;
-  z-index: 2;
-}
-body.apgo-cc-skin .product-card:hover::after {
-  transform: translateY(0);
-}
-@media (prefers-reduced-motion: reduce) {
-  body.apgo-cc-skin .product-card,
-  body.apgo-cc-skin .product-card::after,
-  body.apgo-cc-skin .product-card-gallery img { transition: none !important; }
-  body.apgo-cc-skin .product-card:hover { transform: none !important; }
-  body.apgo-cc-skin .product-card:hover .product-card-gallery img { transform: none !important; }
 }
 
 /* The photo wrapper — give it the warm cream signature look. */
@@ -394,7 +348,7 @@ body.apgo-cc-skin .pagination [aria-disabled="true"] {
   border: 1px solid var(--cc-divider);
   border-radius: 999px;
   background: var(--cc-bg-alt);
-  color: var(--cc-fg);
+  color: #ffffff;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -403,6 +357,7 @@ body.apgo-cc-skin .pagination [aria-disabled="true"] {
   white-space: nowrap;
   user-select: none;
 }
+.apgo-cc-sort__current { color: #ffffff; }
 .apgo-cc-sort__summary::-webkit-details-marker { display: none; }
 .apgo-cc-sort__summary::marker { content: ""; }
 .apgo-cc-sort__summary:hover {
