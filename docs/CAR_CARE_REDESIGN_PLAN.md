@@ -255,7 +255,7 @@
 | 1 列表頁皮膚 + 停用戰術 | ✅ 已完成 | (本 commit) | apgo-carcare.css + theme.liquid 載入切換 + body class 改 + collection.json 拿掉 tactical sections。戰術 css/js/sections 全部留檔 |
 | 2 列表頁 sections | 🟡 進行中 | (本 commit) | Category Mosaic 完成；Hero promo banner + permanent promo pills 延後（屬於 user 緩做的「全站滿千」） |
 | 3 列表頁互動 | ⏸ 未開始 | - | - |
-| 4 詳情頁皮膚 + 新模板 | ⏸ 未開始 | - | - |
+| 4 詳情頁皮膚 + 新模板 | ✅ 已完成 | (本 commit) | apgo-cc-product-detail section + product.apgo-v2.json template + apgo-cc-pdp.js + PDP CSS。商品描述 tab 用 product.description；其他 4 個 tab 是 placeholder（Phase 5 接 metafields） |
 | 5 詳情頁 metafields | ⏸ 未開始 | - | - |
 | 6 Bundle / 倒數 / 評價 | ⏸ 未開始 | - | - |
 

@@ -1,0 +1,234 @@
+{%- comment -%}
+  APGO · Car Care Colors — Product Detail (v2 template)
+  Phase 4 of docs/CAR_CARE_REDESIGN_PLAN.md.
+
+  Source: merged-detail.jsx + mobile-detail.jsx (Claude Design bundle).
+
+  This is the MINIMUM-VIABLE skeleton: 2-col layout (gallery + info), variant
+  picker, add-to-cart, 5-tab area. Only the 商品描述 tab is wired to real data
+  (product.description). The other 4 tabs render a "尚未設定" placeholder so
+  the visual lands first; Phase 5 will swap them for metaobject-driven data.
+
+  Bundle widget (right rail in the desktop mock) is deferred to Phase 6.
+{%- endcomment -%}
+
+<section class="apgo-cc-pdp" data-apgo-cc-pdp data-section-id="{{ section.id }}">
+
+  {%- comment -%} Breadcrumb {%- endcomment -%}
+  {%- if section.settings.show_breadcrumb -%}
+    <nav class="apgo-cc-pdp__breadcrumb" aria-label="麵包屑">
+      <a href="/collections/all">全部商品</a>
+      <span aria-hidden="true">›</span>
+      {%- if collection -%}
+        <a href="{{ collection.url }}">{{ collection.title }}</a>
+        <span aria-hidden="true">›</span>
+      {%- endif -%}
+      <span class="apgo-cc-pdp__breadcrumb-current">{{ product.title }}</span>
+    </nav>
+  {%- endif -%}
+
+  <div class="apgo-cc-pdp__main">
+
+    {%- comment -%} ---------- Gallery ---------- {%- endcomment -%}
+    <div class="apgo-cc-pdp__gallery">
+      <div class="apgo-cc-pdp__gallery-main">
+        {%- if product.featured_media -%}
+          <img
+            class="apgo-cc-pdp__gallery-img"
+            src="{{ product.featured_media | image_url: width: 1200 }}"
+            alt="{{ product.featured_media.alt | default: product.title }}"
+            data-apgo-cc-main-img
+            loading="eager"
+          >
+        {%- else -%}
+          <div class="apgo-cc-pdp__gallery-placeholder">尚未上傳商品圖</div>
+        {%- endif -%}
+        {%- if product.compare_at_price > product.price -%}
+          <span class="apgo-cc-pdp__sale-tag">特價</span>
+        {%- endif -%}
+      </div>
+      {%- if product.media.size > 1 -%}
+        <div class="apgo-cc-pdp__gallery-thumbs">
+          {%- for m in product.media -%}
+            <button
+              type="button"
+              class="apgo-cc-pdp__gallery-thumb {% if forloop.first %}is-active{% endif %}"
+              data-apgo-cc-thumb
+              aria-label="顯示第 {{ forloop.index }} 張圖"
+            >
+              <img
+                src="{{ m | image_url: width: 200 }}"
+                alt="{{ m.alt | default: product.title }}"
+                loading="lazy"
+              >
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ---------- Info column ---------- {%- endcomment -%}
+    <div class="apgo-cc-pdp__info">
+      {%- if section.settings.kicker != blank -%}
+        <div class="apgo-cc-pdp__kicker">{{ section.settings.kicker }}</div>
+      {%- endif -%}
+      <h1 class="apgo-cc-pdp__title">{{ product.title }}</h1>
+      {%- if product.metafields.apgo.subtitle != blank -%}
+        <p class="apgo-cc-pdp__subtitle">{{ product.metafields.apgo.subtitle }}</p>
+      {%- endif -%}
+
+      {%- comment -%} Rating row (placeholder until reviews wired in Phase 6) {%- endcomment -%}
+      {%- if section.settings.show_rating -%}
+        <div class="apgo-cc-pdp__rating">
+          <span class="apgo-cc-pdp__stars" aria-hidden="true">★★★★★</span>
+          <strong>{{ section.settings.rating_score | default: '4.9' }}</strong>
+          <span class="apgo-cc-pdp__rating-meta">· {{ section.settings.rating_count | default: '312' }} 則評價</span>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Price card {%- endcomment -%}
+      <div class="apgo-cc-pdp__price-card{% if product.compare_at_price > product.price %} apgo-cc-pdp__price-card--sale{% endif %}">
+        <div class="apgo-cc-pdp__price-current" data-apgo-cc-price>{{ product.price | money }}</div>
+        {%- if product.compare_at_price > product.price -%}
+          <div class="apgo-cc-pdp__price-meta">
+            <span class="apgo-cc-pdp__price-compare">{{ product.compare_at_price | money }}</span>
+            {%- assign save_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+            <span class="apgo-cc-pdp__price-save">省 {{ save_pct }}%</span>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Variant picker + add-to-cart form {%- endcomment -%}
+      <form action="/cart/add" method="post" enctype="multipart/form-data" class="apgo-cc-pdp__form">
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-apgo-cc-variant-id>
+
+        {%- for option in product.options_with_values -%}
+          <div class="apgo-cc-pdp__option-group" data-apgo-cc-option-group data-option-position="{{ option.position }}">
+            <div class="apgo-cc-pdp__option-label">
+              <span class="apgo-cc-pdp__option-name">{{ option.name }}</span>
+              <span class="apgo-cc-pdp__option-current" data-apgo-cc-option-current>{{ option.selected_value }}</span>
+            </div>
+            <div class="apgo-cc-pdp__option-chips">
+              {%- for value in option.values -%}
+                <label class="apgo-cc-pdp__chip {% if option.selected_value == value %}is-active{% endif %}">
+                  <input
+                    type="radio"
+                    name="options[{{ option.name | escape }}]"
+                    value="{{ value | escape }}"
+                    data-apgo-cc-option-input
+                    {% if option.selected_value == value %}checked{% endif %}
+                  >
+                  <span>{{ value }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endfor -%}
+
+        <div class="apgo-cc-pdp__qty-row">
+          <div class="apgo-cc-pdp__qty">
+            <button type="button" data-apgo-cc-qty="down" aria-label="減少">−</button>
+            <input type="number" name="quantity" value="1" min="1" data-apgo-cc-qty-input>
+            <button type="button" data-apgo-cc-qty="up" aria-label="增加">+</button>
+          </div>
+        </div>
+
+        <div class="apgo-cc-pdp__cta-row">
+          <button
+            type="submit"
+            class="apgo-cc-pdp__cta apgo-cc-pdp__cta--primary"
+            {% if product.available == false %}disabled{% endif %}
+          >
+            {%- if product.available -%}加入購物車{%- else -%}已售完{%- endif -%}
+          </button>
+          {%- if section.settings.show_buy_now -%}
+            <button type="button" class="apgo-cc-pdp__cta apgo-cc-pdp__cta--secondary" data-apgo-cc-buy-now>
+              立即購買
+            </button>
+          {%- endif -%}
+        </div>
+      </form>
+
+      {%- comment -%} Promo pills row (deferred — these are part of the «全站滿千» work)
+      {%- if section.settings.show_promos -%}
+        <div class="apgo-cc-pdp__promos">…</div>
+      {%- endif -%}
+      {%- endcomment -%}
+    </div>
+
+  </div>
+
+  {%- comment -%} ---------- Tabs section ---------- {%- endcomment -%}
+  <div class="apgo-cc-pdp__tabs" data-apgo-cc-tabs>
+    <div class="apgo-cc-pdp__tab-bar" role="tablist">
+      <button type="button" class="apgo-cc-pdp__tab is-active" role="tab" data-apgo-cc-tab="desc">商品描述</button>
+      <button type="button" class="apgo-cc-pdp__tab" role="tab" data-apgo-cc-tab="usage">使用方式</button>
+      <button type="button" class="apgo-cc-pdp__tab" role="tab" data-apgo-cc-tab="spec">規格參數</button>
+      <button type="button" class="apgo-cc-pdp__tab" role="tab" data-apgo-cc-tab="review">客戶評價</button>
+      <button type="button" class="apgo-cc-pdp__tab" role="tab" data-apgo-cc-tab="faq">常見FAQ</button>
+    </div>
+
+    {%- comment -%} Tab: 商品描述 — wired to product.description {%- endcomment -%}
+    <div class="apgo-cc-pdp__tab-panel is-active" data-apgo-cc-panel="desc">
+      {%- if section.settings.desc_kicker != blank -%}
+        <div class="apgo-cc-pdp__panel-kicker">{{ section.settings.desc_kicker }}</div>
+      {%- endif -%}
+      {%- if section.settings.desc_heading != blank -%}
+        <h2 class="apgo-cc-pdp__panel-heading">{{ section.settings.desc_heading }}</h2>
+      {%- endif -%}
+      {%- if product.description != blank -%}
+        <div class="apgo-cc-pdp__rte rte">{{ product.description }}</div>
+      {%- else -%}
+        <p class="apgo-cc-pdp__placeholder">尚未填寫商品描述。請至 Shopify 後台 → 產品 → Description 編輯。</p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Tabs: 使用方式 / 規格 / 評價 / FAQ — placeholders until Phase 5 metafields wired {%- endcomment -%}
+    <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="usage">
+      <p class="apgo-cc-pdp__placeholder">使用方式內容尚未設定（將由 product.metafields.apgo.usage_steps 提供 — Phase 5）。</p>
+    </div>
+    <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="spec">
+      <p class="apgo-cc-pdp__placeholder">規格參數尚未設定（將由 product.metafields.apgo.spec_rows 提供 — Phase 5）。</p>
+    </div>
+    <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="review">
+      <p class="apgo-cc-pdp__placeholder">客戶評價尚未設定（Shopify Product Reviews 整合 — Phase 6）。</p>
+    </div>
+    <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="faq">
+      <p class="apgo-cc-pdp__placeholder">常見 FAQ 尚未設定（將由 product.metafields.apgo.faqs 提供 — Phase 5）。</p>
+    </div>
+  </div>
+
+  {%- comment -%} Variants JSON for client-side variant switching {%- endcomment -%}
+  <script type="application/json" data-apgo-cc-variants>
+    {{ product.variants | json }}
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "APGO · 商品詳情 (Car Care)",
+  "tag": "section",
+  "class": "apgo-cc-pdp-section",
+  "settings": [
+    { "type": "header", "content": "頁面開關" },
+    { "type": "checkbox", "id": "show_breadcrumb", "label": "顯示麵包屑", "default": true },
+    { "type": "checkbox", "id": "show_rating",     "label": "顯示星等評分", "default": true },
+    { "type": "checkbox", "id": "show_buy_now",    "label": "顯示「立即購買」按鈕", "default": true },
+
+    { "type": "header", "content": "標題與評分" },
+    { "type": "text", "id": "kicker",       "label": "上方小字（kicker）", "default": "" },
+    { "type": "text", "id": "rating_score", "label": "評分", "default": "4.9" },
+    { "type": "text", "id": "rating_count", "label": "評價數", "default": "312" },
+
+    { "type": "header", "content": "商品描述 tab" },
+    { "type": "text", "id": "desc_kicker",  "label": "上方小字", "default": "ABOUT THE PRODUCT" },
+    { "type": "text", "id": "desc_heading", "label": "大標", "default": "" }
+  ],
+  "presets": [
+    { "name": "APGO · 商品詳情 (Car Care)" }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}
