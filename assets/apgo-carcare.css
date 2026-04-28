@@ -970,6 +970,248 @@ body.apgo-cc-skin .apgo-cc-pdp {
   font-style: italic;
 }
 
+/* ============================================================================
+   Quick Add — circular + button on each product card + modal + toast
+   ============================================================================ */
+body.apgo-cc-skin .product-card { position: relative; }
+
+.apgo-cc-quick-add {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 3;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: #ff6b1a;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .35);
+  transition: transform .15s, background .15s;
+}
+.apgo-cc-quick-add:hover { background: #ff8240; transform: scale(1.06); }
+.apgo-cc-quick-add:active { transform: scale(.92); }
+.apgo-cc-quick-add.is-loading { opacity: .55; cursor: wait; }
+.apgo-cc-quick-add svg { display: block; }
+
+/* ---- Modal ---- */
+.apgo-cc-qa-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: none;
+}
+.apgo-cc-qa-modal.is-open { display: block; }
+.apgo-cc-qa-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 17, 21, 0.78);
+  backdrop-filter: blur(8px);
+  animation: cc-qa-fade .2s ease-out;
+}
+.apgo-cc-qa-modal__dialog {
+  position: relative;
+  margin: auto;
+  margin-top: 5vh;
+  max-width: 720px;
+  background: #1c1f24;
+  border: 1px solid #2a2e35;
+  border-radius: 16px;
+  overflow: hidden;
+  animation: cc-qa-slide .25s cubic-bezier(.2, .7, .2, 1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .55);
+  font-family: 'Inter', sans-serif;
+}
+@keyframes cc-qa-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cc-qa-slide {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.apgo-cc-qa-modal__close {
+  position: absolute;
+  top: 12px; right: 12px;
+  z-index: 2;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, .4);
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.apgo-cc-qa-modal__close:hover { background: rgba(255, 107, 26, .85); }
+
+.apgo-cc-qa-modal__body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 599px) {
+  .apgo-cc-qa-modal__dialog { margin: auto 12px; max-width: calc(100% - 24px); }
+  .apgo-cc-qa-modal__body { grid-template-columns: 1fr; }
+}
+.apgo-cc-qa-modal__media {
+  background: #f1ede4;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.apgo-cc-qa-modal__img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.apgo-cc-qa-modal__info {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: #f0ece4;
+}
+.apgo-cc-qa-modal__title {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -.01em;
+}
+.apgo-cc-qa-modal__price {
+  display: flex; align-items: baseline; gap: 10px;
+}
+.apgo-cc-qa-modal__price-current {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ff6b1a;
+  font-variant-numeric: tabular-nums;
+}
+.apgo-cc-qa-modal__price-compare {
+  font-size: 13px;
+  color: #5c584f;
+  text-decoration: line-through;
+}
+
+.apgo-cc-qa-modal__opt-group { margin-bottom: 6px; }
+.apgo-cc-qa-modal__opt-name {
+  font-size: 12px;
+  color: #b8b3a8;
+  font-weight: 500;
+  letter-spacing: .04em;
+  margin-bottom: 8px;
+}
+.apgo-cc-qa-modal__opt-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.apgo-cc-qa-modal__chip {
+  padding: 6px 14px;
+  border: 1px solid #2a2e35;
+  border-radius: 999px;
+  background: #0f1115;
+  color: #b8b3a8;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.apgo-cc-qa-modal__chip:hover { color: #f0ece4; border-color: rgba(255, 107, 26, .35); }
+.apgo-cc-qa-modal__chip.is-active {
+  background: rgba(255, 107, 26, .12);
+  color: #ff6b1a;
+  border-color: #ff6b1a;
+  font-weight: 600;
+}
+
+.apgo-cc-qa-modal__qty-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0;
+}
+.apgo-cc-qa-modal__qty-label {
+  font-size: 13px;
+  color: #b8b3a8;
+}
+.apgo-cc-qa-modal__qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #2a2e35;
+  border-radius: 999px;
+  background: #0f1115;
+  overflow: hidden;
+}
+.apgo-cc-qa-modal__qty button {
+  width: 36px; height: 36px;
+  background: transparent; border: none;
+  color: #b8b3a8;
+  font-size: 16px;
+  cursor: pointer;
+}
+.apgo-cc-qa-modal__qty button:hover { color: #ff6b1a; }
+.apgo-cc-qa-modal__qty input {
+  width: 44px; text-align: center;
+  background: transparent; border: none;
+  color: #f0ece4;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+}
+.apgo-cc-qa-modal__qty input::-webkit-outer-spin-button,
+.apgo-cc-qa-modal__qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.apgo-cc-qa-modal__cta {
+  margin-top: 4px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 12px;
+  background: #ff6b1a;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+.apgo-cc-qa-modal__cta:hover { background: #ff8240; }
+.apgo-cc-qa-modal__cta:active { transform: scale(.98); }
+.apgo-cc-qa-modal__cta:disabled {
+  background: #2a2e35;
+  color: #5c584f;
+  cursor: not-allowed;
+}
+
+/* ---- Toast ---- */
+.apgo-cc-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  z-index: 1200;
+  padding: 12px 24px;
+  background: #ff6b1a;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .25s cubic-bezier(.2, .7, .2, 1), opacity .25s;
+}
+.apgo-cc-toast.is-visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+.apgo-cc-toast--err {
+  background: #e74c3c;
+}
+
 /* ---- Tile base ------------------------------------------------------------- */
 
 .apgo-cc-mosaic__tile {
