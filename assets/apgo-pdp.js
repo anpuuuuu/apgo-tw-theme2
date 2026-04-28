@@ -32,14 +32,20 @@
       try { variants = JSON.parse(variantsEl.textContent); } catch (e) { variants = []; }
     }
 
-    // Current selected option values — read from checked radios
+    // Current selected option values — read from checked radios.
+    // The form may contain duplicate option groups (one in the desktop
+    // shell + one in the mobile shell on the unified PDP section), so
+    // dedupe by data-option-position before assembling the value array.
     function readSelectedOptions() {
-      var values = [];
+      var byPos = {};
       $$('[data-apgo-option-group]', form).forEach(function (group) {
+        var pos = parseInt(group.getAttribute('data-option-position'), 10);
+        if (!pos || byPos.hasOwnProperty(pos)) return;
         var checked = $('input[data-apgo-option-input]:checked', group);
-        values.push(checked ? checked.value : null);
+        byPos[pos] = checked ? checked.value : null;
       });
-      return values;
+      var positions = Object.keys(byPos).map(Number).sort(function (a, b) { return a - b; });
+      return positions.map(function (p) { return byPos[p]; });
     }
 
     function findVariant(values) {
@@ -177,9 +183,29 @@
       syncMediaToVariant(variant);
     }
 
-    // Wire radio inputs
+    // Wire radio inputs. When the user changes a radio in one layout,
+    // mirror the selection into all radios with the same name+value
+    // across the form so the desktop ↔ mobile shells stay in sync (e.g.,
+    // active class for styling, browser back/forward state).
     $$('input[data-apgo-option-input]', form).forEach(function (input) {
-      input.addEventListener('change', onOptionChange);
+      input.addEventListener('change', function () {
+        var name = input.name;
+        var val = input.value;
+        $$('input[data-apgo-option-input][name="' + CSS.escape(name) + '"]', form).forEach(function (mirror) {
+          if (mirror === input) return;
+          mirror.checked = (mirror.value === val);
+          // Also reflect on the wrapping label for active-class styling
+          var labelMirror = mirror.closest('label');
+          if (labelMirror) labelMirror.classList.toggle('active', mirror.checked);
+        });
+        var ownLabel = input.closest('label');
+        if (ownLabel) {
+          var sib = ownLabel.parentNode ? ownLabel.parentNode.children : [];
+          for (var k = 0; k < sib.length; k++) sib[k].classList && sib[k].classList.remove('active');
+          ownLabel.classList.add('active');
+        }
+        onOptionChange();
+      });
     });
 
     // Qty stepper

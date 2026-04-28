@@ -9,49 +9,6 @@
  */
 {
   "sections": {
-    "hero": {
-      "type": "apgo-hero",
-      "blocks": {
-        "ship_row_MLNVbD": {
-          "type": "ship_row",
-          "settings": {
-            "numeral": "i",
-            "title": "滿 NT$ 799 免運",
-            "subtitle": "黑貓宅配 · 24 小時內出貨"
-          }
-        },
-        "ship_row_8TQedD": {
-          "type": "ship_row",
-          "settings": {
-            "numeral": "ii",
-            "title": "🚚 配送提醒",
-            "subtitle": "．7-11／全家：單筆訂單最多 8 包（請勿加購其他商品），多包請分開下單，避免超重，恕無法出貨。\n．新竹物流宅配：單筆訂單可超過 8 包以上"
-          }
-        },
-        "ship_row_KqcKdD": {
-          "type": "ship_row",
-          "settings": {
-            "numeral": "iii ",
-            "title": "SGS 國家級檢驗 ／ 99.9% 抗菌率 · 八大零添加",
-            "subtitle": "99.9% 抗菌率 · 八大零添加"
-          }
-        },
-      },
-      "block_order": [
-        "ship_row_MLNVbD",
-        "ship_row_8TQedD",
-        "ship_row_KqcKdD"
-      ],
-      "settings": {
-        "kicker": "",
-        "show_thumb_rail": true,
-        "show_rating": false,
-        "rating_score": "",
-        "rating_count": "",
-        "show_installment": false,
-        "show_buy_now": false
-      }
-    },
     "mobile": {
       "type": "apgo-mobile-pdp",
       "blocks": {
@@ -124,6 +81,7 @@
         "rating_score": "",
         "rating_count": "",
         "show_installment": false,
+        "show_buy_now": false,
         "pain_heading": "日常痛點 · 專屬科學解方",
         "cmp_kicker": "THE DIFFERENCE",
         "cmp_title": "為什麼選 APGO？",
@@ -146,7 +104,6 @@
     }
   },
   "order": [
-    "hero",
     "mobile",
     "apgo_related_qqpb6W"
   ]
