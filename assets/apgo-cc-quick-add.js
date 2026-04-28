@@ -194,22 +194,48 @@
     img.src = src;
     img.alt = product.title;
 
+    // Normalise options into [{name, values}] regardless of Shopify shape
+    function normaliseOptions(opts, variants) {
+      if (!opts || !opts.length) return [];
+      // Shape A: strings — e.g. ["Color", "Size"]
+      // Shape B: objects with name/values — e.g. [{name: "Color", values: [...]}]
+      if (typeof opts[0] === 'string') {
+        return opts.map(function (n, i) {
+          var vals = [];
+          variants.forEach(function (v) {
+            var val = v.options[i];
+            if (vals.indexOf(val) === -1) vals.push(val);
+          });
+          return { name: n, values: vals };
+        });
+      }
+      return opts.map(function (o, i) {
+        var vals = (o && o.values) || [];
+        if (!vals.length) {
+          variants.forEach(function (v) {
+            var val = v.options[i];
+            if (vals.indexOf(val) === -1) vals.push(val);
+          });
+        }
+        return { name: (o && o.name) || ('Option ' + (i + 1)), values: vals };
+      });
+    }
+
+    var normalisedOpts = normaliseOptions(product.options, product.variants);
+    var skipModalOpts = normalisedOpts.length === 1 &&
+      String(normalisedOpts[0].name).toLowerCase() === 'title';
+
     // Render options
     var optsRoot = $('[data-qa-options]', modal);
     optsRoot.innerHTML = '';
-    if (product.options && product.options.length && !(product.options.length === 1 && product.options[0].toLowerCase() === 'title')) {
-      product.options.forEach(function (optName, optIdx) {
-        var values = [];
-        product.variants.forEach(function (v) {
-          var val = v.options[optIdx];
-          if (values.indexOf(val) === -1) values.push(val);
-        });
+    if (!skipModalOpts) {
+      normalisedOpts.forEach(function (opt, optIdx) {
         var group = document.createElement('div');
         group.className = 'apgo-cc-qa-modal__opt-group';
-        group.innerHTML = '<div class="apgo-cc-qa-modal__opt-name">' + optName + '</div>';
+        group.innerHTML = '<div class="apgo-cc-qa-modal__opt-name">' + opt.name + '</div>';
         var chipsWrap = document.createElement('div');
         chipsWrap.className = 'apgo-cc-qa-modal__opt-chips';
-        values.forEach(function (val) {
+        opt.values.forEach(function (val) {
           var chip = document.createElement('button');
           chip.type = 'button';
           chip.className = 'apgo-cc-qa-modal__chip';
@@ -218,7 +244,6 @@
           chip.dataset.opt = optIdx;
           chip.dataset.val = val;
           chip.addEventListener('click', function () {
-            // Update active chip in this group
             chipsWrap.querySelectorAll('.apgo-cc-qa-modal__chip').forEach(function (c) {
               c.classList.remove('is-active');
             });
@@ -322,12 +347,21 @@
         triggerBtn.disabled = false;
         triggerBtn.innerHTML = origHTML;
 
+        // Shopify can return product.options as either ['Color', 'Size'] or
+        // [{name: 'Color', values: [...]}, ...] depending on API version /
+        // app modifications. Normalise to plain string names.
+        function optName(o) {
+          if (typeof o === 'string') return o;
+          if (o && typeof o === 'object') return o.name || '';
+          return String(o);
+        }
+        var optionNames = (product.options || []).map(optName);
+
         var hasOptions =
           product.variants.length > 1 ||
-          (product.options && product.options.length > 0 &&
-            !(product.options.length === 1 &&
-              (product.options[0] === 'Title' ||
-               String(product.options[0]).toLowerCase() === 'title')));
+          (optionNames.length > 0 &&
+            !(optionNames.length === 1 &&
+              optionNames[0].toLowerCase() === 'title'));
 
         if (!hasOptions) {
           var v = product.variants[0];
