@@ -153,13 +153,19 @@ body.apgo-cc-skin .product-card-gallery__image-wrapper {
   overflow: hidden;
 }
 
-/* Product title — clean Inter, no italic shouting. Keep it readable.
-   Force full-width block so it always sits on its own line above price
-   regardless of Horizon's group flex-direction settings. */
-body.apgo-cc-skin .product-card .product-title,
-body.apgo-cc-skin .product-card .product-title *,
-body.apgo-cc-skin .product-grid__item .product-title,
-body.apgo-cc-skin .product-grid__item .product-title * {
+/* Product title — Horizon renders the title block as
+       <a class="contents user-select-text" href="/products/...">
+         <div class="text-block ... h5 ...">
+           <p>Product Title</p>
+         </div>
+       </a>
+   so .product-title doesn't exist as a class. We target the <a> by
+   its href + class, then style its text-block inside.
+   Inline style="--font-size: 1rem" from the block's typography snippet
+   would normally beat external CSS, but !important wins. */
+body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-block,
+body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-block *,
+body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-block p {
   font-family: var(--cc-font-body) !important;
   font-weight: 500 !important;
   font-style: normal !important;
@@ -169,14 +175,20 @@ body.apgo-cc-skin .product-grid__item .product-title * {
   line-height: 1.4 !important;
   font-size: 18px !important;
   text-align: left !important;
+  margin: 0 !important;
 }
-body.apgo-cc-skin .product-card .product-title {
-  width: 100% !important;
+body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] {
   display: block !important;
+  width: 100% !important;
+}
+body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-block {
+  display: block !important;
+  width: 100% !important;
 }
 @media (max-width: 749px) {
-  body.apgo-cc-skin .product-card .product-title,
-  body.apgo-cc-skin .product-card .product-title * {
+  body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-block,
+  body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-block *,
+  body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-block p {
     font-size: 16px !important;
   }
 }
