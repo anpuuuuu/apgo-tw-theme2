@@ -60,6 +60,17 @@
     });
   }
 
+  // Build the /products/<handle>.js URL from a link href, preserving locale
+  // prefix (e.g. /en/, /zh-tw/) and handling URL-encoded Chinese handles.
+  function buildProductJsonUrl(link) {
+    var url;
+    try { url = new URL(link.href); } catch (e) { return null; }
+    var path = url.pathname.split('?')[0].split('#')[0];
+    if (!path) return null;
+    if (path.charAt(path.length - 1) === '/') path = path.slice(0, -1);
+    return url.origin + path + '.js';
+  }
+
   // ---------- Inject quick-add buttons ----------
   function injectButtons(root) {
     root = root || document;
@@ -67,21 +78,21 @@
       if (card._apgoCcQA) return;
       var link = card.querySelector('a[href*="/products/"]');
       if (!link) return;
-      var m = link.getAttribute('href').match(/\/products\/([^/?#]+)/);
-      if (!m) return;
-      var handle = m[1];
+
+      var jsonUrl = buildProductJsonUrl(link);
+      if (!jsonUrl) return;
 
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'apgo-cc-quick-add';
-      btn.dataset.handle = handle;
+      btn.dataset.jsonUrl = jsonUrl;
       btn.setAttribute('aria-label', '加入購物車');
       btn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
 
       btn.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        openQuickAdd(handle, btn);
+        openQuickAdd(jsonUrl, btn);
       });
 
       card.appendChild(btn);
@@ -275,33 +286,52 @@
   }
 
   // ---------- Quick add entry ----------
-  function openQuickAdd(handle, triggerBtn) {
+  function openQuickAdd(jsonUrl, triggerBtn) {
     var origHTML = triggerBtn.innerHTML;
     triggerBtn.classList.add('is-loading');
     triggerBtn.disabled = true;
 
-    fetch('/products/' + handle + '.js')
-      .then(function (r) { return r.json(); })
-      .then(function (product) {
+    fetch(jsonUrl, { headers: { 'Accept': 'application/json' } })
+      .then(function (r) {
+        if (!r.ok) {
+          throw new Error('HTTP ' + r.status + ' on ' + jsonUrl);
+        }
+        return r.text();
+      })
+      .then(function (raw) {
+        var product;
+        try { product = JSON.parse(raw); }
+        catch (e) {
+          // The endpoint returned HTML (e.g. a Shogun custom landing page) —
+          // not the standard Shopify product JSON. Tell user we can't quick-add.
+          throw new Error('Endpoint returned non-JSON. First 100 chars: ' + raw.substring(0, 100));
+        }
+        if (!product || !product.variants) {
+          throw new Error('Product payload missing .variants — ' + jsonUrl);
+        }
+
         triggerBtn.classList.remove('is-loading');
         triggerBtn.disabled = false;
         triggerBtn.innerHTML = origHTML;
 
-        var variantsCount = product.variants.length;
         var hasOptions =
-          variantsCount > 1 ||
+          product.variants.length > 1 ||
           (product.options && product.options.length > 0 &&
-            !(product.options.length === 1 && product.options[0].toLowerCase() === 'title'));
+            !(product.options.length === 1 &&
+              (product.options[0] === 'Title' ||
+               String(product.options[0]).toLowerCase() === 'title')));
 
         if (!hasOptions) {
-          // Single variant — direct add
           var v = product.variants[0];
           if (!v.available) {
             showToast('商品已售完', false);
             return;
           }
           addToCart(v.id, 1)
-            .then(function () { showToast('已加入購物車', true); })
+            .then(function () {
+              showToast('已加入購物車', true);
+              document.dispatchEvent(new CustomEvent('cart:updated'));
+            })
             .catch(function (err) {
               showToast((err && err.description) || '加入失敗', false);
             });
@@ -309,11 +339,13 @@
           openModal(product);
         }
       })
-      .catch(function () {
+      .catch(function (err) {
         triggerBtn.classList.remove('is-loading');
         triggerBtn.disabled = false;
         triggerBtn.innerHTML = origHTML;
-        showToast('讀取商品失敗', false);
+        // Log full detail so we can debug from devtools
+        console.error('[apgo-cc-quick-add] read failed:', err);
+        showToast('讀取商品失敗，請至商品頁加入', false);
       });
   }
 
