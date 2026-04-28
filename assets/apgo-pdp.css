@@ -1061,6 +1061,66 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
 }
 
 /* ==========================================================================
+   APGO · Cart toast — pops up on add-to-cart success / failure.
+   Single shared root, fixed bottom-center, fades + slides in/out.
+   ========================================================================== */
+.apgo-toast-root {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+.apgo-toast {
+  pointer-events: auto;
+  background: var(--apgo-ink, #2D2E28);
+  color: #fff;
+  font-family: var(--apgo-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  padding: 12px 22px;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .25s ease, transform .25s ease;
+  white-space: nowrap;
+  max-width: 90vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.apgo-toast.is-visible { opacity: 1; transform: translateY(0); }
+.apgo-toast--error { background: #B85C57; }
+
+/* Loading state on the add button while the request is in flight */
+.apgo-cta-primary.is-loading,
+.apgo-mpdp-cta-secondary.is-loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+.apgo-cta-primary.is-loading::after,
+.apgo-mpdp-cta-secondary.is-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: apgo-spin 0.7s linear infinite;
+}
+@keyframes apgo-spin { to { transform: rotate(360deg); } }
+
+/* ==========================================================================
    APGO · Ship card subtitle — preserve newlines from textarea
    ========================================================================== */
 .apgo-mpdp-ship-subtitle,

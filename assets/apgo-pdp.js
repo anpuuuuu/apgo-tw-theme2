@@ -10,6 +10,31 @@
   function $(sel, ctx) { return (ctx || document).querySelector(sel); }
   function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
 
+  // Lightweight toast (one global container; messages stack briefly)
+  function ensureApgoToastRoot() {
+    var root = document.querySelector('[data-apgo-toast-root]');
+    if (root) return root;
+    root = document.createElement('div');
+    root.setAttribute('data-apgo-toast-root', '');
+    root.className = 'apgo-toast-root';
+    document.body.appendChild(root);
+    return root;
+  }
+  function showApgoCartToast(text, isError) {
+    var root = ensureApgoToastRoot();
+    var t = document.createElement('div');
+    t.className = 'apgo-toast' + (isError ? ' apgo-toast--error' : '');
+    t.textContent = text;
+    root.appendChild(t);
+    // animate in
+    requestAnimationFrame(function () { t.classList.add('is-visible'); });
+    // animate out + remove
+    setTimeout(function () { t.classList.remove('is-visible'); }, 2200);
+    setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 2600);
+  }
+  // Expose in case other PDP modules want it
+  window.apgoCartToast = showApgoCartToast;
+
   function formatMoney(cents) {
     // Try Shopify's global formatter if present; otherwise a sensible TWD default.
     if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
@@ -238,6 +263,78 @@
           .then(function () { window.location.href = '/checkout'; })
           .catch(function () { form.submit(); });
       });
+    });
+
+    // Add to cart — intercept native form submit so the browser doesn't
+    // do a full page navigation to /cart. POST to /cart/add.js instead,
+    // then refresh the cart, dispatch the events the rest of the theme
+    // (cart drawer, header count, conditional offers) already listens
+    // for, and pop a success toast. Falls back to a normal submit if the
+    // network fails.
+    form.addEventListener('submit', function (e) {
+      // Don't intercept if user explicitly opted out (rare, e.g. legacy gift form)
+      if (form.hasAttribute('data-apgo-no-ajax')) return;
+      e.preventDefault();
+
+      var addBtns = $$('[data-apgo-add]', form);
+      addBtns.forEach(function (b) { b.setAttribute('disabled', 'disabled'); b.classList.add('is-loading'); });
+
+      var fd = new FormData(form);
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: fd
+      })
+        .then(function (r) {
+          return r.json().then(function (json) { return r.ok ? json : Promise.reject(json); });
+        })
+        .then(function (added) {
+          // Refetch the live cart so header / drawer / offers can sync
+          return fetch('/cart.js?_=' + Date.now(), { cache: 'no-store', headers: { 'Accept': 'application/json' } })
+            .then(function (r) { return r.json(); })
+            .then(function (cart) { return { added: added, cart: cart }; });
+        })
+        .then(function (result) {
+          showApgoCartToast('✓ 已加入購物車');
+
+          // Legacy + Horizon-style cart events. The Horizon CartUpdateEvent
+          // module is optional; ignore the dynamic-import error on themes
+          // that don't ship @theme/events.
+          document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: result.cart } }));
+          document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart: result.cart } }));
+          try {
+            import('@theme/events').then(function (mod) {
+              if (mod && mod.CartUpdateEvent) {
+                document.dispatchEvent(new mod.CartUpdateEvent(result.cart, 'apgo-pdp', {
+                  itemCount: result.cart.item_count, source: 'apgo-pdp', sections: {}
+                }));
+              }
+              if (mod && mod.CartAddEvent) {
+                document.dispatchEvent(new mod.CartAddEvent({}, 'apgo-pdp', { source: 'apgo-pdp' }));
+              }
+            }).catch(function () { /* theme without @theme/events — toast alone is fine */ });
+          } catch (_) { /* older browsers without dynamic import */ }
+
+          // If a cart drawer is in the DOM, ask it to open
+          var drawer = document.querySelector('cart-drawer-component, cart-drawer, [data-apgo-cart-drawer]');
+          if (drawer && typeof drawer.open === 'function') {
+            try { drawer.open(); } catch (_) { /* swallow */ }
+          }
+        })
+        .catch(function (err) {
+          // Surface Shopify's error message if any, otherwise generic
+          var msg = (err && err.description) || (err && err.message) || '加入購物車失敗，請再試一次';
+          showApgoCartToast(msg, true);
+        })
+        .then(function () {
+          addBtns.forEach(function (b) {
+            b.classList.remove('is-loading');
+            // Re-enable only if the variant is currently available
+            var values = readSelectedOptions();
+            var current = findVariant(values);
+            if (current && current.available) b.removeAttribute('disabled');
+          });
+        });
     });
 
     // Desktop thumb rail → main image swap
