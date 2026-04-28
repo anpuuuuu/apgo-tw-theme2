@@ -326,41 +326,73 @@ body.apgo-cc-skin .empty-state {
   letter-spacing: .01em;
 }
 
-/* ---- Grid layouts ---------------------------------------------------------- */
+/* ---- Layout v2: mobile mosaic + horizontal scroll, desktop pure scroll ---- */
 
-/* Desktop: 1 featured (2fr) + N small (1fr each), default to 5 tiles total */
-.apgo-cc-mosaic__grid {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: 1fr;          /* Mobile fallback: stacked */
-}
+/* Default: hide both mobile containers (desktop will override) */
+.apgo-cc-mosaic__mobile-primary,
+.apgo-cc-mosaic__mobile-scroll { display: none; }
 
-@media (min-width: 750px) {
-  /* For each block-count we override the template explicitly so the
-     featured tile always fills the leftmost large cell. */
-  .apgo-cc-mosaic__grid--1 { grid-template-columns: 1fr; }
-  .apgo-cc-mosaic__grid--2 { grid-template-columns: 2fr 1fr; }
-  .apgo-cc-mosaic__grid--3 { grid-template-columns: 2fr 1fr 1fr; }
-  .apgo-cc-mosaic__grid--4 { grid-template-columns: 2fr 1fr 1fr 1fr; }
-  .apgo-cc-mosaic__grid--5 { grid-template-columns: 2fr 1fr 1fr 1fr 1fr; }
-  .apgo-cc-mosaic__grid--6 { grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr; }
-
-  /* Equal heights — design uses 170px which feels right at 4-col widths. */
-  .apgo-cc-mosaic__grid > .apgo-cc-mosaic__tile { min-height: 170px; }
-}
-
-/* Mobile: featured spans full width on its own row (full-bleed feel),
-   others go in 2-column grid below. */
+/* Mobile (<750px): 2-col grid with featured spanning 2 rows on left,
+   2 small stacked on right; overflow tiles in horizontal scroll below. */
 @media (max-width: 749px) {
-  .apgo-cc-mosaic__grid > .apgo-cc-mosaic__tile--featured {
-    grid-column: 1 / -1;
-    min-height: 140px;
-  }
-  .apgo-cc-mosaic__grid {
-    grid-template-columns: repeat(2, 1fr);
+  .apgo-cc-mosaic__desktop-scroll { display: none; }
+
+  .apgo-cc-mosaic__mobile-primary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
     gap: 8px;
+    /* Lock total height so the right column is "left height halved", which
+       matches the visual proportion the user requested. */
+    height: 220px;
   }
-  .apgo-cc-mosaic__grid > .apgo-cc-mosaic__tile { min-height: 110px; }
+  .apgo-cc-mosaic__mobile-primary > :nth-child(1) {
+    grid-column: 1; grid-row: 1 / span 2;   /* featured: tall left */
+  }
+  .apgo-cc-mosaic__mobile-primary > :nth-child(2) { grid-column: 2; grid-row: 1; }
+  .apgo-cc-mosaic__mobile-primary > :nth-child(3) { grid-column: 2; grid-row: 2; }
+
+  .apgo-cc-mosaic__mobile-scroll {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .apgo-cc-mosaic__mobile-scroll::-webkit-scrollbar { display: none; }
+  .apgo-cc-mosaic__mobile-scroll > .apgo-cc-mosaic__tile {
+    flex: 0 0 48%;
+    min-height: 96px;
+    scroll-snap-align: start;
+  }
+}
+
+/* Desktop (≥750px): one horizontal scroll row with all blocks, uniform tiles. */
+@media (min-width: 750px) {
+  .apgo-cc-mosaic__desktop-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cc-divider) transparent;
+    padding-bottom: 6px;
+  }
+  .apgo-cc-mosaic__desktop-scroll::-webkit-scrollbar { height: 6px; }
+  .apgo-cc-mosaic__desktop-scroll::-webkit-scrollbar-track { background: transparent; }
+  .apgo-cc-mosaic__desktop-scroll::-webkit-scrollbar-thumb {
+    background: var(--cc-divider);
+    border-radius: 3px;
+  }
+  .apgo-cc-mosaic__desktop-scroll > .apgo-cc-mosaic__tile {
+    flex: 0 0 240px;
+    min-height: 150px;
+    scroll-snap-align: start;
+  }
 }
 
 /* ---- Tile base ------------------------------------------------------------- */

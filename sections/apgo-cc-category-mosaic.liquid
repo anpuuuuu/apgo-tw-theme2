@@ -1,11 +1,16 @@
 {%- comment -%}
-  APGO · Car Care Colors — Category Mosaic
-  5 分類磚 (1 featured 大 + 4 普通)。Block-driven so admin can reorder /
-  add / remove tiles in the theme editor. First block in block_order is
-  the featured (orange-fill) tile; the rest are bg-alt with an orange
-  accent bar on bottom.
+  APGO · Car Care Colors — Category Mosaic (v2)
+  Layout:
+    Mobile  : Block 1 = featured tall left (spans 2 rows)
+              Blocks 2 & 3 = stacked right column
+              Blocks 4+    = horizontal scroll strip below
+    Desktop : All blocks  = horizontal scroll row (uniform tiles)
   Phase 2 of docs/CAR_CARE_REDESIGN_PLAN.md.
 {%- endcomment -%}
+
+{%- liquid
+  assign total = section.blocks.size
+-%}
 
 <section
   class="apgo-cc-mosaic"
@@ -19,16 +24,27 @@
     </header>
   {%- endif -%}
 
-  {%- if section.blocks.size > 0 -%}
-    <div class="apgo-cc-mosaic__grid apgo-cc-mosaic__grid--{{ section.blocks.size }}">
-      {%- for block in section.blocks -%}
+  {%- if total == 0 -%}
+    <div class="apgo-cc-mosaic__empty">
+      尚未設定分類磚。請在主題編輯器加入「分類磚」block 並選擇對應的集合。
+    </div>
+  {%- else -%}
+
+    {%- comment -%}
+      Helper macro: every tile renders the same way. We render the same blocks
+      across multiple containers below; CSS uses media queries to show only the
+      layout that fits the viewport.
+    {%- endcomment -%}
+
+    {%- comment -%} ---------- MOBILE LAYOUT (≤749px) ---------- {%- endcomment -%}
+    <div class="apgo-cc-mosaic__mobile-primary">
+      {%- for block in section.blocks limit: 3 -%}
         {%- assign coll = collections[block.settings.collection] -%}
         {%- assign label = block.settings.label_override | default: coll.title -%}
         {%- assign tile_count = block.settings.count_override | default: coll.products_count -%}
         {%- assign tile_url = block.settings.url_override | default: coll.url | default: '#' -%}
         {%- assign is_featured = false -%}
         {%- if forloop.first -%}{%- assign is_featured = true -%}{%- endif -%}
-
         <a
           href="{{ tile_url }}"
           class="apgo-cc-mosaic__tile{% if is_featured %} apgo-cc-mosaic__tile--featured{% endif %}"
@@ -52,10 +68,66 @@
         </a>
       {%- endfor -%}
     </div>
-  {%- else -%}
-    <div class="apgo-cc-mosaic__empty">
-      尚未設定分類磚。請在主題編輯器加入「分類磚」block 並選擇對應的集合。
+
+    {%- if total > 3 -%}
+      <div class="apgo-cc-mosaic__mobile-scroll" data-apgo-cc-scroll>
+        {%- for block in section.blocks offset: 3 -%}
+          {%- assign coll = collections[block.settings.collection] -%}
+          {%- assign label = block.settings.label_override | default: coll.title -%}
+          {%- assign tile_count = block.settings.count_override | default: coll.products_count -%}
+          {%- assign tile_url = block.settings.url_override | default: coll.url | default: '#' -%}
+          <a
+            href="{{ tile_url }}"
+            class="apgo-cc-mosaic__tile apgo-cc-mosaic__tile--small"
+            {{ block.shopify_attributes }}
+            {%- if block.settings.image != blank -%}
+              style="--tile-image: url('{{ block.settings.image | image_url: width: 600 }}');"
+            {%- endif -%}
+          >
+            <div class="apgo-cc-mosaic__tile-content">
+              <span class="apgo-cc-mosaic__tile-label">{{ label }}</span>
+              <span class="apgo-cc-mosaic__tile-meta">
+                {%- if tile_count != blank -%}
+                  <span class="apgo-cc-mosaic__tile-count">{{ tile_count }} 件商品</span>
+                {%- endif -%}
+                <span class="apgo-cc-mosaic__tile-arrow" aria-hidden="true">›</span>
+              </span>
+            </div>
+            <span class="apgo-cc-mosaic__tile-accent" aria-hidden="true"></span>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ---------- DESKTOP LAYOUT (≥750px) ---------- {%- endcomment -%}
+    <div class="apgo-cc-mosaic__desktop-scroll" data-apgo-cc-scroll>
+      {%- for block in section.blocks -%}
+        {%- assign coll = collections[block.settings.collection] -%}
+        {%- assign label = block.settings.label_override | default: coll.title -%}
+        {%- assign tile_count = block.settings.count_override | default: coll.products_count -%}
+        {%- assign tile_url = block.settings.url_override | default: coll.url | default: '#' -%}
+        <a
+          href="{{ tile_url }}"
+          class="apgo-cc-mosaic__tile apgo-cc-mosaic__tile--small"
+          {{ block.shopify_attributes }}
+          {%- if block.settings.image != blank -%}
+            style="--tile-image: url('{{ block.settings.image | image_url: width: 800 }}');"
+          {%- endif -%}
+        >
+          <div class="apgo-cc-mosaic__tile-content">
+            <span class="apgo-cc-mosaic__tile-label">{{ label }}</span>
+            <span class="apgo-cc-mosaic__tile-meta">
+              {%- if tile_count != blank -%}
+                <span class="apgo-cc-mosaic__tile-count">{{ tile_count }} 件商品</span>
+              {%- endif -%}
+              <span class="apgo-cc-mosaic__tile-arrow" aria-hidden="true">›</span>
+            </span>
+          </div>
+          <span class="apgo-cc-mosaic__tile-accent" aria-hidden="true"></span>
+        </a>
+      {%- endfor -%}
     </div>
+
   {%- endif -%}
 </section>
 
@@ -66,13 +138,14 @@
   "class": "apgo-cc-mosaic-section",
   "settings": [
     { "type": "text",  "id": "heading", "label": "區塊標題", "default": "商品分類" },
-    { "type": "range", "id": "padding", "label": "區塊內距 (px)", "min": 8, "max": 60, "step": 2, "default": 28 }
+    { "type": "range", "id": "padding", "label": "區塊內距 (px)", "min": 8, "max": 60, "step": 2, "default": 28 },
+    { "type": "paragraph", "content": "手機版：第 1 個 block = 左側 featured (橘色大磚)，第 2-3 個 = 右側上下排列，第 4 個之後 = 下方可橫滑。桌機版：所有 block 都在同一橫滑列，可拖拉看更多。" }
   ],
   "blocks": [
     {
       "type": "tile",
       "name": "分類磚",
-      "limit": 6,
+      "limit": 12,
       "settings": [
         { "type": "header",          "content": "連結與內容" },
         { "type": "collection",      "id": "collection",      "label": "對應集合（自動帶入標題與商品數）" },
@@ -81,7 +154,7 @@
         { "type": "number",          "id": "count_override",  "label": "商品數覆蓋（不填用實際數量）" },
 
         { "type": "header",          "content": "視覺" },
-        { "type": "image_picker",    "id": "image",           "label": "背景圖（選填，建議 800x500）", "info": "未設定則純色，第 1 個磚會是橘色，其他是深灰" }
+        { "type": "image_picker",    "id": "image",           "label": "背景圖（選填，建議 800x500）", "info": "未設定則純色，第 1 個 block（手機 featured）會是橘色大磚" }
       ]
     }
   ],
@@ -89,11 +162,14 @@
     {
       "name": "APGO · 分類磚 (Car Care)",
       "blocks": [
+        { "type": "tile", "settings": { "label_override": "熱銷排行" } },
         { "type": "tile", "settings": { "label_override": "鍍膜全系列" } },
+        { "type": "tile", "settings": { "label_override": "居家清潔" } },
         { "type": "tile", "settings": { "label_override": "清潔藥劑" } },
         { "type": "tile", "settings": { "label_override": "洗車用品" } },
         { "type": "tile", "settings": { "label_override": "科技執法測速器" } },
-        { "type": "tile", "settings": { "label_override": "居家清潔" } }
+        { "type": "tile", "settings": { "label_override": "暢銷優惠禮組" } },
+        { "type": "tile", "settings": { "label_override": "損傷修復" } }
       ]
     }
   ],
