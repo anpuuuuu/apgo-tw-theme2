@@ -564,8 +564,24 @@ body.apgo-cc-skin .empty-state {
   .apgo-cc-mosaic__mobile-scroll::-webkit-scrollbar { display: none; }
   .apgo-cc-mosaic__mobile-scroll > .apgo-cc-mosaic__tile {
     flex: 0 0 48%;
-    min-height: 96px;
+    /* Fixed compact height for the swipe strip — shorter than the upper
+       2x2 grid above so users see it as a secondary nav row. */
+    height: 72px;
+    min-height: 0;
+    padding: 10px 14px;
     scroll-snap-align: start;
+  }
+  /* Tighter typography to match the shorter tile */
+  .apgo-cc-mosaic__mobile-scroll .apgo-cc-mosaic__tile-label {
+    font-size: 13px;
+  }
+  .apgo-cc-mosaic__mobile-scroll .apgo-cc-mosaic__tile-meta {
+    font-size: 10px;
+    margin-top: 2px;
+  }
+  .apgo-cc-mosaic__mobile-scroll .apgo-cc-mosaic__tile-arrow {
+    width: 14px; height: 14px;
+    font-size: 10px;
   }
 }
 
