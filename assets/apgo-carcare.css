@@ -173,7 +173,7 @@ body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-blo
   letter-spacing: .01em !important;
   color: var(--cc-fg) !important;
   line-height: 1.4 !important;
-  font-size: 18px !important;
+  font-size: 14px !important;
   text-align: left !important;
   margin: 0 !important;
 }
@@ -184,13 +184,6 @@ body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] {
 body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-block {
   display: block !important;
   width: 100% !important;
-}
-@media (max-width: 749px) {
-  body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-block,
-  body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-block *,
-  body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-block p {
-    font-size: 16px !important;
-  }
 }
 
 /* Price — Inter tabular-nums, calm sizing. Force block + left so it always
