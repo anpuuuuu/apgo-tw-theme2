@@ -27,35 +27,84 @@
 
 ---
 
-## 2. 涉及哪些檔案？
+## 2. 涉及哪些檔案？（2026-04-28 重新盤點）
 
-### 2.1 會新建的
-- `assets/apgo-carcare.css`（取代 `apgo-tactical.css` 的角色，新主題皮膚）
-- `assets/apgo-carcare.js`（互動：sort tabs、category tile clicks、promo countdown 等）
-- `sections/apgo-cc-list-hero.liquid`（列表頁 hero 促銷帶）— 如果 user 同意做
-- `sections/apgo-cc-category-mosaic.liquid`（5 格分類磚 — 桌機 2:1:1:1:1，手機 featured + 2x1）
-- `sections/apgo-cc-product-grid.liquid`（取代 / 包住現有 `main-collection`）
-- `sections/apgo-cc-promo-strip.liquid`（永久促銷膠囊列）
-- `templates/collection.json`（重塑，當前 tactical sections 都拆掉）
-- `templates/product.apgo-v2.json`（新通用詳情頁模板）
-- `sections/apgo-cc-detail-*.liquid`（詳情頁多個 section，待 phase）
-- `docs/CAR_CARE_REDESIGN_PLAN.md`（本檔）
+> ⚠️ Phase 0 之後有 24 個其他 session 的 commits 進來，含 SGS 認證 section、AJAX 加購物車、桌機 hero 合進 mobile-pdp、ship_row 改用 shop metafield、多版本 tactical-aio sections。本節已更新為當前實際檔案清單。
 
-### 2.2 會被廢棄 / 移除的（Phase 1 動工時）
-- `assets/apgo-tactical.css`（戰術風皮膚）
-- `assets/apgo-tactical.js`
-- `sections/apgo-tactical-hero.liquid`（戰術 Hero）
-- `sections/apgo-tactical-cart-bar.liquid`（懸浮購物車列）
-- `templates/collection.json` 中 `apgo_tac_hero` / `apgo_tac_cart_bar` 條目
-- `layout/theme.liquid` 中 `template.name == 'collection'` 的 tactical 載入分支
+### 2.0 完整當前 sections/ 清單（apgo-* prefix）
 
-### 2.3 絕對不動
-- `templates/product.apgo-v1s-plus.json`（洗衣精單品專用模板）
-- `sections/apgo-hero.liquid`、`sections/apgo-mobile-pdp.liquid`（v1s-plus 的 PDP sections）
-- `assets/apgo-pdp.css`、`assets/apgo-pdp.js`（v1s-plus 的 PDP assets）
-- 既建的 metaobjects：`pain_solution` / `comparison_row` / `spec_row` / `review` / `faq` / `scent`
-- 既建的 product metafields：`apgo.pain_solutions` / `apgo.comparison_rows` / `apgo.spec_rows` / `apgo.reviews` / `apgo.faqs` / `custom.pic` / `apgo.subtitle`
-- shop metafield `apgo.scents`
+| 檔案 | 來源 | 處理方向 |
+|---|---|---|
+| `apgo-tactical-hero.liquid` | **本 plan 戰術風 Phase 2** | Phase 1 停用（不引用，留檔） |
+| `apgo-tactical-cart-bar.liquid` | **本 plan 戰術風 Phase 3** | Phase 1 停用（不引用，留檔） |
+| `apgo-tactical-aio.liquid` | 其他 Claude session | **不 touch** |
+| `apgo-tactical-aio-v2.liquid` | 其他 Claude session | **不 touch** |
+| `apgo-tactical-aio-v3.liquid` | 其他 Claude session | **不 touch** |
+| `apgo-tactical-aio-v4.liquid` | 其他 Claude session | **不 touch** |
+| `apgo-tactical-hub.liquid` | 其他 Claude session | **不 touch** |
+| `apgo-hero.liquid` | v1s-plus PDP（雖然 41d1c90 把桌機 hero 合進 mobile-pdp，檔案還在） | **不動** |
+| `apgo-mobile-pdp.liquid` | v1s-plus PDP 主 section | **不動** |
+| `apgo_product_page.liquid` | 舊 PDP（給 product.json / v1plus.json 用） | **不動** |
+| `apgo-product.liquid` | ? PDP | **不動** |
+| `apgo-account-line.liquid` | 其他功能 | **不 touch** |
+| `apgo-cleaning-sale.liquid` | 其他 | **不 touch** |
+| `apgo-cny-event.liquid` | 其他 | **不 touch** |
+| `apgo-coating-products.liquid` | 其他 | **不 touch** |
+| `apgo-comparison.liquid` | 其他 | **不 touch** |
+| `apgo-dynamic-title.liquid` | 其他 | **不 touch** |
+| `apgo-editorial.liquid` | 其他 | **不 touch** |
+| `apgo-line-auth.liquid` | 其他 | **不 touch** |
+| `apgo-pain-solutions.liquid` | 其他（注意：跟我 PDP 的 pain_solutions metafield 同名但這是 section） | **不 touch** |
+| `apgo-promo-bar.liquid` | 其他（戰術廣播條） | **不 touch** |
+| `apgo-related.liquid` | 其他 | **不 touch** |
+| `apgo-scent-quiz.liquid` | 其他 | **不 touch** |
+| `apgo-scent-timeline.liquid` | 其他 | **不 touch** |
+| `apgo-spec-table.liquid` | 其他（注意：跟我 PDP 的 spec_rows metafield 同名） | **不 touch** |
+| `apgo-trust-guarantee.liquid` | 其他 | **不 touch** |
+| `apgo-ugc-wall.liquid` | 其他 | **不 touch** |
+| `apgo_live*.liquid` (4 個) | 其他（直播頁面？） | **不 touch** |
+
+### 2.1 會新建的（Car Care Colors 專屬，名稱用 `apgo-cc-*` prefix）
+
+- `assets/apgo-carcare.css`（新主題皮膚 — 取代 `apgo-tactical.css` 在 collection 頁的角色）
+- `assets/apgo-carcare.js`（互動：sort tabs、category tile clicks、promo countdown）
+- `sections/apgo-cc-list-hero.liquid`（列表頁 hero 促銷帶 — Phase 2）
+- `sections/apgo-cc-category-mosaic.liquid`（5 格分類磚 — Phase 2）
+- `sections/apgo-cc-promo-strip.liquid`（永久促銷膠囊列 — Phase 2）
+- `sections/apgo-cc-product-grid.liquid`（如有需要全面取代 main-collection — 待 Phase 2 決定）
+- `templates/product.apgo-v2.json`（新通用 PDP 模板 — Phase 4）
+- `sections/apgo-cc-detail-*.liquid`（詳情頁 sections — Phase 4）
+
+### 2.2 Phase 1 動工時要做的事
+
+> User 決定：**戰術風檔案保留**（不刪），collection.json 不再引用即可。
+
+具體動作：
+1. 修改 `templates/collection.json`：
+   - 移除 `apgo_tac_hero` / `apgo_tac_cart_bar` 條目
+   - 保留 `section` / `collection_links_pNT4Ld` / `main` 三個既有 sections
+2. 修改 `layout/theme.liquid`：
+   - 把現有 `template.name == 'collection'` 載入 `apgo-tactical.css/js` + Inter/JetBrains Mono Google Fonts 那段
+   - 改成載入 `apgo-carcare.css` + Cormorant Garamond/Inter/JetBrains Mono
+   - body class 從 `apgo-tactical-skin` 改 `apgo-cc-skin`
+3. 新建 `assets/apgo-carcare.css`：套上設計 token + product card 重新化妝（暖米色 photo bg、暖白文字、Cormorant 標題、Inter 副文）
+4. **檔案保留不刪**：
+   - `assets/apgo-tactical.css`、`apgo-tactical.js`
+   - `sections/apgo-tactical-hero.liquid`
+   - `sections/apgo-tactical-cart-bar.liquid`
+
+### 2.3 絕對不動（Phase 1-6 全程都不動）
+
+- **PDP 那條線**：
+  - `templates/product.apgo-v1s-plus.json`（洗衣精單品專用）
+  - `sections/apgo-hero.liquid`、`sections/apgo-mobile-pdp.liquid`
+  - `sections/apgo_product_page.liquid`、`sections/apgo-product.liquid`
+  - `assets/apgo-pdp.css`、`assets/apgo-pdp.js`
+  - 因 SGS section 加進去後，PDP 結構更複雜，徹底不碰
+- **其他 Claude session 的 sections**（見第 2.0 節 **不 touch** 標記的）
+- **既建的 metaobjects**：`pain_solution` / `comparison_row` / `spec_row` / `review` / `faq` / `scent`、加上 SGS 相關（從 commit log 看有 SGS metaobject）
+- **既建的 product metafields**：`apgo.pain_solutions` / `apgo.comparison_rows` / `apgo.spec_rows` / `apgo.reviews` / `apgo.faqs` / `custom.pic` / `apgo.subtitle`、加上 ship_rows shop metafield
+- **shop metafield** `apgo.scents` + 其他 ship_row 相關 shop metafields
 
 ---
 
@@ -144,25 +193,29 @@
 
 > 每刀 3-7 個 commits，每刀做完截圖確認，不滿意可 rollback。
 
-### Phase 1：列表頁皮膚 + 拆戰術風（**先這刀**）
-**目標**：collection 頁變成 Car Care Colors 風格，但**保留現有的 product card block 結構**（跟戰術風一樣的策略）。
+### Phase 1：列表頁皮膚 + 拆戰術風引用（**先這刀**）
+
+**目標**：collection 頁視覺改成 Car Care Colors（暖米色照片 bg + 灰深背景 + 暖白文字），保留現有 product card block 結構。**所有戰術風檔案保留不刪**，只是 collection.json 跟 theme.liquid 不再引用。
 
 **Claude 做**：
-1. 新建 `assets/apgo-carcare.css` — 全套 token + 列表頁所有皮膚
+1. 新建 `assets/apgo-carcare.css` — 全套設計 token + 列表頁皮膚（body bg、product card、collection links pill、section background 等）
 2. 修改 `layout/theme.liquid`：
-   - 移除 tactical 條件載入
-   - 改成 collection 頁載入 carcare CSS + Cormorant Garamond / Inter / JetBrains Mono fonts
-   - body class 改 `apgo-cc-skin`（不再是 `apgo-tactical-skin`）
+   - 把 tactical CSS/JS load 註解掉（**不刪 import 行**，只讓它失效，方便日後 revert）
+   - 加上 carcare 條件載入 + Cormorant Garamond / Inter / JetBrains Mono Google Fonts
+   - body class `apgo-tactical-skin` 改成 `apgo-cc-skin`
 3. 修改 `templates/collection.json`：
-   - 移除 `apgo_tac_hero` / `apgo_tac_cart_bar`
-   - 暫時保留現有 `main-collection` 跟 `collection_links_pNT4Ld`（用 CSS 重新化妝）
-4. 廢棄 tactical 相關檔案：
-   - `assets/apgo-tactical.css`、`apgo-tactical.js`（保留檔案以便 git history，但不再 import）
-   - `sections/apgo-tactical-hero.liquid`、`apgo-tactical-cart-bar.liquid`（同上，留檔但 collection.json 不引用）
+   - 從 `order` 移除 `apgo_tac_hero` / `apgo_tac_cart_bar`
+   - `sections.apgo_tac_*` 兩個 entries 也移除（避免變成 orphan section data）
+   - 保留 `section` / `collection_links_pNT4Ld` / `main` 三個原始 sections
+4. **不刪任何檔案**（戰術風的 sections / css / js 全部留檔，git history 用）
 
-**User 做**：看效果。
+**User 做**：刷新前端看效果。
 
-**Rollback**：把 theme.liquid 的 `apgo-cc-skin` body class + carcare CSS load 拿掉、collection.json 還原。
+**Rollback 步驟**（如果視覺不滿意）：
+- 把 `theme.liquid` carcare load 改回 tactical load
+- body class 改回 `apgo-tactical-skin`
+- collection.json `order` 加回 `apgo_tac_hero` / `apgo_tac_cart_bar`
+- 1 個 commit revert
 
 ### Phase 2：列表頁專屬 sections（hero / mosaic / product-grid 重做）
 **Claude 做**：
@@ -197,13 +250,25 @@
 
 | Phase | 狀態 | Commit | 備註 |
 |---|---|---|---|
-| 0 計畫書 | ✅ | (本 commit) | 文件就緒 |
-| 1 列表頁皮膚 + 拆戰術 | ⏳ 待動工 | - | - |
+| 0 計畫書（初版） | ✅ | `0ca8df6` | 2026-04-27 |
+| 0.5 計畫書更新（檔案盤點 + 反映 Phase 0 後 24 個其他 session commit） | ✅ | (本 commit) | 2026-04-28 |
+| 1 列表頁皮膚 + 停用戰術 | ⏳ 待動工 | - | 戰術檔保留不刪，只停止引用 |
 | 2 列表頁 sections | ⏸ 未開始 | - | - |
 | 3 列表頁互動 | ⏸ 未開始 | - | - |
 | 4 詳情頁皮膚 + 新模板 | ⏸ 未開始 | - | - |
 | 5 詳情頁 metafields | ⏸ 未開始 | - | - |
 | 6 Bundle / 倒數 / 評價 | ⏸ 未開始 | - | - |
+
+### Phase 0 之後的中間 commits（不在本 plan scope，僅供 onboarding 參考）
+
+| 範圍 | 代表 commit | 影響 |
+|---|---|---|
+| SGS 認證 section（PDP 第 5 個 tab） | `5624a3b` / `ea02e63` | PDP 多了 tab，本 plan 不動 PDP |
+| Ship rows 改用 shop metafield | `e11217a` | shop metafield 多了 ship_rows 相關 |
+| 桌機 hero 合併進 mobile-pdp | `41d1c90` | apgo-hero.liquid 還在但行為改了 |
+| AJAX 加購物車 + toast | `23bb9c5` | PDP 不再 redirect 到購物車 |
+| Quantity 雙 shell 同步 | `05f1134` | PDP 桌機/手機 數量同步 |
+| 多版本 tactical-aio sections | (admin export) | sections 目錄多了 aio v1/v2/v3/v4 + hub，**全部不 touch** |
 
 ---
 
