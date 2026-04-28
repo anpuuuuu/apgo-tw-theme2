@@ -1061,6 +1061,75 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
 }
 
 /* ==========================================================================
+   APGO · Ship card subtitle — preserve newlines from textarea
+   ========================================================================== */
+.apgo-mpdp-ship-subtitle,
+.apgo-ship-subtitle {
+  white-space: normal;
+  line-height: 1.6;
+}
+.apgo-mpdp-ship-subtitle br,
+.apgo-ship-subtitle br { display: block; content: ''; margin-top: 2px; }
+
+/* ==========================================================================
+   APGO · Feature card under the ship card (mobile + desktop)
+   Content sourced from product.description.
+   ========================================================================== */
+.apgo-mpdp-feature-card {
+  margin: 16px 16px 0;
+  padding: 16px 18px;
+  background: var(--apgo-bg-alt);
+  border: 1px solid var(--apgo-line);
+  border-radius: 8px;
+}
+.apgo-mpdp-feature-head {
+  text-align: center;
+  margin-bottom: 12px;
+}
+.apgo-mpdp-feature-kicker {
+  display: inline-block;
+  font-family: var(--apgo-display);
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  color: var(--apgo-sage);
+  margin-bottom: 6px;
+}
+.apgo-mpdp-feature-title {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--apgo-ink);
+  line-height: 1.3;
+  margin: 0;
+}
+.apgo-mpdp-feature-body {
+  font-family: var(--apgo-sans);
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: rgba(45,46,40,0.85);
+}
+.apgo-mpdp-feature-body p { margin: 0 0 10px; }
+.apgo-mpdp-feature-body p:last-child { margin-bottom: 0; }
+.apgo-mpdp-feature-body strong { font-weight: 600; color: var(--apgo-ink); }
+.apgo-mpdp-feature-body img { max-width: 100%; height: auto; display: block; margin: 12px auto; border-radius: 6px; }
+.apgo-mpdp-feature-body a { color: var(--apgo-sage); text-decoration: underline; }
+
+/* ==========================================================================
+   APGO · Feature gallery — long-form product images inside 商品特色 tab
+   ========================================================================== */
+.apgo-mpdp-feature-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0 0 8px;
+}
+.apgo-mpdp-feature-gallery-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ==========================================================================
    APGO · SGS Certification (rendered inside the SGS tab panel)
    ========================================================================== */
 .apgo-mpdp-panel[data-apgo-mpanel="sgs"] { padding: 0; }

@@ -168,11 +168,31 @@
               <span class="apgo-mpdp-ship-icon">{{ block.settings.numeral }}</span>
               <div>
                 <strong>{{ block.settings.title }}</strong>
-                <div class="apgo-muted">{{ block.settings.subtitle }}</div>
+                <div class="apgo-muted apgo-mpdp-ship-subtitle">{{ block.settings.subtitle | newline_to_br }}</div>
               </div>
             </div>
             {%- unless forloop.last -%}<div class="apgo-mpdp-ship-sep"></div>{%- endunless -%}
           {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%}
+        Product feature card — sits directly under the ship card.
+        Content comes from the product's main Description field
+        (admin-editable in Shopify → Products → Description).
+        Strips the <!-- apgo:sections --> marker so it doesn't
+        leak into the rendered card.
+      {%- endcomment -%}
+      {%- assign feature_text = product.description | replace: '<!-- apgo:sections -->', '' | strip -%}
+      {%- if feature_text != blank -%}
+        <div class="apgo-mpdp-feature-card">
+          <div class="apgo-mpdp-feature-head">
+            <span class="apgo-mpdp-feature-kicker">— FEATURES —</span>
+            <h3 class="apgo-mpdp-feature-title apgo-serif">商品特色</h3>
+          </div>
+          <div class="apgo-mpdp-feature-body rte">
+            {{ feature_text }}
+          </div>
         </div>
       {%- endif -%}
     </div>
@@ -182,11 +202,11 @@
 
     {%- comment -%} Tabs {%- endcomment -%}
     <div class="apgo-mpdp-tabs" role="tablist" data-apgo-mtabs>
-      <button type="button" class="apgo-mpdp-tab active" data-apgo-mtab="desc" role="tab">商品說明</button>
+      <button type="button" class="apgo-mpdp-tab active" data-apgo-mtab="desc" role="tab">商品特色</button>
       <button type="button" class="apgo-mpdp-tab" data-apgo-mtab="sgs" role="tab">SGS</button>
-      <button type="button" class="apgo-mpdp-tab" data-apgo-mtab="spec" role="tab">規格</button>
-      <button type="button" class="apgo-mpdp-tab" data-apgo-mtab="review" role="tab">評價</button>
-      <button type="button" class="apgo-mpdp-tab" data-apgo-mtab="faq" role="tab">問答</button>
+      <button type="button" class="apgo-mpdp-tab" data-apgo-mtab="spec" role="tab">詳細資訊與安心成分</button>
+      <button type="button" class="apgo-mpdp-tab" data-apgo-mtab="review" role="tab">顧客評價</button>
+      <button type="button" class="apgo-mpdp-tab" data-apgo-mtab="faq" role="tab">商品 FAQ</button>
     </div>
 
     {%- comment -%}
@@ -207,15 +227,26 @@
     {%- endcomment -%}
     <div class="apgo-mpdp-panel active" data-apgo-mpanel="desc">
       {%- comment -%}
-        Description split on marker '<!-- apgo:sections -->'. The two metaobject
-        sections (pain × solution + comparison table) render in the gap, so the
-        admin can keep the rest of the description (Ritual hero, long image, etc)
-        in either half of the marker without losing the original visual order.
+        Tab content order:
+          1. Product description images (metafield, list of images) —
+             the long-form product story shots
+          2. Pain × solution (metaobject)
+          3. Decorative pic (metafield)
+          4. Comparison table (metaobject)
+          5. UGC grid (blocks)
+
+        Note: product.description text itself no longer renders here — it
+        was moved to the .apgo-mpdp-feature-card under the ship card above.
       {%- endcomment -%}
-      {%- assign desc_parts = product.description | split: '<!-- apgo:sections -->' -%}
-      {%- if desc_parts[0] != blank -%}
-        <div class="apgo-mpdp-description rte">
-          {{ desc_parts[0] }}
+      {%- assign feature_imgs = product.metafields.custom.product_description_images.value -%}
+      {%- if feature_imgs != blank and feature_imgs.size > 0 -%}
+        <div class="apgo-mpdp-feature-gallery">
+          {%- for img in feature_imgs -%}
+            <img src="{{ img | image_url: width: 1200 }}"
+                 alt="{{ product.title }} 商品說明圖 {{ forloop.index }}"
+                 loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                 class="apgo-mpdp-feature-gallery-img">
+          {%- endfor -%}
         </div>
       {%- endif -%}
 
@@ -270,12 +301,6 @@
               </div>
             {%- endfor -%}
           </div>
-        </div>
-      {%- endif -%}
-
-      {%- if desc_parts[1] != blank -%}
-        <div class="apgo-mpdp-description rte">
-          {{ desc_parts[1] }}
         </div>
       {%- endif -%}
 
@@ -610,7 +635,7 @@
       "settings": [
         { "type": "text", "id": "numeral", "label": "編號標記", "default": "i", "info": "顯示在最左邊的小符號（如 i / ii / iii）" },
         { "type": "text", "id": "title", "label": "主標", "default": "滿 NT$ 799 免運" },
-        { "type": "text", "id": "subtitle", "label": "副標", "default": "黑貓宅配 · 24 小時內出貨" }
+        { "type": "textarea", "id": "subtitle", "label": "副標", "default": "黑貓宅配 · 24 小時內出貨", "info": "支持多行，每行會顯示成一段" }
       ]
     },
     {
