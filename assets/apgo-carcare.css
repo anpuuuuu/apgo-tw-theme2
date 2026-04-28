@@ -153,7 +153,9 @@ body.apgo-cc-skin .product-card-gallery__image-wrapper {
   overflow: hidden;
 }
 
-/* Product title — clean Inter, no italic shouting. Keep it readable. */
+/* Product title — clean Inter, no italic shouting. Keep it readable.
+   Force full-width block so it always sits on its own line above price
+   regardless of Horizon's group flex-direction settings. */
 body.apgo-cc-skin .product-card .product-title,
 body.apgo-cc-skin .product-card .product-title *,
 body.apgo-cc-skin .product-grid__item .product-title,
@@ -165,19 +167,34 @@ body.apgo-cc-skin .product-grid__item .product-title * {
   letter-spacing: .01em !important;
   color: var(--cc-fg) !important;
   line-height: 1.4 !important;
-  font-size: 14px !important;
+  font-size: 16px !important;
+  text-align: left !important;
+}
+body.apgo-cc-skin .product-card .product-title {
+  width: 100% !important;
+  display: block !important;
+}
+@media (max-width: 749px) {
+  body.apgo-cc-skin .product-card .product-title,
+  body.apgo-cc-skin .product-card .product-title * {
+    font-size: 15px !important;
+  }
 }
 
-/* Price — Inter tabular-nums, brand orange, calm sizing. The mono treatment
-   stays for the SUBTITLE / spec-row text below, not the headline price. */
+/* Price — Inter tabular-nums, calm sizing. Force block + left so it always
+   sits below the title on its own line, never wraps to the right column. */
 body.apgo-cc-skin .product-card .price,
 body.apgo-cc-skin .product-grid__item .price {
   font-family: var(--cc-font-body) !important;
-  font-weight: 600 !important;
-  font-size: 13px !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
   color: var(--cc-fg) !important;
   letter-spacing: .02em !important;
   font-variant-numeric: tabular-nums;
+  width: 100% !important;
+  text-align: left !important;
+  margin-top: 4px !important;
+  display: block !important;
 }
 body.apgo-cc-skin .product-card .price *,
 body.apgo-cc-skin .product-grid__item .price * {
@@ -210,10 +227,14 @@ body.apgo-cc-skin .product-card p:not(.price) {
   text-transform: uppercase !important;
 }
 
-/* Badges — refined: orange chip, mono caps, small radius. No glow. */
+/* Badges — refined: orange chip, mono caps, small radius. No glow.
+   IMPORTANT: do NOT match the .product-badges WRAPPER (it's always rendered
+   even with no badge inside) — only the actual __badge child. The earlier
+   [class*="-badge"] wildcard was painting the empty absolute-positioned
+   wrapper orange in the corner, which looked like a stray block. */
 body.apgo-cc-skin .badge,
 body.apgo-cc-skin .product-card__badge,
-body.apgo-cc-skin [class*="-badge"] {
+body.apgo-cc-skin .product-badges__badge {
   background: var(--cc-orange) !important;
   color: #fff !important;
   font-family: var(--cc-font-mono) !important;
@@ -224,6 +245,11 @@ body.apgo-cc-skin [class*="-badge"] {
   border-radius: 2px !important;
   border: none !important;
   padding: 4px 7px !important;
+}
+/* Make sure the empty wrapper never has bg / border bleeding through */
+body.apgo-cc-skin .product-badges {
+  background: transparent !important;
+  border: none !important;
 }
 
 /* Buy / quick-add buttons inside cards (if any) — solid orange. */
