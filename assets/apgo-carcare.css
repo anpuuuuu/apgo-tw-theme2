@@ -1045,22 +1045,31 @@ body.apgo-cc-skin .product-card { position: relative; }
   animation: cc-qa-fade .2s ease-out;
 }
 .apgo-cc-qa-modal__dialog {
-  position: relative;
-  margin: auto;
-  margin-top: 5vh;
-  max-width: 720px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  max-width: 560px;
+  max-height: 80vh;
   background: #1c1f24;
   border: 1px solid #2a2e35;
   border-radius: 16px;
-  overflow: hidden;
+  overflow-y: auto;
   animation: cc-qa-slide .25s cubic-bezier(.2, .7, .2, 1);
   box-shadow: 0 20px 60px rgba(0, 0, 0, .55);
   font-family: 'Inter', sans-serif;
 }
+@media (max-width: 749px) {
+  .apgo-cc-qa-modal__dialog {
+    width: 92vw;
+    max-width: none;
+  }
+}
 @keyframes cc-qa-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes cc-qa-slide {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translate(-50%, -50%) scale(.96); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 .apgo-cc-qa-modal__close {
   position: absolute;
@@ -1080,13 +1089,23 @@ body.apgo-cc-skin .product-card { position: relative; }
 }
 .apgo-cc-qa-modal__close:hover { background: rgba(255, 107, 26, .85); }
 
+/* Body: top row (image + info side-by-side) + footer (qty + cta) */
 .apgo-cc-qa-modal__body {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 16px;
+  color: #f0ece4;
 }
-@media (max-width: 599px) {
-  .apgo-cc-qa-modal__dialog { margin: auto 12px; max-width: calc(100% - 24px); }
-  .apgo-cc-qa-modal__body { grid-template-columns: 1fr; }
+.apgo-cc-qa-modal__top {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 749px) {
+  .apgo-cc-qa-modal__body { padding: 16px; gap: 12px; }
+  .apgo-cc-qa-modal__top { grid-template-columns: 110px 1fr; gap: 12px; }
 }
 .apgo-cc-qa-modal__media {
   background: #f1ede4;
@@ -1095,6 +1114,7 @@ body.apgo-cc-skin .product-card { position: relative; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  border-radius: 10px;
 }
 .apgo-cc-qa-modal__img {
   width: 100%; height: 100%;
@@ -1102,19 +1122,22 @@ body.apgo-cc-skin .product-card { position: relative; }
   display: block;
 }
 .apgo-cc-qa-modal__info {
-  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
   color: #f0ece4;
+  min-width: 0;
 }
 .apgo-cc-qa-modal__title {
   margin: 0;
   font-family: 'Cormorant Garamond', serif;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 500;
   line-height: 1.25;
   letter-spacing: -.01em;
+}
+@media (max-width: 749px) {
+  .apgo-cc-qa-modal__title { font-size: 17px; }
 }
 .apgo-cc-qa-modal__price {
   display: flex; align-items: baseline; gap: 10px;
@@ -1160,13 +1183,17 @@ body.apgo-cc-skin .product-card { position: relative; }
   font-weight: 600;
 }
 
-.apgo-cc-qa-modal__qty-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 0;
+/* Footer = qty stepper + add-to-cart, full-width row across both columns */
+.apgo-cc-qa-modal__footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid #2a2e35;
 }
-.apgo-cc-qa-modal__qty-label {
-  font-size: 13px;
-  color: #b8b3a8;
+.apgo-cc-qa-modal__footer .apgo-cc-qa-modal__cta {
+  flex: 1;
+  margin-top: 0;
 }
 .apgo-cc-qa-modal__qty {
   display: inline-flex;
@@ -1196,10 +1223,9 @@ body.apgo-cc-skin .product-card { position: relative; }
 .apgo-cc-qa-modal__qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
 .apgo-cc-qa-modal__cta {
-  margin-top: 4px;
-  padding: 14px 20px;
+  padding: 12px 20px;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   background: #ff6b1a;
   color: #fff;
   font-size: 14px;
@@ -1216,12 +1242,12 @@ body.apgo-cc-skin .product-card { position: relative; }
   cursor: not-allowed;
 }
 
-/* ---- Toast ---- */
+/* ---- Toast (top-center) ---- */
 .apgo-cc-toast {
   position: fixed;
-  bottom: 24px;
+  top: 24px;
   left: 50%;
-  transform: translateX(-50%) translateY(20px);
+  transform: translateX(-50%) translateY(-20px);
   z-index: 1200;
   padding: 12px 24px;
   background: #ff6b1a;
