@@ -1067,7 +1067,7 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
 .apgo-toast-root {
   position: fixed;
   left: 50%;
-  bottom: 32px;
+  top: 24px;
   transform: translateX(-50%);
   z-index: 9999;
   display: flex;
@@ -1087,7 +1087,7 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
   border-radius: 999px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.18);
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(-12px);
   transition: opacity .25s ease, transform .25s ease;
   white-space: nowrap;
   max-width: 90vw;
