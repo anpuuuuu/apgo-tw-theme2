@@ -70,6 +70,7 @@
     </div>
 
     {%- if total > 3 -%}
+      <div class="apgo-cc-mosaic__mobile-scroll-wrap">
       <div class="apgo-cc-mosaic__mobile-scroll" data-apgo-cc-scroll>
         {%- for block in section.blocks offset: 3 -%}
           {%- assign coll = collections[block.settings.collection] -%}
@@ -97,9 +98,12 @@
           </a>
         {%- endfor -%}
       </div>
+        <span class="apgo-cc-mosaic__scroll-hint" aria-hidden="true" data-apgo-cc-scroll-hint>›</span>
+      </div>
     {%- endif -%}
 
     {%- comment -%} ---------- DESKTOP LAYOUT (≥750px) ---------- {%- endcomment -%}
+    <div class="apgo-cc-mosaic__desktop-scroll-wrap">
     <div class="apgo-cc-mosaic__desktop-scroll" data-apgo-cc-scroll>
       {%- for block in section.blocks -%}
         {%- assign coll = collections[block.settings.collection] -%}
@@ -127,9 +131,58 @@
         </a>
       {%- endfor -%}
     </div>
+      <span class="apgo-cc-mosaic__scroll-hint" aria-hidden="true" data-apgo-cc-scroll-hint>›</span>
+    </div>
 
   {%- endif -%}
 </section>
+
+<script>
+(function(){
+  // Hide each scroll-hint once the user scrolls (or has reached the end).
+  // Re-shows after 3s of inactivity if there's still room to scroll.
+  function wireScrollHint(scrollEl, hint) {
+    if (!scrollEl || !hint) return;
+    var hideTimer;
+    function check() {
+      var maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
+      var atEnd = scrollEl.scrollLeft >= maxScroll - 4;
+      if (atEnd) {
+        hint.classList.add('apgo-cc-mosaic__scroll-hint--hidden');
+      }
+    }
+    scrollEl.addEventListener('scroll', function () {
+      hint.classList.add('apgo-cc-mosaic__scroll-hint--hidden');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(function () {
+        var maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
+        if (scrollEl.scrollLeft < maxScroll - 8) {
+          hint.classList.remove('apgo-cc-mosaic__scroll-hint--hidden');
+        }
+      }, 3000);
+    }, { passive: true });
+    // Hide upfront if there's nothing to scroll
+    requestAnimationFrame(function () {
+      if (scrollEl.scrollWidth <= scrollEl.clientWidth + 4) {
+        hint.classList.add('apgo-cc-mosaic__scroll-hint--hidden');
+      }
+    });
+    check();
+  }
+  function init(root) {
+    root = root || document;
+    root.querySelectorAll('.apgo-cc-mosaic__mobile-scroll-wrap, .apgo-cc-mosaic__desktop-scroll-wrap').forEach(function (wrap) {
+      wireScrollHint(wrap.querySelector('[data-apgo-cc-scroll]'), wrap.querySelector('[data-apgo-cc-scroll-hint]'));
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function(){ init(); });
+  } else { init(); }
+  if (window.Shopify && Shopify.designMode) {
+    document.addEventListener('shopify:section:load', function (e) { init(e.target); });
+  }
+})();
+</script>
 
 {% schema %}
 {
@@ -162,7 +215,7 @@
     {
       "name": "APGO · 分類磚 (Car Care)",
       "blocks": [
-        { "type": "tile", "settings": { "label_override": "熱銷排行" } },
+        { "type": "tile", "settings": { "label_override": "熱銷排行", "url_override": "/collections/促銷組合" } },
         { "type": "tile", "settings": { "label_override": "鍍膜全系列" } },
         { "type": "tile", "settings": { "label_override": "居家清潔" } },
         { "type": "tile", "settings": { "label_override": "清潔藥劑" } },

@@ -333,29 +333,33 @@ body.apgo-cc-skin .empty-state {
 .apgo-cc-mosaic__mobile-scroll { display: none; }
 
 /* Mobile (<750px): 2-col grid with featured spanning 2 rows on left,
-   2 small stacked on right; overflow tiles in horizontal scroll below. */
+   2 small stacked on right; overflow tiles in horizontal scroll below.
+   The featured tile is locked to a square (aspect-ratio 1/1), which
+   drives the right column to be square-half-height each. */
 @media (max-width: 749px) {
-  .apgo-cc-mosaic__desktop-scroll { display: none; }
+  .apgo-cc-mosaic__desktop-scroll-wrap { display: none; }
 
   .apgo-cc-mosaic__mobile-primary {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     gap: 8px;
-    /* Lock total height so the right column is "left height halved", which
-       matches the visual proportion the user requested. */
-    height: 220px;
   }
   .apgo-cc-mosaic__mobile-primary > :nth-child(1) {
-    grid-column: 1; grid-row: 1 / span 2;   /* featured: tall left */
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    aspect-ratio: 1 / 1;       /* always a square — drives the right column */
   }
   .apgo-cc-mosaic__mobile-primary > :nth-child(2) { grid-column: 2; grid-row: 1; }
   .apgo-cc-mosaic__mobile-primary > :nth-child(3) { grid-column: 2; grid-row: 2; }
 
+  .apgo-cc-mosaic__mobile-scroll-wrap {
+    position: relative;
+    margin-top: 12px;
+  }
   .apgo-cc-mosaic__mobile-scroll {
     display: flex;
     gap: 8px;
-    margin-top: 12px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
@@ -372,6 +376,9 @@ body.apgo-cc-skin .empty-state {
 
 /* Desktop (≥750px): one horizontal scroll row with all blocks, uniform tiles. */
 @media (min-width: 750px) {
+  .apgo-cc-mosaic__desktop-scroll-wrap {
+    position: relative;
+  }
   .apgo-cc-mosaic__desktop-scroll {
     display: flex;
     gap: 12px;
@@ -393,6 +400,44 @@ body.apgo-cc-skin .empty-state {
     min-height: 150px;
     scroll-snap-align: start;
   }
+}
+
+/* ---- Scroll hint (animated arrow on the right edge of swipe strips) ----
+   Pulses right ↔ left to signal swipe affordance. Auto-hides via JS once
+   the user reaches the end of the scroll, but the CSS-only baseline still
+   works on browsers without our JS. */
+.apgo-cc-mosaic__scroll-hint {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(22, 24, 28, 0.92);
+  color: var(--cc-orange);
+  border: 1px solid rgba(255, 107, 26, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  animation: cc-scroll-hint 1.6s ease-in-out infinite;
+  transition: opacity .25s;
+}
+.apgo-cc-mosaic__scroll-hint--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+@keyframes cc-scroll-hint {
+  0%, 100% { transform: translateY(-50%) translateX(0);    opacity: .9; }
+  50%      { transform: translateY(-50%) translateX(-8px); opacity: 1;  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .apgo-cc-mosaic__scroll-hint { animation: none; }
 }
 
 /* ---- Tile base ------------------------------------------------------------- */
