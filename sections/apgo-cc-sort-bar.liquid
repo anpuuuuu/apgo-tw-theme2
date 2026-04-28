@@ -1,0 +1,54 @@
+{%- comment -%}
+  APGO · Car Care Colors — Sort Bar
+  Renders 「共 N 項商品」on the left, sort pill tabs on the right.
+  Sits between the category mosaic and the product grid.
+  Phase 2.5 polish of docs/CAR_CARE_REDESIGN_PLAN.md.
+{%- endcomment -%}
+
+{%- liquid
+  assign current_sort = collection.sort_by | default: collection.default_sort_by
+
+  comment
+    Mapping label → Shopify sort_by token
+  endcomment
+-%}
+
+<section class="apgo-cc-sort" aria-label="排序與商品數">
+  <span class="apgo-cc-sort__count">
+    共 <strong>{{ collection.products_count }}</strong> 項商品
+  </span>
+
+  <div class="apgo-cc-sort__tabs" role="tablist">
+    {%- assign tabs = 'best-selling|熱銷,created-descending|新品,price-ascending|價格 ↑,price-descending|價格 ↓' | split: ',' -%}
+    {%- for t in tabs -%}
+      {%- assign parts = t | split: '|' -%}
+      {%- assign sort_token = parts[0] -%}
+      {%- assign sort_label = parts[1] -%}
+      {%- assign is_active = false -%}
+      {%- if current_sort == sort_token -%}{%- assign is_active = true -%}{%- endif -%}
+      <a
+        href="?sort_by={{ sort_token }}"
+        class="apgo-cc-sort__tab{% if is_active %} is-active{% endif %}"
+        role="tab"
+        aria-selected="{{ is_active }}"
+      >{{ sort_label }}</a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "APGO · 排序列 (Car Care)",
+  "tag": "section",
+  "class": "apgo-cc-sort-section",
+  "settings": [
+    { "type": "paragraph", "content": "顯示「共 N 項商品」+ 4 個排序藥丸 (熱銷 / 新品 / 價格 ↑ / 價格 ↓)。點選會以 ?sort_by= 重新整理頁面。" }
+  ],
+  "presets": [
+    { "name": "APGO · 排序列 (Car Care)" }
+  ],
+  "enabled_on": {
+    "templates": ["collection"]
+  }
+}
+{% endschema %}
