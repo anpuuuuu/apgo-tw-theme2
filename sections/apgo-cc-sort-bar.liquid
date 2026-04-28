@@ -25,7 +25,7 @@
   endfor
 -%}
 
-<section class="apgo-cc-sort" aria-label="排序與商品數">
+<section class="apgo-cc-sort" id="apgo-cc-sort-anchor" aria-label="排序與商品數">
   <span class="apgo-cc-sort__count">
     共 <strong>{{ collection.products_count }}</strong> 項商品
   </span>
@@ -47,9 +47,9 @@
         {%- if sort_token == blank and current_sort == blank -%}{%- assign is_active = true -%}{%- endif -%}
         <li role="none">
           {%- if sort_token == blank -%}
-            <a href="{{ collection.url }}" class="apgo-cc-sort__option{% if is_active %} is-active{% endif %}" role="menuitem">{{ sort_label }}</a>
+            <a href="{{ collection.url }}#apgo-cc-sort-anchor" class="apgo-cc-sort__option{% if is_active %} is-active{% endif %}" role="menuitem">{{ sort_label }}</a>
           {%- else -%}
-            <a href="{{ collection.url }}?sort_by={{ sort_token }}" class="apgo-cc-sort__option{% if is_active %} is-active{% endif %}" role="menuitem">{{ sort_label }}</a>
+            <a href="{{ collection.url }}?sort_by={{ sort_token }}#apgo-cc-sort-anchor" class="apgo-cc-sort__option{% if is_active %} is-active{% endif %}" role="menuitem">{{ sort_label }}</a>
           {%- endif -%}
         </li>
       {%- endfor -%}

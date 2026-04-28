@@ -343,6 +343,9 @@ body.apgo-cc-skin .pagination [aria-disabled="true"] {
    Always one row, count left + dropdown right, on both mobile and desktop.
    ---------------------------------------------------------------------------- */
 .apgo-cc-sort {
+  /* Anchor offset so jumping back here from a sort change doesn't slam
+     the bar against any sticky header above. */
+  scroll-margin-top: 80px;
   --cc-bg: #16181c;
   --cc-bg-alt: #1c1f24;
   --cc-bg-deep: #0f1115;
