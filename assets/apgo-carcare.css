@@ -339,12 +339,13 @@ body.apgo-cc-skin .pagination [aria-disabled="true"] {
 }
 
 /* ----------------------------------------------------------------------------
-   Sort bar — 「共 N 項商品」+ pill-style sort tabs
-   Lives in its own section between mosaic and product grid.
+   Sort bar — 「共 N 項商品」(left) + dropdown (right)
+   Always one row, count left + dropdown right, on both mobile and desktop.
    ---------------------------------------------------------------------------- */
 .apgo-cc-sort {
   --cc-bg: #16181c;
   --cc-bg-alt: #1c1f24;
+  --cc-bg-deep: #0f1115;
   --cc-divider: #2a2e35;
   --cc-fg: #f0ece4;
   --cc-fg-dim: #8a857b;
@@ -352,7 +353,6 @@ body.apgo-cc-skin .pagination [aria-disabled="true"] {
   --cc-orange: #ff6b1a;
   --cc-orange-soft: rgba(255, 107, 26, .12);
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -362,9 +362,14 @@ body.apgo-cc-skin .pagination [aria-disabled="true"] {
   background: var(--cc-bg);
   font-family: var(--cc-font-body, 'Inter', sans-serif);
 }
+@media (max-width: 749px) {
+  .apgo-cc-sort { padding: 12px 16px; }
+}
 .apgo-cc-sort__count {
   font-size: 13px;
   color: var(--cc-fg-dim);
+  flex: 1;
+  min-width: 0;
 }
 .apgo-cc-sort__count strong {
   color: var(--cc-fg);
@@ -372,52 +377,84 @@ body.apgo-cc-skin .pagination [aria-disabled="true"] {
   font-variant-numeric: tabular-nums;
   margin: 0 2px;
 }
-.apgo-cc-sort__tabs {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
+
+/* Dropdown built on <details>/<summary> */
+.apgo-cc-sort__dropdown {
+  position: relative;
+  flex-shrink: 0;
 }
-.apgo-cc-sort__tab {
-  padding: 5px 14px;
-  border-radius: 999px;
+.apgo-cc-sort__summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
   border: 1px solid var(--cc-divider);
-  background: transparent;
-  color: var(--cc-fg-mid);
-  font-size: 12px;
-  font-weight: 500;
-  text-decoration: none;
-  cursor: pointer;
-  transition: color .2s, background .2s, border-color .2s;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-.apgo-cc-sort__tab:hover {
+  border-radius: 999px;
+  background: var(--cc-bg-alt);
   color: var(--cc-fg);
-  border-color: rgba(255, 107, 26, .35);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;          /* hide native disclosure marker (Firefox) */
+  transition: border-color .2s, background .2s;
+  white-space: nowrap;
+  user-select: none;
 }
-.apgo-cc-sort__tab.is-active {
-  background: var(--cc-orange-soft);
+.apgo-cc-sort__summary::-webkit-details-marker { display: none; }
+.apgo-cc-sort__summary::marker { content: ""; }
+.apgo-cc-sort__summary:hover {
+  border-color: var(--cc-orange-soft);
+  background: var(--cc-bg-deep);
+}
+.apgo-cc-sort__dropdown[open] .apgo-cc-sort__summary {
+  border-color: var(--cc-orange);
   color: var(--cc-orange);
-  border-color: transparent;
-  font-weight: 600;
+}
+.apgo-cc-sort__chevron {
+  transition: transform .2s;
+}
+.apgo-cc-sort__dropdown[open] .apgo-cc-sort__chevron {
+  transform: rotate(180deg);
 }
 
-/* Mobile: the sort row stacks vertically (count on top, tabs row swipes
-   horizontally if needed). */
-@media (max-width: 749px) {
-  .apgo-cc-sort {
-    padding: 12px 16px;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .apgo-cc-sort__tabs {
-    width: 100%;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .apgo-cc-sort__tabs::-webkit-scrollbar { display: none; }
+/* Menu — anchored top-right of the summary, slides down */
+.apgo-cc-sort__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 30;
+  min-width: 180px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--cc-bg-alt);
+  border: 1px solid var(--cc-divider);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  animation: cc-sort-pop .15s ease-out;
+}
+@keyframes cc-sort-pop {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.apgo-cc-sort__option {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: var(--cc-fg-mid);
+  font-size: 13px;
+  text-decoration: none;
+  transition: background .15s, color .15s;
+  white-space: nowrap;
+}
+.apgo-cc-sort__option:hover {
+  background: var(--cc-bg-deep);
+  color: var(--cc-fg);
+}
+.apgo-cc-sort__option.is-active {
+  color: var(--cc-orange);
+  background: var(--cc-orange-soft);
+  font-weight: 600;
 }
 
 /* ----------------------------------------------------------------------------
