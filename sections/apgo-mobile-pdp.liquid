@@ -159,9 +159,27 @@
         </div>
       </div>
 
-      {%- comment -%} Ship card (editable via blocks of type "ship_row") {%- endcomment -%}
+      {%- comment -%}
+        Ship card — single source of truth lives in
+        shop.metafields.apgo.ship_rows (List of `shipping_row` metaobjects).
+        If empty (e.g., during migration), fall back to legacy section blocks.
+      {%- endcomment -%}
+      {%- assign ship_meta = shop.metafields.apgo.ship_rows.value -%}
       {%- assign ship_blocks = section.blocks | where: 'type', 'ship_row' -%}
-      {%- if ship_blocks.size > 0 -%}
+      {%- if ship_meta != blank and ship_meta.size > 0 -%}
+        <div class="apgo-mpdp-ship">
+          {%- for r in ship_meta -%}
+            <div class="apgo-mpdp-ship-row">
+              <span class="apgo-mpdp-ship-icon">{{ r.numeral }}</span>
+              <div>
+                <strong>{{ r.title }}</strong>
+                <div class="apgo-muted apgo-mpdp-ship-subtitle">{{ r.subtitle | newline_to_br }}</div>
+              </div>
+            </div>
+            {%- unless forloop.last -%}<div class="apgo-mpdp-ship-sep"></div>{%- endunless -%}
+          {%- endfor -%}
+        </div>
+      {%- elsif ship_blocks.size > 0 -%}
         <div class="apgo-mpdp-ship">
           {%- for block in ship_blocks -%}
             <div class="apgo-mpdp-ship-row" {{ block.shopify_attributes }}>

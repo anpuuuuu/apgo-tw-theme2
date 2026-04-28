@@ -219,24 +219,28 @@
             {%- endif -%}
           </div>
 
-          {%- comment -%} Trust badges 4-col {%- endcomment -%}
-          {%- if section.blocks.size > 0 -%}
-            <div class="apgo-trust-grid">
-              {%- for block in section.blocks -%}
-                {%- if block.type == 'trust_cell' -%}
-                  <div class="apgo-trust-cell" {{ block.shopify_attributes }}>
-                    <div class="apgo-trust-icon">{{ block.settings.icon }}</div>
-                    <div class="apgo-serif apgo-trust-title">{{ block.settings.title }}</div>
-                    <div class="apgo-muted apgo-trust-sub">{{ block.settings.subtitle }}</div>
+          {%- comment -%}
+            Ship info card — single source of truth lives in
+            shop.metafields.apgo.ship_rows (List of `shipping_row`
+            metaobjects). If the metafield is empty (e.g., during
+            migration), fall back to legacy section blocks.
+          {%- endcomment -%}
+          {%- assign ship_meta = shop.metafields.apgo.ship_rows.value -%}
+          {%- assign ship_blocks = section.blocks | where: 'type', 'ship_row' -%}
+          {%- if ship_meta != blank and ship_meta.size > 0 -%}
+            <div class="apgo-ship-card">
+              {%- for r in ship_meta -%}
+                <div class="apgo-ship-row">
+                  <span class="apgo-ship-icon">{{ r.numeral }}</span>
+                  <div>
+                    <strong>{{ r.title }}</strong>
+                    <div class="apgo-muted apgo-ship-subtitle">{{ r.subtitle | newline_to_br }}</div>
                   </div>
-                {%- endif -%}
+                </div>
+                {%- unless forloop.last -%}<div class="apgo-ship-sep"></div>{%- endunless -%}
               {%- endfor -%}
             </div>
-          {%- endif -%}
-
-          {%- comment -%} Ship info card (editable via blocks of type "ship_row") {%- endcomment -%}
-          {%- assign ship_blocks = section.blocks | where: 'type', 'ship_row' -%}
-          {%- if ship_blocks.size > 0 -%}
+          {%- elsif ship_blocks.size > 0 -%}
             <div class="apgo-ship-card">
               {%- for block in ship_blocks -%}
                 <div class="apgo-ship-row" {{ block.shopify_attributes }}>
@@ -279,18 +283,8 @@
   ],
   "blocks": [
     {
-      "type": "trust_cell",
-      "name": "信任徽章格",
-      "limit": 4,
-      "settings": [
-        { "type": "text", "id": "icon", "label": "圖示 (emoji / symbol)", "default": "✓" },
-        { "type": "text", "id": "title", "label": "主標", "default": "SGS" },
-        { "type": "text", "id": "subtitle", "label": "副標", "default": "國家級認證" }
-      ]
-    },
-    {
       "type": "ship_row",
-      "name": "運送/保障資訊列",
+      "name": "運送/保障資訊列（fallback；建議改用 shop.metafields.apgo.ship_rows）",
       "limit": 6,
       "settings": [
         { "type": "text", "id": "numeral", "label": "編號標記", "default": "i", "info": "顯示在最左邊的小符號（如 i / ii / iii）" },
@@ -302,15 +296,7 @@
   "presets": [
     {
       "name": "APGO · Hero",
-      "blocks": [
-        { "type": "trust_cell", "settings": { "icon": "🛡", "title": "SGS", "subtitle": "國家級認證" }},
-        { "type": "trust_cell", "settings": { "icon": "✈", "title": "免運", "subtitle": "滿 799" }},
-        { "type": "trust_cell", "settings": { "icon": "↻", "title": "30 天", "subtitle": "鑑賞退換" }},
-        { "type": "trust_cell", "settings": { "icon": "☘", "title": "台灣", "subtitle": "製造" }},
-        { "type": "ship_row", "settings": { "numeral": "i",   "title": "滿 NT$ 799 免運",   "subtitle": "黑貓宅配 · 24 小時內出貨" }},
-        { "type": "ship_row", "settings": { "numeral": "ii",  "title": "30 天鑑賞期",       "subtitle": "未拆封可無條件退換貨" }},
-        { "type": "ship_row", "settings": { "numeral": "iii", "title": "SGS 國家級檢驗",    "subtitle": "99.9% 抗菌率 · 八大零添加" }}
-      ]
+      "blocks": []
     }
   ]
 }

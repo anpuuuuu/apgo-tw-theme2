@@ -36,51 +36,11 @@
             "subtitle": "99.9% 抗菌率 · 八大零添加"
           }
         },
-        "trust_cell_wAMJQb": {
-          "type": "trust_cell",
-          "disabled": true,
-          "settings": {
-            "icon": "✓",
-            "title": "SGS",
-            "subtitle": "國家級認證"
-          }
-        },
-        "trust_cell_hLX4TY": {
-          "type": "trust_cell",
-          "disabled": true,
-          "settings": {
-            "icon": "✈",
-            "title": "免運",
-            "subtitle": "滿 799"
-          }
-        },
-        "trust_cell_m8BqfH": {
-          "type": "trust_cell",
-          "disabled": true,
-          "settings": {
-            "icon": "↻",
-            "title": "30 天",
-            "subtitle": "鑑賞退換"
-          }
-        },
-        "trust_cell_Xi7Aj7": {
-          "type": "trust_cell",
-          "disabled": true,
-          "settings": {
-            "icon": "☘",
-            "title": "台灣",
-            "subtitle": "製造"
-          }
-        }
       },
       "block_order": [
         "ship_row_MLNVbD",
         "ship_row_8TQedD",
-        "ship_row_KqcKdD",
-        "trust_cell_wAMJQb",
-        "trust_cell_hLX4TY",
-        "trust_cell_m8BqfH",
-        "trust_cell_Xi7Aj7"
+        "ship_row_KqcKdD"
       ],
       "settings": {
         "kicker": "",
