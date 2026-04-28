@@ -1,0 +1,104 @@
+{%- comment -%}
+  APGO · Car Care Colors — Category Mosaic
+  5 分類磚 (1 featured 大 + 4 普通)。Block-driven so admin can reorder /
+  add / remove tiles in the theme editor. First block in block_order is
+  the featured (orange-fill) tile; the rest are bg-alt with an orange
+  accent bar on bottom.
+  Phase 2 of docs/CAR_CARE_REDESIGN_PLAN.md.
+{%- endcomment -%}
+
+<section
+  class="apgo-cc-mosaic"
+  aria-label="商品分類"
+  style="--cc-mosaic-pad: {{ section.settings.padding | default: 28 }}px;"
+>
+  {%- if section.settings.heading != blank -%}
+    <header class="apgo-cc-mosaic__head">
+      <span class="apgo-cc-mosaic__bar" aria-hidden="true"></span>
+      <h2 class="apgo-cc-mosaic__title">{{ section.settings.heading }}</h2>
+    </header>
+  {%- endif -%}
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="apgo-cc-mosaic__grid apgo-cc-mosaic__grid--{{ section.blocks.size }}">
+      {%- for block in section.blocks -%}
+        {%- assign coll = collections[block.settings.collection] -%}
+        {%- assign label = block.settings.label_override | default: coll.title -%}
+        {%- assign tile_count = block.settings.count_override | default: coll.products_count -%}
+        {%- assign tile_url = block.settings.url_override | default: coll.url | default: '#' -%}
+        {%- assign is_featured = false -%}
+        {%- if forloop.first -%}{%- assign is_featured = true -%}{%- endif -%}
+
+        <a
+          href="{{ tile_url }}"
+          class="apgo-cc-mosaic__tile{% if is_featured %} apgo-cc-mosaic__tile--featured{% endif %}"
+          {{ block.shopify_attributes }}
+          {%- if block.settings.image != blank -%}
+            style="--tile-image: url('{{ block.settings.image | image_url: width: 800 }}');"
+          {%- endif -%}
+        >
+          <div class="apgo-cc-mosaic__tile-content">
+            <span class="apgo-cc-mosaic__tile-label">{{ label }}</span>
+            <span class="apgo-cc-mosaic__tile-meta">
+              {%- if tile_count != blank -%}
+                <span class="apgo-cc-mosaic__tile-count">{{ tile_count }} 件商品</span>
+              {%- endif -%}
+              <span class="apgo-cc-mosaic__tile-arrow" aria-hidden="true">›</span>
+            </span>
+          </div>
+          {%- unless is_featured -%}
+            <span class="apgo-cc-mosaic__tile-accent" aria-hidden="true"></span>
+          {%- endunless -%}
+        </a>
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <div class="apgo-cc-mosaic__empty">
+      尚未設定分類磚。請在主題編輯器加入「分類磚」block 並選擇對應的集合。
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "APGO · 分類磚 (Car Care)",
+  "tag": "section",
+  "class": "apgo-cc-mosaic-section",
+  "settings": [
+    { "type": "text",  "id": "heading", "label": "區塊標題", "default": "商品分類" },
+    { "type": "range", "id": "padding", "label": "區塊內距 (px)", "min": 8, "max": 60, "step": 2, "default": 28 }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "分類磚",
+      "limit": 6,
+      "settings": [
+        { "type": "header",          "content": "連結與內容" },
+        { "type": "collection",      "id": "collection",      "label": "對應集合（自動帶入標題與商品數）" },
+        { "type": "url",             "id": "url_override",    "label": "連結覆蓋（不填用集合連結）" },
+        { "type": "text",            "id": "label_override",  "label": "標題覆蓋（不填用集合標題）" },
+        { "type": "number",          "id": "count_override",  "label": "商品數覆蓋（不填用實際數量）" },
+
+        { "type": "header",          "content": "視覺" },
+        { "type": "image_picker",    "id": "image",           "label": "背景圖（選填，建議 800x500）", "info": "未設定則純色，第 1 個磚會是橘色，其他是深灰" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO · 分類磚 (Car Care)",
+      "blocks": [
+        { "type": "tile", "settings": { "label_override": "鍍膜全系列" } },
+        { "type": "tile", "settings": { "label_override": "清潔藥劑" } },
+        { "type": "tile", "settings": { "label_override": "洗車用品" } },
+        { "type": "tile", "settings": { "label_override": "科技執法測速器" } },
+        { "type": "tile", "settings": { "label_override": "居家清潔" } }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": ["collection"]
+  }
+}
+{% endschema %}

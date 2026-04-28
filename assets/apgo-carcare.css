@@ -279,3 +279,211 @@ body.apgo-cc-skin .results-list__empty,
 body.apgo-cc-skin .empty-state {
   color: var(--cc-fg-dim) !important;
 }
+
+/* ============================================================================
+   Phase 2 · Category Mosaic
+   Source: merged-list.jsx CatTile + mobile-list.jsx MobileCatTile.
+   First block = featured (orange fill, larger title).
+   Other blocks = bg-alt + 2px orange bottom-bar accent.
+   ============================================================================ */
+
+/* The mosaic is a top-level section so it has its own breathing room. */
+.apgo-cc-mosaic {
+  padding: var(--cc-mosaic-pad, 28px);
+  /* When --cc-* tokens aren't on the html node (i.e. when the section is in
+     theme editor preview without the body skin class), fall back gracefully. */
+  --cc-bg: #16181c;
+  --cc-bg-alt: #1c1f24;
+  --cc-bg-deep: #0f1115;
+  --cc-divider: #2a2e35;
+  --cc-divider-dim: #23262c;
+  --cc-fg: #f0ece4;
+  --cc-fg-mid: #b8b3a8;
+  --cc-fg-dim: #8a857b;
+  --cc-orange: #ff6b1a;
+  background: var(--cc-bg);
+  font-family: var(--cc-font-body, 'Inter', sans-serif);
+}
+
+.apgo-cc-mosaic__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.apgo-cc-mosaic__bar {
+  width: 3px;
+  height: 14px;
+  background: var(--cc-orange);
+  border-radius: 2px;
+  display: inline-block;
+}
+.apgo-cc-mosaic__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--cc-fg);
+  letter-spacing: .01em;
+}
+
+/* ---- Grid layouts ---------------------------------------------------------- */
+
+/* Desktop: 1 featured (2fr) + N small (1fr each), default to 5 tiles total */
+.apgo-cc-mosaic__grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;          /* Mobile fallback: stacked */
+}
+
+@media (min-width: 750px) {
+  /* For each block-count we override the template explicitly so the
+     featured tile always fills the leftmost large cell. */
+  .apgo-cc-mosaic__grid--1 { grid-template-columns: 1fr; }
+  .apgo-cc-mosaic__grid--2 { grid-template-columns: 2fr 1fr; }
+  .apgo-cc-mosaic__grid--3 { grid-template-columns: 2fr 1fr 1fr; }
+  .apgo-cc-mosaic__grid--4 { grid-template-columns: 2fr 1fr 1fr 1fr; }
+  .apgo-cc-mosaic__grid--5 { grid-template-columns: 2fr 1fr 1fr 1fr 1fr; }
+  .apgo-cc-mosaic__grid--6 { grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr; }
+
+  /* Equal heights — design uses 170px which feels right at 4-col widths. */
+  .apgo-cc-mosaic__grid > .apgo-cc-mosaic__tile { min-height: 170px; }
+}
+
+/* Mobile: featured spans full width on its own row (full-bleed feel),
+   others go in 2-column grid below. */
+@media (max-width: 749px) {
+  .apgo-cc-mosaic__grid > .apgo-cc-mosaic__tile--featured {
+    grid-column: 1 / -1;
+    min-height: 140px;
+  }
+  .apgo-cc-mosaic__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .apgo-cc-mosaic__grid > .apgo-cc-mosaic__tile { min-height: 110px; }
+}
+
+/* ---- Tile base ------------------------------------------------------------- */
+
+.apgo-cc-mosaic__tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: var(--cc-r3, 14px);
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--cc-fg);
+  background-color: var(--cc-bg-alt);
+  border: 1px solid var(--cc-divider);
+  transition: transform .25s cubic-bezier(.2,.7,.2,1), border-color .25s, background .25s;
+  isolation: isolate;       /* keep ::before overlay below content */
+  cursor: pointer;
+}
+.apgo-cc-mosaic__tile:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,107,26,.3);
+}
+
+/* Optional bg image — painted under content with a soft dark veil so text
+   stays legible on any photo. */
+.apgo-cc-mosaic__tile[style*="--tile-image"]::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  background-image: var(--tile-image);
+  background-size: cover; background-position: center;
+  opacity: .55;
+  transition: opacity .25s;
+}
+.apgo-cc-mosaic__tile[style*="--tile-image"]::after {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,.55) 100%);
+}
+.apgo-cc-mosaic__tile[style*="--tile-image"]:hover::before { opacity: .75; }
+
+/* ---- Featured tile (first block) ------------------------------------------- */
+
+.apgo-cc-mosaic__tile--featured {
+  background-color: var(--cc-orange);
+  background-image: linear-gradient(135deg, var(--cc-orange) 0%, #d65a16 100%);
+  border-color: transparent;
+  color: #fff;
+}
+.apgo-cc-mosaic__tile--featured:hover {
+  border-color: transparent;
+  filter: brightness(1.05);
+}
+.apgo-cc-mosaic__tile--featured[style*="--tile-image"]::after {
+  background: linear-gradient(135deg, rgba(255,107,26,.85) 0%, rgba(214,90,22,.7) 100%);
+}
+
+/* ---- Tile content ---------------------------------------------------------- */
+
+.apgo-cc-mosaic__tile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.apgo-cc-mosaic__tile-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: inherit;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+}
+.apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-label {
+  font-size: 22px;
+}
+@media (max-width: 749px) {
+  .apgo-cc-mosaic__tile-label { font-size: 14px; }
+  .apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-label { font-size: 20px; }
+}
+
+.apgo-cc-mosaic__tile-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--cc-fg-dim);
+  margin-top: 6px;
+}
+.apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-meta {
+  color: rgba(255,255,255,.85);
+}
+.apgo-cc-mosaic__tile-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--cc-orange);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+}
+.apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-arrow {
+  background: rgba(255,255,255,.25);
+  color: #fff;
+}
+
+/* Orange bottom-bar accent for non-featured tiles */
+.apgo-cc-mosaic__tile-accent {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 2px;
+  background: var(--cc-orange);
+}
+
+/* ---- Empty state (no blocks) ---------------------------------------------- */
+
+.apgo-cc-mosaic__empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--cc-fg-dim);
+  font-size: 13px;
+  border: 1px dashed var(--cc-divider);
+  border-radius: var(--cc-r3, 14px);
+  background: var(--cc-bg-alt);
+}

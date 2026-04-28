@@ -253,7 +253,7 @@
 | 0 計畫書（初版） | ✅ | `0ca8df6` | 2026-04-27 |
 | 0.5 計畫書更新（檔案盤點 + 反映 Phase 0 後 24 個其他 session commit） | ✅ | (本 commit) | 2026-04-28 |
 | 1 列表頁皮膚 + 停用戰術 | ✅ 已完成 | (本 commit) | apgo-carcare.css + theme.liquid 載入切換 + body class 改 + collection.json 拿掉 tactical sections。戰術 css/js/sections 全部留檔 |
-| 2 列表頁 sections | ⏸ 未開始 | - | - |
+| 2 列表頁 sections | 🟡 進行中 | (本 commit) | Category Mosaic 完成；Hero promo banner + permanent promo pills 延後（屬於 user 緩做的「全站滿千」） |
 | 3 列表頁互動 | ⏸ 未開始 | - | - |
 | 4 詳情頁皮膚 + 新模板 | ⏸ 未開始 | - | - |
 | 5 詳情頁 metafields | ⏸ 未開始 | - | - |
