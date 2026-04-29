@@ -61,6 +61,10 @@
     return 'NT$ ' + n.toLocaleString('zh-TW', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
   }
 
+  function isSingleMode() {
+    return state.tier && state.tier.total === 1;
+  }
+
   function init() {
     // Adopt the first .is-active tier as the starting state.
     var defaultTier = $('[data-apgo-bundle-tier].is-active');
@@ -80,7 +84,27 @@
     var maxN = state.tier.total;
     var giftN = state.tier.gift;
     var remaining = Math.max(0, maxN - sel);
-    var isComplete = sel >= maxN && maxN > 0;
+    var single = isSingleMode();
+    var isComplete = single ? sel === 1 : (sel >= maxN && maxN > 0);
+
+    // Toggle widget data-mode attribute so CSS shows/hides the right pickers
+    widgets.forEach(function (w) {
+      w.setAttribute('data-mode', single ? 'single' : 'multi');
+    });
+
+    // Single-chip active state + out-of-stock dimming
+    $$('[data-apgo-bundle-single-scent]').forEach(function (chip) {
+      var name = chip.getAttribute('data-apgo-bundle-single-scent');
+      var active = single && (state.scents[name] || 0) > 0;
+      var avail = isAvailable(name);
+      chip.classList.toggle('is-active', active);
+      chip.classList.toggle('is-out-of-stock', !avail);
+      var input = chip.querySelector('.apgo-bundle__single-input');
+      if (input) {
+        input.checked = active;
+        input.disabled = !avail;
+      }
+    });
 
     // 1) Tier active state — sync across all widgets
     $$('[data-apgo-bundle-tier]').forEach(function (t) {
@@ -161,24 +185,42 @@
           return;
         }
         state.tier = newTier;
-        // If current selections exceed new max, trim from highest-qty first
-        var sel = totalSelected();
-        if (sel > newTier.total) {
-          var entries = Object.keys(state.scents).map(function (k) {
-            return [k, state.scents[k]];
-          }).sort(function (a, b) { return b[1] - a[1]; });
-          var i = 0;
-          while (sel > newTier.total && i < entries.length * 100 /* safety */) {
-            var name = entries[i % entries.length][0];
-            if (state.scents[name] > 0) {
-              state.scents[name]--;
-              sel--;
+        // Switching INTO single mode (max=1): clear all so user picks fresh.
+        // Switching OUT of single mode: same — multi mode starts fresh.
+        // (Switching between multi tiers we still trim.)
+        var wasSingle = state.tier && state.tier.total === 1;
+        var goingSingle = newTier.total === 1;
+        if (goingSingle || wasSingle) {
+          Object.keys(state.scents).forEach(function (n) { state.scents[n] = 0; });
+        } else {
+          // Multi → multi: trim from highest-qty first if over new max
+          var sel = totalSelected();
+          if (sel > newTier.total) {
+            var entries = Object.keys(state.scents).map(function (k) {
+              return [k, state.scents[k]];
+            }).sort(function (a, b) { return b[1] - a[1]; });
+            var i = 0;
+            while (sel > newTier.total && i < entries.length * 100) {
+              var nm = entries[i % entries.length][0];
+              if (state.scents[nm] > 0) { state.scents[nm]--; sel--; }
+              i++;
             }
-            i++;
           }
         }
         render();
       });
+    });
+
+    // Single-mode chip click → set state.scents[name] = 1, all others = 0
+    document.addEventListener('click', function (e) {
+      var chip = e.target.closest && e.target.closest('[data-apgo-bundle-single-scent]');
+      if (!chip) return;
+      if (!isSingleMode()) return;
+      var name = chip.getAttribute('data-apgo-bundle-single-scent');
+      if (!isAvailable(name)) return;
+      Object.keys(state.scents).forEach(function (n) { state.scents[n] = 0; });
+      state.scents[name] = 1;
+      render();
     });
 
     // Qty +/- (delegated so dynamically-added rows also work)
@@ -393,6 +435,26 @@
   // via Shopify Automatic Discount (admin-side), see
   // docs/V1S_PLUS_BUNDLE_PLAN.md Phase C.
   function buildPayload() {
+    // Single-pack tier: behave like a normal product add. No bundle metadata,
+    // no Automatic Discount needed (since min-qty rules require ≥3 packs).
+    if (isSingleMode()) {
+      var pickedName = null;
+      Object.keys(state.scents).forEach(function (name) {
+        if ((state.scents[name] || 0) > 0) pickedName = name;
+      });
+      if (!pickedName) return { bundle_id: null, items: [] };
+      var vid = variantsByScent[pickedName];
+      if (!vid) {
+        console.warn('[apgo-bundle] No variant_id for scent "' + pickedName + '"; skipping');
+        return { bundle_id: null, items: [] };
+      }
+      return {
+        bundle_id: null,
+        items: [{ id: vid, quantity: 1 }]
+      };
+    }
+
+    // Multi-pack bundle: tag each line with bundle metadata + buy/gift role.
     var bundleId = 'apgo-bundle-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
     var items = [];
     var packsAssigned = 0;

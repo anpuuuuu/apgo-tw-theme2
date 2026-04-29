@@ -57,7 +57,7 @@
   endif
 -%}
 
-<div class="apgo-bundle" data-apgo-bundle data-bundle-shell="{{ shell }}">
+<div class="apgo-bundle" data-apgo-bundle data-bundle-shell="{{ shell }}" data-mode="multi">
   <header class="apgo-bundle__head">
     <h3 class="apgo-bundle__title apgo-serif">限時優惠組合</h3>
     <span class="apgo-bundle__sub">BUY MORE · GIFT MORE</span>
@@ -140,10 +140,44 @@
         </span>
       </div>
 
-      <div class="apgo-bundle__quick-actions">
+      <div class="apgo-bundle__quick-actions" data-apgo-bundle-quick-actions>
         <button type="button" class="apgo-bundle__action-btn" data-apgo-bundle-action="all-same">全部都同款 ↓</button>
         <button type="button" class="apgo-bundle__action-btn" data-apgo-bundle-action="random">隨機驚喜</button>
         <button type="button" class="apgo-bundle__action-btn" data-apgo-bundle-action="clear">清除</button>
+      </div>
+
+      {%- comment -%}
+        Single-pack mode: a 2-column radio chip grid that mirrors the
+        original (non-bundle) variant picker. Hidden by default; JS adds
+        data-mode="single" on the widget root when 單包 tier is active.
+      {%- endcomment -%}
+      <div class="apgo-bundle__single-grid" data-apgo-bundle-single-grid>
+        {%- for value in scent_option.values -%}
+          {%- assign s_hex = '#E8DFC9' -%}
+          {%- if scent_palette != blank -%}
+            {%- for s in scent_palette -%}
+              {%- if s.name == value -%}{%- assign s_hex = s.hex -%}{%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+          {%- assign s_en = '' -%}
+          {%- for pair in en_pairs -%}
+            {%- assign p = pair | split: '|' -%}
+            {%- if p[0] == value -%}{%- assign s_en = p[1] -%}{%- endif -%}
+          {%- endfor -%}
+          <label class="apgo-bundle__single-chip" data-apgo-bundle-single-scent="{{ value | escape }}">
+            <input type="radio"
+                   name="apgo-bundle-single-{{ shell }}"
+                   value="{{ value | escape }}"
+                   class="apgo-bundle__single-input">
+            <span class="apgo-bundle__single-dot" style="background:{{ s_hex }}"></span>
+            <span class="apgo-bundle__single-info">
+              <span class="apgo-bundle__single-name apgo-serif">{{ value }}</span>
+              {%- if s_en != blank -%}
+                <span class="apgo-bundle__single-en">{{ s_en }}</span>
+              {%- endif -%}
+            </span>
+          </label>
+        {%- endfor -%}
       </div>
 
       <div class="apgo-bundle__scent-rows">
