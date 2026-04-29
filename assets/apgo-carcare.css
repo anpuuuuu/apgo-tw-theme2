@@ -200,37 +200,62 @@ body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-blo
   width: 100% !important;
 }
 
-/* Price — Inter tabular-nums, calm sizing. Force block + left so it always
-   sits below the title on its own line, never wraps to the right column. */
+/* Price — stack vertically: compare-at (smaller, strikethrough) on top,
+   sale price (orange, bigger) on bottom. Horizon's snippets/price.liquid
+   wraps the price as either:
+     <div [ref=priceContainer]>
+       <span><span class="price">$X</span></span>
+       <span><span class="compare-at-price">$Y</span></span>
+     </div>
+   (when show_sale_price_first = true, which is what collection.json sets)
+   Use flex-direction: column-reverse to put compare-at above price.       */
+body.apgo-cc-skin .product-card [ref="priceContainer"],
+body.apgo-cc-skin .product-grid__item [ref="priceContainer"] {
+  display: flex !important;
+  flex-direction: column-reverse !important;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* Sale price (or-only price) — bigger, orange when on sale, ink otherwise */
 body.apgo-cc-skin .product-card .price,
 body.apgo-cc-skin .product-grid__item .price {
   font-family: var(--cc-font-body) !important;
   font-weight: 700 !important;
-  font-size: 14px !important;
-  color: var(--cc-fg) !important;
+  font-size: 16px !important;
   letter-spacing: .02em !important;
   font-variant-numeric: tabular-nums;
-  width: 100% !important;
   text-align: left !important;
-  margin-top: 4px !important;
-  display: block !important;
+  display: block;
+  color: var(--cc-fg) !important;
 }
 body.apgo-cc-skin .product-card .price *,
 body.apgo-cc-skin .product-grid__item .price * {
   font-family: var(--cc-font-body) !important;
   color: inherit;
 }
-/* Compare-at strike — faint, no orange screaming */
-body.apgo-cc-skin .price__compare,
-body.apgo-cc-skin .price__compare * {
-  color: var(--cc-fg-faint) !important;
-  font-weight: 300 !important;
-  text-decoration: line-through;
-}
-/* Sale price gets the brand orange, but only when there's a compare-at */
-body.apgo-cc-skin .price--on-sale .price__sale,
-body.apgo-cc-skin .price--on-sale .price__sale * {
+
+/* When the product is on sale (compare-at exists in DOM), tint .price
+   orange so it stands out as the «現價/特價». */
+body.apgo-cc-skin .product-card [ref="priceContainer"]:has(.compare-at-price) .price,
+body.apgo-cc-skin .product-card [ref="priceContainer"]:has(.compare-at-price) .price *,
+body.apgo-cc-skin .product-grid__item [ref="priceContainer"]:has(.compare-at-price) .price,
+body.apgo-cc-skin .product-grid__item [ref="priceContainer"]:has(.compare-at-price) .price * {
   color: var(--cc-orange) !important;
+}
+
+/* Compare-at strikethrough — smaller, faint, sits on top of the sale price */
+body.apgo-cc-skin .compare-at-price,
+body.apgo-cc-skin .compare-at-price * {
+  color: var(--cc-fg-faint) !important;
+  font-family: var(--cc-font-body) !important;
+  font-weight: 300 !important;
+  font-size: 12px !important;
+  text-decoration: line-through;
+  letter-spacing: .02em !important;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Subtitle text-block (the metafield-driven descriptors.subtitle line) — mono,
