@@ -83,12 +83,17 @@ body.apgo-cc-skin .section-background,
 body.apgo-cc-skin #MainContent,
 body.apgo-cc-skin .product-grid-container {
   background: var(--cc-bg) !important;
-  /* Add side padding so cards don't sit flush against the screen edge */
+}
+/* Inset the actual product grid (the <ul> of cards) so cards don't sit
+   flush against the screen edge. Targeting .product-grid specifically
+   instead of the outer container — leaves the section background full-
+   width but pulls cards inwards. */
+body.apgo-cc-skin .product-grid {
   padding-left: 16px !important;
   padding-right: 16px !important;
 }
 @media (min-width: 750px) {
-  body.apgo-cc-skin .product-grid-container {
+  body.apgo-cc-skin .product-grid {
     padding-left: 28px !important;
     padding-right: 28px !important;
   }
