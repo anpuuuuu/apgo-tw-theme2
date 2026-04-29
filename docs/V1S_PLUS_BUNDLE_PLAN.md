@@ -172,8 +172,13 @@
 | 0.5 Metafield 建立 | ✅ user 完成 | 2026-04-29 | apgo.bundle_enabled (Boolean) 已建，洗衣精待 user 打勾 |
 | A Layout | ✅ 已完成 | 7393b4d (snippet) + ef62eab (sticky bar fix) | snippets/apgo-bundle-widget.liquid + CSS + 雙 shell 條件渲染 + 手機 sticky bar |
 | B 前端 Logic | ✅ 已完成 | e7c403b | assets/apgo-bundle.js — 單一 state 同步雙 shell + 4 個 tier 切換 + qty +/- + 3 個 quick action + CTA toggle + payload console.log |
-| C Cart 整合 | ✅ 已完成（程式部分） | (本 commit) | submitToCart() AJAX /cart/add.js + 多 line items + 加購 toast + cart event dispatch + 立即購買 redirect /cart。**user 後台還需設 Automatic Discount**（見第 11 節） |
-| D 細節 | ⏸ 未開始 | - | - |
+| C Cart 整合 | ✅ 已完成 | 04ed7ee | submitToCart() AJAX /cart/add.js + 多 line items + 加購 toast + cart event dispatch + 立即購買 redirect /cart |
+| D-1 缺貨灰底 | ✅ | 7c6db84 | option A：scent 售完 → 灰 row + 缺貨膠囊 + + 鎖死 |
+| D-2 單包用回原 picker | ✅ | 6b01f8c | tier=單包 切換成 .apgo-scentbtn 原生 chip grid |
+| D-3 顏色從 metafield | ✅ | shop value 設好後生效 | shop.metafields.apgo.scents 為主，hardcoded case 為 fallback |
+| D-4 上下卡片留白 | ✅ | 25b1840 | bundle widget 與 ship card / tabs 之間加 16-20px gap |
+| D-5 tier 改成 metafield 驅動 | ✅ | (本 commit) | product.metafields.apgo.bundle_tiers (list of bundle_tier metaobject) → admin 可改 buy/gift/label/chip。沒設 metafield 時用 hardcoded fallback |
+| D 其他 polish | ⏸ 未開始 | - | tier 切換動畫、a11y、cart 顯示「贈品」標籤 |
 
 ---
 

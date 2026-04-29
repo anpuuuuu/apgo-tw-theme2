@@ -21,13 +21,45 @@
 {%- liquid
   comment
     Tier shape per row: buy|gift|label|chip
+
+    SOURCE OF TRUTH: product.metafields.apgo.bundle_tiers (list of
+    bundle_tier metaobjects), so admin can edit tier counts/labels/chips
+    in Shopify without touching code. We capture each metaobject's
+    fields into the same buy|gift|label|chip pipe-format the rest of
+    the snippet expects.
+
+    FALLBACK: if the metafield is empty (admin hasn't built it yet, or
+    storefront access is off), use the original 4 hardcoded tiers so the
+    widget still renders.
+
     Prices, savings, avg-per-pack are all DERIVED from product.price
     (the live Shopify variant price). Hardcoding numbers in the snippet
     would lie to users when admin changes the price; this way the bundle
     UI always matches the cart price up to the Automatic Discount
     deduction (configured in admin per docs §8).
   endcomment
-  assign tiers_str = '1|0|單包|::2|1|買 2 送 1|熱賣推薦::4|2|買 4 送 2|搜尋首選::6|3|買 6 送 3|最划算'
+  assign tier_meta = product.metafields.apgo.bundle_tiers.value
+  assign tiers_str = ''
+  if tier_meta != blank and tier_meta.size > 0
+    for entry in tier_meta
+      capture row
+        echo entry.buy | plus: 0
+        echo '|'
+        echo entry.gift | plus: 0
+        echo '|'
+        echo entry.label
+        echo '|'
+        echo entry.chip
+      endcapture
+      if forloop.first
+        assign tiers_str = row
+      else
+        assign tiers_str = tiers_str | append: '::' | append: row
+      endif
+    endfor
+  else
+    assign tiers_str = '1|0|單包|::2|1|買 2 送 1|熱賣推薦::4|2|買 4 送 2|搜尋首選::6|3|買 6 送 3|最划算'
+  endif
   assign tiers = tiers_str | split: '::'
 
   comment
