@@ -41,10 +41,24 @@
       buy: parseInt(el.dataset.buy, 10) || 0,
       gift: parseInt(el.dataset.gift, 10) || 0,
       total: parseInt(el.dataset.total, 10) || 0,
-      unit: parseInt(el.dataset.unit, 10) || 0,
-      totalPrice: parseInt(el.dataset.tierTotal, 10) || 0,
+      // *Cents* — Shopify standard. Always integer to avoid float math.
+      unitCents: parseInt(el.dataset.unitCents, 10) || 0,
+      totalPriceCents: parseInt(el.dataset.tierTotalCents, 10) || 0,
       label: el.dataset.tierLabel || ''
     };
+  }
+
+  // Format cents → 'NT$ 1,596' style. Mirrors apgo-pdp.js / apgo-cc-quick-add.js
+  // approach: prefer Shopify.formatMoney with the theme's money_format, fall
+  // back to a sensible TWD default. The .money Liquid filter would have done
+  // this server-side; we need it client-side because tier prices are dynamic.
+  function formatMoney(cents) {
+    if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
+      var fmt = (window.theme && window.theme.moneyFormat) || 'NT${{amount}}';
+      try { return window.Shopify.formatMoney(cents, fmt); } catch (e) {}
+    }
+    var n = Number(cents) / 100;
+    return 'NT$ ' + n.toLocaleString('zh-TW', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
   }
 
   function init() {
@@ -126,7 +140,7 @@
       el.style.display = isComplete ? '' : 'none';
     });
     $$('[data-apgo-bundle-total]').forEach(function (el) {
-      el.textContent = state.tier.totalPrice;
+      el.textContent = formatMoney(state.tier.totalPriceCents);
     });
   }
 
@@ -416,7 +430,7 @@
             _bundle_tier: state.tier.label,
             _bundle_role: role,
             _bundle_total_packs: String(state.tier.total),
-            _bundle_quoted_price: String(state.tier.totalPrice)
+            _bundle_quoted_total: formatMoney(state.tier.totalPriceCents)
           }
         });
         packsAssigned += take;

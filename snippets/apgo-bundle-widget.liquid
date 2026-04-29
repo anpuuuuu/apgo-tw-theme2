@@ -20,10 +20,21 @@
 
 {%- liquid
   comment
-    Format per row: unit|buy|gift|label|chip|total_price|gift_text|savings
+    Tier shape per row: buy|gift|label|chip
+    Prices, savings, avg-per-pack are all DERIVED from product.price
+    (the live Shopify variant price). Hardcoding numbers in the snippet
+    would lie to users when admin changes the price; this way the bundle
+    UI always matches the cart price up to the Automatic Discount
+    deduction (configured in admin per docs §8).
   endcomment
-  assign tiers_str = '149|1|0|單包|||149|0::99|2|1|買 2 送 1|熱賣推薦|298|+送 1 包|149::99|4|2|買 4 送 2|搜尋首選|596|+送 2 包|298::99|6|3|買 6 送 3|最划算|894|+送 3 包|447'
+  assign tiers_str = '1|0|單包|::2|1|買 2 送 1|熱賣推薦::4|2|買 4 送 2|搜尋首選::6|3|買 6 送 3|最划算'
   assign tiers = tiers_str | split: '::'
+
+  comment
+    Single-pack price from Shopify. product.price returns the lowest
+    variant price (or the selected variant's price). Stored in cents.
+  endcomment
+  assign single_price = product.price | default: 0
 
   comment
     Chinese → English subtitle map for scent rows.
@@ -56,15 +67,27 @@
   <div class="apgo-bundle__tiers" role="radiogroup" aria-label="優惠組合方案">
     {%- for t_str in tiers -%}
       {%- assign t = t_str | split: '|' -%}
-      {%- assign t_unit = t[0] -%}
-      {%- assign t_buy = t[1] | plus: 0 -%}
-      {%- assign t_gift = t[2] | plus: 0 -%}
-      {%- assign t_label = t[3] -%}
-      {%- assign t_chip = t[4] -%}
-      {%- assign t_total_price = t[5] -%}
-      {%- assign t_gift_text = t[6] -%}
-      {%- assign t_savings = t[7] | plus: 0 -%}
+      {%- assign t_buy = t[0] | plus: 0 -%}
+      {%- assign t_gift = t[1] | plus: 0 -%}
+      {%- assign t_label = t[2] -%}
+      {%- assign t_chip = t[3] -%}
       {%- assign t_total_count = t_buy | plus: t_gift -%}
+
+      {%- comment -%}
+        Pricing math (everything in cents):
+          total_price = single_price × buy_count        ← what user pays
+          was_price   = single_price × total_count       ← undiscounted shelf
+          savings     = was_price - total_price
+          avg_per_pack= total_price / total_count
+      {%- endcomment -%}
+      {%- assign t_total_price = single_price | times: t_buy -%}
+      {%- assign t_was_price = single_price | times: t_total_count -%}
+      {%- assign t_savings = t_was_price | minus: t_total_price -%}
+      {%- assign t_avg_price = 0 -%}
+      {%- if t_total_count > 0 -%}
+        {%- assign t_avg_price = t_total_price | divided_by: t_total_count -%}
+      {%- endif -%}
+
       {%- assign is_default = false -%}
       {%- if forloop.index == 2 -%}{%- assign is_default = true -%}{%- endif -%}
 
@@ -73,8 +96,8 @@
              data-buy="{{ t_buy }}"
              data-gift="{{ t_gift }}"
              data-total="{{ t_total_count }}"
-             data-unit="{{ t_unit }}"
-             data-tier-total="{{ t_total_price }}"
+             data-unit-cents="{{ single_price }}"
+             data-tier-total-cents="{{ t_total_price }}"
              data-tier-label="{{ t_label }}">
         <input type="radio"
                name="apgo-bundle-tier-{{ shell }}"
@@ -90,16 +113,16 @@
             {%- endif -%}
           </div>
           <div class="apgo-bundle__tier-meta">
-            共 {{ t_total_count }} 包 · 每包平均 NT$ {{ t_unit }}
+            共 {{ t_total_count }} 包 · 每包平均 {{ t_avg_price | money }}
             {%- if t_savings > 0 -%}
-              <span class="apgo-bundle__tier-savings">· 省 NT$ {{ t_savings }}</span>
+              <span class="apgo-bundle__tier-savings">· 省 {{ t_savings | money }}</span>
             {%- endif -%}
           </div>
         </div>
         <div class="apgo-bundle__tier-price-area">
-          <div class="apgo-bundle__tier-price">NT$ {{ t_total_price }}</div>
-          {%- if t_gift_text != blank -%}
-            <div class="apgo-bundle__tier-gift">{{ t_gift_text }}</div>
+          <div class="apgo-bundle__tier-price">{{ t_total_price | money }}</div>
+          {%- if t_gift > 0 -%}
+            <div class="apgo-bundle__tier-gift">+送 {{ t_gift }} 包</div>
           {%- endif -%}
         </div>
       </label>
@@ -170,7 +193,7 @@
       <div class="apgo-bundle__cta-enabled" data-apgo-bundle-cta-enabled style="display:none;">
         <button type="button" class="apgo-bundle__cta-add" data-apgo-bundle-add>加入購物車</button>
         <button type="button" class="apgo-bundle__cta-buy-now" data-apgo-bundle-buy-now>
-          立即購買 NT$ <span data-apgo-bundle-total>298</span>
+          立即購買 <span data-apgo-bundle-total>{{ 0 | money }}</span>
         </button>
       </div>
     </div>
