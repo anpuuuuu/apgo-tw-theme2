@@ -93,13 +93,15 @@
     });
 
     // Single-chip active state + out-of-stock dimming
+    // Class name is .active (not .is-active) to match the original
+    // .apgo-scentbtn picker styles we're reusing.
     $$('[data-apgo-bundle-single-scent]').forEach(function (chip) {
       var name = chip.getAttribute('data-apgo-bundle-single-scent');
       var active = single && (state.scents[name] || 0) > 0;
       var avail = isAvailable(name);
-      chip.classList.toggle('is-active', active);
+      chip.classList.toggle('active', active);
       chip.classList.toggle('is-out-of-stock', !avail);
-      var input = chip.querySelector('.apgo-bundle__single-input');
+      var input = chip.querySelector('input[type="radio"]');
       if (input) {
         input.checked = active;
         input.disabled = !avail;

@@ -147,46 +147,58 @@
       </div>
 
       {%- comment -%}
-        Single-pack mode: a 2-column radio chip grid that mirrors the
-        original (non-bundle) variant picker. Hidden by default; JS adds
-        data-mode="single" on the widget root when 單包 tier is active.
+        Single-pack mode: REUSE the original PDP variant picker classes
+        (.apgo-scent-grid + .apgo-scentbtn + .apgo-swatch) so visuals are
+        identical to the existing non-bundle picker. JS toggles the
+        original `.active` class on these labels.
       {%- endcomment -%}
-      <div class="apgo-bundle__single-grid" data-apgo-bundle-single-grid>
+      <div class="apgo-scent-grid apgo-bundle__single-grid" data-apgo-bundle-single-grid>
         {%- for value in scent_option.values -%}
-          {%- assign s_hex = '#E8DFC9' -%}
+          {%- assign s_hex = '' -%}
           {%- if scent_palette != blank -%}
             {%- for s in scent_palette -%}
               {%- if s.name == value -%}{%- assign s_hex = s.hex -%}{%- endif -%}
             {%- endfor -%}
           {%- endif -%}
-          {%- assign s_en = '' -%}
-          {%- for pair in en_pairs -%}
-            {%- assign p = pair | split: '|' -%}
-            {%- if p[0] == value -%}{%- assign s_en = p[1] -%}{%- endif -%}
-          {%- endfor -%}
-          <label class="apgo-bundle__single-chip" data-apgo-bundle-single-scent="{{ value | escape }}">
+          {%- if s_hex == '' -%}
+            {%- assign s_hex = '#E8DFC9' -%}
+            {%- case value -%}
+              {%- when '淨心棉花' -%}{%- assign s_hex = '#E8DFC9' -%}
+              {%- when '花漾蒼蘭' -%}{%- assign s_hex = '#D4DDE0' -%}
+              {%- when '浪漫玫瑰' -%}{%- assign s_hex = '#E8D4CF' -%}
+              {%- when '海洋晨曦' -%}{%- assign s_hex = '#C8D6DA' -%}
+              {%- when '清雅白茶' -%}{%- assign s_hex = '#DAE0CE' -%}
+              {%- when '薰衣紫戀' -%}{%- assign s_hex = '#D6CFDD' -%}
+            {%- endcase -%}
+          {%- endif -%}
+          <label class="apgo-scentbtn" data-apgo-bundle-single-scent="{{ value | escape }}">
             <input type="radio"
                    name="apgo-bundle-single-{{ shell }}"
-                   value="{{ value | escape }}"
-                   class="apgo-bundle__single-input">
-            <span class="apgo-bundle__single-dot" style="background:{{ s_hex }}"></span>
-            <span class="apgo-bundle__single-info">
-              <span class="apgo-bundle__single-name apgo-serif">{{ value }}</span>
-              {%- if s_en != blank -%}
-                <span class="apgo-bundle__single-en">{{ s_en }}</span>
-              {%- endif -%}
-            </span>
+                   value="{{ value | escape }}">
+            <span class="apgo-swatch" style="background:{{ s_hex }}"></span>
+            <span class="apgo-serif">{{ value }}</span>
           </label>
         {%- endfor -%}
       </div>
 
       <div class="apgo-bundle__scent-rows">
         {%- for value in scent_option.values -%}
-          {%- assign hex = '#E8DFC9' -%}
+          {%- assign hex = '' -%}
           {%- if scent_palette != blank -%}
             {%- for s in scent_palette -%}
               {%- if s.name == value -%}{%- assign hex = s.hex -%}{%- endif -%}
             {%- endfor -%}
+          {%- endif -%}
+          {%- if hex == '' -%}
+            {%- assign hex = '#E8DFC9' -%}
+            {%- case value -%}
+              {%- when '淨心棉花' -%}{%- assign hex = '#E8DFC9' -%}
+              {%- when '花漾蒼蘭' -%}{%- assign hex = '#D4DDE0' -%}
+              {%- when '浪漫玫瑰' -%}{%- assign hex = '#E8D4CF' -%}
+              {%- when '海洋晨曦' -%}{%- assign hex = '#C8D6DA' -%}
+              {%- when '清雅白茶' -%}{%- assign hex = '#DAE0CE' -%}
+              {%- when '薰衣紫戀' -%}{%- assign hex = '#D6CFDD' -%}
+            {%- endcase -%}
           {%- endif -%}
           {%- assign en_name = '' -%}
           {%- for pair in en_pairs -%}
