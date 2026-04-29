@@ -200,23 +200,29 @@ body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-blo
   width: 100% !important;
 }
 
+/* Card layout: image on top, title in the middle, price + quick-add
+   button anchored to the bottom row. priceContainer is pinned bottom-
+   left with position:absolute; the existing .apgo-cc-quick-add stays
+   bottom-right. Card gets bottom padding so the title above doesn't
+   overlap the bottom row. */
+body.apgo-cc-skin .product-card {
+  position: relative;
+  padding-bottom: 56px !important;
+}
+
 /* Price — stack vertically: compare-at (smaller, strikethrough) on top,
-   sale price (orange, bigger) on bottom. Horizon's snippets/price.liquid
-   wraps the price as either:
-     <div [ref=priceContainer]>
-       <span><span class="price">$X</span></span>
-       <span><span class="compare-at-price">$Y</span></span>
-     </div>
-   (when show_sale_price_first = true, which is what collection.json sets)
-   Use flex-direction: column-reverse to put compare-at above price.       */
+   sale price (orange, bigger) on bottom — and pin to bottom-left of card. */
 body.apgo-cc-skin .product-card [ref="priceContainer"],
 body.apgo-cc-skin .product-grid__item [ref="priceContainer"] {
   display: flex !important;
   flex-direction: column-reverse !important;
   align-items: flex-start;
   gap: 2px;
-  width: 100%;
-  margin-top: 4px;
+  position: absolute !important;
+  bottom: 12px !important;
+  left: 16px !important;
+  width: auto !important;
+  margin: 0 !important;
 }
 
 /* Sale price (or-only price) — bigger, orange when on sale, ink otherwise */
