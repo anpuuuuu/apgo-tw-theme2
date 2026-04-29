@@ -1422,3 +1422,307 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
   .apgo-sgs-chip-val { font-size: 12px; }
   .apgo-sgs-chip-label { font-size: 9px; letter-spacing: 0.02em; }
 }
+
+/* ============================================================================
+   APGO 限時優惠組合 (Bundle Picker) — Phase A layout
+   See docs/V1S_PLUS_BUNDLE_PLAN.md
+   Activated only when product.metafields.apgo.bundle_enabled == true.
+   ============================================================================ */
+
+.apgo-bundle {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px;
+  background: var(--apgo-bg-alt);
+  border: 1px solid var(--apgo-line);
+  border-radius: 14px;
+  font-family: var(--apgo-sans);
+  color: var(--apgo-ink);
+}
+
+.apgo-bundle__head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  border-bottom: 1px solid var(--apgo-line);
+  padding-bottom: 10px;
+}
+.apgo-bundle__title {
+  margin: 0;
+  font-family: var(--apgo-display);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--apgo-ink);
+  letter-spacing: 0;
+}
+.apgo-bundle__sub {
+  font-family: var(--apgo-display);
+  font-size: 11px;
+  font-style: italic;
+  color: var(--apgo-star);
+  letter-spacing: .15em;
+}
+
+/* ---- Tier cards ---- */
+.apgo-bundle__tiers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.apgo-bundle__tier {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--apgo-bg);
+  border: 1px solid var(--apgo-line);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.apgo-bundle__tier:hover {
+  border-color: var(--apgo-sage);
+}
+.apgo-bundle__tier.is-active {
+  background: var(--apgo-ink);
+  color: var(--apgo-bg-alt);
+  border-color: var(--apgo-ink);
+}
+.apgo-bundle__tier-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+.apgo-bundle__tier-radio {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--apgo-line);
+  background: var(--apgo-bg-alt);
+  position: relative;
+  flex-shrink: 0;
+  transition: border-color .15s, background .15s;
+}
+.apgo-bundle__tier.is-active .apgo-bundle__tier-radio {
+  border-color: var(--apgo-bg-alt);
+  background: var(--apgo-ink);
+}
+.apgo-bundle__tier.is-active .apgo-bundle__tier-radio::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--apgo-star);
+}
+.apgo-bundle__tier-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.apgo-bundle__tier-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.apgo-bundle__tier-label {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: .02em;
+}
+.apgo-bundle__tier-chip {
+  background: var(--apgo-star);
+  color: var(--apgo-ink);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .05em;
+}
+.apgo-bundle__tier.is-active .apgo-bundle__tier-chip {
+  background: var(--apgo-bg-alt);
+  color: var(--apgo-ink);
+}
+.apgo-bundle__tier-meta {
+  font-size: 11px;
+  color: var(--apgo-muted);
+  letter-spacing: .02em;
+}
+.apgo-bundle__tier.is-active .apgo-bundle__tier-meta {
+  color: rgba(253, 250, 242, .65);
+}
+.apgo-bundle__tier-savings {
+  color: var(--apgo-sage);
+  font-weight: 600;
+}
+.apgo-bundle__tier.is-active .apgo-bundle__tier-savings {
+  color: var(--apgo-star);
+}
+.apgo-bundle__tier-price-area { text-align: right; flex-shrink: 0; }
+.apgo-bundle__tier-price {
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+.apgo-bundle__tier-gift {
+  font-size: 10px;
+  color: var(--apgo-star);
+  margin-top: 2px;
+  font-weight: 500;
+}
+.apgo-bundle__tier.is-active .apgo-bundle__tier-gift {
+  color: var(--apgo-star);
+}
+
+/* ---- Scent picker ---- */
+.apgo-bundle__scents {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--apgo-line);
+}
+.apgo-bundle__scents-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+}
+.apgo-bundle__scents-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--apgo-ink);
+  letter-spacing: .04em;
+}
+.apgo-bundle__counter {
+  font-size: 12px;
+  color: var(--apgo-muted);
+  font-variant-numeric: tabular-nums;
+}
+.apgo-bundle__counter [data-apgo-bundle-current] {
+  color: var(--apgo-sage);
+  font-weight: 600;
+}
+
+.apgo-bundle__quick-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.apgo-bundle__action-btn {
+  padding: 5px 12px;
+  background: transparent;
+  border: 1px solid var(--apgo-line);
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--apgo-ink);
+  cursor: pointer;
+  transition: all .15s;
+}
+.apgo-bundle__action-btn:hover {
+  background: var(--apgo-bg-ash);
+  border-color: var(--apgo-sage);
+}
+
+.apgo-bundle__scent-rows { display: flex; flex-direction: column; }
+.apgo-bundle__scent-row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--apgo-line);
+}
+.apgo-bundle__scent-row:last-child { border-bottom: none; }
+.apgo-bundle__scent-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.06);
+}
+.apgo-bundle__scent-info { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.apgo-bundle__scent-name { font-size: 13px; font-weight: 500; color: var(--apgo-ink); }
+.apgo-bundle__scent-en {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  color: var(--apgo-muted);
+  letter-spacing: .15em;
+}
+.apgo-bundle__scent-qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.apgo-bundle__qty-btn {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--apgo-line);
+  background: var(--apgo-bg-alt);
+  color: var(--apgo-ink);
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s;
+}
+.apgo-bundle__qty-btn:hover:not(:disabled) {
+  background: var(--apgo-bg-ash);
+  border-color: var(--apgo-sage);
+}
+.apgo-bundle__qty-btn:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+.apgo-bundle__qty-num {
+  min-width: 18px;
+  text-align: center;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--apgo-ink);
+}
+
+.apgo-bundle__min-note {
+  font-size: 11px;
+  color: var(--apgo-muted);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ---- CTA dual state ---- */
+.apgo-bundle__cta-area { display: flex; flex-direction: column; gap: 8px; }
+.apgo-bundle__cta-disabled {
+  width: 100%;
+  padding: 14px;
+  background: var(--apgo-muted);
+  color: var(--apgo-bg-alt);
+  border: none;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  cursor: not-allowed;
+}
+.apgo-bundle__cta-enabled { display: flex; flex-direction: column; gap: 8px; }
+.apgo-bundle__cta-add,
+.apgo-bundle__cta-buy-now {
+  width: 100%;
+  padding: 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  cursor: pointer;
+  transition: all .15s;
+}
+.apgo-bundle__cta-add {
+  background: var(--apgo-ink);
+  color: var(--apgo-bg-alt);
+  border: 1px solid var(--apgo-ink);
+}
+.apgo-bundle__cta-add:hover { background: var(--apgo-sage); border-color: var(--apgo-sage); }
+.apgo-bundle__cta-buy-now {
+  background: var(--apgo-bg-alt);
+  color: var(--apgo-ink);
+  border: 1px solid var(--apgo-ink);
+}
+.apgo-bundle__cta-buy-now:hover { background: var(--apgo-bg-ash); }
+
+/* ---- Mobile breakpoint (single tier card stacking) ---- */
+@media (max-width: 599px) {
+  .apgo-bundle { padding: 16px; gap: 14px; }
+  .apgo-bundle__tier { padding: 12px 14px; gap: 10px; }
+  .apgo-bundle__tier-label { font-size: 13px; }
+  .apgo-bundle__tier-meta { font-size: 10px; }
+  .apgo-bundle__tier-price { font-size: 13px; }
+}

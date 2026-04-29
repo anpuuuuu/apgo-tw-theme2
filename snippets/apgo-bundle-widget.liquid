@@ -1,0 +1,170 @@
+{%- comment -%}
+  APGO · 限時優惠組合 (Bundle Picker) — Phase A: layout-only
+  Renders only when product.metafields.apgo.bundle_enabled == true.
+  See docs/V1S_PLUS_BUNDLE_PLAN.md.
+
+  Phase A is purely visual:
+    - 4 tier cards (hardcoded values; Phase C migrates to metaobject)
+    - 6 scent rows with qty steppers (driven by product variant + apgo.scents)
+    - Quick action buttons + counter (UI only, no logic)
+    - CTA dual-state (disabled visible / enabled hidden)
+  Phase B will wire the JS to update active state, counter, CTA toggle.
+
+  @param shell - 'desktop' or 'mobile' — used to scope IDs so two instances
+                 of this widget on the same page don't share state once JS
+                 lands in Phase B.
+{%- endcomment -%}
+
+{%- liquid
+  comment
+    Format per row: unit|buy|gift|label|chip|total_price|gift_text|savings
+  endcomment
+  assign tiers_str = '149|1|0|單包|||149|0::99|2|1|買 2 送 1|熱賣推薦|298|+送 1 包|149::99|4|2|買 4 送 2|搜尋首選|596|+送 2 包|298::99|6|3|買 6 送 3|最划算|894|+送 3 包|447'
+  assign tiers = tiers_str | split: '::'
+
+  comment
+    Chinese → English subtitle map for scent rows.
+    Phase D will move this onto the scent metaobject as a name_en field.
+  endcomment
+  assign en_pairs_str = '淨心棉花|COTTON,花漾蒼蘭|FREESIA,浪漫玫瑰|ROSE,海洋晨曦|OCEANS,清雅白茶|WHITE TEA,薰衣紫戀|LAVENDER'
+  assign en_pairs = en_pairs_str | split: ','
+
+  assign scent_palette = shop.metafields.apgo.scents.value
+  assign scent_option = nil
+  for option in product.options_with_values
+    if option.name contains '香'
+      assign scent_option = option
+    endif
+  endfor
+
+  assign shell = shell | default: 'main'
+-%}
+
+<div class="apgo-bundle" data-apgo-bundle data-bundle-shell="{{ shell }}">
+  <header class="apgo-bundle__head">
+    <h3 class="apgo-bundle__title apgo-serif">限時優惠組合</h3>
+    <span class="apgo-bundle__sub">BUY MORE · GIFT MORE</span>
+  </header>
+
+  {%- comment -%} ---------- 4 tier cards ---------- {%- endcomment -%}
+  <div class="apgo-bundle__tiers" role="radiogroup" aria-label="優惠組合方案">
+    {%- for t_str in tiers -%}
+      {%- assign t = t_str | split: '|' -%}
+      {%- assign t_unit = t[0] -%}
+      {%- assign t_buy = t[1] | plus: 0 -%}
+      {%- assign t_gift = t[2] | plus: 0 -%}
+      {%- assign t_label = t[3] -%}
+      {%- assign t_chip = t[4] -%}
+      {%- assign t_total_price = t[5] -%}
+      {%- assign t_gift_text = t[6] -%}
+      {%- assign t_savings = t[7] | plus: 0 -%}
+      {%- assign t_total_count = t_buy | plus: t_gift -%}
+      {%- assign is_default = false -%}
+      {%- if forloop.index == 2 -%}{%- assign is_default = true -%}{%- endif -%}
+
+      <label class="apgo-bundle__tier{% if is_default %} is-active{% endif %}"
+             data-apgo-bundle-tier
+             data-buy="{{ t_buy }}"
+             data-gift="{{ t_gift }}"
+             data-total="{{ t_total_count }}"
+             data-unit="{{ t_unit }}"
+             data-tier-total="{{ t_total_price }}"
+             data-tier-label="{{ t_label }}">
+        <input type="radio"
+               name="apgo-bundle-tier-{{ shell }}"
+               value="{{ forloop.index }}"
+               class="apgo-bundle__tier-input"
+               {% if is_default %}checked{% endif %}>
+        <span class="apgo-bundle__tier-radio" aria-hidden="true"></span>
+        <div class="apgo-bundle__tier-body">
+          <div class="apgo-bundle__tier-row">
+            <span class="apgo-bundle__tier-label">{{ t_label }}</span>
+            {%- if t_chip != blank -%}
+              <span class="apgo-bundle__tier-chip">{{ t_chip }}</span>
+            {%- endif -%}
+          </div>
+          <div class="apgo-bundle__tier-meta">
+            共 {{ t_total_count }} 包 · 每包平均 NT$ {{ t_unit }}
+            {%- if t_savings > 0 -%}
+              <span class="apgo-bundle__tier-savings">· 省 NT$ {{ t_savings }}</span>
+            {%- endif -%}
+          </div>
+        </div>
+        <div class="apgo-bundle__tier-price-area">
+          <div class="apgo-bundle__tier-price">NT$ {{ t_total_price }}</div>
+          {%- if t_gift_text != blank -%}
+            <div class="apgo-bundle__tier-gift">{{ t_gift_text }}</div>
+          {%- endif -%}
+        </div>
+      </label>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} ---------- Scent picker ---------- {%- endcomment -%}
+  {%- if scent_option -%}
+    <div class="apgo-bundle__scents" data-apgo-bundle-scents>
+      <div class="apgo-bundle__scents-head">
+        <span class="apgo-bundle__scents-title">香氛選擇</span>
+        <span class="apgo-bundle__counter" data-apgo-bundle-counter>
+          <span data-apgo-bundle-current>0</span> /
+          <span data-apgo-bundle-max>3</span>
+        </span>
+      </div>
+
+      <div class="apgo-bundle__quick-actions">
+        <button type="button" class="apgo-bundle__action-btn" data-apgo-bundle-action="all-same">全部都同款 ↓</button>
+        <button type="button" class="apgo-bundle__action-btn" data-apgo-bundle-action="random">隨機驚喜</button>
+        <button type="button" class="apgo-bundle__action-btn" data-apgo-bundle-action="clear">清除</button>
+      </div>
+
+      <div class="apgo-bundle__scent-rows">
+        {%- for value in scent_option.values -%}
+          {%- assign hex = '#E8DFC9' -%}
+          {%- if scent_palette != blank -%}
+            {%- for s in scent_palette -%}
+              {%- if s.name == value -%}{%- assign hex = s.hex -%}{%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+          {%- assign en_name = '' -%}
+          {%- for pair in en_pairs -%}
+            {%- assign p = pair | split: '|' -%}
+            {%- if p[0] == value -%}{%- assign en_name = p[1] -%}{%- endif -%}
+          {%- endfor -%}
+
+          <div class="apgo-bundle__scent-row" data-apgo-bundle-scent="{{ value | escape }}">
+            <span class="apgo-bundle__scent-dot" style="background:{{ hex }}"></span>
+            <div class="apgo-bundle__scent-info">
+              <div class="apgo-bundle__scent-name apgo-serif">{{ value }}</div>
+              {%- if en_name != blank -%}
+                <div class="apgo-bundle__scent-en">{{ en_name }}</div>
+              {%- endif -%}
+            </div>
+            <div class="apgo-bundle__scent-qty">
+              <button type="button" class="apgo-bundle__qty-btn" data-apgo-bundle-qty="-1" aria-label="減少">−</button>
+              <span class="apgo-bundle__qty-num" data-apgo-bundle-qty-num>0</span>
+              <button type="button" class="apgo-bundle__qty-btn" data-apgo-bundle-qty="1" aria-label="增加">+</button>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="apgo-bundle__min-note">
+        選需選滿 <span data-apgo-bundle-max-note>3</span> 包香氛
+        · 含 <span data-apgo-bundle-gift-note>1</span> 包免費贈品
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ---------- CTA dual state ---------- {%- endcomment -%}
+  <div class="apgo-bundle__cta-area">
+    <button type="button" class="apgo-bundle__cta-disabled" data-apgo-bundle-cta-disabled disabled>
+      請先選滿香氛 · 還差 <span data-apgo-bundle-remaining>3</span> 包
+    </button>
+    <div class="apgo-bundle__cta-enabled" data-apgo-bundle-cta-enabled style="display:none;">
+      <button type="button" class="apgo-bundle__cta-add" data-apgo-bundle-add>加入購物車</button>
+      <button type="button" class="apgo-bundle__cta-buy-now" data-apgo-bundle-buy-now>
+        立即購買 NT$ <span data-apgo-bundle-total>298</span>
+      </button>
+    </div>
+  </div>
+</div>

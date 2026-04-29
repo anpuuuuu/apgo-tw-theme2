@@ -131,6 +131,15 @@
               </div>
             {%- endif -%}
 
+            {%- comment -%}
+              Bundle picker (限時優惠組合) replaces variant + qty + CTAs when
+              product.metafields.apgo.bundle_enabled is true. Set per-product
+              in admin metafield. See docs/V1S_PLUS_BUNDLE_PLAN.md.
+            {%- endcomment -%}
+            {%- if product.metafields.apgo.bundle_enabled -%}
+              {%- render 'apgo-bundle-widget', product: product, shell: 'desktop' -%}
+            {%- else -%}
+
             {%- comment -%} Variant options (scent + size) {%- endcomment -%}
             {%- for option in product.options_with_values -%}
               {%- assign is_scent = false -%}
@@ -222,6 +231,8 @@
                 </button>
               {%- endif -%}
             </div>
+
+            {%- endif -%}{%- comment -%} end of apgo.bundle_enabled if/else (desktop) {%- endcomment -%}
 
             {%- comment -%}
               Ship card — same shop.metafields.apgo.ship_rows source as the
@@ -342,6 +353,14 @@
         <div class="apgo-mpdp-installment" data-apgo-installment>分 3 期 0 利率 · 每期 {{ v.price | divided_by: 3 | money }}</div>
       {%- endif -%}
 
+      {%- comment -%}
+        Bundle picker (limit時優惠組合) — mobile shell. Mirrors the desktop
+        path above; gated on the same product.metafields.apgo.bundle_enabled.
+      {%- endcomment -%}
+      {%- if product.metafields.apgo.bundle_enabled -%}
+        {%- render 'apgo-bundle-widget', product: product, shell: 'mobile' -%}
+      {%- else -%}
+
       {%- comment -%} Variant options {%- endcomment -%}
       {%- for option in product.options_with_values -%}
         {%- assign is_scent = false -%}
@@ -403,6 +422,8 @@
           <button type="button" data-apgo-qty="up" aria-label="增加">+</button>
         </div>
       </div>
+
+      {%- endif -%}{%- comment -%} end of apgo.bundle_enabled if/else (mobile) {%- endcomment -%}
 
       {%- comment -%}
         Ship card — single source of truth lives in

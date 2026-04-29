@@ -169,8 +169,8 @@
 | Phase | 狀態 | Commit | 備註 |
 |---|---|---|---|
 | 0 計畫書 | ✅ | (本 commit) | 文件就緒 |
-| 0.5 Metafield 建立 | ⏳ 待 user | - | user 在 Settings → Custom data 建 `apgo.bundle_enabled` boolean，洗衣精打勾 |
-| A Layout | ⏸ 未開始 | - | 等 0.5 完成 |
+| 0.5 Metafield 建立 | ✅ user 完成 | 2026-04-29 | apgo.bundle_enabled (Boolean) 已建，洗衣精待 user 打勾 |
+| A Layout | ✅ 已完成 | (本 commit) | snippets/apgo-bundle-widget.liquid + CSS + 雙 shell 條件渲染 |
 | B 前端 Logic | ⏸ 未開始 | - | - |
 | C Cart 整合 | ⏸ 未開始 | - | 含 user 後台 Automatic Discount 設定 |
 | D 細節 | ⏸ 未開始 | - | - |
