@@ -1838,3 +1838,23 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
   font-size: 11px;
   margin-left: 4px;
 }
+
+/* Bundle widget bottom margin — separate it from the ship card / tabs
+   that follow. Without this, the widget's rounded corner sits flush
+   against the next card and the page reads as one solid block. */
+.apgo-bundle { margin-bottom: 20px; }
+
+/* On mobile shell specifically, tabs row gets a little more breathing
+   room above so the bundle widget doesn't push it into the tabs. */
+.apgo-mpdp-mobile-shell + .apgo-mpdp-tabs,
+.apgo-bundle + .apgo-mpdp-tabs {
+  margin-top: 20px;
+}
+
+/* Ship card — when it follows the bundle widget directly, ensure a
+   visible gap. (Existing margin-bottom: 28px below already handles
+   the gap to whatever comes after the ship card.) */
+.apgo-bundle + .apgo-mpdp-ship,
+.apgo-bundle ~ .apgo-mpdp-ship {
+  margin-top: 16px;
+}
