@@ -171,8 +171,8 @@
 | 0 計畫書 | ✅ | (本 commit) | 文件就緒 |
 | 0.5 Metafield 建立 | ✅ user 完成 | 2026-04-29 | apgo.bundle_enabled (Boolean) 已建，洗衣精待 user 打勾 |
 | A Layout | ✅ 已完成 | 7393b4d (snippet) + ef62eab (sticky bar fix) | snippets/apgo-bundle-widget.liquid + CSS + 雙 shell 條件渲染 + 手機 sticky bar |
-| B 前端 Logic | ✅ 已完成 | (本 commit) | assets/apgo-bundle.js — 單一 state 同步雙 shell + 4 個 tier 切換 + qty +/- + 3 個 quick action + CTA toggle + payload console.log |
-| C Cart 整合 | ⏸ 未開始 | - | 含 user 後台 Automatic Discount 設定 |
+| B 前端 Logic | ✅ 已完成 | e7c403b | assets/apgo-bundle.js — 單一 state 同步雙 shell + 4 個 tier 切換 + qty +/- + 3 個 quick action + CTA toggle + payload console.log |
+| C Cart 整合 | ✅ 已完成（程式部分） | (本 commit) | submitToCart() AJAX /cart/add.js + 多 line items + 加購 toast + cart event dispatch + 立即購買 redirect /cart。**user 後台還需設 Automatic Discount**（見第 11 節） |
 | D 細節 | ⏸ 未開始 | - | - |
 
 ---
@@ -186,7 +186,58 @@
 
 ---
 
-## 8. 已知技術風險 / 待確認
+## 8. Phase C 完成後 user 必做：Automatic Discount 後台設定
+
+> ⚠️ **不設這 3 個規則，使用者選 bundle 加購會被多收 4 倍錢**（每包 $399 而非組合價）。
+> 為什麼會這樣：Shopify cart 不認 bundle 概念，每個 line item 算原價，必須靠 Automatic Discount 在 cart 階段套用折扣。
+
+**步驟**：Shopify Admin → 左側 Discounts → Create discount → **Automatic discount**
+
+3 個規則一個個建：
+
+### 規則 1：買 2 送 1
+- **Type**: Order discount
+- **Method**: Automatic
+- **Title**: `APGO 洗衣精 · 買 2 送 1`
+- **Discount value**: `Fixed amount` = `NT$ 149` off
+- **Applies to**: Specific products → 選「APGO 超級洗衣精」
+- **Minimum purchase requirement**: Minimum **quantity** of items = `3`
+- **Customer eligibility**: All customers
+- **Combinations**: 看你需求（建議 ❌ 不能跟其他 product / order discount 疊加）
+- **Active dates**: 永久（或對應檔期日期）
+- 按 Save
+
+### 規則 2：買 4 送 2
+- 同上規則 1，差異：
+- Title: `APGO 洗衣精 · 買 4 送 2`
+- Discount value: `NT$ 298` off
+- Min quantity: `6`
+
+### 規則 3：買 6 送 3
+- 同上：
+- Title: `APGO 洗衣精 · 買 6 送 3`
+- Discount value: `NT$ 447` off
+- Min quantity: `9`
+
+### Shopify 自動套用最高折扣
+3 個規則同時 active 時，Shopify 結帳系統自動算「使用者買多少就套用最高折扣」：
+- cart 中洗衣精數量 = 3 → 套用規則 1 (- 149)
+- cart 中洗衣精數量 = 6 → 套用規則 2 (- 298)
+- cart 中洗衣精數量 = 9 → 套用規則 3 (- 447)
+- cart 中洗衣精數量 = 4 (卡在 3-5 之間) → 套用規則 1 (- 149)
+- cart 中洗衣精數量 = 8 → 套用規則 2 (- 298)
+
+> 💡 提示：bundle widget 強制使用者選正好的數量（3 / 6 / 9 包），所以上面「卡在中間」的情境只會出現在使用者改數量或合併別的 cart 時，**正常 bundle flow 不會觸發**。
+
+### 驗證方式
+1. 完整跑一次 bundle flow（任一 tier）→ 加入購物車
+2. 開 `/cart` 頁
+3. 應該看到：line items 列出 N 個香氛 + 「Discounts」列顯示「APGO 洗衣精 · 買 X 送 Y · - NT$ XXX」
+4. 總價 = 顯示在 bundle UI 的 total_price
+
+---
+
+## 9. 已知技術風險 / 待確認
 
 1. **庫存 0 的香氛**（花漾蒼蘭 / 清雅白茶）：UI 上是灰掉禁用 + 提示「缺貨」？還是隱藏？
 2. **Shopify Automatic Discount 限制**：Basic plan 不支援 Functions，只能用 amount 或 percent 折扣，不能太花俏

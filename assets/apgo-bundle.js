@@ -1,4 +1,4 @@
-/* APGO · 限時優惠組合 (Bundle Picker) — Phase B frontend logic
+/* APGO · 限時優惠組合 (Bundle Picker) — Phase B logic + Phase C cart
  *
  * Scope: only loaded when product.metafields.apgo.bundle_enabled == true
  *        (gated in layout/theme.liquid).
@@ -7,9 +7,11 @@
  * either shell updates state, then a render() pass syncs every widget
  * instance + the sticky bottom bar.
  *
- * Phase B does NOT hit /cart/add — clicking 加入購物車 / 立即購買 only
- * console.logs the payload that Phase C will POST. See
- * docs/V1S_PLUS_BUNDLE_PLAN.md.
+ * Phase C: 加入購物車 / 立即購買 POST /cart/add.js with multi line items
+ * (one per scent qty). Bundle metadata attached as line item properties.
+ * Discount is applied at cart stage by Shopify Automatic Discount rules
+ * — admin must configure these (see docs/V1S_PLUS_BUNDLE_PLAN.md §8).
+ * 立即購買 redirects to /cart so user can verify discount before checkout.
  */
 (function () {
   'use strict';
@@ -189,38 +191,196 @@
       });
     });
 
-    // Add-to-cart / Buy-now — Phase B logs only
+    // Add-to-cart / Buy-now — Phase C real cart submission
     $$('[data-apgo-bundle-add]').forEach(function (btn) {
       btn.addEventListener('click', function (e) {
         e.preventDefault();
-        console.log('[apgo-bundle] add-to-cart (Phase B placeholder):', buildPayload());
+        submitToCart(btn, false);
       });
     });
     $$('[data-apgo-bundle-buy-now]').forEach(function (btn) {
       btn.addEventListener('click', function (e) {
         e.preventDefault();
-        console.log('[apgo-bundle] buy-now → would POST then redirect /cart (Phase C):', buildPayload());
+        submitToCart(btn, true);
       });
     });
   }
 
-  // ---------- Payload (Phase C will use this) ----------
-  function buildPayload() {
-    var items = [];
-    var bundleId = 'apgo-bundle-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
-    for (var name in state.scents) {
-      var q = state.scents[name];
-      if (q > 0) items.push({ scent: name, quantity: q });
+  // ---------- Cart submission (Phase C) ----------
+  function submitToCart(triggerBtn, redirectToCart) {
+    var payload = buildPayload();
+    if (!payload.items.length) {
+      toast('請先選滿香氛', true);
+      return;
     }
-    return {
-      bundle_id: bundleId,
-      tier_label: state.tier.label,
-      buy_count: state.tier.buy,
-      gift_count: state.tier.gift,
-      total_count: state.tier.total,
-      total_price: state.tier.totalPrice,
-      items: items
-    };
+
+    // Disable all bundle CTA buttons during the request to prevent double-submit
+    var allBtns = $$('[data-apgo-bundle-add], [data-apgo-bundle-buy-now]');
+    allBtns.forEach(function (b) { b.disabled = true; b.classList.add('is-loading'); });
+    var origText = triggerBtn.innerHTML;
+    triggerBtn.textContent = '加入中…';
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify({ items: payload.items })
+    })
+      .then(function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok) return Promise.reject(data);
+          return data;
+        });
+      })
+      .then(function () {
+        // Refetch live cart so any cart drawer / header counter listening picks
+        // up the new items. Mirrors apgo-pdp.js behaviour.
+        return fetch('/cart.js?_=' + Date.now(), {
+          cache: 'no-store',
+          headers: { 'Accept': 'application/json' }
+        }).then(function (r) { return r.json(); });
+      })
+      .then(function (cart) {
+        // Dispatch the same cart events apgo-pdp.js dispatches so the rest
+        // of the theme stays in sync.
+        document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: cart } }));
+        document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart: cart } }));
+        document.dispatchEvent(new CustomEvent('cart:updated'));
+
+        // Optional: try to fire Horizon's @theme/events. Ignore if absent.
+        try {
+          import('@theme/events').then(function (mod) {
+            if (mod && mod.CartUpdateEvent) {
+              document.dispatchEvent(new mod.CartUpdateEvent(cart, 'apgo-bundle', {
+                itemCount: cart.item_count, source: 'apgo-bundle', sections: {}
+              }));
+            }
+            if (mod && mod.CartAddEvent) {
+              document.dispatchEvent(new mod.CartAddEvent({}, 'apgo-bundle', { source: 'apgo-bundle' }));
+            }
+          }).catch(function () {});
+        } catch (_) {}
+
+        if (redirectToCart) {
+          // 立即購買 → land on /cart so user can verify the bundle discount
+          // applied before checkout. This is the user-confirmed UX (see
+          // docs/V1S_PLUS_BUNDLE_PLAN.md Phase C, decision 2026-04-29).
+          window.location.href = '/cart';
+          return;
+        }
+
+        toast('✓ 已加入購物車');
+
+        // Reset CTA UI back to enabled state for another round of selection
+        allBtns.forEach(function (b) { b.disabled = false; b.classList.remove('is-loading'); });
+        triggerBtn.innerHTML = origText;
+
+        // Clear scent selections so the user can build another bundle
+        Object.keys(state.scents).forEach(function (n) { state.scents[n] = 0; });
+        render();
+      })
+      .catch(function (err) {
+        console.error('[apgo-bundle] cart add failed:', err);
+        var msg = (err && err.description) || (err && err.message) || '加入失敗，請稍後再試';
+        toast(msg, true);
+        allBtns.forEach(function (b) { b.disabled = false; b.classList.remove('is-loading'); });
+        triggerBtn.innerHTML = origText;
+      });
+  }
+
+  // Reuse PDP's existing toast component (apgoCartToast) when present;
+  // fall back to alert so we never silently fail.
+  function toast(text, isError) {
+    if (typeof window.apgoCartToast === 'function') {
+      window.apgoCartToast(text, isError);
+      return;
+    }
+    if (isError) {
+      console.warn('[apgo-bundle] ' + text);
+    }
+    // Soft fallback — no DOM toast available (PDP JS not loaded?). Avoid
+    // alert in production but log so we know.
+    console.log('[apgo-bundle toast]', text);
+  }
+
+  // ---------- Payload (Phase C will use this) ----------
+  // Read product variants once (already inlined by the PDP section as
+  // <script type="application/json" data-apgo-variants>{{ product.variants | json }}</script>)
+  // and build a {scentName: variantId} map so each scent row can be turned
+  // into a /cart/add line item.
+  var variantsByScent = (function () {
+    var map = {};
+    var el = document.querySelector('[data-apgo-variants]');
+    if (!el) return map;
+    var arr;
+    try { arr = JSON.parse(el.textContent); } catch (e) { return map; }
+    if (!Array.isArray(arr)) return map;
+    arr.forEach(function (v) {
+      // The laundry detergent option layout is option1 = 香氛, option2 = 容量
+      // (with one capacity variant 1L). If a future product flips this, the
+      // map will still be populated — we just may need a more explicit
+      // option-name lookup. For now option1 is scent.
+      if (v.option1) map[v.option1] = v.id;
+    });
+    return map;
+  })();
+
+  // Build Shopify cart payload (items[] for POST /cart/add.js).
+  // Each scent quantity becomes one line item with quantity = N. Bundle
+  // metadata is attached as line item properties so the order admin can
+  // see which line items belong together. Discount is applied separately
+  // via Shopify Automatic Discount (admin-side), see
+  // docs/V1S_PLUS_BUNDLE_PLAN.md Phase C.
+  function buildPayload() {
+    var bundleId = 'apgo-bundle-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+    var items = [];
+    var packsAssigned = 0;
+    var buyN = state.tier.buy;
+
+    Object.keys(state.scents).forEach(function (name) {
+      var q = state.scents[name];
+      if (q <= 0) return;
+      var vid = variantsByScent[name];
+      if (!vid) {
+        console.warn('[apgo-bundle] No variant_id for scent "' + name + '"; skipping');
+        return;
+      }
+      // Split this scent's qty between buy/gift roles based on the running
+      // packsAssigned counter. First buyN packs across all scents = 'buy',
+      // the rest = 'gift'. Since cart line items can only have one set of
+      // properties per line, we may need to split a single scent across
+      // two line items if it straddles the buy/gift boundary.
+      var remainingHere = q;
+      while (remainingHere > 0) {
+        var stillToReachBuy = Math.max(0, buyN - packsAssigned);
+        var role, take;
+        if (stillToReachBuy > 0) {
+          take = Math.min(remainingHere, stillToReachBuy);
+          role = 'buy';
+        } else {
+          take = remainingHere;
+          role = 'gift';
+        }
+        items.push({
+          id: vid,
+          quantity: take,
+          properties: {
+            _bundle_id: bundleId,
+            _bundle_tier: state.tier.label,
+            _bundle_role: role,
+            _bundle_total_packs: String(state.tier.total),
+            _bundle_quoted_price: String(state.tier.totalPrice)
+          }
+        });
+        packsAssigned += take;
+        remainingHere -= take;
+      }
+    });
+
+    return { bundle_id: bundleId, items: items };
   }
 
   // ---------- Boot ----------
