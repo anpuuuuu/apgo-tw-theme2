@@ -189,43 +189,50 @@
 ## 8. Phase C 完成後 user 必做：Automatic Discount 後台設定
 
 > ⚠️ **不設這 3 個規則，使用者選 bundle 加購會被多收 4 倍錢**（每包 $399 而非組合價）。
-> 為什麼會這樣：Shopify cart 不認 bundle 概念，每個 line item 算原價，必須靠 Automatic Discount 在 cart 階段套用折扣。
 
-**步驟**：Shopify Admin → 左側 Discounts → Create discount → **Automatic discount**
+**採用方法：Buy X get Y / Free**（語意上跟「買 N 送 M」對齊，且不用每次改價手動更新折扣金額）。
 
-3 個規則一個個建：
+**步驟**：Shopify Admin → 左側 Discounts → Create discount → 選 **Buy X get Y** → Method = **Automatic discount**
+
+每個 tier 建一條，共 3 條：
 
 ### 規則 1：買 2 送 1
-- **Type**: Order discount
-- **Method**: Automatic
-- **Title**: `APGO 洗衣精 · 買 2 送 1`
-- **Discount value**: `Fixed amount` = `NT$ 149` off
-- **Applies to**: Specific products → 選「APGO 超級洗衣精」
-- **Minimum purchase requirement**: Minimum **quantity** of items = `3`
-- **Customer eligibility**: All customers
-- **Combinations**: 看你需求（建議 ❌ 不能跟其他 product / order discount 疊加）
-- **Active dates**: 永久（或對應檔期日期）
-- 按 Save
+| 欄位 | 值 |
+|---|---|
+| Title | `APGO 洗衣精 · 買 2 送 1` |
+| Customer buys → Minimum quantity of items → Quantity | `2` |
+| Customer buys → Any items from → Specific products | 選「APGO 超級濃縮洗衣精」|
+| Customer gets → Quantity | `1` |
+| Customer gets → Any items from → Specific products | 同樣選「APGO 超級濃縮洗衣精」|
+| At a discounted value | **Free**（贈品 100% 免費；不要選 Percentage / Amount off each） |
+| Set a maximum number of uses per order | 不勾 |
+| Eligibility | All customers |
+| Combinations | 兩個 checkbox 都不勾（避免疊加） |
+| Active dates | Start now，end date 不勾 |
+
+按 Save。
 
 ### 規則 2：買 4 送 2
-- 同上規則 1，差異：
+同上，差異：
 - Title: `APGO 洗衣精 · 買 4 送 2`
-- Discount value: `NT$ 298` off
-- Min quantity: `6`
+- Customer buys Quantity: `4`
+- Customer gets Quantity: `2`
+- 其他全部一樣（At a discounted value: **Free**）
 
 ### 規則 3：買 6 送 3
-- 同上：
 - Title: `APGO 洗衣精 · 買 6 送 3`
-- Discount value: `NT$ 447` off
-- Min quantity: `9`
+- Customer buys Quantity: `6`
+- Customer gets Quantity: `3`
+- 其他相同
 
-### Shopify 自動套用最高折扣
-3 個規則同時 active 時，Shopify 結帳系統自動算「使用者買多少就套用最高折扣」：
-- cart 中洗衣精數量 = 3 → 套用規則 1 (- 149)
-- cart 中洗衣精數量 = 6 → 套用規則 2 (- 298)
-- cart 中洗衣精數量 = 9 → 套用規則 3 (- 447)
-- cart 中洗衣精數量 = 4 (卡在 3-5 之間) → 套用規則 1 (- 149)
-- cart 中洗衣精數量 = 8 → 套用規則 2 (- 298)
+### Shopify 自動套用最划算的規則
+3 條 Buy X get Y 同時 active 時，Shopify 自動套**符合條件中最大送的那條**：
+- cart 共 3 包 → 套規則 1（送 1）
+- cart 共 6 包 → 套規則 2（送 2）
+- cart 共 9 包 → 套規則 3（送 3）
+- cart 共 4 包（中間數）→ 套規則 1（送 1，2 包剛好滿足規則 1 buy 條件）
+- cart 共 7 包 → 套規則 2（送 2）
+- cart 共 8 包 → 套規則 2（送 2）
 
 > 💡 提示：bundle widget 強制使用者選正好的數量（3 / 6 / 9 包），所以上面「卡在中間」的情境只會出現在使用者改數量或合併別的 cart 時，**正常 bundle flow 不會觸發**。
 
