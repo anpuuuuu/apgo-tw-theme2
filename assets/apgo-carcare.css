@@ -83,6 +83,15 @@ body.apgo-cc-skin .section-background,
 body.apgo-cc-skin #MainContent,
 body.apgo-cc-skin .product-grid-container {
   background: var(--cc-bg) !important;
+  /* Add side padding so cards don't sit flush against the screen edge */
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+@media (min-width: 750px) {
+  body.apgo-cc-skin .product-grid-container {
+    padding-left: 28px !important;
+    padding-right: 28px !important;
+  }
 }
 
 /* ----------------------------------------------------------------------------
