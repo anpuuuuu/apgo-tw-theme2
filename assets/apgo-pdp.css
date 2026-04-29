@@ -1772,3 +1772,27 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
   flex: 1;
   white-space: nowrap;
 }
+
+/* Out-of-stock scent row — Phase D */
+.apgo-bundle__scent-row.is-out-of-stock {
+  opacity: .55;
+}
+.apgo-bundle__scent-row.is-out-of-stock .apgo-bundle__scent-name,
+.apgo-bundle__scent-row.is-out-of-stock .apgo-bundle__scent-en {
+  text-decoration: none;
+}
+.apgo-bundle__scent-out {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 6px;
+  background: var(--apgo-muted);
+  color: var(--apgo-bg-alt);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+.apgo-bundle__scent-row.is-out-of-stock .apgo-bundle__qty-btn[data-apgo-bundle-qty="1"] {
+  cursor: not-allowed;
+}

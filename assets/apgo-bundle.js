@@ -83,16 +83,37 @@
     $$('[data-apgo-bundle-max-note]').forEach(function (el) { el.textContent = maxN; });
     $$('[data-apgo-bundle-gift-note]').forEach(function (el) { el.textContent = giftN; });
 
-    // 3) Per-row qty num + disabled buttons
+    // 3) Per-row qty num + disabled buttons + out-of-stock state
     $$('[data-apgo-bundle-scent]').forEach(function (row) {
       var name = row.getAttribute('data-apgo-bundle-scent');
       var n = state.scents[name] || 0;
+      var avail = isAvailable(name);
+
       var numEl = row.querySelector('[data-apgo-bundle-qty-num]');
       if (numEl) numEl.textContent = n;
       var minusBtn = row.querySelector('[data-apgo-bundle-qty="-1"]');
       var plusBtn  = row.querySelector('[data-apgo-bundle-qty="1"]');
       if (minusBtn) minusBtn.disabled = n <= 0;
-      if (plusBtn)  plusBtn.disabled  = sel >= maxN;
+      // + disabled when at max OR out of stock
+      if (plusBtn)  plusBtn.disabled  = sel >= maxN || !avail;
+
+      // Out-of-stock visual: dim row + insert 缺貨 chip
+      row.classList.toggle('is-out-of-stock', !avail);
+      var chip = row.querySelector('[data-apgo-bundle-stock-chip]');
+      if (!avail) {
+        if (!chip) {
+          var info = row.querySelector('.apgo-bundle__scent-info');
+          if (info) {
+            chip = document.createElement('span');
+            chip.className = 'apgo-bundle__scent-out';
+            chip.setAttribute('data-apgo-bundle-stock-chip', '');
+            chip.textContent = '缺貨';
+            info.appendChild(chip);
+          }
+        }
+      } else if (chip) {
+        chip.remove();
+      }
     });
 
     // 4) CTA dual state — both inside widgets and inside the mobile sticky bar
@@ -162,28 +183,38 @@
       render();
     });
 
-    // Quick actions: 全部都同款 / 隨機驚喜 / 清除
+    // Quick actions: 全部都同款 / 隨機驚喜 / 清除.
+    // Out-of-stock scents are NEVER assigned to by quick actions; only the
+    // available pool is used. Clear still wipes everything (including any
+    // legacy qty on a now-out-of-stock scent so the counter stays clean).
     $$('[data-apgo-bundle-action]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var action = btn.dataset.apgoBundleAction;
-        var names = Object.keys(state.scents);
-        if (!names.length) return;
+        var allNames = Object.keys(state.scents);
+        if (!allNames.length) return;
+        var pool = availableScentNames();
 
         if (action === 'clear') {
-          names.forEach(function (n) { state.scents[n] = 0; });
+          allNames.forEach(function (n) { state.scents[n] = 0; });
+        } else if (!pool.length) {
+          // Edge: every scent is out of stock. Quick actions become no-op
+          // except clear (handled above). Toast once for clarity.
+          toast('所有香氛暫時缺貨', true);
+          return;
         } else if (action === 'all-same') {
-          // Pick the user's currently most-selected; tie → first scent
-          var topName = names[0];
-          var topQty = state.scents[topName];
-          names.forEach(function (n) {
-            if (state.scents[n] > topQty) { topQty = state.scents[n]; topName = n; }
+          // Pick the user's currently most-selected AVAILABLE scent;
+          // tie / no selection → first available.
+          var topName = pool[0];
+          var topQty = state.scents[topName] || 0;
+          pool.forEach(function (n) {
+            if ((state.scents[n] || 0) > topQty) { topQty = state.scents[n]; topName = n; }
           });
-          names.forEach(function (n) { state.scents[n] = 0; });
+          allNames.forEach(function (n) { state.scents[n] = 0; });
           state.scents[topName] = state.tier.total;
         } else if (action === 'random') {
-          names.forEach(function (n) { state.scents[n] = 0; });
+          allNames.forEach(function (n) { state.scents[n] = 0; });
           for (var i = 0; i < state.tier.total; i++) {
-            var pick = names[Math.floor(Math.random() * names.length)];
+            var pick = pool[Math.floor(Math.random() * pool.length)];
             state.scents[pick]++;
           }
         }
@@ -311,22 +342,35 @@
   // <script type="application/json" data-apgo-variants>{{ product.variants | json }}</script>)
   // and build a {scentName: variantId} map so each scent row can be turned
   // into a /cart/add line item.
-  var variantsByScent = (function () {
-    var map = {};
+  var variantsByScent = {};
+  var availableByScent = {};
+  (function () {
     var el = document.querySelector('[data-apgo-variants]');
-    if (!el) return map;
+    if (!el) return;
     var arr;
-    try { arr = JSON.parse(el.textContent); } catch (e) { return map; }
-    if (!Array.isArray(arr)) return map;
+    try { arr = JSON.parse(el.textContent); } catch (e) { return; }
+    if (!Array.isArray(arr)) return;
     arr.forEach(function (v) {
       // The laundry detergent option layout is option1 = 香氛, option2 = 容量
       // (with one capacity variant 1L). If a future product flips this, the
       // map will still be populated — we just may need a more explicit
       // option-name lookup. For now option1 is scent.
-      if (v.option1) map[v.option1] = v.id;
+      if (!v.option1) return;
+      variantsByScent[v.option1] = v.id;
+      // variant.available is Shopify's authoritative truth: tracks inventory
+      // > 0 OR 'continue selling when out of stock' is on. False when the
+      // scent should be disabled in the picker.
+      availableByScent[v.option1] = v.available !== false;
     });
-    return map;
   })();
+
+  function isAvailable(name) {
+    // Default true so unknown scents (custom UI tests) still work
+    return availableByScent[name] !== false;
+  }
+  function availableScentNames() {
+    return Object.keys(state.scents).filter(isAvailable);
+  }
 
   // Build Shopify cart payload (items[] for POST /cart/add.js).
   // Each scent quantity becomes one line item with quantity = N. Bundle
