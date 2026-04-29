@@ -146,7 +146,7 @@
 2. AJAX `POST /cart/add.js` (Shopify 支援一次加多 line items via `items` 陣列)
 3. 加完成功 → toast「已加入購物車」+ 跳購物車 drawer（如果有）
 4. 失敗 → toast 顯示錯誤
-5. 「立即購買」按鈕 → 加完直接跳 `/checkout`
+5. 「立即購買」按鈕 → 加完直接跳 **`/cart`**（購物車頁，**非** `/checkout`，user 拍板 2026-04-29）
 6. **User 後台設定**：Shopify Discounts → Automatic discounts → 規則例：
    - 「商品（洗衣精）數量 ≥ 3 → 折 NT$ 149」
    - 「商品數量 ≥ 6 → 折 NT$ 298」
