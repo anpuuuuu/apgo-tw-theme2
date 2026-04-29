@@ -170,8 +170,8 @@
 |---|---|---|---|
 | 0 計畫書 | ✅ | (本 commit) | 文件就緒 |
 | 0.5 Metafield 建立 | ✅ user 完成 | 2026-04-29 | apgo.bundle_enabled (Boolean) 已建，洗衣精待 user 打勾 |
-| A Layout | ✅ 已完成 | (本 commit) | snippets/apgo-bundle-widget.liquid + CSS + 雙 shell 條件渲染 |
-| B 前端 Logic | ⏸ 未開始 | - | - |
+| A Layout | ✅ 已完成 | 7393b4d (snippet) + ef62eab (sticky bar fix) | snippets/apgo-bundle-widget.liquid + CSS + 雙 shell 條件渲染 + 手機 sticky bar |
+| B 前端 Logic | ✅ 已完成 | (本 commit) | assets/apgo-bundle.js — 單一 state 同步雙 shell + 4 個 tier 切換 + qty +/- + 3 個 quick action + CTA toggle + payload console.log |
 | C Cart 整合 | ⏸ 未開始 | - | 含 user 後台 Automatic Discount 設定 |
 | D 細節 | ⏸ 未開始 | - | - |
 

@@ -148,6 +148,14 @@
     </style>
     {{ 'apgo-pdp.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'apgo-pdp.js' | asset_url }}" defer></script>
+    {%- comment -%}
+      Bundle picker JS — only loads when this product has the
+      apgo.bundle_enabled metafield turned on. See
+      docs/V1S_PLUS_BUNDLE_PLAN.md (Phase B).
+    {%- endcomment -%}
+    {%- if product.metafields.apgo.bundle_enabled -%}
+      <script src="{{ 'apgo-bundle.js' | asset_url }}" defer></script>
+    {%- endif -%}
   {%- endif -%}
 </head>
 
