@@ -57,31 +57,6 @@
   endif
 -%}
 
-<!-- APGO BUNDLE DEBUG (delete after confirming colors)
-  shop.metafields.apgo.scents (raw):
-  {{ shop.metafields.apgo.scents | json }}
-
-  shop.metafields.apgo.scents.value:
-  {{ shop.metafields.apgo.scents.value | json }}
-
-  scent_palette assign:
-  {{ scent_palette | json }}
-
-  Iteration peek (first entry):
-  {%- if scent_palette != blank and scent_palette[0] -%}
-    name: {{ scent_palette[0].name | json }}
-    hex:  {{ scent_palette[0].hex | json }}
-  {%- else -%}
-    (palette empty or unaccessible)
-  {%- endif -%}
-
-  Comparison — apgo.ship_rows (known-working):
-  {{ shop.metafields.apgo.ship_rows | json }}
-
-  Top-level apgo namespace dump:
-  {{ shop.metafields.apgo | json }}
--->
-
 
 <div class="apgo-bundle" data-apgo-bundle data-bundle-shell="{{ shell }}" data-mode="multi">
   <header class="apgo-bundle__head">
@@ -186,7 +161,17 @@
               {%- if s.name == value -%}{%- assign s_hex = s.hex -%}{%- endif -%}
             {%- endfor -%}
           {%- endif -%}
-          {%- comment -%} Fallback removed temporarily so we can verify shop metafield is wired up. {%- endcomment -%}
+          {%- if s_hex == '' -%}
+            {%- assign s_hex = '#E8DFC9' -%}
+            {%- case value -%}
+              {%- when '淨心棉花' -%}{%- assign s_hex = '#E8DFC9' -%}
+              {%- when '花漾蒼蘭' -%}{%- assign s_hex = '#D4DDE0' -%}
+              {%- when '浪漫玫瑰' -%}{%- assign s_hex = '#E8D4CF' -%}
+              {%- when '海洋晨曦' -%}{%- assign s_hex = '#C8D6DA' -%}
+              {%- when '清雅白茶' -%}{%- assign s_hex = '#DAE0CE' -%}
+              {%- when '薰衣紫戀' -%}{%- assign s_hex = '#D6CFDD' -%}
+            {%- endcase -%}
+          {%- endif -%}
           <label class="apgo-scentbtn" data-apgo-bundle-single-scent="{{ value | escape }}">
             <input type="radio"
                    name="apgo-bundle-single-{{ shell }}"
@@ -205,7 +190,18 @@
               {%- if s.name == value -%}{%- assign hex = s.hex -%}{%- endif -%}
             {%- endfor -%}
           {%- endif -%}
-          {%- comment -%} Fallback removed temporarily so we can verify shop metafield is wired up. {%- endcomment -%}
+          {%- comment -%} Safety net: if shop metafield apgo.scents loses its value (e.g. admin removes a metaobject entry from the list), keep dots colored so the UI doesn't fall back to a single beige fill. {%- endcomment -%}
+          {%- if hex == '' -%}
+            {%- assign hex = '#E8DFC9' -%}
+            {%- case value -%}
+              {%- when '淨心棉花' -%}{%- assign hex = '#E8DFC9' -%}
+              {%- when '花漾蒼蘭' -%}{%- assign hex = '#D4DDE0' -%}
+              {%- when '浪漫玫瑰' -%}{%- assign hex = '#E8D4CF' -%}
+              {%- when '海洋晨曦' -%}{%- assign hex = '#C8D6DA' -%}
+              {%- when '清雅白茶' -%}{%- assign hex = '#DAE0CE' -%}
+              {%- when '薰衣紫戀' -%}{%- assign hex = '#D6CFDD' -%}
+            {%- endcase -%}
+          {%- endif -%}
           {%- assign en_name = '' -%}
           {%- for pair in en_pairs -%}
             {%- assign p = pair | split: '|' -%}
