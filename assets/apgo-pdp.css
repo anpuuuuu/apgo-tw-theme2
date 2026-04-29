@@ -1726,3 +1726,50 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
   .apgo-bundle__tier-meta { font-size: 10px; }
   .apgo-bundle__tier-price { font-size: 13px; }
 }
+
+/* ============================================================================
+   Sticky bottom CTA bar — bundle variant
+   When apgo.bundle_enabled, the sticky bar swaps add+buy for either:
+     A. disabled state (single full-width 還差 N 包 button)
+     B. enabled state (add + buy, mirroring the original)
+   Only one of A/B is visible at a time; Phase B JS toggles via display.
+   ============================================================================ */
+
+.apgo-mpdp-sticky--bundle {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: center;
+}
+.apgo-mpdp-sticky--bundle .apgo-mpdp-wish {
+  grid-column: 1;
+}
+.apgo-mpdp-sticky--bundle .apgo-mpdp-cta-bundle-disabled,
+.apgo-mpdp-sticky--bundle .apgo-mpdp-cta-bundle-enabled {
+  grid-column: 2;
+  width: 100%;
+}
+
+.apgo-mpdp-cta-bundle-disabled {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--apgo-muted);
+  color: var(--apgo-bg-alt);
+  border: none;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  cursor: not-allowed;
+  font-family: var(--apgo-sans);
+}
+
+.apgo-mpdp-cta-bundle-enabled {
+  display: flex;
+  gap: 6px;
+}
+.apgo-mpdp-cta-bundle-enabled .apgo-mpdp-cta-secondary,
+.apgo-mpdp-cta-bundle-enabled .apgo-mpdp-cta-primary {
+  flex: 1;
+  white-space: nowrap;
+}

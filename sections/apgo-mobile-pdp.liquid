@@ -358,7 +358,7 @@
         path above; gated on the same product.metafields.apgo.bundle_enabled.
       {%- endcomment -%}
       {%- if product.metafields.apgo.bundle_enabled -%}
-        {%- render 'apgo-bundle-widget', product: product, shell: 'mobile' -%}
+        {%- render 'apgo-bundle-widget', product: product, shell: 'mobile', with_cta: false -%}
       {%- else -%}
 
       {%- comment -%} Variant options {%- endcomment -%}
@@ -858,16 +858,41 @@
       {%- endif -%}
     {%- endif -%}
 
-    {%- comment -%} Sticky bottom CTA bar {%- endcomment -%}
-    <div class="apgo-mpdp-sticky">
-      <button type="button" class="apgo-mpdp-wish" aria-label="加入收藏">♡</button>
-      <button type="submit" name="add" class="apgo-mpdp-cta-secondary" data-apgo-add {% unless v.available %}disabled{% endunless %}>
-        {% if v.available %}加入購物車{% else %}補貨中{% endif %}
-      </button>
-      <button type="button" class="apgo-mpdp-cta-primary" data-apgo-buy-now {% unless v.available %}disabled{% endunless %}>
-        立即購買 <span data-apgo-total>{{ v.price | money }}</span>
-      </button>
-    </div>
+    {%- comment -%} Sticky bottom CTA bar — two render paths {%- endcomment -%}
+    {%- if product.metafields.apgo.bundle_enabled -%}
+      {%- comment -%}
+        Bundle mode: disabled state initially shown as a single full-width
+        button. Phase B JS will swap to the enabled (add + buy) state once
+        the scent counter is filled.
+      {%- endcomment -%}
+      <div class="apgo-mpdp-sticky apgo-mpdp-sticky--bundle">
+        <button type="button" class="apgo-mpdp-wish" aria-label="加入收藏">♡</button>
+        <button type="button"
+                class="apgo-mpdp-cta-bundle-disabled"
+                data-apgo-bundle-cta-disabled
+                disabled>
+          請先選滿香氛 · 還差 <span data-apgo-bundle-remaining>3</span> 包
+        </button>
+        <div class="apgo-mpdp-cta-bundle-enabled"
+             data-apgo-bundle-cta-enabled
+             style="display:none;">
+          <button type="button" class="apgo-mpdp-cta-secondary" data-apgo-bundle-add>加入購物車</button>
+          <button type="button" class="apgo-mpdp-cta-primary" data-apgo-bundle-buy-now>
+            立即購買 NT$ <span data-apgo-bundle-total>298</span>
+          </button>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="apgo-mpdp-sticky">
+        <button type="button" class="apgo-mpdp-wish" aria-label="加入收藏">♡</button>
+        <button type="submit" name="add" class="apgo-mpdp-cta-secondary" data-apgo-add {% unless v.available %}disabled{% endunless %}>
+          {% if v.available %}加入購物車{% else %}補貨中{% endif %}
+        </button>
+        <button type="button" class="apgo-mpdp-cta-primary" data-apgo-buy-now {% unless v.available %}disabled{% endunless %}>
+          立即購買 <span data-apgo-total>{{ v.price | money }}</span>
+        </button>
+      </div>
+    {%- endif -%}
 
     <script type="application/json" data-apgo-variants>{{ product.variants | json }}</script>
   {% endform %}

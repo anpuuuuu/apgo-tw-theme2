@@ -10,9 +10,12 @@
     - CTA dual-state (disabled visible / enabled hidden)
   Phase B will wire the JS to update active state, counter, CTA toggle.
 
-  @param shell - 'desktop' or 'mobile' — used to scope IDs so two instances
-                 of this widget on the same page don't share state once JS
-                 lands in Phase B.
+  @param shell    - 'desktop' or 'mobile' — used to scope IDs so two instances
+                    of this widget on the same page don't share state once JS
+                    lands in Phase B.
+  @param with_cta - true / false. When false, the dual-state CTA area at the
+                    bottom of the widget is omitted (used by mobile so the
+                    CTA appears in the sticky bottom bar instead).
 {%- endcomment -%}
 
 {%- liquid
@@ -38,6 +41,9 @@
   endfor
 
   assign shell = shell | default: 'main'
+  if with_cta == nil
+    assign with_cta = true
+  endif
 -%}
 
 <div class="apgo-bundle" data-apgo-bundle data-bundle-shell="{{ shell }}">
@@ -155,16 +161,18 @@
     </div>
   {%- endif -%}
 
-  {%- comment -%} ---------- CTA dual state ---------- {%- endcomment -%}
-  <div class="apgo-bundle__cta-area">
-    <button type="button" class="apgo-bundle__cta-disabled" data-apgo-bundle-cta-disabled disabled>
-      請先選滿香氛 · 還差 <span data-apgo-bundle-remaining>3</span> 包
-    </button>
-    <div class="apgo-bundle__cta-enabled" data-apgo-bundle-cta-enabled style="display:none;">
-      <button type="button" class="apgo-bundle__cta-add" data-apgo-bundle-add>加入購物車</button>
-      <button type="button" class="apgo-bundle__cta-buy-now" data-apgo-bundle-buy-now>
-        立即購買 NT$ <span data-apgo-bundle-total>298</span>
+  {%- comment -%} ---------- CTA dual state (omitted in mobile shell — sticky bar handles it) ---------- {%- endcomment -%}
+  {%- if with_cta -%}
+    <div class="apgo-bundle__cta-area">
+      <button type="button" class="apgo-bundle__cta-disabled" data-apgo-bundle-cta-disabled disabled>
+        請先選滿香氛 · 還差 <span data-apgo-bundle-remaining>3</span> 包
       </button>
+      <div class="apgo-bundle__cta-enabled" data-apgo-bundle-cta-enabled style="display:none;">
+        <button type="button" class="apgo-bundle__cta-add" data-apgo-bundle-add>加入購物車</button>
+        <button type="button" class="apgo-bundle__cta-buy-now" data-apgo-bundle-buy-now>
+          立即購買 NT$ <span data-apgo-bundle-total>298</span>
+        </button>
+      </div>
     </div>
-  </div>
+  {%- endif -%}
 </div>
