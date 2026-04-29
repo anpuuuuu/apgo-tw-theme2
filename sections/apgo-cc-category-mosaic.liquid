@@ -98,7 +98,7 @@
           </a>
         {%- endfor -%}
       </div>
-        <span class="apgo-cc-mosaic__scroll-hint" aria-hidden="true" data-apgo-cc-scroll-hint>›</span>
+        <button type="button" class="apgo-cc-mosaic__scroll-hint" aria-label="顯示下一個分類" data-apgo-cc-scroll-hint>›</button>
       </div>
     {%- endif -%}
 
@@ -161,6 +161,20 @@
         }
       }, 3000);
     }, { passive: true });
+    // Click hint → scroll forward by one tile width (+ gap), wrapping to
+    // the start when already at the end.
+    hint.addEventListener('click', function (e) {
+      e.preventDefault();
+      var firstTile = scrollEl.querySelector('.apgo-cc-mosaic__tile');
+      var step = firstTile ? firstTile.offsetWidth + 8 : scrollEl.clientWidth * 0.5;
+      var maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
+      var atEnd = scrollEl.scrollLeft >= maxScroll - 4;
+      if (atEnd) {
+        scrollEl.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        scrollEl.scrollBy({ left: step, behavior: 'smooth' });
+      }
+    });
     // Hide upfront if there's nothing to scroll
     requestAnimationFrame(function () {
       if (scrollEl.scrollWidth <= scrollEl.clientWidth + 4) {
