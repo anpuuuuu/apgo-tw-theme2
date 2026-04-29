@@ -57,6 +57,26 @@
   endif
 -%}
 
+<!-- APGO BUNDLE DEBUG (delete after confirming colors)
+  shop.metafields.apgo.scents (raw):
+  {{ shop.metafields.apgo.scents | json }}
+
+  shop.metafields.apgo.scents.value:
+  {{ shop.metafields.apgo.scents.value | json }}
+
+  scent_palette assign:
+  {{ scent_palette | json }}
+
+  Iteration peek (first entry):
+  {%- if scent_palette != blank and scent_palette[0] -%}
+    name: {{ scent_palette[0].name | json }}
+    hex:  {{ scent_palette[0].hex | json }}
+  {%- else -%}
+    (palette empty or unaccessible)
+  {%- endif -%}
+-->
+
+
 <div class="apgo-bundle" data-apgo-bundle data-bundle-shell="{{ shell }}" data-mode="multi">
   <header class="apgo-bundle__head">
     <h3 class="apgo-bundle__title apgo-serif">限時優惠組合</h3>
