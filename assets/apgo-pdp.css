@@ -1735,17 +1735,14 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
    ============================================================================ */
 
 .apgo-mpdp-sticky--bundle {
+  /* Wish heart removed — single-column full-width CTA area. */
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 8px;
+  grid-template-columns: 1fr;
+  gap: 0;
   align-items: center;
-}
-.apgo-mpdp-sticky--bundle .apgo-mpdp-wish {
-  grid-column: 1;
 }
 .apgo-mpdp-sticky--bundle .apgo-mpdp-cta-bundle-disabled,
 .apgo-mpdp-sticky--bundle .apgo-mpdp-cta-bundle-enabled {
-  grid-column: 2;
   width: 100%;
 }
 
