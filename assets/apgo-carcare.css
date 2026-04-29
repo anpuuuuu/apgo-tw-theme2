@@ -246,11 +246,10 @@ body.apgo-cc-skin .product-grid__item [ref="priceContainer"]:has(.compare-at-pri
   color: var(--cc-orange) !important;
 }
 
-/* Compare-at strikethrough — smaller, sits on top of the sale price.
-   Color is left to whatever Horizon's default theme tokens choose so it
-   matches the rest of the storefront's strikethrough conventions. */
+/* Compare-at strikethrough — smaller, faint, sits on top of the sale price */
 body.apgo-cc-skin .compare-at-price,
 body.apgo-cc-skin .compare-at-price * {
+  color: var(--cc-fg-faint) !important;
   font-family: var(--cc-font-body) !important;
   font-weight: 300 !important;
   font-size: 12px !important;
