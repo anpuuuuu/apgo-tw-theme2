@@ -44,15 +44,34 @@ This file can be re-written at any time.
   {% render 'shogun-head' %}
 
   {%- comment -%}
-    Collection page tactical skin — only loads on collection templates so
-    the dark/orange overrides cannot leak into PDP, cart, or homepage.
-    See docs/COLLECTION_TACTICAL_PLAN.md (Phase 1).
+    Collection page Car Care Colors skin — only loads on collection templates
+    so the warm-cream/dark-gray palette cannot leak into PDP, cart, or
+    homepage. See docs/CAR_CARE_REDESIGN_PLAN.md (Phase 1).
+
+    Tactical (previous skin) load is preserved as a commented block below
+    in case we ever need to revert. Files in assets/ + sections/ are kept
+    on disk too. See docs/COLLECTION_TACTICAL_PLAN.md (SUPERSEDED).
   {%- endcomment -%}
-  {%- if template.name == 'collection' -%}
+  {%- comment -%} Car Care Colors loads on collection pages AND on apgo-v2 product templates {%- endcomment -%}
+  {%- assign apgo_cc_active = false -%}
+  {%- if template.name == 'collection' -%}{%- assign apgo_cc_active = true -%}{%- endif -%}
+  {%- if template.suffix == 'apgo-v2' -%}{%- assign apgo_cc_active = true -%}{%- endif -%}
+  {%- if apgo_cc_active -%}
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;0,900;1,900&family=JetBrains+Mono:wght@700;800;900&display=swap" rel="stylesheet">
-    {{ 'apgo-tactical.css' | asset_url | stylesheet_tag }}
-    <script src="{{ 'apgo-tactical.js' | asset_url }}" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    {{ 'apgo-carcare.css' | asset_url | stylesheet_tag }}
+    {%- if template.suffix == 'apgo-v2' -%}
+      <script src="{{ 'apgo-cc-pdp.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if template.name == 'collection' -%}
+      <script src="{{ 'apgo-cc-quick-add.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- comment -%}
+      ARCHIVED tactical load (superseded 2026-04-28):
+      <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;0,900;1,900&family=JetBrains+Mono:wght@700;800;900&display=swap" rel="stylesheet">
+      {{ 'apgo-tactical.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'apgo-tactical.js' | asset_url }}" defer></script>
+    {%- endcomment -%}
   {%- endif -%}
 
   {%- if template.suffix == 'apgo-v1s-plus' -%}
@@ -109,6 +128,14 @@ This file can be re-written at any time.
     </style>
     {{ 'apgo-pdp.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'apgo-pdp.js' | asset_url }}" defer></script>
+    {%- comment -%}
+      Bundle picker JS — only loads when this product has the
+      apgo.bundle_enabled metafield turned on. See
+      docs/V1S_PLUS_BUNDLE_PLAN.md (Phase B).
+    {%- endcomment -%}
+    {%- if product.metafields.apgo.bundle_enabled -%}
+      <script src="{{ 'apgo-bundle.js' | asset_url }}" defer></script>
+    {%- endif -%}
   {%- endif -%}
 </head>
   <body>
