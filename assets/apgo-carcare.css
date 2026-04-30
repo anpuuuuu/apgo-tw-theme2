@@ -200,32 +200,35 @@ body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-blo
   width: 100% !important;
 }
 
-/* Card bottom-row layout (mobile + desktop):
+/* Card layout (mobile + desktop):
      [ image (square) ]
      [ title          ]
-     [ compare-at $X  ]              ← strikethrough small (if on sale)
-     [ sale $Y    [+] ]              ← sale price left, quick-add right
+     .apgo-cc-price-row  ← flex row wrapping priceContainer + quick-add btn
+       [ compare-at $X (column-reverse top) ]
+       [ sale $Y         ] [ + ]   ← btn aligns to bottom (flex-end)
 
-   Price stack is pinned bottom-left of the card (column-reverse flex so
-   compare-at sits above sale). Quick-add button is the existing absolute
-   bottom-right pin. Card gets padding-bottom so the title flow above
-   doesn't crash into the bottom row. */
-body.apgo-cc-skin .product-card {
-  position: relative;
-  padding-bottom: 56px !important;
-}
-
+   JS inserts a .apgo-cc-price-row div around [ref="priceContainer"] and
+   appends the quick-add button inside it, so both are in normal flow.
+   No padding-right hack needed. */
 body.apgo-cc-skin .product-card [ref="priceContainer"],
 body.apgo-cc-skin .product-grid__item [ref="priceContainer"] {
   display: flex !important;
   flex-direction: column-reverse !important;
   align-items: flex-start;
   gap: 2px;
-  position: absolute !important;
-  bottom: 12px !important;
-  left: 14px !important;
-  width: auto !important;
-  margin: 0 !important;
+  flex: 1 1 0;
+  min-width: 0;
+  margin-top: 0;
+}
+
+/* Price row wrapper injected by JS: holds priceContainer left + btn right */
+body.apgo-cc-skin .apgo-cc-price-row {
+  display: flex !important;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+  margin-top: 4px;
 }
 
 /* Sale price (or-only price) — bigger, orange when on sale, ink otherwise */
@@ -1076,13 +1079,12 @@ body.apgo-cc-skin .apgo-cc-pdp {
 /* ============================================================================
    Quick Add — circular + button on each product card + modal + toast
    ============================================================================ */
-body.apgo-cc-skin .product-card { position: relative; }
 
+/* Button sits inside .apgo-cc-price-row (injected by JS) — in normal flow,
+   no absolute positioning needed. Flex-shrink:0 keeps it from squishing. */
 .apgo-cc-quick-add {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  z-index: 3;
+  flex-shrink: 0;
+  align-self: flex-end;
   width: 30px;
   height: 30px;
   border-radius: 50%;
