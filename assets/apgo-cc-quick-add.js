@@ -100,7 +100,14 @@
         openQuickAdd(jsonUrl, btn);
       });
 
-      card.appendChild(btn);
+      // Inject button inside priceContainer so CSS grid places it
+      // in col 2 / row 2 (same line as the sale price).
+      var priceEl = card.querySelector('[ref="priceContainer"]');
+      if (priceEl) {
+        priceEl.appendChild(btn);
+      } else {
+        card.appendChild(btn); // fallback if priceContainer not found
+      }
       card._apgoCcQA = true;
     });
   }
