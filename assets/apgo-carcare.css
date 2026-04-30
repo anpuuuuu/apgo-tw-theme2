@@ -200,6 +200,21 @@ body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-blo
   width: 100% !important;
 }
 
+/* Stack title and price on the left. The collection template configures this
+   group as a row, which pushes price to the right on desktop. */
+body.apgo-cc-skin .product-card .group-block-content:has(> a.user-select-text[href*="/products/"]):has(> product-price) {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 2px !important;
+}
+
+body.apgo-cc-skin .product-card product-price {
+  display: block !important;
+  width: 100% !important;
+  text-align: left !important;
+}
+
 /* Price — stack vertically: compare-at (smaller, strikethrough) on top,
    sale price (orange, bigger) on bottom. Horizon's snippets/price.liquid
    wraps the price as either:
@@ -297,7 +312,7 @@ body.apgo-cc-skin .product-badges {
   border: none !important;
 }
 
-/* Buy / quick-add buttons inside cards (if any) — solid orange. */
+/* Buy buttons inside cards (if any) — solid orange. */
 body.apgo-cc-skin .product-card .button,
 body.apgo-cc-skin .product-card button[type="submit"] {
   background: var(--cc-orange) !important;
@@ -1069,6 +1084,12 @@ body.apgo-cc-skin .apgo-cc-pdp {
    Quick Add — circular + button on each product card + modal + toast
    ============================================================================ */
 body.apgo-cc-skin .product-card { position: relative; }
+
+/* Hide Horizon's built-in "新增" quick-add button; APGO uses the small
+   bottom-right .apgo-cc-quick-add button instead. */
+body.apgo-cc-skin .product-card quick-add-component.quick-add {
+  display: none !important;
+}
 
 .apgo-cc-quick-add {
   position: absolute;
