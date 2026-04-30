@@ -728,6 +728,7 @@
         "product_grid_jHKxX8": {
           "type": "product_grid",
           "name": "超級洗衣精✨家庭囤貨組12包入",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "家庭囤貨組✨現折$708",
