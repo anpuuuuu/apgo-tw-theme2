@@ -75,7 +75,8 @@
   function injectButtons(root) {
     root = root || document;
     $$('.product-card', root).forEach(function (card) {
-      if (card._apgoCcQA) return;
+      if (card.querySelector('.apgo-cc-quick-add')) return;
+
       var link = card.querySelector('a[href*="/products/"]');
       if (!link) return;
 
@@ -100,8 +101,12 @@
         openQuickAdd(jsonUrl, btn);
       });
 
-      card.appendChild(btn);
-      card._apgoCcQA = true;
+      var priceEl = card.querySelector('[ref="priceContainer"]');
+      if (priceEl) {
+        priceEl.appendChild(btn);
+      } else {
+        card.appendChild(btn);
+      }
     });
   }
 

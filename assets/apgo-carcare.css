@@ -215,23 +215,40 @@ body.apgo-cc-skin .product-card product-price {
   text-align: left !important;
 }
 
-/* Price — stack vertically: compare-at (smaller, strikethrough) on top,
-   sale price (orange, bigger) on bottom. Horizon's snippets/price.liquid
+/* Price row — price on the left, APGO quick-add on the right. Compare-at sits
+   above the sale price when present. Horizon's snippets/price.liquid
    wraps the price as either:
      <div [ref=priceContainer]>
        <span><span class="price">$X</span></span>
        <span><span class="compare-at-price">$Y</span></span>
      </div>
-   (when show_sale_price_first = true, which is what collection.json sets)
-   Use flex-direction: column-reverse to put compare-at above price.       */
+   (when show_sale_price_first = true, which is what collection.json sets). */
 body.apgo-cc-skin .product-card [ref="priceContainer"],
 body.apgo-cc-skin .product-grid__item [ref="priceContainer"] {
-  display: flex !important;
-  flex-direction: column-reverse !important;
-  align-items: flex-start;
-  gap: 2px;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  column-gap: 10px;
+  row-gap: 2px;
   width: 100%;
   margin-top: 4px;
+}
+
+body.apgo-cc-skin .product-card [ref="priceContainer"] > span[role="group"],
+body.apgo-cc-skin .product-grid__item [ref="priceContainer"] > span[role="group"] {
+  display: contents;
+}
+
+body.apgo-cc-skin .product-card [ref="priceContainer"] .compare-at-price,
+body.apgo-cc-skin .product-grid__item [ref="priceContainer"] .compare-at-price {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+body.apgo-cc-skin .product-card [ref="priceContainer"] .price,
+body.apgo-cc-skin .product-grid__item [ref="priceContainer"] .price {
+  grid-column: 1;
+  grid-row: 2;
 }
 
 /* Sale price (or-only price) — bigger, orange when on sale, ink otherwise */
@@ -1092,9 +1109,10 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 }
 
 .apgo-cc-quick-add {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
+  grid-column: 2;
+  grid-row: 2;
+  align-self: end;
+  justify-self: end;
   z-index: 3;
   width: 30px;
   height: 30px;
