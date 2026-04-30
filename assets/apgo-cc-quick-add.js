@@ -100,19 +100,7 @@
         openQuickAdd(jsonUrl, btn);
       });
 
-      // Wrap [ref="priceContainer"] + btn in a flex row so the + button
-      // sits on the same line as the sale price (not floating abs bottom-right).
-      var priceEl = card.querySelector('[ref="priceContainer"]');
-      if (priceEl && priceEl.parentNode) {
-        var row = document.createElement('div');
-        row.className = 'apgo-cc-price-row';
-        priceEl.parentNode.insertBefore(row, priceEl);
-        row.appendChild(priceEl);
-        row.appendChild(btn);
-      } else {
-        // Fallback: priceContainer not found, append to card as before
-        card.appendChild(btn);
-      }
+      card.appendChild(btn);
       card._apgoCcQA = true;
     });
   }

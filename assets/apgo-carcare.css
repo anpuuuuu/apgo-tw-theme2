@@ -200,33 +200,21 @@ body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-blo
   width: 100% !important;
 }
 
-/* Card layout (mobile + desktop):
-     [ image (square) ]
-     [ title          ]
-     .apgo-cc-price-row  ← flex row wrapping priceContainer + quick-add btn
-       [ compare-at $X (column-reverse top) ]
-       [ sale $Y         ] [ + ]   ← btn aligns to bottom (flex-end)
-
-   JS inserts a .apgo-cc-price-row div around [ref="priceContainer"] and
-   appends the quick-add button inside it, so both are in normal flow.
-   No padding-right hack needed. */
+/* Price — stack vertically: compare-at (smaller, strikethrough) on top,
+   sale price (orange, bigger) on bottom. Horizon's snippets/price.liquid
+   wraps the price as either:
+     <div [ref=priceContainer]>
+       <span><span class="price">$X</span></span>
+       <span><span class="compare-at-price">$Y</span></span>
+     </div>
+   (when show_sale_price_first = true, which is what collection.json sets)
+   Use flex-direction: column-reverse to put compare-at above price.       */
 body.apgo-cc-skin .product-card [ref="priceContainer"],
 body.apgo-cc-skin .product-grid__item [ref="priceContainer"] {
   display: flex !important;
   flex-direction: column-reverse !important;
   align-items: flex-start;
   gap: 2px;
-  flex: 1 1 0;
-  min-width: 0;
-  margin-top: 0;
-}
-
-/* Price row wrapper injected by JS: holds priceContainer left + btn right */
-body.apgo-cc-skin .apgo-cc-price-row {
-  display: flex !important;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 6px;
   width: 100%;
   margin-top: 4px;
 }
@@ -258,10 +246,11 @@ body.apgo-cc-skin .product-grid__item [ref="priceContainer"]:has(.compare-at-pri
   color: var(--cc-orange) !important;
 }
 
-/* Compare-at strikethrough — smaller, faint, sits on top of the sale price */
+/* Compare-at strikethrough — smaller, sits on top of the sale price.
+   Color is left to whatever Horizon's default theme tokens choose so it
+   matches the rest of the storefront's strikethrough conventions. */
 body.apgo-cc-skin .compare-at-price,
 body.apgo-cc-skin .compare-at-price * {
-  color: var(--cc-fg-faint) !important;
   font-family: var(--cc-font-body) !important;
   font-weight: 300 !important;
   font-size: 12px !important;
@@ -1079,12 +1068,13 @@ body.apgo-cc-skin .apgo-cc-pdp {
 /* ============================================================================
    Quick Add — circular + button on each product card + modal + toast
    ============================================================================ */
+body.apgo-cc-skin .product-card { position: relative; }
 
-/* Button sits inside .apgo-cc-price-row (injected by JS) — in normal flow,
-   no absolute positioning needed. Flex-shrink:0 keeps it from squishing. */
 .apgo-cc-quick-add {
-  flex-shrink: 0;
-  align-self: flex-end;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 3;
   width: 30px;
   height: 30px;
   border-radius: 50%;
