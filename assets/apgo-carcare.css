@@ -200,40 +200,23 @@ body.apgo-cc-skin .product-card a.user-select-text[href*="/products/"] .text-blo
   width: 100% !important;
 }
 
-/* Price layout — 2-column grid:
-     col 1 (1fr)  : compare-at (row 1) + sale price (row 2)
-     col 2 (auto) : quick-add button (row 2)
-
-   Horizon's price.liquid wraps .compare-at-price / .price inside a
-   <span role="group"> for a11y. We use `display: contents` to flatten
-   those wrappers so the inner spans become real grid items. */
+/* Price — stack vertically: compare-at (smaller, strikethrough) on top,
+   sale price (orange, bigger) on bottom. Horizon's snippets/price.liquid
+   wraps the price as either:
+     <div [ref=priceContainer]>
+       <span><span class="price">$X</span></span>
+       <span><span class="compare-at-price">$Y</span></span>
+     </div>
+   (when show_sale_price_first = true, which is what collection.json sets)
+   Use flex-direction: column-reverse to put compare-at above price.       */
 body.apgo-cc-skin .product-card [ref="priceContainer"],
 body.apgo-cc-skin .product-grid__item [ref="priceContainer"] {
-  display: grid !important;
-  grid-template-columns: 1fr auto;
-  align-items: end;
-  column-gap: 6px;
-  row-gap: 2px;
+  display: flex !important;
+  flex-direction: column-reverse !important;
+  align-items: flex-start;
+  gap: 2px;
   width: 100%;
   margin-top: 4px;
-}
-
-/* Flatten role="group" wrappers so inner price spans become grid items */
-body.apgo-cc-skin .product-card [ref="priceContainer"] > span[role="group"],
-body.apgo-cc-skin .product-grid__item [ref="priceContainer"] > span[role="group"] {
-  display: contents;
-}
-
-/* Compare-at price spans the full width (row 1) */
-body.apgo-cc-skin .product-card [ref="priceContainer"] .compare-at-price,
-body.apgo-cc-skin .product-grid__item [ref="priceContainer"] .compare-at-price {
-  grid-column: 1 / -1;
-}
-
-/* Sale price sits in left column */
-body.apgo-cc-skin .product-card [ref="priceContainer"] .price,
-body.apgo-cc-skin .product-grid__item [ref="priceContainer"] .price {
-  grid-column: 1;
 }
 
 /* Sale price (or-only price) — bigger, orange when on sale, ink otherwise */
@@ -1085,13 +1068,13 @@ body.apgo-cc-skin .apgo-cc-pdp {
 /* ============================================================================
    Quick Add — circular + button on each product card + modal + toast
    ============================================================================ */
-/* Button lives inside [ref="priceContainer"] (injected by JS) — grid
-   places it in col 2 / row 2 (right of the sale price). */
+body.apgo-cc-skin .product-card { position: relative; }
+
 .apgo-cc-quick-add {
-  grid-column: 2;
-  grid-row: 2;
-  align-self: end;
-  justify-self: end;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 3;
   width: 30px;
   height: 30px;
   border-radius: 50%;

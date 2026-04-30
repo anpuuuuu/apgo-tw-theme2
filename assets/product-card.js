@@ -59,7 +59,7 @@ export class ProductCard extends Component {
 
     if (shouldOpenInNewTab) {
       event.preventDefault();
-      window.open(url.href, '_blank', 'noopener');
+      window.open(url.href, '_blank');
       return;
     } else {
       window.location.href = url.href;
@@ -90,12 +90,6 @@ export class ProductCard extends Component {
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.removeEventListener(ThemeEvents.variantUpdate, this.#handleVariantUpdate);
-    this.removeEventListener(ThemeEvents.variantSelected, this.#handleVariantSelected);
-    this.removeEventListener(SlideshowSelectEvent.eventName, this.#handleSlideshowSelect);
-    mediaQueryLarge.removeEventListener('change', this.#handleQuickAdd);
-    this.removeEventListener('pointerenter', this.#fetchProductPageHandler);
-    this.removeEventListener('focusin', this.#fetchProductPageHandler);
     this.removeEventListener('click', this.navigateToProduct);
   }
 
