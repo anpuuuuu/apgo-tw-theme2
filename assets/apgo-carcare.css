@@ -274,6 +274,27 @@ body.apgo-cc-skin .compare-at-price * {
   font-variant-numeric: tabular-nums;
 }
 
+@media (max-width: 749px) {
+  body.apgo-cc-skin .product-card [ref="priceContainer"],
+  body.apgo-cc-skin .product-grid__item [ref="priceContainer"] {
+    max-width: calc(100% - 44px);
+  }
+
+  body.apgo-cc-skin .product-card .price,
+  body.apgo-cc-skin .product-grid__item .price {
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+    white-space: nowrap;
+  }
+
+  body.apgo-cc-skin .compare-at-price,
+  body.apgo-cc-skin .compare-at-price * {
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    white-space: nowrap;
+  }
+}
+
 /* Subtitle text-block (the metafield-driven descriptors.subtitle line) — mono,
    small, dim. This is the only place where mono shouts. */
 body.apgo-cc-skin .product-card .text-block,
