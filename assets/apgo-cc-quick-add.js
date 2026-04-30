@@ -75,8 +75,10 @@
   function injectButtons(root) {
     root = root || document;
     $$('.product-card', root).forEach(function (card) {
-      if (card._apgoCcQA) return;
-      var link = card.querySelector('a[href*="/products/"]');
+      var existingButton = card.querySelector('.apgo-cc-quick-add');
+      if (existingButton) return;
+
+      var link = card.querySelector('.product-card__link[href*="/products/"], [ref="cardGalleryLink"][href*="/products/"], [ref="productTitleLink"][href*="/products/"], a[href*="/products/"]');
       if (!link) return;
 
       var jsonUrl = buildProductJsonUrl(link);
@@ -108,7 +110,6 @@
       } else {
         card.appendChild(btn); // fallback if priceContainer not found
       }
-      card._apgoCcQA = true;
     });
   }
 
@@ -411,17 +412,38 @@
   if (window.Shopify && Shopify.designMode) {
     document.addEventListener('shopify:section:load', function (e) { injectButtons(e.target); });
   }
-  // Watch DOM mutations for new product cards (e.g. infinite scroll, ajax filters)
+  // Watch DOM mutations for new product cards and price re-renders.
+  // Product-card variant updates can replace [ref="priceContainer"], which
+  // removes the injected button; reinject based on the actual DOM, not a flag.
+  var injectQueued = false;
+  function queueInjectButtons() {
+    if (injectQueued) return;
+    injectQueued = true;
+    requestAnimationFrame(function () {
+      injectQueued = false;
+      injectButtons();
+    });
+  }
+
   var observer = new MutationObserver(function (muts) {
     var changed = false;
     muts.forEach(function (m) {
       m.addedNodes.forEach(function (n) {
-        if (n.nodeType === 1 && (n.classList && n.classList.contains('product-card') || n.querySelector && n.querySelector('.product-card'))) {
+        if (
+          n.nodeType === 1 &&
+          (
+            n.classList && (
+              n.classList.contains('product-card') ||
+              n.getAttribute('ref') === 'priceContainer'
+            ) ||
+            n.querySelector && n.querySelector('.product-card, [ref="priceContainer"]')
+          )
+        ) {
           changed = true;
         }
       });
     });
-    if (changed) injectButtons();
+    if (changed) queueInjectButtons();
   });
   observer.observe(document.body, { childList: true, subtree: true });
 })();
