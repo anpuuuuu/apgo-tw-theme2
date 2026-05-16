@@ -785,10 +785,13 @@ body.apgo-cc-skin .apgo-cc-pdp {
   border-radius: var(--cc-r3);
   padding: 12px;
 }
+/* PDP gallery photo background: per Mobile-Detail-Spec §3.1 the PDP hero
+   uses --cc-photo-bg-dark (#2a2e35) — distinct from the cream photo bg
+   used by collection cards so the product reads as the focal point. */
 .apgo-cc-pdp__gallery-main {
   position: relative;
   aspect-ratio: 1 / 1;
-  background: var(--cc-photo-bg);
+  background: var(--cc-photo-bg-dark);
   border-radius: var(--cc-r2);
   overflow: hidden;
   display: flex; align-items: center; justify-content: center;
@@ -851,25 +854,29 @@ body.apgo-cc-skin .apgo-cc-pdp {
   border-radius: var(--cc-r3);
   padding: 20px 24px;
 }
+/* Typography per Mobile-Detail-Spec §3.3:
+     eyebrow (kicker) — 11px / 600 / letter-spacing .15em
+     h1 商品標題      — 18px / 700 / Inter (not Cormorant display)
+     subtitle         — 12px */
 .apgo-cc-pdp__kicker {
   font-size: 11px;
   color: var(--cc-orange);
-  letter-spacing: .06em;
+  letter-spacing: .15em;
   font-weight: 600;
   margin-bottom: 6px;
   text-transform: uppercase;
 }
 .apgo-cc-pdp__title {
-  font-family: var(--cc-font-display);
-  font-size: 28px;
-  font-weight: 500;
+  font-family: var(--cc-font-body);
+  font-size: 18px;
+  font-weight: 700;
   color: var(--cc-fg);
-  line-height: 1.2;
-  letter-spacing: -.01em;
+  line-height: 1.35;
+  letter-spacing: 0;
   margin: 0 0 6px;
 }
 .apgo-cc-pdp__subtitle {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--cc-fg-dim);
   margin: 0 0 12px;
 }
@@ -882,27 +889,41 @@ body.apgo-cc-skin .apgo-cc-pdp {
 .apgo-cc-pdp__rating strong { color: var(--cc-fg); font-weight: 600; }
 .apgo-cc-pdp__rating-meta { color: var(--cc-fg-dim); }
 
-/* ---- Price card ---- */
+/* ---- Price card ----
+   Per Mobile-Detail-Spec §1.4 / §4.1: two visual styles.
+
+   Style A · 有特價: dark #060605 panel + orange left border
+     - 大字售價 26px / 800 / orange
+     - 劃線原價 13px / faint
+     - 「省 NT$ X」 pill on the right (orange-soft bg, orange text)
+     - 上方 small label "限時特價" (countdown placeholder; campaign
+       metafield + JS tick will be wired in a later phase per spec §5.1)
+
+   Style B · 無特價: NO chrome, just the large orange price.
+
+   Both use the same .apgo-cc-pdp__price-card root; the --sale modifier
+   layers on the boxed presentation. */
 .apgo-cc-pdp__price-card {
-  background: var(--cc-bg-deep);
-  border-left: 3px solid var(--cc-divider);
-  border-radius: var(--cc-r2);
-  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 4px 0;
   margin-bottom: 18px;
 }
 .apgo-cc-pdp__price-card--sale {
-  border-left-color: var(--cc-orange);
+  background: #060605;
+  border-left: 3px solid var(--cc-orange);
+  border-radius: var(--cc-r2);
+  padding: 14px 16px;
 }
 .apgo-cc-pdp__price-current {
   font-family: var(--cc-font-body);
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--cc-fg);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--cc-orange);
   font-variant-numeric: tabular-nums;
   letter-spacing: -.01em;
-}
-.apgo-cc-pdp__price-card--sale .apgo-cc-pdp__price-current {
-  color: var(--cc-orange);
+  line-height: 1.1;
 }
 .apgo-cc-pdp__price-meta {
   display: flex; align-items: center; gap: 10px;
@@ -912,6 +933,7 @@ body.apgo-cc-skin .apgo-cc-pdp {
 .apgo-cc-pdp__price-compare {
   color: var(--cc-fg-faint);
   text-decoration: line-through;
+  font-variant-numeric: tabular-nums;
 }
 .apgo-cc-pdp__price-save {
   background: var(--cc-orange-soft);
@@ -920,6 +942,15 @@ body.apgo-cc-skin .apgo-cc-pdp {
   border-radius: var(--cc-r5);
   font-size: 11px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+/* "限時特價" eyebrow above the price row when on sale (spec §1.4 A) */
+.apgo-cc-pdp__price-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cc-orange);
+  letter-spacing: .04em;
+  margin-bottom: 4px;
 }
 
 /* ---- Variant chips ---- */

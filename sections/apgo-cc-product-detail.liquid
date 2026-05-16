@@ -86,14 +86,24 @@
         </div>
       {%- endif -%}
 
-      {%- comment -%} Price card {%- endcomment -%}
+      {%- comment -%}
+        Price card — two styles per Mobile-Detail-Spec §1.4
+          Style A (compare_at > price): boxed, with "限時特價" label and
+            "省 NT$ X" pill (spec calls for amount, not %).
+          Style B (no compare): plain large orange price, no chrome.
+        Countdown timer (spec §5.1) needs apgo.active_campaign metafield;
+        deferred until that's wired.
+      {%- endcomment -%}
       <div class="apgo-cc-pdp__price-card{% if product.compare_at_price > product.price %} apgo-cc-pdp__price-card--sale{% endif %}">
+        {%- if product.compare_at_price > product.price -%}
+          <div class="apgo-cc-pdp__price-label">限時特價</div>
+        {%- endif -%}
         <div class="apgo-cc-pdp__price-current" data-apgo-cc-price>{{ product.price | money }}</div>
         {%- if product.compare_at_price > product.price -%}
           <div class="apgo-cc-pdp__price-meta">
             <span class="apgo-cc-pdp__price-compare">{{ product.compare_at_price | money }}</span>
-            {%- assign save_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
-            <span class="apgo-cc-pdp__price-save">省 {{ save_pct }}%</span>
+            {%- assign save_amount = product.compare_at_price | minus: product.price -%}
+            <span class="apgo-cc-pdp__price-save">省 {{ save_amount | money }}</span>
           </div>
         {%- endif -%}
       </div>
