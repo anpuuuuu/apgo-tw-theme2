@@ -122,68 +122,6 @@
           });
         });
       });
-
-      // ---- Sticky tab bar (Plan B: sentinel + class toggle) ----
-      // Insert a 1px sentinel just above the tab bar; when it scrolls
-      // above the (top of viewport + header height), pin the tab bar
-      // with position: fixed via the .is-stuck class. A placeholder
-      // takes the tab bar's place in flow to avoid layout jump.
-      var tabBar = $('.apgo-cc-pdp__tab-bar', tabsRoot);
-      if (tabBar && 'IntersectionObserver' in window) {
-        var sentinel = document.createElement('div');
-        sentinel.className = 'apgo-cc-pdp__tab-sentinel';
-        sentinel.setAttribute('aria-hidden', 'true');
-        tabBar.parentNode.insertBefore(sentinel, tabBar);
-
-        var placeholder = document.createElement('div');
-        placeholder.className = 'apgo-cc-pdp__tab-placeholder';
-        placeholder.setAttribute('aria-hidden', 'true');
-
-        function getHeaderH() {
-          var raw = getComputedStyle(document.body).getPropertyValue('--header-group-height');
-          var n = parseFloat(raw);
-          return isNaN(n) ? 56 : n;
-        }
-
-        function stick() {
-          placeholder.style.height = tabBar.offsetHeight + 'px';
-          if (!placeholder.parentNode) {
-            tabBar.parentNode.insertBefore(placeholder, tabBar);
-          }
-          tabBar.classList.add('is-stuck');
-        }
-        function unstick() {
-          tabBar.classList.remove('is-stuck');
-          if (placeholder.parentNode) {
-            placeholder.parentNode.removeChild(placeholder);
-          }
-        }
-
-        var io = new IntersectionObserver(function (entries) {
-          var entry = entries[0];
-          // entry not intersecting AND sentinel is ABOVE the viewport
-          // = user has scrolled past it
-          if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
-            stick();
-          } else {
-            unstick();
-          }
-        }, {
-          // Trigger as the sentinel crosses just below the header.
-          // Header height read once at init; CSS top: var(--header-group-height)
-          // keeps the stuck bar visually pinned even if header height changes.
-          rootMargin: '-' + getHeaderH() + 'px 0px 0px 0px',
-          threshold: 0
-        });
-        io.observe(sentinel);
-
-        // Keep placeholder height in sync if window resizes while stuck
-        window.addEventListener('resize', function () {
-          if (tabBar.classList.contains('is-stuck')) {
-            placeholder.style.height = tabBar.offsetHeight + 'px';
-          }
-        });
-      }
     }
 
     // ---------------- Thumb → main img ----------------
