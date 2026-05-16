@@ -1650,7 +1650,8 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   transform: rotate(180deg);
 }
 
-/* Chip pill in top-right of sheet head — count + total */
+/* Chip pill — count + total. Shared style for both the bar's top row
+   chip and the sheet head chip. Tight 11px to match the hint text. */
 .apgo-cc-buybar__chip {
   display: inline-flex;
   align-items: center;
@@ -1658,10 +1659,11 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   color: #fff;
   font-family: var(--cc-font-body);
   font-weight: 600;
-  font-size: 13px;
-  padding: 5px 10px;
+  font-size: 11px;
+  padding: 3px 8px;
   border-radius: var(--cc-r5, 999px);
   font-variant-numeric: tabular-nums;
+  letter-spacing: .02em;
   cursor: pointer;
   user-select: none;
 }
@@ -1811,10 +1813,10 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 
 .apgo-cc-buybar__top-hint {
   font-family: var(--cc-font-body);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   color: var(--cc-fg-dim, #8a857b);
-  letter-spacing: .04em;
+  letter-spacing: .02em;
   transition: opacity .2s ease;
 }
 .apgo-cc-buybar.is-open .apgo-cc-buybar__top-hint {
