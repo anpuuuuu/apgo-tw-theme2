@@ -1650,13 +1650,15 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   transform: rotate(180deg);
 }
 
-/* Chip pill — count + total. Shared style for both the bar's top row
-   chip and the sheet head chip. Tight 11px to match the hint text. */
+/* Chip pill — count + total. Translucent orange background with orange
+   text (uses the cc-orange-soft-hi token already defined for hover/active
+   highlights elsewhere in the skin). */
 .apgo-cc-buybar__chip {
   display: inline-flex;
   align-items: center;
-  background: var(--cc-orange, #ff6b1a);
-  color: #fff;
+  gap: 4px;
+  background: var(--cc-orange-soft-hi, rgba(255, 107, 26, .2));
+  color: var(--cc-orange, #ff6b1a);
   font-family: var(--cc-font-body);
   font-weight: 600;
   font-size: 11px;
