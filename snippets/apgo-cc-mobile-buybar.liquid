@@ -1,37 +1,91 @@
 {%- comment -%}
   APGO · Car Care PDP — Mobile Sticky Buy Bar
 
-  B1 (this commit): collapsed bar only. Price + 加入購物車 + 前往結帳.
-                    Hidden on desktop (≥750px) via CSS.
+  B1: collapsed bar (price + 加入購物車 + 前往結帳).
+  B2 (this revision): added swipe-up sheet revealing mini cart, drag handle
+                      gestures, backdrop + close interactions.
 
-  B2 (future):      drag-handle swipe-up sheet showing mini cart contents.
-                    Markup is already drag-handle-ready; B2 just adds the
-                    expanded sheet + backdrop + JS handler.
+  Structure:
+    .apgo-cc-buybar                       — root, fixed bottom on mobile
+      .apgo-cc-buybar__backdrop           — full-screen dim overlay (open state)
+      .apgo-cc-buybar__panel              — slide-up container
+        .apgo-cc-buybar__sheet            — expandable mini cart (max-height: 0 → auto)
+          .apgo-cc-buybar__sheet-head     — 下拉收起 (left) + chip (right)
+          .apgo-cc-buybar__cart-title     — 「購物車」label
+          .apgo-cc-buybar__items          — JS-populated cart line list
+          .apgo-cc-buybar__subtotal-row   — 小計 (含運)
+        .apgo-cc-buybar__bar              — always-visible bottom CTA bar
+          .apgo-cc-buybar__handle         — drag handle (toggle/swipe)
+          .apgo-cc-buybar__price          — current variant price
+          .apgo-cc-buybar__actions        — 加入購物車 + 前往結帳
 
-  Rendered at the very end of sections/apgo-cc-product-detail.liquid so the
-  fixed-position bar overlays the rest of the page on mobile.
+  When .is-open is added to root:
+    - sheet slides up (max-height + opacity)
+    - backdrop fades in
+    - handle rotates / hides visually
 {%- endcomment -%}
 
 <aside class="apgo-cc-buybar" data-apgo-cc-buybar aria-label="加入購物車">
-  <div class="apgo-cc-buybar__bar">
-    <div class="apgo-cc-buybar__handle" aria-hidden="true">
-      <span class="apgo-cc-buybar__handle-line"></span>
+  <div class="apgo-cc-buybar__backdrop" data-apgo-cc-buybar-backdrop aria-hidden="true"></div>
+
+  <div class="apgo-cc-buybar__panel">
+    {%- comment -%} ---- Expandable sheet ---- {%- endcomment -%}
+    <div class="apgo-cc-buybar__sheet" data-apgo-cc-buybar-sheet aria-hidden="true">
+      <div class="apgo-cc-buybar__sheet-head">
+        <button type="button"
+                class="apgo-cc-buybar__collapse"
+                data-apgo-cc-buybar-close
+                aria-label="收起購物車預覽">
+          <svg class="apgo-cc-buybar__collapse-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+          <span>下拉收起</span>
+        </button>
+        <span class="apgo-cc-buybar__chip" data-apgo-cc-buybar-chip>
+          <span data-apgo-cc-buybar-count>0</span> 件 ·
+          <span data-apgo-cc-buybar-chip-total>NT$ 0</span>
+        </span>
+      </div>
+
+      <div class="apgo-cc-buybar__cart-title">購物車</div>
+
+      <div class="apgo-cc-buybar__items" data-apgo-cc-buybar-items>
+        {%- comment -%} populated by JS from /cart.js {%- endcomment -%}
+        <p class="apgo-cc-buybar__empty" data-apgo-cc-buybar-empty>購物車是空的</p>
+      </div>
+
+      <div class="apgo-cc-buybar__subtotal-row">
+        <span class="apgo-cc-buybar__subtotal-label">小計 (含運)</span>
+        <span class="apgo-cc-buybar__subtotal-val" data-apgo-cc-buybar-subtotal>
+          {{ 0 | money }}
+        </span>
+      </div>
     </div>
-    <div class="apgo-cc-buybar__price" data-apgo-cc-buybar-price>
-      {{ product.selected_or_first_available_variant.price | money }}
-    </div>
-    <div class="apgo-cc-buybar__actions">
+
+    {%- comment -%} ---- Bottom CTA bar (always visible on mobile) ---- {%- endcomment -%}
+    <div class="apgo-cc-buybar__bar">
       <button type="button"
-              class="apgo-cc-buybar__btn apgo-cc-buybar__btn--add"
-              data-apgo-cc-buybar-add
-              {% if product.available == false %}disabled{% endif %}>
-        {%- if product.available -%}加入購物車{%- else -%}已售完{%- endif -%}
+              class="apgo-cc-buybar__handle"
+              data-apgo-cc-buybar-handle
+              aria-label="展開購物車預覽">
+        <span class="apgo-cc-buybar__handle-line"></span>
       </button>
-      <button type="button"
-              class="apgo-cc-buybar__btn apgo-cc-buybar__btn--buy"
-              data-apgo-cc-buybar-checkout>
-        前往結帳
-      </button>
+      <div class="apgo-cc-buybar__price" data-apgo-cc-buybar-price>
+        {{ product.selected_or_first_available_variant.price | money }}
+      </div>
+      <div class="apgo-cc-buybar__actions">
+        <button type="button"
+                class="apgo-cc-buybar__btn apgo-cc-buybar__btn--add"
+                data-apgo-cc-buybar-add
+                {% if product.available == false %}disabled{% endif %}>
+          {%- if product.available -%}加入購物車{%- else -%}已售完{%- endif -%}
+        </button>
+        <button type="button"
+                class="apgo-cc-buybar__btn apgo-cc-buybar__btn--buy"
+                data-apgo-cc-buybar-checkout>
+          前往結帳
+        </button>
+      </div>
     </div>
   </div>
 </aside>
