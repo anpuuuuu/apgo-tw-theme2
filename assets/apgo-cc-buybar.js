@@ -32,7 +32,6 @@
   var subtotalEl  = bar.querySelector('[data-apgo-cc-buybar-subtotal]');
   var addBtn      = bar.querySelector('[data-apgo-cc-buybar-add]');
   var checkoutBtn = bar.querySelector('[data-apgo-cc-buybar-checkout]');
-  var priceEl     = bar.querySelector('[data-apgo-cc-buybar-price]');
 
   // ---------- Money formatter (TWD, no decimals) ----------
   // /cart.js returns prices in cents (multiplied by 100 for currencies that
@@ -61,15 +60,6 @@
     toastEl._t = setTimeout(function () {
       toastEl.classList.remove('is-visible');
     }, 2200);
-  }
-
-  // ---------- Mirror PDP price card → bar price ----------
-  var sourcePriceEl = document.querySelector('[data-apgo-cc-price]');
-  if (sourcePriceEl && priceEl) {
-    priceEl.textContent = sourcePriceEl.textContent.trim();
-    new MutationObserver(function () {
-      priceEl.textContent = sourcePriceEl.textContent.trim();
-    }).observe(sourcePriceEl, { childList: true, characterData: true, subtree: true });
   }
 
   // ---------- Open / close sheet ----------
@@ -294,10 +284,11 @@
     });
   }
 
-  // ---------- Checkout ----------
+  // ---------- 立即購買 → go to /cart so user can verify their cart
+  // (with any auto-discounts applied) before committing to checkout. ----------
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', function () {
-      window.location.href = '/checkout';
+      window.location.href = '/cart';
     });
   }
 })();

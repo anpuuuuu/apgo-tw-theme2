@@ -69,10 +69,10 @@
               data-apgo-cc-buybar-handle
               aria-label="展開購物車預覽">
         <span class="apgo-cc-buybar__handle-line"></span>
+        <span class="apgo-cc-buybar__handle-hint" data-apgo-cc-buybar-hint>
+          ↑ 上滑查看購物車
+        </span>
       </button>
-      <div class="apgo-cc-buybar__price" data-apgo-cc-buybar-price>
-        {{ product.selected_or_first_available_variant.price | money }}
-      </div>
       <div class="apgo-cc-buybar__actions">
         <button type="button"
                 class="apgo-cc-buybar__btn apgo-cc-buybar__btn--add"
@@ -83,7 +83,7 @@
         <button type="button"
                 class="apgo-cc-buybar__btn apgo-cc-buybar__btn--buy"
                 data-apgo-cc-buybar-checkout>
-          前往結帳
+          立即購買
         </button>
       </div>
     </div>
