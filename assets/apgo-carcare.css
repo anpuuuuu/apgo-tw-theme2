@@ -908,7 +908,7 @@ body.apgo-cc-skin .apgo-cc-pdp {
   border: none;
   border-radius: 0;
   padding: 4px 0;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 .apgo-cc-pdp__price-card--sale {
   background: #060605;
@@ -962,13 +962,13 @@ body.apgo-cc-skin .apgo-cc-pdp {
   flex-direction: row;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 /* Divider above the variant section (separates from the price card) */
 .apgo-cc-pdp__option-group:first-of-type {
   border-top: 1px solid var(--cc-divider);
-  padding-top: 14px;
-  margin-top: 14px;
+  padding-top: 10px;
+  margin-top: 0;
 }
 .apgo-cc-pdp__option-label {
   flex-shrink: 0;
@@ -1016,7 +1016,7 @@ body.apgo-cc-skin .apgo-cc-pdp {
    Layout: 「數量  [− 1 +]」 — label left, stepper right. Shown on both
    desktop and mobile. */
 .apgo-cc-pdp__qty-row {
-  margin: 14px 0 12px;
+  margin: 8px 0 8px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1081,8 +1081,8 @@ body.apgo-cc-skin .apgo-cc-pdp {
     border: none;
     border-radius: 0;
     overflow: visible;
-    margin-top: 18px;
-    padding-top: 14px;
+    margin-top: 10px;
+    padding-top: 10px;
     border-top: 1px solid var(--cc-divider);
   }
   body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
