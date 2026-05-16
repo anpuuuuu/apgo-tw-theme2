@@ -132,36 +132,6 @@
         {%- endif -%}
       {%- endif -%}
 
-      {%- comment -%}
-        §1.6 服務保證 — three static cells (30天 / 48hr / 6個月 by default).
-        All copy lives in section settings. Empty cells fall back to
-        hiding so admin can show 1, 2, or 3.
-      {%- endcomment -%}
-      {%- if section.settings.show_warranty -%}
-        {%- assign w_any = false -%}
-        {%- for n in (1..3) -%}
-          {%- assign tkey = 'warranty_' | append: n | append: '_title' -%}
-          {%- if section.settings[tkey] != blank -%}{%- assign w_any = true -%}{%- endif -%}
-        {%- endfor -%}
-        {%- if w_any -%}
-          <div class="apgo-cc-pdp__warranty">
-            {%- for n in (1..3) -%}
-              {%- assign tkey = 'warranty_' | append: n | append: '_title' -%}
-              {%- assign dkey = 'warranty_' | append: n | append: '_desc' -%}
-              {%- assign w_title = section.settings[tkey] -%}
-              {%- if w_title != blank -%}
-                <div class="apgo-cc-pdp__warranty-cell">
-                  <div class="apgo-cc-pdp__warranty-title">{{ w_title }}</div>
-                  {%- if section.settings[dkey] != blank -%}
-                    <div class="apgo-cc-pdp__warranty-desc">{{ section.settings[dkey] }}</div>
-                  {%- endif -%}
-                </div>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-      {%- endif -%}
-
       {%- comment -%} Variant picker + add-to-cart form {%- endcomment -%}
       <form action="/cart/add" method="post" enctype="multipart/form-data" class="apgo-cc-pdp__form">
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-apgo-cc-variant-id>
@@ -373,16 +343,6 @@
       ],
       "default": "blue"
     },
-
-    { "type": "header", "content": "服務保證（§1.6）" },
-    { "type": "paragraph", "content": "在價格區下方顯示 3 格靜態保證資訊。留空欄位會自動跳過。" },
-    { "type": "checkbox", "id": "show_warranty", "label": "顯示服務保證", "default": true },
-    { "type": "text", "id": "warranty_1_title", "label": "保證 1 · 標題", "default": "30 天" },
-    { "type": "text", "id": "warranty_1_desc",  "label": "保證 1 · 說明", "default": "無效退費" },
-    { "type": "text", "id": "warranty_2_title", "label": "保證 2 · 標題", "default": "48 hr" },
-    { "type": "text", "id": "warranty_2_desc",  "label": "保證 2 · 說明", "default": "快速到貨" },
-    { "type": "text", "id": "warranty_3_title", "label": "保證 3 · 標題", "default": "6 個月" },
-    { "type": "text", "id": "warranty_3_desc",  "label": "保證 3 · 說明", "default": "效果保固" },
 
     { "type": "header", "content": "運送資訊（§1.8）" },
     { "type": "checkbox", "id": "show_shipping", "label": "顯示運送資訊", "default": true },
