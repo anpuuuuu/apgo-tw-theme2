@@ -981,12 +981,16 @@ body.apgo-cc-skin .apgo-cc-pdp {
 
 /* ---- §1.8 Shipping info ----
    Single line: "2–3 個工作日 · ● 現貨". Stock dot green when available,
-   red when sold out. Sits below the qty stepper, above the CTA. */
+   red when sold out. Sits below the qty stepper, above the CTA.
+   Top divider separates this section from the qty stepper above,
+   matching the divider rhythm used between price ↔ 規格 and 數量 ↔ tabs. */
 .apgo-cc-pdp__shipping {
   display: flex;
   align-items: center;
   gap: 6px;
   margin: 10px 0 2px;
+  padding-top: 10px;
+  border-top: 1px solid var(--cc-divider);
   font-family: var(--cc-font-body);
   font-size: 12px;
   color: var(--cc-fg-mid);
