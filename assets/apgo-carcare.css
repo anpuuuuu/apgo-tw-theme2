@@ -1108,25 +1108,56 @@ body.apgo-cc-skin .apgo-cc-pdp {
    Related products (你可能也會喜歡) on the Car Care PDP
    ----------------------------------------------------------------------------
    The section uses Shopify's native product-recommendations type which
-   defaults to full page-width. On desktop we want it aligned with the
-   PDP content above (1240px max-width matching .apgo-cc-pdp), and the
-   header text in white to match the dark skin (default --color-foreground
-   token paints it nearly black on light scheme).
+   defaults to full page-width. On the Car Care PDP we want:
+     - section aligned with PDP content above (1240px max-width)
+     - a subtle "block" surface behind the cards (cc-bg-alt) so it
+       reads as its own zone, not floating on the page bg
+     - eyebrow "YOU MAY ALSO LIKE" (orange small caps) above the
+       Chinese heading "你可能也會喜歡" (white)
    ============================================================================ */
 body.apgo-cc-skin product-recommendations.product-recommendations,
 body.apgo-cc-skin .product-recommendations {
   max-width: 1240px;
-  margin: 0 auto;
+  margin: 24px auto;
+  background: var(--cc-bg-alt);
+  border: 1px solid var(--cc-divider);
+  border-radius: var(--cc-r3);
+  overflow: hidden;
 }
 
 /* The inner .section--page-width still gets its own padding from Horizon's
    page-width tokens — tighten that on desktop so cards sit cleanly inside */
 body.apgo-cc-skin .product-recommendations .section--page-width {
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-/* Force the "你可能也會喜歡" header into white regardless of color scheme */
+/* Eyebrow + heading colours. The text block's inline `color` token
+   defaults to the scheme foreground (light theme = near-black on dark bg);
+   override both children explicitly. */
+body.apgo-cc-skin .apgo-cc-related__kicker,
+body.apgo-cc-skin .product-recommendations .apgo-cc-related__kicker {
+  font-family: var(--cc-font-body) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: var(--cc-orange) !important;
+  letter-spacing: .15em !important;
+  text-transform: uppercase;
+  margin: 0 0 6px !important;
+  line-height: 1.2;
+}
+body.apgo-cc-skin .apgo-cc-related__heading,
+body.apgo-cc-skin .product-recommendations .apgo-cc-related__heading {
+  font-family: var(--cc-font-body) !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: var(--cc-fg) !important;
+  letter-spacing: 0 !important;
+  margin: 0 !important;
+  line-height: 1.3;
+}
+/* Fallback in case the editor strips our custom classes and renders bare
+   <p> + <h3> — keep the same look */
 body.apgo-cc-skin .product-recommendations h3,
 body.apgo-cc-skin .product-recommendations h3 * {
   color: var(--cc-fg) !important;
