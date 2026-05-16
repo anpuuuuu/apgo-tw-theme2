@@ -185,7 +185,26 @@
 
     {%- comment -%} Tabs: 使用方式 / 規格 / 評價 / FAQ — placeholders until Phase 5 metafields wired {%- endcomment -%}
     <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="usage">
-      <p class="apgo-cc-pdp__placeholder">使用方式內容尚未設定（將由 product.metafields.apgo.construction_steps 提供 — Phase 5）。</p>
+      {%- assign construction_steps = product.metafields.apgo.construction_steps.value -%}
+      {%- if construction_steps != blank and construction_steps.size > 0 -%}
+        <ol class="apgo-cc-pdp__steps">
+          {%- for step in construction_steps -%}
+            <li class="apgo-cc-pdp__step">
+              <span class="apgo-cc-pdp__step-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+              <div class="apgo-cc-pdp__step-body">
+                {%- if step.title != blank -%}
+                  <div class="apgo-cc-pdp__step-title">{{ step.title }}</div>
+                {%- endif -%}
+                {%- if step.desc != blank -%}
+                  <div class="apgo-cc-pdp__step-desc">{{ step.desc }}</div>
+                {%- endif -%}
+              </div>
+            </li>
+          {%- endfor -%}
+        </ol>
+      {%- else -%}
+        <p class="apgo-cc-pdp__placeholder">使用方式內容尚未設定（請於 Shopify 後台 → 產品 → Metafields → apgo.construction_steps 編輯）。</p>
+      {%- endif -%}
     </div>
     <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="spec">
       <p class="apgo-cc-pdp__placeholder">規格參數尚未設定（將由 product.metafields.apgo.spec_rows 提供 — Phase 5）。</p>

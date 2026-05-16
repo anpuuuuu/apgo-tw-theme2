@@ -1101,6 +1101,48 @@ body.apgo-cc-skin .apgo-cc-pdp {
   font-style: italic;
 }
 
+.apgo-cc-pdp__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.apgo-cc-pdp__step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.apgo-cc-pdp__step-num {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--cc-orange);
+  color: #000;
+  font-family: var(--cc-font-display);
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0;
+}
+.apgo-cc-pdp__step-body { flex: 1 1 auto; min-width: 0; }
+.apgo-cc-pdp__step-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cc-fg);
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+.apgo-cc-pdp__step-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--cc-fg-dim);
+}
+
 /* ============================================================================
    Quick Add — circular + button on each product card + modal + toast
    ============================================================================ */
