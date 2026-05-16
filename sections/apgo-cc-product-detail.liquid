@@ -233,7 +233,7 @@
     <div class="apgo-cc-pdp__tab-bar" role="tablist">
       <button type="button" class="apgo-cc-pdp__tab is-active" role="tab" data-apgo-cc-tab="desc">商品描述</button>
       <button type="button" class="apgo-cc-pdp__tab" role="tab" data-apgo-cc-tab="usage">使用方式</button>
-      <button type="button" class="apgo-cc-pdp__tab" role="tab" data-apgo-cc-tab="spec">規格參數</button>
+      <button type="button" class="apgo-cc-pdp__tab" role="tab" data-apgo-cc-tab="spec">規格和注意事項</button>
       <button type="button" class="apgo-cc-pdp__tab" role="tab" data-apgo-cc-tab="review">客戶評價</button>
       <button type="button" class="apgo-cc-pdp__tab" role="tab" data-apgo-cc-tab="faq">常見FAQ</button>
     </div>
@@ -277,22 +277,27 @@
       {%- endif -%}
     </div>
     {%- comment -%}
-      規格參數 — list of spec_row metaobjects from product.metafields.apgo.spec_rows.
-      Each row has: key (規格名) + value (規格內容).
+      規格和注意事項 — JSON metafield apgo.product_tabs.
+      Format: [ { "title": "...", "content": "<p>...HTML...</p>" }, ... ]
+      Each entry rendered as a section heading + HTML content block.
     {%- endcomment -%}
     <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="spec">
-      {%- assign mf_specs = product.metafields.apgo.spec_rows.value -%}
-      {%- if mf_specs != blank and mf_specs.size > 0 -%}
-        <dl class="apgo-cc-pdp__specs">
-          {%- for entry in mf_specs -%}
-            <div class="apgo-cc-pdp__spec-row">
-              <dt class="apgo-cc-pdp__spec-key">{{ entry.key }}</dt>
-              <dd class="apgo-cc-pdp__spec-val">{{ entry.value }}</dd>
-            </div>
+      {%- assign mf_tabs = product.metafields.apgo.product_tabs.value -%}
+      {%- if mf_tabs != blank and mf_tabs.size > 0 -%}
+        <div class="apgo-cc-pdp__sections">
+          {%- for entry in mf_tabs -%}
+            <section class="apgo-cc-pdp__section">
+              {%- if entry.title != blank -%}
+                <h3 class="apgo-cc-pdp__section-title">{{ entry.title }}</h3>
+              {%- endif -%}
+              {%- if entry.content != blank -%}
+                <div class="apgo-cc-pdp__section-body rte">{{ entry.content }}</div>
+              {%- endif -%}
+            </section>
           {%- endfor -%}
-        </dl>
+        </div>
       {%- else -%}
-        <p class="apgo-cc-pdp__placeholder">規格參數尚未設定（請於 Shopify 後台 → 產品 → Metafields → apgo.spec_rows 編輯）。</p>
+        <p class="apgo-cc-pdp__placeholder">尚未設定（請於 Shopify 後台 → 產品 → Metafields → apgo.product_tabs 編輯）。</p>
       {%- endif -%}
     </div>
 

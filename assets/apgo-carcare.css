@@ -1371,37 +1371,51 @@ body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
   font-style: italic;
 }
 
-/* ---- 規格參數 tab (apgo.spec_rows) ---- */
-.apgo-cc-pdp__specs {
-  margin: 0;
+/* ---- 規格和注意事項 tab (apgo.product_tabs JSON) ----
+   Renders a list of {title, content(HTML)} entries. Each entry is a
+   section: bold title + thin divider + rich-text body. */
+.apgo-cc-pdp__sections {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  border-top: 1px solid var(--cc-divider);
+  gap: 18px;
 }
-.apgo-cc-pdp__spec-row {
-  display: grid;
-  grid-template-columns: 110px 1fr;
-  gap: 16px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--cc-divider);
-  align-items: baseline;
+.apgo-cc-pdp__section {
+  display: block;
 }
-.apgo-cc-pdp__spec-key {
+.apgo-cc-pdp__section-title {
   font-family: var(--cc-font-body);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--cc-fg-mid);
-  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--cc-fg);
+  margin: 0 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--cc-divider);
+  line-height: 1.4;
   letter-spacing: .02em;
 }
-.apgo-cc-pdp__spec-val {
+.apgo-cc-pdp__section-body {
   font-family: var(--cc-font-body);
   font-size: 13px;
-  font-weight: 500;
+  line-height: 1.7;
+  color: var(--cc-fg-mid);
+}
+.apgo-cc-pdp__section-body p { margin: 0 0 10px; }
+.apgo-cc-pdp__section-body p:last-child { margin-bottom: 0; }
+.apgo-cc-pdp__section-body strong {
   color: var(--cc-fg);
-  margin: 0;
-  line-height: 1.5;
+  font-weight: 700;
+}
+.apgo-cc-pdp__section-body ul,
+.apgo-cc-pdp__section-body ol {
+  margin: 0 0 10px;
+  padding-left: 1.4em;
+}
+.apgo-cc-pdp__section-body li {
+  margin-bottom: 4px;
+}
+.apgo-cc-pdp__section-body a {
+  color: var(--cc-orange);
+  text-decoration: underline;
 }
 
 /* ---- 客戶評價 tab (apgo.reviews) ---- */
