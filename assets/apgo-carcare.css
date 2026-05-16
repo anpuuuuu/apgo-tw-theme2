@@ -1298,6 +1298,24 @@ body.apgo-cc-skin .product-recommendations .product-grid__item .price {
   font-weight: 600;
   border-bottom-color: var(--cc-orange);
 }
+
+/* ---- Sticky tab bar (simple) ----
+   This theme's header is not sticky, so the tab bar just pins to
+   top: 0 of the viewport once scrolled past. Parent .apgo-cc-pdp__tabs
+   needs overflow: visible for sticky to work (was overflow: hidden on
+   desktop for rounded-corner clipping; the slight corner artifact
+   when not stuck is an acceptable trade-off). */
+body.apgo-cc-skin .apgo-cc-pdp__tabs {
+  overflow: visible;
+}
+body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50; /* above page content, below the mobile buybar (z:90) */
+  background: var(--cc-bg);
+  border-bottom: 1px solid var(--cc-divider);
+}
+
 .apgo-cc-pdp__tab-panel {
   display: none;
   padding: 22px;
