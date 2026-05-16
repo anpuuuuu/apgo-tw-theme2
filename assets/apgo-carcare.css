@@ -916,7 +916,25 @@ body.apgo-cc-skin .apgo-cc-pdp {
   border-radius: var(--cc-r2);
   padding: 14px 16px;
 }
+/* Sale-state price layout — 2 rows:
+     row 1: 限時特價 (left)  +  省 NT$ X pill (right)   → flex space-between
+     row 2: NT$ current (big orange)  +  NT$ compare (strike, dim, inline)
+   Non-sale state skips both rows, only renders .apgo-cc-pdp__price-current. */
+.apgo-cc-pdp__price-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.apgo-cc-pdp__price-bottom {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 .apgo-cc-pdp__price-current {
+  display: inline-block;
   font-family: var(--cc-font-body);
   font-size: 26px;
   font-weight: 800;
@@ -925,32 +943,28 @@ body.apgo-cc-skin .apgo-cc-pdp {
   letter-spacing: -.01em;
   line-height: 1.1;
 }
-.apgo-cc-pdp__price-meta {
-  display: flex; align-items: center; gap: 10px;
-  margin-top: 4px;
-  font-size: 13px;
-}
 .apgo-cc-pdp__price-compare {
   color: var(--cc-fg-faint);
   text-decoration: line-through;
   font-variant-numeric: tabular-nums;
+  font-size: 13px;
 }
 .apgo-cc-pdp__price-save {
   background: var(--cc-orange-soft);
   color: var(--cc-orange);
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: var(--cc-r5);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
-/* "限時特價" eyebrow above the price row when on sale (spec §1.4 A) */
+/* "限時特價" eyebrow on the top row (spec §1.4 A) */
 .apgo-cc-pdp__price-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--cc-orange);
   letter-spacing: .04em;
-  margin-bottom: 4px;
 }
 
 /* ---- §1.5 Promo pills ----

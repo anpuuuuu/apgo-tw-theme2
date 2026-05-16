@@ -96,15 +96,24 @@
       {%- endcomment -%}
       <div class="apgo-cc-pdp__price-card{% if product.compare_at_price > product.price %} apgo-cc-pdp__price-card--sale{% endif %}">
         {%- if product.compare_at_price > product.price -%}
-          <div class="apgo-cc-pdp__price-label">限時特價</div>
-        {%- endif -%}
-        <div class="apgo-cc-pdp__price-current" data-apgo-cc-price>{{ product.price | money }}</div>
-        {%- if product.compare_at_price > product.price -%}
-          <div class="apgo-cc-pdp__price-meta">
-            <span class="apgo-cc-pdp__price-compare">{{ product.compare_at_price | money }}</span>
-            {%- assign save_amount = product.compare_at_price | minus: product.price -%}
+          {%- assign save_amount = product.compare_at_price | minus: product.price -%}
+          {%- comment -%}
+            New 2-row layout per design:
+              row 1: [限時特價]              [省 NT$ XXX]   (space-between)
+              row 2: [NT$ price] [<s>NT$ compare</s>]      (inline)
+            Countdown timer (剩 23:14:08) on row 1 deferred until
+            apgo.active_campaign metafield + JS tick are wired.
+          {%- endcomment -%}
+          <div class="apgo-cc-pdp__price-top">
+            <span class="apgo-cc-pdp__price-label">限時特價</span>
             <span class="apgo-cc-pdp__price-save">省 {{ save_amount | money }}</span>
           </div>
+          <div class="apgo-cc-pdp__price-bottom">
+            <span class="apgo-cc-pdp__price-current" data-apgo-cc-price>{{ product.price | money }}</span>
+            <span class="apgo-cc-pdp__price-compare">{{ product.compare_at_price | money }}</span>
+          </div>
+        {%- else -%}
+          <span class="apgo-cc-pdp__price-current" data-apgo-cc-price>{{ product.price | money }}</span>
         {%- endif -%}
       </div>
 
