@@ -19,7 +19,16 @@
         "rating_score": "4.9",
         "rating_count": "312",
         "desc_kicker": "ABOUT THE PRODUCT",
-        "desc_heading": ""
+        "desc_heading": "",
+        "show_promo_pills": true,
+        "promo_pill_1_text": "满千免运",
+        "promo_pill_1_color": "orange",
+        "promo_pill_2_text": "",
+        "promo_pill_2_color": "green",
+        "promo_pill_3_text": "",
+        "promo_pill_3_color": "blue",
+        "show_shipping": true,
+        "shipping_label": "2–3 個工作日"
       }
     },
     "related_products": {
@@ -28,7 +37,7 @@
         "header_text": {
           "type": "text",
           "settings": {
-            "text": "<p class=\"apgo-cc-related__kicker\">YOU MAY ALSO LIKE</p><h3 class=\"apgo-cc-related__heading\">你可能也會喜歡</h3>",
+            "text": "<h3>你可能也會喜歡</h3>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
