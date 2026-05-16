@@ -37,6 +37,92 @@
   if (window[guardKey]) return;
   window[guardKey] = true;
 
+  /* ── Gift code 對照表 ──────────────────────────────────────────
+     把「需要先加贈品 line 才能套用」的折扣碼列在這裡。
+     新增 / 修改 gift code 時改這個 map 即可。
+
+     欄位說明：
+       variant_id           : 贈品 variant ID（必填，數字非字串）
+       qty                  : 固定贈品數量（fallback，如果沒設 trigger 就用這個）
+       trigger_product_ids  : 觸發商品 product ID 陣列（買哪些商品才送贈品）
+       qty_per_trigger      : 每 1 件觸發商品要送幾件贈品（要跟 Shopify discount 一致）
+
+     有設 trigger_product_ids + qty_per_trigger 時：贈品數量 = cart 內觸發商品總數 × qty_per_trigger
+     沒設這兩個欄位時：固定加 qty 件
+     ────────────────────────────────────────────────────────────── */
+  var GIFT_CODE_MAP = {
+    '0507': {
+      variant_id: 47372799901947,           // 玻璃去油劑
+      qty: 2,                                // fallback
+      trigger_product_ids: [9061670093051],  // 玻璃去油鍍膜組
+      qty_per_trigger: 2                     // 每 1 件 鍍膜組 送 2 件去油劑
+    }
+  };
+
+  function findGiftConfig(code) {
+    return GIFT_CODE_MAP[code.toUpperCase()] || null;
+  }
+
+  /* 依 cart 內觸發商品數量，計算這次該加幾件贈品 */
+  function computeGiftQty(cart, giftConfig) {
+    var triggers = giftConfig.trigger_product_ids;
+    var perTrigger = giftConfig.qty_per_trigger;
+    if (!Array.isArray(triggers) || !perTrigger) {
+      return giftConfig.qty || 1;
+    }
+    var triggerCount = 0;
+    (cart.items || []).forEach(function (item) {
+      if (item.variant_id === giftConfig.variant_id) return; // 排除贈品自己
+      if (triggers.indexOf(item.product_id) !== -1) {
+        triggerCount += item.quantity;
+      }
+    });
+    var scaled = triggerCount * perTrigger;
+    return scaled > 0 ? scaled : (giftConfig.qty || 1);  // 沒觸發商品時退回 fallback
+  }
+
+  /* 在 cart 裡找「由本機制加入的 gift line」的 key（用 _gift_code property 精確匹配） */
+  function findCodeGiftLineKey(cart, variantId, codeUpper) {
+    var items = (cart && cart.items) || [];
+    for (var i = 0; i < items.length; i++) {
+      var it = items[i];
+      if (it.variant_id === variantId &&
+          it.properties &&
+          it.properties._gift_code &&
+          String(it.properties._gift_code).toUpperCase() === codeUpper) {
+        return it.key;
+      }
+    }
+    return null;
+  }
+
+  function addGiftLine(giftConfig, codeUpper, qty) {
+    return fetch(root + '/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: giftConfig.variant_id,
+        quantity: qty || giftConfig.qty || 1,
+        properties: {
+          _gift_auto: 'true',     // 與 cart-items-v2 既有顯示邏輯相容
+          _gift_code: codeUpper   // 標記：這條 line 是哪個 code 觸發的
+        }
+      })
+    }).then(function (r) { return r.json(); });
+  }
+
+  function changeLineQty(key, qty) {
+    return fetch(root + '/cart/change.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: key, quantity: qty })
+    }).then(function (r) { return r.json(); });
+  }
+
+  function removeLineByKey(key) {
+    return changeLineQty(key, 0);
+  }
+
   /* ── DOM helpers（每次呼叫都重新查找，抵抗 DOM 替換）─────────── */
   function $sec()    { return document.getElementById('shopify-section-' + sid); }
   function $form()   { return document.getElementById('CartDiscountForm-' + sid); }
@@ -154,7 +240,22 @@
       var current = document.getElementById('shopify-section-' + sid);
       if (fresh && current) {
         current.replaceWith(fresh);
-        document.dispatchEvent(new CustomEvent('cart:update', { bubbles: true }));
+        /* dispatch cart:update with detail.data (cart-icon.js 等 listener 需要這個結構) */
+        fetch(root + '/cart.js', { headers: { Accept: 'application/json' } })
+          .then(function (r) { return r.json(); })
+          .then(function (cart) {
+            document.dispatchEvent(new CustomEvent('cart:update', {
+              bubbles: true,
+              detail: { data: { itemCount: cart.item_count, source: 'cart-discount-input-only' } }
+            }));
+          })
+          .catch(function () {
+            /* 退而求其次,只 dispatch 空 detail.data,避免 listener 讀 detail.data 報錯 */
+            document.dispatchEvent(new CustomEvent('cart:update', {
+              bubbles: true,
+              detail: { data: { itemCount: 0, source: 'cart-discount-input-only' } }
+            }));
+          });
       }
       if (typeof afterDone === 'function') afterDone();
     })
@@ -167,6 +268,10 @@
     var code = inp ? inp.value.trim() : '';
     if (!code) return;
 
+    var upper       = code.toUpperCase();
+    var giftConfig  = findGiftConfig(upper);
+    var weAddedGift = false;  /* 標記：本次 submit 有沒有「我們」加贈品(用於失敗回滾) */
+
     setLoading(true);
     var msgEl = $msg(); if (msgEl) msgEl.classList.add('hidden');
 
@@ -174,60 +279,126 @@
     .then(function (r) { return r.json(); })
     .then(function (cart) {
       var existing = (cart.discount_codes || []).map(function (d) { return d.code; });
-      var upper    = code.toUpperCase();
 
       if (existing.map(function (c) { return c.toUpperCase(); }).indexOf(upper) !== -1) {
         setLoading(false);
         showMsg('此優惠碼已經套用過了', true);
-        return;
+        return null;
       }
 
-      return fetch(root + '/cart/update.js', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ discount: existing.concat([code]).join(',') })
+      /* Step 1：如果是 gift code，先確保 cart 內有正確數量的贈品 line */
+      var preflight;
+      if (giftConfig) {
+        var desiredQty  = computeGiftQty(cart, giftConfig);
+        var existingItem = (cart.items || []).filter(function (it) {
+          return it.variant_id === giftConfig.variant_id &&
+                 it.properties &&
+                 it.properties._gift_code &&
+                 String(it.properties._gift_code).toUpperCase() === upper;
+        })[0];
+
+        if (existingItem) {
+          /* 已存在 → 數量不對才更新（不算「我們加的」，回滾時不刪） */
+          if (existingItem.quantity !== desiredQty) {
+            preflight = changeLineQty(existingItem.key, desiredQty);
+          } else {
+            preflight = Promise.resolve();
+          }
+        } else {
+          /* 不存在 → 新增 */
+          preflight = addGiftLine(giftConfig, upper, desiredQty).then(function (addRes) {
+            if (addRes && addRes.status && addRes.status >= 400) {
+              throw new Error('add_gift_failed');
+            }
+            weAddedGift = true;
+          });
+        }
+      } else {
+        preflight = Promise.resolve();
+      }
+
+      /* Step 2：套碼 */
+      return preflight.then(function () {
+        return fetch(root + '/cart/update.js', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ discount: existing.concat([code]).join(',') })
+        }).then(function (r) { return r.json(); });
       })
-      .then(function (r) { return r.json(); })
       .then(function (data) {
-        setLoading(false);
         var codes = data.discount_codes || [];
         var match = null;
         for (var i = 0; i < codes.length; i++) {
           if (codes[i].code.toUpperCase() === upper) { match = codes[i]; break; }
         }
 
+        /* Step 3：成功 */
         if (match && match.applicable === true) {
+          setLoading(false);
           var inp2 = $input(); if (inp2) inp2.value = '';
           morphCartSection(function () {
             renderCodeRows(data);
             showMsg('優惠碼「' + upper + '」已套用！', false);
           });
-        } else {
-          var errMsg = !match
-            ? '找不到此優惠碼，請確認是否正確或已過期'
-            : '此優惠碼目前無法套用，可能是條件未達成或無法與現有優惠合併';
+          return;
+        }
 
+        /* Step 4：失敗 → 回滾(移除 code + 把我們剛加的 gift line 也移除) */
+        var errMsg = !match
+          ? '找不到此優惠碼，請確認是否正確或已過期'
+          : '此優惠碼目前無法套用，可能是條件未達成或無法與現有優惠合併';
+
+        var rollbacks = [];
+
+        /* 4a. 移除本次新增的 code */
+        rollbacks.push(
           fetch(root + '/cart/update.js', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({ discount: existing.join(',') })
-          })
-          .then(function (r2) { return r2.json(); })
-          .then(function (rolledBack) {
-            morphCartSection(function () {
-              renderCodeRows(rolledBack);
-              showMsg(errMsg, true);
-            });
-          })
-          .catch(function () {
-            morphCartSection(function () { showMsg(errMsg, true); });
-          });
+          }).then(function (r) { return r.json(); }).catch(function () { /* swallow */ })
+        );
+
+        /* 4b. 如果是「我們」加的 gift line，把它移除(避免客人莫名多一個商品) */
+        if (weAddedGift && giftConfig) {
+          rollbacks.push(
+            fetch(root + '/cart.js', { headers: { Accept: 'application/json' } })
+              .then(function (r) { return r.json(); })
+              .then(function (latestCart) {
+                var key = findCodeGiftLineKey(latestCart, giftConfig.variant_id, upper);
+                if (key) return removeLineByKey(key);
+              })
+              .catch(function () { /* swallow */ })
+          );
         }
+
+        Promise.all(rollbacks).then(function () {
+          setLoading(false);
+          morphCartSection(function () {
+            fetch(root + '/cart.js', { headers: { Accept: 'application/json' } })
+              .then(function (r) { return r.json(); })
+              .then(function (final) { renderCodeRows(final); })
+              .catch(function () {});
+            showMsg(errMsg, true);
+          });
+        });
       });
     })
-    .catch(function () {
+    .catch(function (err) {
       setLoading(false);
-      showMsg('網路異常，請稍後再試', true);
+      /* preflight (加 gift) 失敗 → 不會留下髒狀態，直接報錯 */
+      if (err && err.message === 'add_gift_failed') {
+        showMsg('加入贈品失敗，請稍後再試或聯絡客服', true);
+      } else {
+        showMsg('網路異常，請稍後再試', true);
+      }
+      /* 萬一加了 gift line 但 catch 進到這(理論不會發生)，補做一次清理 */
+      if (weAddedGift && giftConfig) {
+        fetch(root + '/cart.js').then(function (r) { return r.json(); }).then(function (latestCart) {
+          var key = findCodeGiftLineKey(latestCart, giftConfig.variant_id, upper);
+          if (key) removeLineByKey(key).then(function () { morphCartSection(function () {}); });
+        }).catch(function () {});
+      }
     });
   }
 

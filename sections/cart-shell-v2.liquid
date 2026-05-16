@@ -1708,6 +1708,15 @@
       document.querySelectorAll(ROOT_SELECTOR).forEach(hydrateGiftRewardsOnEnter);
     });
 
+    /* 套用 / 移除折扣碼後（cart-discount-input-only 會 dispatch 'cart:update'），
+       cart 總額可能跨過 reward 門檻（例如套 gift 折扣碼後總額下降，
+       原本已解鎖的滿額贈應該被移除），需要重新跑一次 syncGiftRewards。
+       注意：refreshCartSection 內部 dispatch 的是 'cart:updated'（過去式），
+       不是 'cart:update'，所以不會自我觸發無窮迴圈。 */
+    document.addEventListener('cart:update', function () {
+      document.querySelectorAll(ROOT_SELECTOR).forEach(hydrateGiftRewardsOnEnter);
+    });
+
   })();
 </script>
 

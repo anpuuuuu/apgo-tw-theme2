@@ -254,6 +254,161 @@
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
+<!-- ============================================ -->
+<!-- APGO Cart Recovery (L2) v1.1 -->
+<!-- 跳轉登入後還原 cart + 廣告歸因 -->
+<!-- 貼進 layout/theme.liquid body 結束標籤前 -->
+<!-- ============================================ -->
+<script>
+(function() {
+  'use strict';
+
+  const RECOVERY_API = 'https://cr.apgo.tw';
+  const ATTR_KEYS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid','gclid','ttclid'];
+  const DEBUG = false; // 灰度測試期 true,上線後改 false
+
+  function log(...args) { if (DEBUG) console.log('[recovery]', ...args); }
+  function warn(...args) { console.warn('[recovery]', ...args); }
+
+  function getGaCid() {
+    const m = document.cookie.match(/_ga=GA1\.\d+\.([\d.]+)/);
+    return m ? m[1] : null;
+  }
+
+  // === A: 進站時抓 first-touch 歸因到 sessionStorage ===
+  function captureAttribution() {
+    const u = new URLSearchParams(location.search);
+    const incoming = {};
+    for (const k of ATTR_KEYS) {
+      const v = u.get(k);
+      if (v) incoming[k] = v;
+    }
+    if (!Object.keys(incoming).length) return;
+    const existing = JSON.parse(sessionStorage.getItem('apgo_attribution') || '{}');
+    // first-touch:已有的不蓋,保留最早來源
+    const merged = { ...incoming, ...existing };
+    sessionStorage.setItem('apgo_attribution', JSON.stringify(merged));
+    log('attribution captured', merged);
+  }
+
+  // === B: 攔截 LINE 登入按鈕點擊,塞 cr=short_id 到 return_to ===
+  function interceptLoginButtons() {
+    document.addEventListener('click', async (e) => {
+      // ⚠️ Selector 適配:若 B1 觀察 DOM 結構不同,調整這裡
+      const target = e.target.closest('a[href*="/account/login"]');
+      if (!target) return;
+
+      const text = (target.textContent || '').trim();
+      const isLineLogin = text.includes('LINE') || target.classList.contains('m-bottom-sheet-btn');
+      // 過濾:右上角 person icon 等非 LINE 登入連結不攔截
+      if (!isLineLogin) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      try {
+        const cart = await fetch('/cart.js').then(r => r.json());
+        const payload = {
+          cart_token: cart.token,
+          line_items: cart.items.map(i => ({ id: i.variant_id, quantity: i.quantity })),
+          attribution: JSON.parse(sessionStorage.getItem('apgo_attribution') || '{}'),
+          ga_cid: getGaCid(),
+          page_from: location.pathname,
+          ts: Date.now(),
+        };
+        log('saving payload', payload);
+
+        const res = await fetch(`${RECOVERY_API}/save`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('save failed ' + res.status);
+        const { id } = await res.json();
+        log('got short_id', id);
+
+        // 改寫 return_to:塞 cr= 進去
+        const url = new URL(target.href, location.origin);
+        const returnTo = url.searchParams.get('return_to') || '/cart';
+        const newReturnTo = returnTo + (returnTo.includes('?') ? '&' : '?') + `cr=${id}`;
+        url.searchParams.set('return_to', newReturnTo);
+        log('redirecting to', url.toString());
+        location.href = url.toString();
+      } catch (err) {
+        warn('save failed, fallback to normal login', err);
+        // 失敗就走原本 href,使用者體驗不會更差
+        location.href = target.href;
+      }
+    }, true); // capture phase,確保比其他 listener 早跑
+  }
+
+  // === C: 著陸頁讀 ?cr=,拿回 payload,還原 cart + 歸因 ===
+  async function tryRecover() {
+    const params = new URLSearchParams(location.search);
+    const shortId = params.get('cr');
+    if (!shortId) return;
+    log('attempting recovery for', shortId);
+
+    let payload;
+    try {
+      const res = await fetch(`${RECOVERY_API}/recover?id=${encodeURIComponent(shortId)}`);
+      if (!res.ok) {
+        log('recover not ok', res.status);
+        return;
+      }
+      payload = await res.json();
+      log('recovered payload', payload);
+    } catch (err) {
+      warn('recover network failed', err);
+      return;
+    }
+
+    // 1. 還原 cart(只在當前 cart 是空時)
+    let didRestore = false;
+    try {
+      const currentCart = await fetch('/cart.js').then(r => r.json());
+      const needRestore = currentCart.item_count === 0 && payload.line_items?.length > 0;
+      if (needRestore) {
+        for (const item of payload.line_items) {
+          await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(item),
+          });
+        }
+        didRestore = true;
+        log('cart restored, items=', payload.line_items.length);
+      }
+    } catch (err) { warn('cart restore failed', err); }
+
+    // 2. 還原歸因 sessionStorage
+    if (payload.attribution && Object.keys(payload.attribution).length) {
+      sessionStorage.setItem('apgo_attribution', JSON.stringify(payload.attribution));
+    }
+
+    // 3. 清掉 cr=,塞回 utm_* 到 URL,location.replace 觸發 GA4/Pixel 重讀
+    const cleanUrl = new URL(location.href);
+    cleanUrl.searchParams.delete('cr');
+    for (const [k, v] of Object.entries(payload.attribution || {})) {
+      cleanUrl.searchParams.set(k, v);
+    }
+    cleanUrl.searchParams.set('cart_recovered', didRestore ? '1' : '0');
+    log('redirecting to clean url', cleanUrl.toString());
+    location.replace(cleanUrl.toString());
+  }
+
+  function run() {
+    captureAttribution();
+    interceptLoginButtons();
+    tryRecover();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+})();
+</script>
   </body>
   
 </html>

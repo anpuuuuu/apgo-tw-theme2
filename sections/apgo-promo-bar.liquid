@@ -25,8 +25,7 @@
 
 {% if show_bar %}
 
-<script src="https://cdn.tailwindcss.com" defer></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{%- comment -%} Font Awesome removed — only one icon used (chevron-right), replaced with inline SVG below {%- endcomment -%}
 
 <script>
     window.tailwindConfigPromo = {
@@ -144,7 +143,7 @@
 
             <div class="tw-flex tw-items-center" style="color: {{ section.settings.cta_color }};">
                 <span class="tw-hidden md:tw-block tw-text-xs tw-font-bold tw-mr-2 group-hover:tw-underline">{{ section.settings.cta_text }}</span>
-                <i class="fas fa-chevron-right tw-text-xs tw-transition-transform group-hover:tw-translate-x-1"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="tw-transition-transform group-hover:tw-translate-x-1" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </div>
         </div>
     </a>

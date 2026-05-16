@@ -382,7 +382,7 @@
           "name": "鍍膜全系列滿$899折$100",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "鍍膜全系列滿額折",
+            "section_title": "✨鍍膜滿額折",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/01_0_c0f3a824-2e96-4a7b-9737-364996cad697.jpg",
@@ -414,10 +414,10 @@
           "name": "清潔藥劑．滿$390享8折、滿$690享75折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "清潔藥劑滿額享75折起",
+            "section_title": "✨滿額75折起",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/01_0_9aeb2975-967a-41d1-b6df-0b115fe0ed02.jpg",
+            "banner_img": "shopify://shop_images/01_0_1f0106f3-4fd8-4ef8-a4de-c71a4db79966.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
@@ -441,12 +441,54 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "product_grid_p7CgbC": {
+        "product_grid_AYia8B": {
           "type": "product_grid",
-          "name": "清潔藥劑．滿$390享8折、滿$690享75折",
+          "name": "買玻璃去油鍍膜組*1組送玻璃去油劑200ml*2瓶",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "G9/G11系列☆任選79折",
+            "section_title": "✨現折↘$598",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/03_0.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "glass-coating"
+            ],
+            "card_tag": "TAG",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_jNQtE7": {
+          "type": "product_grid",
+          "name": "壓力泡沫洗車噴壺(電動噴壺組)】優惠價$1699",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨現折↘$300",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/APGO_-01.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "apgo-pressure-foam-sprayer"
+            ],
+            "card_tag": "TAG",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_p7CgbC": {
+          "type": "product_grid",
+          "name": "測速器享79折",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨測速器享79折",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/5_G9-G11_79_-02.jpg",
@@ -463,33 +505,12 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "product_grid_jNQtE7": {
-          "type": "product_grid",
-          "name": "壓力泡沫洗車噴壺(電動噴壺組)】優惠價$1699",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "電動噴壺組☆優惠價$1699",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/APGO_-01.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "apgo-pressure-foam-sprayer"
-            ],
-            "card_tag": "TAG",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
         "product_grid_qjN9Hb": {
           "type": "product_grid",
           "name": "暢銷禮組-洗車美容12件組",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "清洗x鍍膜一次搞定🩵洗車美容12件組",
+            "section_title": "✨現折↘$1265",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1080__12_196f5e72-60bf-47d7-a7f2-857e89a7fe12.jpg",
@@ -510,7 +531,7 @@
           "name": "暢銷禮組-內裝全效清潔組",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "🚗內裝全效清潔組✨",
+            "section_title": "✨搶↘只要$309",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1080_d92ae479-21b7-4d24-acaf-30fb2d2ea774.jpg",
@@ -616,9 +637,9 @@
           "type": "coupon_slot",
           "name": "7.優惠版位標題",
           "settings": {
-            "section_title": "4/7(二)準時開搶折券",
+            "section_title": "現領超殺折券",
             "section_icon": "fa-ticket",
-            "nav_label_override": "優惠版位"
+            "nav_label_override": "✨現搶折券"
           }
         },
         "coupon_item_hH3EcG": {
@@ -654,10 +675,11 @@
         "simple_banner_slot_TA9VG7": {
           "type": "simple_banner_slot",
           "name": "限量200張，$599免運券",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "5/5-5/10☆限量搶200張",
-            "nav_label_override": "Banner",
+            "section_title": "✨5/5開搶599免運券",
+            "nav_label_override": "",
             "section_icon": "fa-image",
             "show_banner": true,
             "banner_img": "shopify://shop_images/02_0_a4bc0510-29fe-47a4-9b3e-0c61d5fb453f.jpg",
@@ -670,10 +692,11 @@
         "simple_banner_slot_TYahzg": {
           "type": "simple_banner_slot",
           "name": "媽咪的美麗儀式75折券",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "5/5-5/10限時開搶☆75折券",
-            "nav_label_override": "Banner",
+            "section_title": "✨限時搶75折券",
+            "nav_label_override": "",
             "section_icon": "fa-image",
             "show_banner": true,
             "banner_img": "shopify://shop_images/75_-01_8fd16315-8130-4b39-89e8-372a70d616a5.jpg",
@@ -683,20 +706,26 @@
             "banner_anchor_id": ""
           }
         },
-        "simple_banner_slot_nq9PJR": {
-          "type": "simple_banner_slot",
+        "product_grid_DRGBxw": {
+          "type": "product_grid",
           "name": "【寵愛媽咪✨清潔藥劑✨人氣4件組】",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "寵愛媽咪✨人氣4件組",
-            "nav_label_override": "Banner",
-            "section_icon": "fa-image",
-            "show_banner": true,
+            "section_title": "✨入手價↘$499",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/4_1b217180-7840-479c-a7a5-2485d559b5d1.jpg",
+            "show_banner": true,
             "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "https://apgo.tw/products/%E5%AF%B5%E6%84%9B%E5%AA%BD%E5%92%AA%E2%9C%A8%E6%B8%85%E6%BD%94%E8%97%A5%E5%8A%91%E2%9C%A8%E4%BA%BA%E6%B0%A34%E4%BB%B6%E7%B5%84",
-            "banner_anchor_id": ""
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "pamper-mommy"
+            ],
+            "card_tag": "TAG",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
           }
         },
         "product_grid_XMR9K3": {
@@ -704,10 +733,10 @@
           "name": "媽咪狂香曲✨洗衣精多件優惠&滿額贈",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "洗衣精多件優惠&滿額贈✨",
+            "section_title": "✨家庭囤貨必備",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1-02_0_a7b29d5a-e120-4ccf-92e4-91134347bf4f.jpg",
+            "banner_img": "shopify://shop_images/1-03_0.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
@@ -728,6 +757,7 @@
         "product_grid_jHKxX8": {
           "type": "product_grid",
           "name": "超級洗衣精✨家庭囤貨組12包入",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "家庭囤貨組✨現折$708",
@@ -791,8 +821,9 @@
         "flash_sale_item_DLfea8",
         "product_grid_A6kewb",
         "product_grid_JAm4Qp",
-        "product_grid_p7CgbC",
+        "product_grid_AYia8B",
         "product_grid_jNQtE7",
+        "product_grid_p7CgbC",
         "product_grid_qjN9Hb",
         "product_grid_nrB4HP",
         "product_grid_feF934",
@@ -805,7 +836,7 @@
         "coupon_item_AaWikn",
         "simple_banner_slot_TA9VG7",
         "simple_banner_slot_TYahzg",
-        "simple_banner_slot_nq9PJR",
+        "product_grid_DRGBxw",
         "product_grid_XMR9K3",
         "product_grid_jHKxX8",
         "reward_tier_DUdarY",
