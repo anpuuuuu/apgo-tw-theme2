@@ -953,6 +953,87 @@ body.apgo-cc-skin .apgo-cc-pdp {
   margin-bottom: 4px;
 }
 
+/* ---- §1.5 Promo pills ----
+   Horizontal flex row of small colored pills (滿千免運 / 會員 9折 / ...).
+   Color variants map to the cc palette tokens already defined above. */
+.apgo-cc-pdp__promos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0;
+}
+.apgo-cc-pdp__promo {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--cc-font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  padding: 4px 10px;
+  border-radius: var(--cc-r5);
+  line-height: 1.4;
+}
+.apgo-cc-pdp__promo--orange  { background: var(--cc-orange-soft, rgba(255,107,26,.12)); color: var(--cc-orange); }
+.apgo-cc-pdp__promo--green   { background: rgba(82, 200, 120, .14);                     color: var(--cc-green); }
+.apgo-cc-pdp__promo--blue    { background: rgba(120, 150, 255, .14);                    color: #7e9bff; }
+.apgo-cc-pdp__promo--red     { background: rgba(231, 76, 60, .14);                      color: var(--cc-red); }
+.apgo-cc-pdp__promo--neutral { background: var(--cc-surface);                           color: var(--cc-fg-mid); }
+
+/* ---- §1.6 Service guarantee row ----
+   Three columns inside a single rounded panel; 1px dividers between
+   cells. Title bold/white, desc dim/small. */
+.apgo-cc-pdp__warranty {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--cc-divider);
+  border-radius: var(--cc-r2);
+  background: var(--cc-bg-deep);
+  margin: 10px 0;
+}
+.apgo-cc-pdp__warranty-cell {
+  padding: 10px 8px;
+  text-align: center;
+  border-right: 1px solid var(--cc-divider);
+}
+.apgo-cc-pdp__warranty-cell:last-child { border-right: none; }
+.apgo-cc-pdp__warranty-title {
+  font-family: var(--cc-font-body);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--cc-fg);
+  line-height: 1.2;
+}
+.apgo-cc-pdp__warranty-desc {
+  font-family: var(--cc-font-body);
+  font-size: 11px;
+  color: var(--cc-fg-dim);
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+/* ---- §1.8 Shipping info ----
+   Single line: "2–3 個工作日 · ● 現貨". Stock dot green when available,
+   red when sold out. Sits below the qty stepper, above the CTA. */
+.apgo-cc-pdp__shipping {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 2px;
+  font-family: var(--cc-font-body);
+  font-size: 12px;
+  color: var(--cc-fg-mid);
+}
+.apgo-cc-pdp__shipping-sep {
+  color: var(--cc-fg-faint);
+}
+.apgo-cc-pdp__shipping-stock {
+  color: var(--cc-green);
+  font-weight: 600;
+}
+.apgo-cc-pdp__shipping-stock--out {
+  color: var(--cc-red);
+}
+
 /* ---- Variant option group ----
    Layout: 「容量  [chip] [chip] [chip]」 — label sits on the left, chips
    fill the rest of the row. Same shape on desktop and mobile per user
