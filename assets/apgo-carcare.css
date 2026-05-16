@@ -1298,6 +1298,42 @@ body.apgo-cc-skin .product-recommendations .product-grid__item .price {
   font-weight: 600;
   border-bottom-color: var(--cc-orange);
 }
+
+/* Sticky tab bar (Plan B: JS adds .is-stuck when sentinel scrolls past).
+   When stuck:
+     - position: fixed pins to viewport
+     - top tracks Horizon's --header-group-height live (so sticky-shrinking
+       headers still align)
+     - full-width background, but inner content padded to the 1240px PDP
+       container so buttons line up with the original position
+     - shadow + border-bottom create a clear floating-bar affordance
+   A sibling .apgo-cc-pdp__tab-placeholder takes the original bar's
+   height in flow so the page below doesn't jump up by tab-bar height.
+
+   body.apgo-cc-skin prefix needed so we beat the mobile @media padding:0
+   override on .apgo-cc-pdp__tab-bar. */
+body.apgo-cc-skin .apgo-cc-pdp__tab-bar.is-stuck {
+  position: fixed;
+  top: var(--header-group-height, 56px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--cc-bg);
+  border-bottom: 1px solid var(--cc-divider);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .35);
+  padding-left: max(16px, calc((100vw - 1240px) / 2));
+  padding-right: max(16px, calc((100vw - 1240px) / 2));
+  margin: 0;
+}
+.apgo-cc-pdp__tab-sentinel {
+  height: 1px;
+  width: 100%;
+  pointer-events: none;
+}
+.apgo-cc-pdp__tab-placeholder {
+  width: 100%;
+  pointer-events: none;
+}
 .apgo-cc-pdp__tab-panel {
   display: none;
   padding: 22px;
