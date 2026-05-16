@@ -917,8 +917,8 @@ body.apgo-cc-skin .apgo-cc-pdp {
   padding: 14px 16px;
 }
 /* Sale-state price layout — 2 rows:
-     row 1: 限時特價 (left)  +  省 NT$ X pill (right)   → flex space-between
-     row 2: NT$ current (big orange)  +  NT$ compare (strike, dim, inline)
+     row 1: 限時特價 (label, full-width; countdown placeholder on right)
+     row 2: NT$ current  NT$ compare (strike) ......  省 NT$ X pill (right)
    Non-sale state skips both rows, only renders .apgo-cc-pdp__price-current. */
 .apgo-cc-pdp__price-top {
   display: flex;
@@ -932,6 +932,10 @@ body.apgo-cc-skin .apgo-cc-pdp {
   align-items: baseline;
   gap: 10px;
   flex-wrap: wrap;
+}
+/* Save pill pushed to the right end of row 2 via auto-margin */
+.apgo-cc-pdp__price-bottom .apgo-cc-pdp__price-save {
+  margin-left: auto;
 }
 .apgo-cc-pdp__price-current {
   display: inline-block;
