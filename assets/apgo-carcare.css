@@ -1036,6 +1036,37 @@ body.apgo-cc-skin .apgo-cc-pdp {
    over there to avoid duplicate buttons. Desktop keeps the in-panel CTAs. */
 @media (max-width: 749px) {
   .apgo-cc-pdp__cta-row { display: none; }
+
+  /* Per Mobile-Detail-Spec mock, mobile drops the heavy card chrome
+     around info / tabs / gallery wrappers so content flows directly on
+     the page background. Desktop still gets the boxed treatment. */
+  body.apgo-cc-skin .apgo-cc-pdp__info {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+  }
+  body.apgo-cc-skin .apgo-cc-pdp__tabs {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+    margin-top: 12px;
+  }
+  body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
+    padding: 0;
+  }
+  body.apgo-cc-skin .apgo-cc-pdp__tab-panel {
+    padding: 16px 0;
+  }
+  /* Gallery: drop the outer wrapper chrome — .apgo-cc-pdp__gallery-main
+     already carries the dark photo bg + rounded corners, the outer card
+     was redundant on small screens. */
+  body.apgo-cc-skin .apgo-cc-pdp__gallery {
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
 }
 
 .apgo-cc-pdp__cta {
