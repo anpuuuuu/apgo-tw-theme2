@@ -13,11 +13,11 @@
       "type": "apgo-cc-product-detail",
       "settings": {
         "show_breadcrumb": true,
-        "show_rating": true,
+        "show_rating": false,
         "show_buy_now": true,
         "kicker": "",
         "rating_score": "4.9",
-        "rating_count": "312",
+        "rating_count": "",
         "desc_kicker": "ABOUT THE PRODUCT",
         "desc_heading": "",
         "show_promo_pills": true,
