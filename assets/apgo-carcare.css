@@ -1678,9 +1678,12 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 @media (max-width: 749px) {
   .apgo-cc-buybar { display: block; }
 
-  /* Reserve space at the bottom of the PDP so the fixed bar doesn't cover
-     the last bit of tab content. ~88px = bar height + safe-area on most phones. */
-  body.apgo-cc-skin .apgo-cc-pdp { padding-bottom: 96px; }
+  /* Reserve space at the bottom of the page so the fixed buybar doesn't
+     cover the last section's content. Applied to #MainContent so it
+     covers BOTH the PDP section AND anything after it (related products,
+     etc.) — was previously scoped to .apgo-cc-pdp only and missed
+     subsequent sections. ~88px = bar height + safe-area on most phones. */
+  body.apgo-cc-skin #MainContent { padding-bottom: 96px; }
 }
 
 /* Backdrop — hidden by default, fades in when .is-open is added */
