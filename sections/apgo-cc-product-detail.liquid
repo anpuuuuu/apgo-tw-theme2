@@ -267,14 +267,85 @@
         <p class="apgo-cc-pdp__placeholder">使用方式內容尚未設定（請於 Shopify 後台 → 產品 → Metafields → apgo.construction_steps 編輯）。</p>
       {%- endif -%}
     </div>
+    {%- comment -%}
+      規格參數 — list of spec_row metaobjects from product.metafields.apgo.spec_rows.
+      Each row has: key (規格名) + value (規格內容).
+    {%- endcomment -%}
     <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="spec">
-      <p class="apgo-cc-pdp__placeholder">規格參數尚未設定（將由 product.metafields.apgo.spec_rows 提供 — Phase 5）。</p>
+      {%- assign mf_specs = product.metafields.apgo.spec_rows.value -%}
+      {%- if mf_specs != blank and mf_specs.size > 0 -%}
+        <dl class="apgo-cc-pdp__specs">
+          {%- for entry in mf_specs -%}
+            <div class="apgo-cc-pdp__spec-row">
+              <dt class="apgo-cc-pdp__spec-key">{{ entry.key }}</dt>
+              <dd class="apgo-cc-pdp__spec-val">{{ entry.value }}</dd>
+            </div>
+          {%- endfor -%}
+        </dl>
+      {%- else -%}
+        <p class="apgo-cc-pdp__placeholder">規格參數尚未設定（請於 Shopify 後台 → 產品 → Metafields → apgo.spec_rows 編輯）。</p>
+      {%- endif -%}
     </div>
+
+    {%- comment -%}
+      客戶評價 — summary card on top + list of reviews. Each review entry has:
+      name + date + scent (which scent the customer bought) + body.
+    {%- endcomment -%}
     <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="review">
-      <p class="apgo-cc-pdp__placeholder">客戶評價尚未設定（Shopify Product Reviews 整合 — Phase 6）。</p>
+      {%- assign mf_reviews = product.metafields.apgo.reviews.value -%}
+      {%- if mf_reviews != blank and mf_reviews.size > 0 -%}
+        <div class="apgo-cc-pdp__rev-summary">
+          <div class="apgo-cc-pdp__rev-score">{{ section.settings.rating_score | default: '4.9' }}</div>
+          <div class="apgo-cc-pdp__rev-summary-meta">
+            <div class="apgo-cc-pdp__rev-stars" aria-hidden="true">★★★★★</div>
+            <div class="apgo-cc-pdp__rev-count">基於 {{ section.settings.rating_count | default: mf_reviews.size }} 則真實評價</div>
+          </div>
+        </div>
+        <ul class="apgo-cc-pdp__rev-list">
+          {%- for r in mf_reviews -%}
+            <li class="apgo-cc-pdp__rev-item">
+              <div class="apgo-cc-pdp__rev-head">
+                <strong class="apgo-cc-pdp__rev-name">{{ r.name }}</strong>
+                <span class="apgo-cc-pdp__rev-stars" aria-hidden="true">★★★★★</span>
+              </div>
+              <div class="apgo-cc-pdp__rev-meta">
+                {%- if r.date != blank -%}{{ r.date }}{%- endif -%}
+                {%- if r.scent != blank -%}{%- if r.date != blank %} · {% endif -%}已購買：{{ r.scent }}{%- endif -%}
+              </div>
+              {%- if r.body != blank -%}
+                <p class="apgo-cc-pdp__rev-body">{{ r.body }}</p>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <p class="apgo-cc-pdp__placeholder">客戶評價尚未設定（請於 Shopify 後台 → 產品 → Metafields → apgo.reviews 編輯）。</p>
+      {%- endif -%}
     </div>
+
+    {%- comment -%}
+      常見 FAQ — accordion list of question / answer pairs from apgo.faqs.
+      Uses <details>/<summary> for built-in expand/collapse (no JS needed).
+    {%- endcomment -%}
     <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="faq">
-      <p class="apgo-cc-pdp__placeholder">常見 FAQ 尚未設定（將由 product.metafields.apgo.faqs 提供 — Phase 5）。</p>
+      {%- assign mf_faqs = product.metafields.apgo.faqs.value -%}
+      {%- if mf_faqs != blank and mf_faqs.size > 0 -%}
+        <ul class="apgo-cc-pdp__faq-list">
+          {%- for f in mf_faqs -%}
+            <li>
+              <details class="apgo-cc-pdp__faq-item">
+                <summary class="apgo-cc-pdp__faq-summary">
+                  <span class="apgo-cc-pdp__faq-q">Q. {{ f.question }}</span>
+                  <span class="apgo-cc-pdp__faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <div class="apgo-cc-pdp__faq-a">A. {{ f.answer }}</div>
+              </details>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <p class="apgo-cc-pdp__placeholder">常見 FAQ 尚未設定（請於 Shopify 後台 → 產品 → Metafields → apgo.faqs 編輯）。</p>
+      {%- endif -%}
     </div>
   </div>
 

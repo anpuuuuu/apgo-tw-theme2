@@ -1331,6 +1331,168 @@ body.apgo-cc-skin .product-recommendations .product-grid__item .price {
   font-style: italic;
 }
 
+/* ---- 規格參數 tab (apgo.spec_rows) ---- */
+.apgo-cc-pdp__specs {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--cc-divider);
+}
+.apgo-cc-pdp__spec-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--cc-divider);
+  align-items: baseline;
+}
+.apgo-cc-pdp__spec-key {
+  font-family: var(--cc-font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cc-fg-mid);
+  margin: 0;
+  letter-spacing: .02em;
+}
+.apgo-cc-pdp__spec-val {
+  font-family: var(--cc-font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cc-fg);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ---- 客戶評價 tab (apgo.reviews) ---- */
+.apgo-cc-pdp__rev-summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--cc-divider);
+  margin-bottom: 12px;
+}
+.apgo-cc-pdp__rev-score {
+  font-family: var(--cc-font-display);
+  font-size: 40px;
+  font-weight: 500;
+  color: var(--cc-orange);
+  line-height: 1;
+}
+.apgo-cc-pdp__rev-summary-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.apgo-cc-pdp__rev-stars {
+  color: var(--cc-orange);
+  letter-spacing: 2px;
+  font-size: 14px;
+}
+.apgo-cc-pdp__rev-count {
+  font-size: 12px;
+  color: var(--cc-fg-dim);
+}
+.apgo-cc-pdp__rev-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.apgo-cc-pdp__rev-item {
+  padding: 12px 14px;
+  background: var(--cc-bg-deep);
+  border: 1px solid var(--cc-divider);
+  border-radius: var(--cc-r2);
+}
+.apgo-cc-pdp__rev-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.apgo-cc-pdp__rev-name {
+  font-family: var(--cc-font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cc-fg);
+}
+.apgo-cc-pdp__rev-head .apgo-cc-pdp__rev-stars {
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+.apgo-cc-pdp__rev-meta {
+  font-size: 11px;
+  color: var(--cc-fg-dim);
+  margin-bottom: 6px;
+}
+.apgo-cc-pdp__rev-body {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--cc-fg-mid);
+  margin: 0;
+}
+
+/* ---- 常見 FAQ tab (apgo.faqs) ---- */
+.apgo-cc-pdp__faq-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.apgo-cc-pdp__faq-item {
+  border-bottom: 1px solid var(--cc-divider);
+}
+.apgo-cc-pdp__faq-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 0;
+  cursor: pointer;
+  list-style: none;
+}
+.apgo-cc-pdp__faq-summary::-webkit-details-marker { display: none; }
+.apgo-cc-pdp__faq-q {
+  font-family: var(--cc-font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cc-fg);
+  line-height: 1.4;
+  flex: 1 1 auto;
+}
+.apgo-cc-pdp__faq-toggle {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--cc-orange-soft, rgba(255,107,26,.12));
+  color: var(--cc-orange);
+  font-size: 16px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .2s ease, background .2s;
+  line-height: 1;
+}
+.apgo-cc-pdp__faq-item[open] .apgo-cc-pdp__faq-toggle {
+  transform: rotate(45deg); /* "+" → "×" effect */
+  background: var(--cc-orange);
+  color: #fff;
+}
+.apgo-cc-pdp__faq-a {
+  padding: 0 0 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--cc-fg-mid);
+}
+
 .apgo-cc-pdp__steps {
   list-style: none;
   margin: 0;
