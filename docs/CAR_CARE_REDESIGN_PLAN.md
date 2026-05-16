@@ -238,7 +238,7 @@
 - 重點：**user 在 Shopify 後台手動把產品分配到 v2 模板**（v1s-plus 留給洗衣精）
 
 ### Phase 5：詳情頁 metafields & metaobjects
-- 逐步建 design 文件提到的 metafield（subtitle / bullets / spec_rows / faqs / usage_steps...）
+- 逐步建 design 文件提到的 metafield（subtitle / bullets / spec_rows / faqs / construction_steps...）
 - 接到 v2 模板的 tabs
 
 ### Phase 6：Bundle / 倒數 / promo icons / 評價
@@ -292,7 +292,7 @@
 - 哪幾個保留現有的 default `product.json` template
 
 ### Phase 5 需要（資料）
-- 每個產品的 subtitle / bullets / spec / faq / usage_steps 內容
+- 每個產品的 subtitle / bullets / spec / faq / construction_steps 內容
 
 ---
 
