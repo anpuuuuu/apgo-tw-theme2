@@ -1000,6 +1000,13 @@ body.apgo-cc-skin .apgo-cc-pdp {
   display: flex; gap: 8px;
   margin-top: 12px;
 }
+
+/* Hide the in-panel CTA row on mobile — the sticky bottom buybar takes
+   over there to avoid duplicate buttons. Desktop keeps the in-panel CTAs. */
+@media (max-width: 749px) {
+  .apgo-cc-pdp__cta-row { display: none; }
+}
+
 .apgo-cc-pdp__cta {
   flex: 1;
   padding: 14px 20px;
@@ -1010,9 +1017,11 @@ body.apgo-cc-skin .apgo-cc-pdp {
   font-family: var(--cc-font-body);
   cursor: pointer;
   letter-spacing: .02em;
-  transition: background .2s, transform .15s;
+  transition: background .2s, transform .15s, border-color .2s;
 }
 .apgo-cc-pdp__cta:active { transform: scale(.98); }
+
+/* Primary = solid orange (立即購買) */
 .apgo-cc-pdp__cta--primary {
   background: var(--cc-orange);
   color: #fff;
@@ -1023,14 +1032,21 @@ body.apgo-cc-skin .apgo-cc-pdp {
   color: var(--cc-fg-faint);
   cursor: not-allowed;
 }
+
+/* Secondary = orange-outlined (加入購物車). Border matches the buybar's
+   .apgo-cc-buybar__btn--add so the two CTA surfaces read as one system. */
 .apgo-cc-pdp__cta--secondary {
   background: transparent;
   color: var(--cc-fg);
-  border: 1px solid var(--cc-divider);
+  border: 1px solid var(--cc-orange);
 }
 .apgo-cc-pdp__cta--secondary:hover {
-  border-color: var(--cc-orange);
-  color: var(--cc-orange);
+  background: var(--cc-orange-soft, rgba(255, 107, 26, .12));
+}
+.apgo-cc-pdp__cta--secondary:disabled {
+  border-color: var(--cc-divider);
+  color: var(--cc-fg-dim);
+  cursor: not-allowed;
 }
 
 /* ---- Tabs ---- */

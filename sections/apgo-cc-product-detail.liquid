@@ -133,16 +133,22 @@
           </div>
         </div>
 
+        {%- comment -%}
+          CTA hierarchy (unified across in-panel + mobile buybar):
+            加入購物車 = secondary (outlined orange)
+            立即購買   = primary   (solid orange)
+          Form submit stays on the 加入購物車 button regardless of style.
+        {%- endcomment -%}
         <div class="apgo-cc-pdp__cta-row">
           <button
             type="submit"
-            class="apgo-cc-pdp__cta apgo-cc-pdp__cta--primary"
+            class="apgo-cc-pdp__cta apgo-cc-pdp__cta--secondary"
             {% if product.available == false %}disabled{% endif %}
           >
             {%- if product.available -%}加入購物車{%- else -%}已售完{%- endif -%}
           </button>
           {%- if section.settings.show_buy_now -%}
-            <button type="button" class="apgo-cc-pdp__cta apgo-cc-pdp__cta--secondary" data-apgo-cc-buy-now>
+            <button type="button" class="apgo-cc-pdp__cta apgo-cc-pdp__cta--primary" data-apgo-cc-buy-now>
               立即購買
             </button>
           {%- endif -%}
