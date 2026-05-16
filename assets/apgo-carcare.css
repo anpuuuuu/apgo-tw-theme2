@@ -1550,3 +1550,105 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   border-radius: var(--cc-r3, 14px);
   background: var(--cc-bg-alt);
 }
+
+/* ============================================================================
+   Mobile Buy Bar — sticky bottom on Car Care PDP (mobile-only)
+   B1: collapsed state. B2 will add the swipe-up mini-cart sheet.
+   ============================================================================ */
+.apgo-cc-buybar { display: none; }
+@media (max-width: 749px) {
+  .apgo-cc-buybar { display: block; }
+
+  /* Reserve space at the bottom of the PDP so the fixed bar doesn't cover
+     the last bit of tab content. ~88px = bar height + safe-area on most phones. */
+  body.apgo-cc-skin .apgo-cc-pdp { padding-bottom: 96px; }
+}
+
+.apgo-cc-buybar__bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 90;
+  background: var(--cc-bg-alt, #1c1f24);
+  border-top: 1px solid var(--cc-divider, #2a2e35);
+  padding: 4px 14px calc(10px + env(safe-area-inset-bottom)) 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "handle  handle"
+    "price   actions";
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 4px;
+  box-shadow: 0 -8px 24px rgba(0,0,0,.45);
+}
+
+/* Drag handle (visual only in B1; B2 will wire swipe gestures here) */
+.apgo-cc-buybar__handle {
+  grid-area: handle;
+  display: flex;
+  justify-content: center;
+  padding: 6px 0 2px;
+  cursor: grab;
+}
+.apgo-cc-buybar__handle-line {
+  display: block;
+  width: 44px; height: 3px;
+  background: var(--cc-fg-faint, #5c584f);
+  border-radius: 2px;
+}
+
+.apgo-cc-buybar__price {
+  grid-area: price;
+  font-family: var(--cc-font-body);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--cc-orange, #ff6b1a);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .02em;
+}
+
+.apgo-cc-buybar__actions {
+  grid-area: actions;
+  display: flex;
+  gap: 8px;
+}
+
+.apgo-cc-buybar__btn {
+  border: none;
+  font-family: var(--cc-font-body);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 11px 16px;
+  border-radius: var(--cc-r2, 10px);
+  cursor: pointer;
+  transition: background .15s, transform .12s, opacity .15s;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+/* Outlined secondary — 加入購物車 */
+.apgo-cc-buybar__btn--add {
+  background: transparent;
+  color: var(--cc-fg, #f0ece4);
+  border: 1px solid var(--cc-orange, #ff6b1a);
+}
+.apgo-cc-buybar__btn--add:hover {
+  background: var(--cc-orange-soft, rgba(255,107,26,.12));
+}
+.apgo-cc-buybar__btn--add:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  border-color: var(--cc-divider, #2a2e35);
+  color: var(--cc-fg-dim, #8a857b);
+}
+
+/* Solid primary — 前往結帳 */
+.apgo-cc-buybar__btn--buy {
+  background: var(--cc-orange, #ff6b1a);
+  color: #fff;
+}
+.apgo-cc-buybar__btn--buy:hover {
+  background: var(--cc-orange-hi, #ff8240);
+}
+
+.apgo-cc-buybar__btn:active { transform: scale(.96); }

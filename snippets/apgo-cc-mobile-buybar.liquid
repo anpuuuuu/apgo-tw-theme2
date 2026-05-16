@@ -1,0 +1,37 @@
+{%- comment -%}
+  APGO · Car Care PDP — Mobile Sticky Buy Bar
+
+  B1 (this commit): collapsed bar only. Price + 加入購物車 + 前往結帳.
+                    Hidden on desktop (≥750px) via CSS.
+
+  B2 (future):      drag-handle swipe-up sheet showing mini cart contents.
+                    Markup is already drag-handle-ready; B2 just adds the
+                    expanded sheet + backdrop + JS handler.
+
+  Rendered at the very end of sections/apgo-cc-product-detail.liquid so the
+  fixed-position bar overlays the rest of the page on mobile.
+{%- endcomment -%}
+
+<aside class="apgo-cc-buybar" data-apgo-cc-buybar aria-label="加入購物車">
+  <div class="apgo-cc-buybar__bar">
+    <div class="apgo-cc-buybar__handle" aria-hidden="true">
+      <span class="apgo-cc-buybar__handle-line"></span>
+    </div>
+    <div class="apgo-cc-buybar__price" data-apgo-cc-buybar-price>
+      {{ product.selected_or_first_available_variant.price | money }}
+    </div>
+    <div class="apgo-cc-buybar__actions">
+      <button type="button"
+              class="apgo-cc-buybar__btn apgo-cc-buybar__btn--add"
+              data-apgo-cc-buybar-add
+              {% if product.available == false %}disabled{% endif %}>
+        {%- if product.available -%}加入購物車{%- else -%}已售完{%- endif -%}
+      </button>
+      <button type="button"
+              class="apgo-cc-buybar__btn apgo-cc-buybar__btn--buy"
+              data-apgo-cc-buybar-checkout>
+        前往結帳
+      </button>
+    </div>
+  </div>
+</aside>
