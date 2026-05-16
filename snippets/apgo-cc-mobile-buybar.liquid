@@ -62,15 +62,23 @@
       </div>
     </div>
 
-    {%- comment -%} ---- Bottom CTA bar (always visible on mobile) ---- {%- endcomment -%}
+    {%- comment -%} ---- Bottom CTA bar (always visible on mobile) ----
+      Top row replaces the old drag-line: hint text on the left ("上滑查看
+      購物車") + an orange chip on the right showing item count + cart
+      total. Tapping anywhere on this row toggles the sheet; swipe gesture
+      is wired in JS on the same element.
+    {%- endcomment -%}
     <div class="apgo-cc-buybar__bar">
       <button type="button"
-              class="apgo-cc-buybar__handle"
+              class="apgo-cc-buybar__top"
               data-apgo-cc-buybar-handle
               aria-label="展開購物車預覽">
-        <span class="apgo-cc-buybar__handle-line"></span>
-        <span class="apgo-cc-buybar__handle-hint" data-apgo-cc-buybar-hint>
-          ↑ 上滑查看購物車
+        <span class="apgo-cc-buybar__top-hint" data-apgo-cc-buybar-hint>
+          上滑查看購物車
+        </span>
+        <span class="apgo-cc-buybar__chip" data-apgo-cc-buybar-chip>
+          <span data-apgo-cc-buybar-count>0</span> 件 ·
+          <span data-apgo-cc-buybar-chip-total>{{ 0 | money }}</span>
         </span>
       </button>
       <div class="apgo-cc-buybar__actions">

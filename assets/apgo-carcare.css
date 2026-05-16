@@ -1791,42 +1791,34 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   min-width: 0;
 }
 
-/* Hint text under the drag line — fades when sheet is open since
-   the affordance is no longer relevant */
-.apgo-cc-buybar__handle-hint {
-  display: block;
+/* Top row of the bar — hint on the left + cart-status chip on the right.
+   This whole element is the swipe/tap target for opening the sheet
+   (referenced in JS as data-apgo-cc-buybar-handle). */
+.apgo-cc-buybar__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 8px 2px 6px;
+  cursor: pointer;
+  touch-action: pan-y; /* allow vertical drag for swipe gestures */
+  font-family: inherit;
+}
+.apgo-cc-buybar__top:active { cursor: grabbing; }
+
+.apgo-cc-buybar__top-hint {
   font-family: var(--cc-font-body);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--cc-fg-dim, #8a857b);
   letter-spacing: .04em;
-  margin-top: 4px;
   transition: opacity .2s ease;
 }
-.apgo-cc-buybar.is-open .apgo-cc-buybar__handle-hint {
+.apgo-cc-buybar.is-open .apgo-cc-buybar__top-hint {
   opacity: 0;
-}
-
-/* Drag handle — tap to toggle sheet, swipe up/down to open/close.
-   Contains the visual line on top + a "↑ 上滑查看購物車" hint underneath. */
-.apgo-cc-buybar__handle {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 8px 0 2px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  touch-action: pan-y; /* allow vertical drag for swipe gestures */
-  width: 100%;
-}
-.apgo-cc-buybar__handle:active { cursor: grabbing; }
-.apgo-cc-buybar__handle-line {
-  display: block;
-  width: 44px; height: 3px;
-  background: var(--cc-fg-faint, #5c584f);
-  border-radius: 2px;
 }
 
 .apgo-cc-buybar__btn {

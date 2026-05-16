@@ -20,18 +20,20 @@
   if (!form) return;
 
   // ---------- Element refs ----------
-  var backdrop    = bar.querySelector('[data-apgo-cc-buybar-backdrop]');
-  var sheet       = bar.querySelector('[data-apgo-cc-buybar-sheet]');
-  var handle      = bar.querySelector('[data-apgo-cc-buybar-handle]');
-  var closeBtn    = bar.querySelector('[data-apgo-cc-buybar-close]');
-  var chipEl      = bar.querySelector('[data-apgo-cc-buybar-chip]');
-  var countEl     = bar.querySelector('[data-apgo-cc-buybar-count]');
-  var chipTotalEl = bar.querySelector('[data-apgo-cc-buybar-chip-total]');
-  var itemsEl     = bar.querySelector('[data-apgo-cc-buybar-items]');
-  var emptyEl     = bar.querySelector('[data-apgo-cc-buybar-empty]');
-  var subtotalEl  = bar.querySelector('[data-apgo-cc-buybar-subtotal]');
-  var addBtn      = bar.querySelector('[data-apgo-cc-buybar-add]');
-  var checkoutBtn = bar.querySelector('[data-apgo-cc-buybar-checkout]');
+  // Some elements appear twice (bar + sheet head) — collect them via
+  // querySelectorAll and update each in render code.
+  var backdrop     = bar.querySelector('[data-apgo-cc-buybar-backdrop]');
+  var sheet        = bar.querySelector('[data-apgo-cc-buybar-sheet]');
+  var handle       = bar.querySelector('[data-apgo-cc-buybar-handle]');
+  var closeBtn     = bar.querySelector('[data-apgo-cc-buybar-close]');
+  var chipEls      = bar.querySelectorAll('[data-apgo-cc-buybar-chip]');
+  var countEls     = bar.querySelectorAll('[data-apgo-cc-buybar-count]');
+  var chipTotalEls = bar.querySelectorAll('[data-apgo-cc-buybar-chip-total]');
+  var itemsEl      = bar.querySelector('[data-apgo-cc-buybar-items]');
+  var emptyEl      = bar.querySelector('[data-apgo-cc-buybar-empty]');
+  var subtotalEl   = bar.querySelector('[data-apgo-cc-buybar-subtotal]');
+  var addBtn       = bar.querySelector('[data-apgo-cc-buybar-add]');
+  var checkoutBtn  = bar.querySelector('[data-apgo-cc-buybar-checkout]');
 
   // ---------- Money formatter (TWD, no decimals) ----------
   // /cart.js returns prices in cents (multiplied by 100 for currencies that
@@ -83,7 +85,16 @@
   }
 
   if (handle)   handle.addEventListener('click', toggle);
-  if (chipEl)   chipEl.addEventListener('click', toggle);
+  Array.prototype.forEach.call(chipEls, function (c) {
+    c.addEventListener('click', function (e) {
+      // chip inside the bar's top row is already inside `handle` so its
+      // click bubbles → handle's listener fires. The sheet head's chip
+      // needs its own toggle. Use stopPropagation on the bar chip to
+      // avoid double-toggling.
+      if (handle && handle.contains(c)) { e.stopPropagation(); }
+      toggle();
+    });
+  });
   if (closeBtn) closeBtn.addEventListener('click', close);
   if (backdrop) backdrop.addEventListener('click', close);
   document.addEventListener('keydown', function (e) {
@@ -145,9 +156,9 @@
     var total = cart.total_price || 0;
     var subtotal = cart.items_subtotal_price != null ? cart.items_subtotal_price : total;
 
-    if (countEl)     countEl.textContent     = count;
-    if (chipTotalEl) chipTotalEl.textContent = formatMoney(total);
-    if (subtotalEl)  subtotalEl.textContent  = formatMoney(subtotal);
+    Array.prototype.forEach.call(countEls,     function (el) { el.textContent = count; });
+    Array.prototype.forEach.call(chipTotalEls, function (el) { el.textContent = formatMoney(total); });
+    if (subtotalEl) subtotalEl.textContent = formatMoney(subtotal);
 
     // Toggle empty state
     if (!cart.items || cart.items.length === 0) {
