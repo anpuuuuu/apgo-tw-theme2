@@ -136,6 +136,12 @@
         {%- endfor -%}
 
         <div class="apgo-cc-pdp__qty-row">
+          {%- comment -%}
+            數量 label is hidden on desktop (kept matching the original
+            stepper-only layout) and shown on mobile alongside the stepper
+            in a label-left / control-right row per Mobile-Detail-Spec.
+          {%- endcomment -%}
+          <span class="apgo-cc-pdp__qty-label">數量</span>
           <div class="apgo-cc-pdp__qty">
             <button type="button" data-apgo-cc-qty="down" aria-label="減少">−</button>
             <input type="number" name="quantity" value="1" min="1" data-apgo-cc-qty-input>

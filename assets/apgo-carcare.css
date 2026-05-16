@@ -1067,6 +1067,68 @@ body.apgo-cc-skin .apgo-cc-pdp {
     border: none;
     padding: 0;
   }
+
+  /* ---- Variant option row: 「容量  [chip] [chip] [chip]」 ---- */
+  body.apgo-cc-skin .apgo-cc-pdp__option-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  /* The label wrapper becomes a single-line label on the left.
+     Hide the floating "current value" — the chip's active state itself
+     tells the user what's selected; the right-aligned label was a
+     desktop redundancy. */
+  body.apgo-cc-skin .apgo-cc-pdp__option-label {
+    flex-shrink: 0;
+    margin-bottom: 0;
+    display: block;
+  }
+  body.apgo-cc-skin .apgo-cc-pdp__option-current { display: none; }
+  body.apgo-cc-skin .apgo-cc-pdp__option-name {
+    font-size: 13px;
+    color: var(--cc-fg-mid);
+    letter-spacing: 0;
+  }
+  body.apgo-cc-skin .apgo-cc-pdp__option-chips {
+    flex: 1 1 auto;
+    gap: 6px;
+  }
+  /* Smaller, tighter chips per design */
+  body.apgo-cc-skin .apgo-cc-pdp__chip {
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--cc-divider);
+    color: var(--cc-fg-mid);
+  }
+  /* Selected: solid orange fill with white text (replaces the
+     orange-bordered soft-bg style used on desktop) */
+  body.apgo-cc-skin .apgo-cc-pdp__chip.is-active {
+    background: var(--cc-orange);
+    border-color: var(--cc-orange);
+    color: #fff;
+  }
+
+  /* ---- Qty row: 「數量  [− 1 +]」 ---- */
+  body.apgo-cc-skin .apgo-cc-pdp__qty-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  body.apgo-cc-skin .apgo-cc-pdp__qty-label {
+    display: inline-block;
+    font-size: 13px;
+    color: var(--cc-fg-mid);
+    flex-shrink: 0;
+  }
+}
+
+/* Desktop: keep the original stepper-only layout (no 數量 label). */
+@media (min-width: 750px) {
+  body.apgo-cc-skin .apgo-cc-pdp__qty-label { display: none; }
 }
 
 .apgo-cc-pdp__cta {
