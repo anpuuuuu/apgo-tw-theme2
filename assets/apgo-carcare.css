@@ -1104,6 +1104,46 @@ body.apgo-cc-skin .apgo-cc-pdp {
 /* Variant + qty rows now live in the base styles above (applies on both
    desktop and mobile per user direction). */
 
+/* ============================================================================
+   Related products (你可能也會喜歡) on the Car Care PDP
+   ----------------------------------------------------------------------------
+   The section uses Shopify's native product-recommendations type which
+   defaults to full page-width. On desktop we want it aligned with the
+   PDP content above (1240px max-width matching .apgo-cc-pdp), and the
+   header text in white to match the dark skin (default --color-foreground
+   token paints it nearly black on light scheme).
+   ============================================================================ */
+body.apgo-cc-skin product-recommendations.product-recommendations,
+body.apgo-cc-skin .product-recommendations {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+/* The inner .section--page-width still gets its own padding from Horizon's
+   page-width tokens — tighten that on desktop so cards sit cleanly inside */
+body.apgo-cc-skin .product-recommendations .section--page-width {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* Force the "你可能也會喜歡" header into white regardless of color scheme */
+body.apgo-cc-skin .product-recommendations h3,
+body.apgo-cc-skin .product-recommendations h3 * {
+  color: var(--cc-fg) !important;
+}
+
+/* Make the recommendation product cards visually smaller — reduce inner
+   padding and shrink the typography one notch. The grid layout itself
+   (4 cols desktop / 2 cols mobile) stays per the JSON section settings. */
+body.apgo-cc-skin .product-recommendations .product-card a.user-select-text[href*="/products/"] .text-block,
+body.apgo-cc-skin .product-recommendations .product-card a.user-select-text[href*="/products/"] .text-block * {
+  font-size: 13px !important;
+}
+body.apgo-cc-skin .product-recommendations .product-card .price,
+body.apgo-cc-skin .product-recommendations .product-grid__item .price {
+  font-size: 14px !important;
+}
+
 .apgo-cc-pdp__cta {
   flex: 1;
   padding: 14px 20px;
