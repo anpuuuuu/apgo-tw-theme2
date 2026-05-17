@@ -828,7 +828,7 @@ body.apgo-cc-skin .apgo-cc-pdp {
 .apgo-cc-pdp__gallery-thumb {
   flex: 0 0 calc((100% - 24px) / 5);
   aspect-ratio: 1/1;
-  background: var(--cc-photo-bg);
+  background: var(--cc-photo-bg-dark);
   border: 1px solid var(--cc-divider);
   border-radius: var(--cc-r2);
   padding: 0;
