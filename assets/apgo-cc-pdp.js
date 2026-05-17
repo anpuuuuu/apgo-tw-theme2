@@ -194,6 +194,58 @@
       });
     });
 
+    // ---------------- Swipe gesture on main gallery image ----------------
+    // Mainly for the dot-indicator mode (show_thumbs off), but also
+    // works when thumbnails are shown. Reuses the same is-active logic
+    // by programmatically triggering the relevant thumb's click handler.
+    var galleryMain = $('.apgo-cc-pdp__gallery-main', root);
+    if (galleryMain) {
+      var swipeStartX = 0;
+      var swipeStartY = 0;
+      var swipeActive = false;
+      var SWIPE_MIN = 40; // px horizontal travel to count as swipe
+
+      function getThumbs() {
+        return $$('[data-apgo-cc-thumb]', root);
+      }
+      function currentIdx(thumbs) {
+        for (var i = 0; i < thumbs.length; i++) {
+          if (thumbs[i].classList.contains('is-active')) return i;
+        }
+        return 0;
+      }
+      function go(delta) {
+        var thumbs = getThumbs();
+        if (thumbs.length < 2) return;
+        var idx = currentIdx(thumbs);
+        var next = (idx + delta + thumbs.length) % thumbs.length;
+        thumbs[next].click();
+      }
+
+      galleryMain.addEventListener('touchstart', function (e) {
+        if (!e.touches || e.touches.length !== 1) return;
+        swipeStartX = e.touches[0].clientX;
+        swipeStartY = e.touches[0].clientY;
+        swipeActive = true;
+      }, { passive: true });
+
+      galleryMain.addEventListener('touchend', function (e) {
+        if (!swipeActive) return;
+        swipeActive = false;
+        var touch = e.changedTouches && e.changedTouches[0];
+        if (!touch) return;
+        var dx = touch.clientX - swipeStartX;
+        var dy = touch.clientY - swipeStartY;
+        // Horizontal swipe only — ignore vertical scroll gestures
+        if (Math.abs(dx) < SWIPE_MIN || Math.abs(dy) > Math.abs(dx)) return;
+        go(dx < 0 ? 1 : -1); // swipe left → next, swipe right → previous
+      });
+
+      galleryMain.addEventListener('touchcancel', function () {
+        swipeActive = false;
+      });
+    }
+
     // ---------------- Buy now ----------------
     var buyNow = $('[data-apgo-cc-buy-now]', root);
     var form = $('form.apgo-cc-pdp__form', root);
