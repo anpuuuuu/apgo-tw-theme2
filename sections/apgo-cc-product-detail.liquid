@@ -319,35 +319,87 @@
     </div>
   {%- endif -%}
 
-  {%- comment -%} ---------- Tabs section ---------- {%- endcomment -%}
+  {%- comment -%}
+    ---------- Tabs section ----------
+    Pre-compute which tabs have content. Empty tabs (button + panel)
+    are hidden entirely so users don't click into "尚未設定" placeholders.
+    The first non-empty tab/panel gets .is-active.
+  {%- endcomment -%}
+
+  {%- assign has_desc   = false -%}
+  {%- if product.description != blank -%}{%- assign has_desc = true -%}{%- endif -%}
+
+  {%- assign construction_steps = product.metafields.apgo.construction_steps.value -%}
+  {%- assign has_usage  = false -%}
+  {%- if construction_steps != blank and construction_steps.size > 0 -%}
+    {%- assign has_usage = true -%}
+  {%- endif -%}
+
+  {%- assign mf_tabs = product.metafields.apgo.product_tabs.value -%}
+  {%- assign has_spec = false -%}
+  {%- if mf_tabs != blank and mf_tabs.size > 0 -%}
+    {%- comment -%} "產品描述" entries are skipped at render time — only count if there is at least one OTHER entry {%- endcomment -%}
+    {%- for entry in mf_tabs -%}
+      {%- unless entry.title == '產品描述' -%}
+        {%- assign has_spec = true -%}
+        {%- break -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  {%- assign mf_reviews = product.metafields.apgo.reviews.value -%}
+  {%- assign has_review = false -%}
+  {%- if mf_reviews != blank and mf_reviews.size > 0 -%}{%- assign has_review = true -%}{%- endif -%}
+
+  {%- assign mf_faqs = product.metafields.apgo.faqs.value -%}
+  {%- assign has_faq = false -%}
+  {%- if mf_faqs != blank and mf_faqs.size > 0 -%}{%- assign has_faq = true -%}{%- endif -%}
+
+  {%- if has_desc or has_usage or has_spec or has_review or has_faq -%}
   <div class="apgo-cc-pdp__tabs" data-apgo-cc-tabs>
     <div class="apgo-cc-pdp__tab-bar" role="tablist">
-      <button type="button" class="apgo-cc-pdp__tab is-active" role="tab" data-apgo-cc-tab="desc">商品描述</button>
-      <button type="button" class="apgo-cc-pdp__tab" role="tab" data-apgo-cc-tab="usage">使用方式</button>
-      <button type="button" class="apgo-cc-pdp__tab" role="tab" data-apgo-cc-tab="spec">規格和注意事項</button>
-      <button type="button" class="apgo-cc-pdp__tab" role="tab" data-apgo-cc-tab="review">客戶評價</button>
-      <button type="button" class="apgo-cc-pdp__tab" role="tab" data-apgo-cc-tab="faq">常見FAQ</button>
+      {%- assign first_tab_set = false -%}
+      {%- if has_desc -%}
+        <button type="button" class="apgo-cc-pdp__tab{% unless first_tab_set %} is-active{% endunless %}" role="tab" data-apgo-cc-tab="desc">商品描述</button>
+        {%- assign first_tab_set = true -%}
+      {%- endif -%}
+      {%- if has_usage -%}
+        <button type="button" class="apgo-cc-pdp__tab{% unless first_tab_set %} is-active{% endunless %}" role="tab" data-apgo-cc-tab="usage">使用方式</button>
+        {%- assign first_tab_set = true -%}
+      {%- endif -%}
+      {%- if has_spec -%}
+        <button type="button" class="apgo-cc-pdp__tab{% unless first_tab_set %} is-active{% endunless %}" role="tab" data-apgo-cc-tab="spec">規格和注意事項</button>
+        {%- assign first_tab_set = true -%}
+      {%- endif -%}
+      {%- if has_review -%}
+        <button type="button" class="apgo-cc-pdp__tab{% unless first_tab_set %} is-active{% endunless %}" role="tab" data-apgo-cc-tab="review">客戶評價</button>
+        {%- assign first_tab_set = true -%}
+      {%- endif -%}
+      {%- if has_faq -%}
+        <button type="button" class="apgo-cc-pdp__tab{% unless first_tab_set %} is-active{% endunless %}" role="tab" data-apgo-cc-tab="faq">常見FAQ</button>
+        {%- assign first_tab_set = true -%}
+      {%- endif -%}
     </div>
 
-    {%- comment -%} Tab: 商品描述 — wired to product.description {%- endcomment -%}
-    <div class="apgo-cc-pdp__tab-panel is-active" data-apgo-cc-panel="desc">
-      {%- if section.settings.desc_kicker != blank -%}
-        <div class="apgo-cc-pdp__panel-kicker">{{ section.settings.desc_kicker }}</div>
-      {%- endif -%}
-      {%- if section.settings.desc_heading != blank -%}
-        <h2 class="apgo-cc-pdp__panel-heading">{{ section.settings.desc_heading }}</h2>
-      {%- endif -%}
-      {%- if product.description != blank -%}
+    {%- assign first_panel_set = false -%}
+
+    {%- comment -%} 商品描述 — product.description {%- endcomment -%}
+    {%- if has_desc -%}
+      <div class="apgo-cc-pdp__tab-panel{% unless first_panel_set %} is-active{% endunless %}" data-apgo-cc-panel="desc">
+        {%- if section.settings.desc_kicker != blank -%}
+          <div class="apgo-cc-pdp__panel-kicker">{{ section.settings.desc_kicker }}</div>
+        {%- endif -%}
+        {%- if section.settings.desc_heading != blank -%}
+          <h2 class="apgo-cc-pdp__panel-heading">{{ section.settings.desc_heading }}</h2>
+        {%- endif -%}
         <div class="apgo-cc-pdp__rte rte">{{ product.description }}</div>
-      {%- else -%}
-        <p class="apgo-cc-pdp__placeholder">尚未填寫商品描述。請至 Shopify 後台 → 產品 → Description 編輯。</p>
-      {%- endif -%}
-    </div>
+      </div>
+      {%- assign first_panel_set = true -%}
+    {%- endif -%}
 
-    {%- comment -%} Tabs: 使用方式 / 規格 / 評價 / FAQ — placeholders until Phase 5 metafields wired {%- endcomment -%}
-    <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="usage">
-      {%- assign construction_steps = product.metafields.apgo.construction_steps.value -%}
-      {%- if construction_steps != blank and construction_steps.size > 0 -%}
+    {%- comment -%} 使用方式 — apgo.construction_steps {%- endcomment -%}
+    {%- if has_usage -%}
+      <div class="apgo-cc-pdp__tab-panel{% unless first_panel_set %} is-active{% endunless %}" data-apgo-cc-panel="usage">
         <ol class="apgo-cc-pdp__steps">
           {%- for step in construction_steps -%}
             <li class="apgo-cc-pdp__step">
@@ -363,20 +415,16 @@
             </li>
           {%- endfor -%}
         </ol>
-      {%- else -%}
-        <p class="apgo-cc-pdp__placeholder">使用方式內容尚未設定（請於 Shopify 後台 → 產品 → Metafields → apgo.construction_steps 編輯）。</p>
-      {%- endif -%}
-    </div>
+      </div>
+      {%- assign first_panel_set = true -%}
+    {%- endif -%}
+
     {%- comment -%}
-      規格和注意事項 — JSON metafield apgo.product_tabs.
-      Format: [ { "title": "...", "content": "<p>...HTML...</p>" }, ... ]
-      Each entry rendered as a section heading + HTML content block.
-      Skip entries whose title is "產品描述" — that content already
-      lives in the 商品描述 tab via product.description.
+      規格和注意事項 — apgo.product_tabs JSON ([{title, content(HTML)}]).
+      "產品描述" entries skipped (already in the 商品描述 tab).
     {%- endcomment -%}
-    <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="spec">
-      {%- assign mf_tabs = product.metafields.apgo.product_tabs.value -%}
-      {%- if mf_tabs != blank and mf_tabs.size > 0 -%}
+    {%- if has_spec -%}
+      <div class="apgo-cc-pdp__tab-panel{% unless first_panel_set %} is-active{% endunless %}" data-apgo-cc-panel="spec">
         <div class="apgo-cc-pdp__sections">
           {%- for entry in mf_tabs -%}
             {%- unless entry.title == '產品描述' -%}
@@ -391,18 +439,13 @@
             {%- endunless -%}
           {%- endfor -%}
         </div>
-      {%- else -%}
-        <p class="apgo-cc-pdp__placeholder">尚未設定（請於 Shopify 後台 → 產品 → Metafields → apgo.product_tabs 編輯）。</p>
-      {%- endif -%}
-    </div>
+      </div>
+      {%- assign first_panel_set = true -%}
+    {%- endif -%}
 
-    {%- comment -%}
-      客戶評價 — summary card on top + list of reviews. Each review entry has:
-      name + date + scent (which scent the customer bought) + body.
-    {%- endcomment -%}
-    <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="review">
-      {%- assign mf_reviews = product.metafields.apgo.reviews.value -%}
-      {%- if mf_reviews != blank and mf_reviews.size > 0 -%}
+    {%- comment -%} 客戶評價 — apgo.reviews {%- endcomment -%}
+    {%- if has_review -%}
+      <div class="apgo-cc-pdp__tab-panel{% unless first_panel_set %} is-active{% endunless %}" data-apgo-cc-panel="review">
         <div class="apgo-cc-pdp__rev-summary">
           <div class="apgo-cc-pdp__rev-score">{{ section.settings.rating_score | default: '4.9' }}</div>
           <div class="apgo-cc-pdp__rev-summary-meta">
@@ -427,18 +470,13 @@
             </li>
           {%- endfor -%}
         </ul>
-      {%- else -%}
-        <p class="apgo-cc-pdp__placeholder">客戶評價尚未設定（請於 Shopify 後台 → 產品 → Metafields → apgo.reviews 編輯）。</p>
-      {%- endif -%}
-    </div>
+      </div>
+      {%- assign first_panel_set = true -%}
+    {%- endif -%}
 
-    {%- comment -%}
-      常見 FAQ — accordion list of question / answer pairs from apgo.faqs.
-      Uses <details>/<summary> for built-in expand/collapse (no JS needed).
-    {%- endcomment -%}
-    <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="faq">
-      {%- assign mf_faqs = product.metafields.apgo.faqs.value -%}
-      {%- if mf_faqs != blank and mf_faqs.size > 0 -%}
+    {%- comment -%} 常見 FAQ — apgo.faqs {%- endcomment -%}
+    {%- if has_faq -%}
+      <div class="apgo-cc-pdp__tab-panel{% unless first_panel_set %} is-active{% endunless %}" data-apgo-cc-panel="faq">
         <ul class="apgo-cc-pdp__faq-list">
           {%- for f in mf_faqs -%}
             <li>
@@ -452,11 +490,11 @@
             </li>
           {%- endfor -%}
         </ul>
-      {%- else -%}
-        <p class="apgo-cc-pdp__placeholder">常見 FAQ 尚未設定（請於 Shopify 後台 → 產品 → Metafields → apgo.faqs 編輯）。</p>
-      {%- endif -%}
-    </div>
+      </div>
+      {%- assign first_panel_set = true -%}
+    {%- endif -%}
   </div>
+  {%- endif -%}
 
   {%- comment -%} Variants JSON for client-side variant switching {%- endcomment -%}
   <script type="application/json" data-apgo-cc-variants>
