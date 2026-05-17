@@ -280,20 +280,24 @@
       規格和注意事項 — JSON metafield apgo.product_tabs.
       Format: [ { "title": "...", "content": "<p>...HTML...</p>" }, ... ]
       Each entry rendered as a section heading + HTML content block.
+      Skip entries whose title is "產品描述" — that content already
+      lives in the 商品描述 tab via product.description.
     {%- endcomment -%}
     <div class="apgo-cc-pdp__tab-panel" data-apgo-cc-panel="spec">
       {%- assign mf_tabs = product.metafields.apgo.product_tabs.value -%}
       {%- if mf_tabs != blank and mf_tabs.size > 0 -%}
         <div class="apgo-cc-pdp__sections">
           {%- for entry in mf_tabs -%}
-            <section class="apgo-cc-pdp__section">
-              {%- if entry.title != blank -%}
-                <h3 class="apgo-cc-pdp__section-title">{{ entry.title }}</h3>
-              {%- endif -%}
-              {%- if entry.content != blank -%}
-                <div class="apgo-cc-pdp__section-body rte">{{ entry.content }}</div>
-              {%- endif -%}
-            </section>
+            {%- unless entry.title == '產品描述' -%}
+              <section class="apgo-cc-pdp__section">
+                {%- if entry.title != blank -%}
+                  <h3 class="apgo-cc-pdp__section-title">{{ entry.title }}</h3>
+                {%- endif -%}
+                {%- if entry.content != blank -%}
+                  <div class="apgo-cc-pdp__section-body rte">{{ entry.content }}</div>
+                {%- endif -%}
+              </section>
+            {%- endunless -%}
           {%- endfor -%}
         </div>
       {%- else -%}
