@@ -847,6 +847,38 @@ body.apgo-cc-skin .apgo-cc-pdp {
   background: var(--cc-orange-soft);
 }
 
+/* Dot indicators inside the main image — shown only when section
+   setting "show_thumbs" is off. Centered along the bottom edge. */
+.apgo-cc-pdp__gallery-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  z-index: 2;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, .35);
+  border-radius: var(--cc-r5);
+  backdrop-filter: blur(4px);
+}
+.apgo-cc-pdp__gallery-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(255, 255, 255, .45);
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease, width .2s ease;
+}
+.apgo-cc-pdp__gallery-dot:hover { background: rgba(255, 255, 255, .8); }
+.apgo-cc-pdp__gallery-dot.is-active {
+  background: var(--cc-orange);
+  width: 18px; /* elongated active dot, modern slideshow style */
+  border-radius: var(--cc-r5);
+}
+
 /* ---- Info column ---- */
 .apgo-cc-pdp__info {
   background: var(--cc-bg-alt);

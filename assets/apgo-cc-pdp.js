@@ -171,13 +171,23 @@
       });
     }
 
-    // ---------------- Thumb → main img ----------------
+    // ---------------- Thumb / dot → main img ----------------
+    // Both thumbnails (with nested <img>) and dots (no <img>, just a
+    // data-apgo-cc-thumb-src attribute) use the same hook.
     var mainImg = $('[data-apgo-cc-main-img]', root);
     $$('[data-apgo-cc-thumb]', root).forEach(function (thumb) {
       thumb.addEventListener('click', function () {
+        if (!mainImg) return;
+        var src;
         var img = $('img', thumb);
-        if (!img || !mainImg) return;
-        var src = (img.currentSrc || img.src).replace(/(\?|&)width=\d+/, '$1width=1200');
+        if (img) {
+          // Thumbnail with nested <img>: upgrade the width param
+          src = (img.currentSrc || img.src).replace(/(\?|&)width=\d+/, '$1width=1200');
+        } else if (thumb.dataset.apgoCcThumbSrc) {
+          // Dot indicator: full-size url passed via data attribute
+          src = thumb.dataset.apgoCcThumbSrc;
+        }
+        if (!src) return;
         mainImg.src = src;
         $$('[data-apgo-cc-thumb]', root).forEach(function (t) { t.classList.remove('is-active'); });
         thumb.classList.add('is-active');

@@ -29,7 +29,16 @@
 
   <div class="apgo-cc-pdp__main">
 
-    {%- comment -%} ---------- Gallery ---------- {%- endcomment -%}
+    {%- comment -%}
+      ---------- Gallery ----------
+      Two display modes for the secondary images (multi-image products):
+        show_thumbs == true  → row of thumbnail buttons below main image
+        show_thumbs == false → small orange dot indicators inside the
+                               main image (bottom-center, slideshow style)
+      Both modes use the same [data-apgo-cc-thumb] hook so the existing
+      JS click-swap works. Dots carry the larger image URL on a data
+      attribute (no nested <img> to read from).
+    {%- endcomment -%}
     <div class="apgo-cc-pdp__gallery">
       <div class="apgo-cc-pdp__gallery-main">
         {%- if product.featured_media -%}
@@ -46,8 +55,22 @@
         {%- if product.compare_at_price > product.price -%}
           <span class="apgo-cc-pdp__sale-tag">特價</span>
         {%- endif -%}
+
+        {%- if product.media.size > 1 and section.settings.show_thumbs == false -%}
+          <div class="apgo-cc-pdp__gallery-dots" role="tablist" aria-label="圖片切換">
+            {%- for m in product.media -%}
+              <button
+                type="button"
+                class="apgo-cc-pdp__gallery-dot{% if forloop.first %} is-active{% endif %}"
+                data-apgo-cc-thumb
+                data-apgo-cc-thumb-src="{{ m | image_url: width: 1200 }}"
+                aria-label="顯示第 {{ forloop.index }} 張圖"
+              ></button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
       </div>
-      {%- if product.media.size > 1 -%}
+      {%- if product.media.size > 1 and section.settings.show_thumbs -%}
         <div class="apgo-cc-pdp__gallery-thumbs">
           {%- for m in product.media -%}
             <button
@@ -454,6 +477,7 @@
     { "type": "checkbox", "id": "show_breadcrumb", "label": "顯示麵包屑", "default": true },
     { "type": "checkbox", "id": "show_rating",     "label": "顯示星等評分", "default": true },
     { "type": "checkbox", "id": "show_buy_now",    "label": "顯示「立即購買」按鈕", "default": true },
+    { "type": "checkbox", "id": "show_thumbs",     "label": "顯示次圖縮圖列（關閉時用主圖底部橘色點點切換）", "default": true },
 
     { "type": "header", "content": "標題與評分" },
     { "type": "text", "id": "kicker",       "label": "上方小字（kicker，留空則不顯示）" },
