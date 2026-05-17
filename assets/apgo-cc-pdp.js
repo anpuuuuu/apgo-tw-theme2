@@ -137,6 +137,40 @@
       });
     }
 
+    // ---------------- Demo videos modal ----------------
+    var videoModal = $('[data-apgo-cc-video-modal]', root) || $('[data-apgo-cc-video-modal]');
+    var videoPlayer = videoModal && $('[data-apgo-cc-video-player]', videoModal);
+    if (videoModal && videoPlayer) {
+      function openVideo(url) {
+        if (!url) return;
+        videoPlayer.src = url;
+        videoModal.setAttribute('aria-hidden', 'false');
+        videoModal.classList.add('is-open');
+        document.documentElement.style.overflow = 'hidden';
+        // Best-effort autoplay (user clicked → counts as user gesture)
+        videoPlayer.play().catch(function () {});
+      }
+      function closeVideo() {
+        videoModal.setAttribute('aria-hidden', 'true');
+        videoModal.classList.remove('is-open');
+        document.documentElement.style.overflow = '';
+        try { videoPlayer.pause(); } catch (e) {}
+        videoPlayer.removeAttribute('src');
+        videoPlayer.load();
+      }
+      $$('[data-apgo-cc-video]', root).forEach(function (card) {
+        card.addEventListener('click', function () {
+          openVideo(card.getAttribute('data-apgo-cc-video'));
+        });
+      });
+      $$('[data-apgo-cc-video-close]', videoModal).forEach(function (el) {
+        el.addEventListener('click', closeVideo);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && videoModal.classList.contains('is-open')) closeVideo();
+      });
+    }
+
     // ---------------- Thumb → main img ----------------
     var mainImg = $('[data-apgo-cc-main-img]', root);
     $$('[data-apgo-cc-thumb]', root).forEach(function (thumb) {

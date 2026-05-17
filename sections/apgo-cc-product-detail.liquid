@@ -228,6 +228,74 @@
 
   </div>
 
+  {%- comment -%}
+    ---------- Demo videos showcase ----------
+    Driven by product.metafields.apgo.demo_videos (list of metaobjects with
+    fields: video_file, poster, title, views, duration, sort_order).
+    Renders a horizontal-scroll row of poster cards. Click → open modal
+    with a <video> player. Only renders when admin has set the metafield.
+  {%- endcomment -%}
+  {%- assign demo_videos = product.metafields.apgo.demo_videos.value -%}
+  {%- if demo_videos != blank and demo_videos.size > 0 -%}
+    <section class="apgo-cc-pdp__videos" aria-labelledby="apgo-cc-videos-heading">
+      <div class="apgo-cc-pdp__videos-head">
+        <p class="apgo-cc-pdp__videos-kicker">PRODUCT VIDEOS</p>
+        <h3 class="apgo-cc-pdp__videos-title" id="apgo-cc-videos-heading">
+          {{ section.settings.videos_heading | default: '商品實測影片' }}
+        </h3>
+      </div>
+      <div class="apgo-cc-pdp__videos-scroll">
+        {%- assign sorted_videos = demo_videos | sort: 'sort_order' -%}
+        {%- for v in sorted_videos -%}
+          {%- assign vid_url = v.video_file | file_url -%}
+          {%- assign poster_url = '' -%}
+          {%- if v.poster -%}
+            {%- assign poster_url = v.poster | image_url: width: 600 -%}
+          {%- endif -%}
+          <button type="button"
+                  class="apgo-cc-pdp__video-card"
+                  data-apgo-cc-video="{{ vid_url | escape }}"
+                  data-apgo-cc-video-title="{{ v.title | default: product.title | escape }}"
+                  aria-label="播放：{{ v.title | default: product.title }}">
+            {%- if poster_url != blank -%}
+              <img class="apgo-cc-pdp__video-thumb"
+                   src="{{ poster_url }}"
+                   alt="{{ v.title | default: product.title }}"
+                   loading="lazy">
+            {%- else -%}
+              <div class="apgo-cc-pdp__video-thumb apgo-cc-pdp__video-thumb--blank" aria-hidden="true"></div>
+            {%- endif -%}
+            <span class="apgo-cc-pdp__video-play" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </span>
+            {%- if v.duration != blank -%}
+              <span class="apgo-cc-pdp__video-duration">{{ v.duration }}</span>
+            {%- endif -%}
+            <div class="apgo-cc-pdp__video-info">
+              <span class="apgo-cc-pdp__video-title">{{ v.title | default: '商品實測' }}</span>
+              {%- if v.views != blank -%}
+                <span class="apgo-cc-pdp__video-views">{{ v.views }} 觀看</span>
+              {%- endif -%}
+            </div>
+          </button>
+        {%- endfor -%}
+      </div>
+    </section>
+
+    {%- comment -%} Single reusable video modal — JS sets the src on open {%- endcomment -%}
+    <div class="apgo-cc-pdp__video-modal" data-apgo-cc-video-modal aria-hidden="true">
+      <div class="apgo-cc-pdp__video-modal-backdrop" data-apgo-cc-video-close></div>
+      <div class="apgo-cc-pdp__video-modal-dialog" role="dialog" aria-modal="true" aria-label="商品實測影片">
+        <button type="button" class="apgo-cc-pdp__video-modal-close" data-apgo-cc-video-close aria-label="關閉">×</button>
+        <video class="apgo-cc-pdp__video-modal-video"
+               data-apgo-cc-video-player
+               controls
+               playsinline
+               preload="metadata"></video>
+      </div>
+    </div>
+  {%- endif -%}
+
   {%- comment -%} ---------- Tabs section ---------- {%- endcomment -%}
   <div class="apgo-cc-pdp__tabs" data-apgo-cc-tabs>
     <div class="apgo-cc-pdp__tab-bar" role="tablist">
@@ -395,6 +463,9 @@
     { "type": "header", "content": "商品描述 tab" },
     { "type": "text", "id": "desc_kicker",  "label": "上方小字", "default": "ABOUT THE PRODUCT" },
     { "type": "text", "id": "desc_heading", "label": "大標（留空則不顯示）" },
+
+    { "type": "header", "content": "影片區（apgo.demo_videos）" },
+    { "type": "text", "id": "videos_heading", "label": "影片區標題", "default": "商品實測影片" },
 
     { "type": "header", "content": "促銷膠囊（§1.5）" },
     { "type": "paragraph", "content": "在價格區下方顯示 1～3 個彩色膠囊（滿千免運 / 會員 9 折 / ...）。空白欄會自動跳過。" },
