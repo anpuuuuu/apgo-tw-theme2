@@ -120,6 +120,19 @@
             if (p.getAttribute('data-apgo-cc-panel') === key) p.classList.add('is-active');
             else p.classList.remove('is-active');
           });
+
+          // If tab bar is currently in its sticky state (i.e. the user
+          // scrolled past the tabs container), pull the page back so the
+          // tab area sits at viewport top. Otherwise short panels render
+          // their bottom rows leaving related-products visible below.
+          // No-op when tab bar is still in normal flow above the viewport.
+          var rect = tabsRoot.getBoundingClientRect();
+          if (rect.top < 0) {
+            window.scrollTo({
+              top: window.scrollY + rect.top,
+              behavior: 'instant'
+            });
+          }
         });
       });
     }
