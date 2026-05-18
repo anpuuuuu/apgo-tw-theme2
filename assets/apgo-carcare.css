@@ -1565,15 +1565,24 @@ body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
   border-bottom: 1px solid var(--cc-divider);
 }
 
+/* Continuous-scroll mode — all panels render stacked. Clicking a tab
+   smooth-scrolls to that panel; the sticky tab bar tracks which panel
+   is in view via IntersectionObserver (apgo-cc-pdp.js). scroll-margin-top
+   gives anchor breathing room so the panel top doesn't hide behind
+   the sticky tab bar (~48px height + small buffer).
+
+   .is-active on a panel is no longer used for visibility, but kept
+   harmless — leftover from prior toggle-visible-only mode. */
 .apgo-cc-pdp__tab-panel {
-  display: none;
-  padding: 22px;
+  display: block;
+  padding: 22px 22px 28px;
   color: var(--cc-fg-mid);
   font-size: 13px;
   line-height: 1.8;
-  min-height: 180px;
+  scroll-margin-top: 60px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
-.apgo-cc-pdp__tab-panel.is-active { display: block; }
+.apgo-cc-pdp__tab-panel:first-of-type { border-top: none; }
 .apgo-cc-pdp__panel-kicker {
   font-size: 11px;
   color: var(--cc-orange);

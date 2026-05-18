@@ -128,33 +128,49 @@
       });
     });
 
-    // ---------------- Tabs ----------------
+    // ---------------- Tabs (continuous-scroll mode) ----------------
+    // All panels render stacked (CSS no longer hides inactive ones).
+    // Tab click smooth-scrolls to that panel. An IntersectionObserver
+    // watches each panel and marks the corresponding tab .is-active
+    // when its content crosses the viewport's vertical center, so the
+    // tab bar highlights the section the reader is currently on.
     var tabsRoot = $('[data-apgo-cc-tabs]', root);
     if (tabsRoot) {
+      function setActiveTab(key) {
+        $$('[data-apgo-cc-tab]', tabsRoot).forEach(function (t) {
+          t.classList.toggle('is-active', t.getAttribute('data-apgo-cc-tab') === key);
+        });
+      }
+
       $$('[data-apgo-cc-tab]', tabsRoot).forEach(function (tab) {
         tab.addEventListener('click', function () {
           var key = tab.getAttribute('data-apgo-cc-tab');
-          $$('[data-apgo-cc-tab]', tabsRoot).forEach(function (t) { t.classList.remove('is-active'); });
-          tab.classList.add('is-active');
-          $$('[data-apgo-cc-panel]', tabsRoot).forEach(function (p) {
-            if (p.getAttribute('data-apgo-cc-panel') === key) p.classList.add('is-active');
-            else p.classList.remove('is-active');
-          });
-
-          // If tab bar is currently in its sticky state (i.e. the user
-          // scrolled past the tabs container), pull the page back so the
-          // tab area sits at viewport top. Otherwise short panels render
-          // their bottom rows leaving related-products visible below.
-          // No-op when tab bar is still in normal flow above the viewport.
-          var rect = tabsRoot.getBoundingClientRect();
-          if (rect.top < 0) {
-            window.scrollTo({
-              top: window.scrollY + rect.top,
-              behavior: 'instant'
-            });
-          }
+          var target = tabsRoot.querySelector('[data-apgo-cc-panel="' + key + '"]');
+          if (!target) return;
+          // Visually mark active immediately for snappy feedback; the
+          // observer will sync once scroll settles.
+          setActiveTab(key);
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       });
+
+      // Scroll-spy: highlight the tab whose panel is currently in view.
+      // rootMargin '-50% 0px -50% 0px' makes the observer fire when an
+      // element crosses the viewport's vertical center — feels natural
+      // since the active section is whatever the reader is centered on.
+      if ('IntersectionObserver' in window) {
+        var panels = $$('[data-apgo-cc-panel]', tabsRoot);
+        if (panels.length) {
+          var spyIo = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                setActiveTab(entry.target.getAttribute('data-apgo-cc-panel'));
+              }
+            });
+          }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+          panels.forEach(function (p) { spyIo.observe(p); });
+        }
+      }
     }
 
     // ---------------- Demo videos modal ----------------
