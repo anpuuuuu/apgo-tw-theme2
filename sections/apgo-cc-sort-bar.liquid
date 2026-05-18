@@ -63,6 +63,20 @@
 
 <script>
 (function () {
+  // If user lands on a collection page without a ?sort_by= URL param,
+  // redirect to ?sort_by=best-selling so the actual product order matches
+  // the UI default highlight (熱銷). Uses location.replace so the back
+  // button skips this intermediate URL. Preserves any other query params
+  // (filters, pagination) via URL constructor.
+  try {
+    if (location.search.indexOf('sort_by=') === -1) {
+      var url = new URL(location.href);
+      url.searchParams.set('sort_by', 'best-selling');
+      location.replace(url.toString());
+      return; // stop further setup — page will reload
+    }
+  } catch (e) { /* old browser without URL constructor — skip */ }
+
   // Close dropdown when clicking outside.
   document.addEventListener('click', function (e) {
     document.querySelectorAll('details.apgo-cc-sort__dropdown[open]').forEach(function (d) {
