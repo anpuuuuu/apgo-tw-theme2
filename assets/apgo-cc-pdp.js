@@ -154,22 +154,41 @@
         });
       });
 
-      // Scroll-spy: highlight the tab whose panel is currently in view.
-      // rootMargin '-50% 0px -50% 0px' makes the observer fire when an
-      // element crosses the viewport's vertical center — feels natural
-      // since the active section is whatever the reader is centered on.
-      if ('IntersectionObserver' in window) {
-        var panels = $$('[data-apgo-cc-panel]', tabsRoot);
-        if (panels.length) {
-          var spyIo = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) {
-                setActiveTab(entry.target.getAttribute('data-apgo-cc-panel'));
-              }
-            });
-          }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
-          panels.forEach(function (p) { spyIo.observe(p); });
+      // Scroll-spy via scroll listener (more predictable than IO for
+      // short panels). Active = the LAST panel whose top has crossed
+      // the sticky tab bar threshold. So even if the clicked panel is
+      // shorter than half the viewport, its top staying at threshold
+      // keeps it active rather than the next panel becoming active
+      // just because the viewport center landed below its bottom.
+      var panels = $$('[data-apgo-cc-panel]', tabsRoot);
+      if (panels.length) {
+        function updateActiveFromScroll() {
+          // ~tab-bar height + 1px buffer so the first panel still wins
+          // when scrolled exactly to its top
+          var threshold = 60 + 1;
+          var activeKey = panels[0].getAttribute('data-apgo-cc-panel');
+          for (var i = 0; i < panels.length; i++) {
+            var top = panels[i].getBoundingClientRect().top;
+            if (top - threshold <= 0) {
+              activeKey = panels[i].getAttribute('data-apgo-cc-panel');
+            } else {
+              break; // panels are ordered top-to-bottom in flow
+            }
+          }
+          setActiveTab(activeKey);
         }
+        var scrollTicking = false;
+        window.addEventListener('scroll', function () {
+          if (scrollTicking) return;
+          scrollTicking = true;
+          requestAnimationFrame(function () {
+            updateActiveFromScroll();
+            scrollTicking = false;
+          });
+        }, { passive: true });
+        // Initial paint + after resize (panel heights can shift)
+        updateActiveFromScroll();
+        window.addEventListener('resize', updateActiveFromScroll);
       }
     }
 
