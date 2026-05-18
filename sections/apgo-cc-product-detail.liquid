@@ -56,6 +56,10 @@
           <span class="apgo-cc-pdp__sale-tag">特價</span>
         {%- endif -%}
 
+        {%- comment -%}
+          Dots indicator — only when admin turned show_thumbs OFF. Hidden
+          on desktop via CSS (dots are a mobile-only compact mode).
+        {%- endcomment -%}
         {%- if product.media.size > 1 and section.settings.show_thumbs == false -%}
           <div class="apgo-cc-pdp__gallery-dots" role="tablist" aria-label="圖片切換">
             {%- for m in product.media -%}
@@ -70,8 +74,15 @@
           </div>
         {%- endif -%}
       </div>
-      {%- if product.media.size > 1 and section.settings.show_thumbs -%}
-        <div class="apgo-cc-pdp__gallery-thumbs">
+      {%- comment -%}
+        Thumbnail strip — desktop always renders it regardless of the
+        show_thumbs toggle (per user direction: thumbs always visible
+        on desktop). Mobile only renders+shows it when toggle is ON;
+        when toggle is OFF, the strip carries `--hide-mobile` modifier
+        and CSS hides it at ≤749px (dots above take over).
+      {%- endcomment -%}
+      {%- if product.media.size > 1 -%}
+        <div class="apgo-cc-pdp__gallery-thumbs{% unless section.settings.show_thumbs %} apgo-cc-pdp__gallery-thumbs--hide-mobile{% endunless %}">
           {%- for m in product.media -%}
             <button
               type="button"
@@ -515,7 +526,7 @@
     { "type": "checkbox", "id": "show_breadcrumb", "label": "顯示麵包屑", "default": true },
     { "type": "checkbox", "id": "show_rating",     "label": "顯示星等評分", "default": true },
     { "type": "checkbox", "id": "show_buy_now",    "label": "顯示「立即購買」按鈕", "default": true },
-    { "type": "checkbox", "id": "show_thumbs",     "label": "顯示次圖縮圖列（關閉時用主圖底部橘色點點切換）", "default": true },
+    { "type": "checkbox", "id": "show_thumbs",     "label": "手機顯示次圖縮圖列（關閉時手機改用主圖底部橘色點點。桌機永遠顯示縮圖）", "default": true },
 
     { "type": "header", "content": "標題與評分" },
     { "type": "text", "id": "kicker",       "label": "上方小字（kicker，留空則不顯示）" },

@@ -847,8 +847,20 @@ body.apgo-cc-skin .apgo-cc-pdp {
   background: var(--cc-orange-soft);
 }
 
+/* Hide the thumbnail strip on mobile when admin turned show_thumbs off.
+   Desktop always shows the strip regardless (per user direction). */
+@media (max-width: 749px) {
+  .apgo-cc-pdp__gallery-thumbs--hide-mobile { display: none; }
+}
+
+/* Dots are a mobile-only affordance — hide on desktop so even if liquid
+   rendered them, they don't compete with the thumbnail strip. */
+@media (min-width: 750px) {
+  .apgo-cc-pdp__gallery-dots { display: none !important; }
+}
+
 /* Dot indicators inside the main image — shown only when section
-   setting "show_thumbs" is off. Centered along the bottom edge. */
+   setting "show_thumbs" is off (mobile). Centered along the bottom edge. */
 .apgo-cc-pdp__gallery-dots {
   position: absolute;
   bottom: 14px;
