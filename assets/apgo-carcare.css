@@ -548,6 +548,31 @@ body.apgo-cc-skin .search-page__header .section-background {
   color: var(--cc-fg) !important;
 }
 
+/* Belt-and-suspenders: the product card itself + any inner block group
+   that Horizon scopes a color-scheme onto. Without these, the title /
+   price area can paint with the section's scheme-1 bg (often white). */
+body.apgo-cc-skin results-list .product-card,
+body.apgo-cc-skin results-list .product-card__content,
+body.apgo-cc-skin results-list .product-grid__item,
+body.apgo-cc-skin results-list [class*="color-scheme"],
+body.apgo-cc-skin .product-card,
+body.apgo-cc-skin .product-card__content {
+  --color-background: 28, 31, 36;       /* matches --cc-bg-alt in rgb */
+  --color-foreground: 240, 236, 228;    /* matches --cc-fg */
+  background: var(--cc-bg-alt) !important;
+  color: var(--cc-fg) !important;
+}
+
+/* Title text — make sure the title link, its text-block wrapper, and
+   any nested <p> all render in white regardless of color-scheme leakage. */
+body.apgo-cc-skin results-list .product-card a[href*="/products/"],
+body.apgo-cc-skin results-list .product-card a[href*="/products/"] .text-block,
+body.apgo-cc-skin results-list .product-card a[href*="/products/"] .text-block *,
+body.apgo-cc-skin results-list .product-card .text-block,
+body.apgo-cc-skin results-list .product-card .text-block * {
+  color: var(--cc-fg) !important;
+}
+
 /* Mobile: spread the search header edge-to-edge like the collection grid */
 @media (max-width: 749px) {
   body.apgo-cc-skin .search-page__header {
