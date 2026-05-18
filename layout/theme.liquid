@@ -82,7 +82,6 @@
     {{ 'apgo-carcare.css' | asset_url | stylesheet_tag }}
     {%- if template.suffix == 'apgo-v2' -%}
       <script src="{{ 'apgo-cc-pdp.js' | asset_url }}" defer></script>
-      <script src="{{ 'apgo-cc-buybar.js' | asset_url }}" defer></script>
     {%- endif -%}
     {%- if template.name == 'collection' -%}
       <script src="{{ 'apgo-cc-quick-add.js' | asset_url }}" defer></script>
@@ -256,8 +255,8 @@
       {% render 'quick-add-modal' %}
     {% endif %}
 <!-- ============================================ -->
-<!-- APGO Cart Recovery (L2) v1.1 -->
-<!-- 跳轉登入後還原 cart + 廣告歸因 -->
+<!-- APGO Cart Recovery (L2) v2.0 -->
+<!-- 跳轉登入後還原 cart + 廣告歸因 + User Journey 追蹤 -->
 <!-- 貼進 layout/theme.liquid body 結束標籤前 -->
 <!-- ============================================ -->
 <script>
@@ -266,93 +265,182 @@
 
   const RECOVERY_API = 'https://cr.apgo.tw';
   const ATTR_KEYS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid','gclid','ttclid'];
-  const DEBUG = false; // 灰度測試期 true,上線後改 false
+  const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
+  const TRACK_BATCH_INTERVAL_MS = 3000;
+  const DEBUG = true; // 灰度測試期 true,上線後改 false
 
-  function log(...args) { if (DEBUG) console.log('[recovery]', ...args); }
-  function warn(...args) { console.warn('[recovery]', ...args); }
+  function log() { if (DEBUG) console.log.apply(console, ['[recovery]'].concat([].slice.call(arguments))); }
+  function warn() { console.warn.apply(console, ['[recovery]'].concat([].slice.call(arguments))); }
+
+  // === UUID / ID 管理 ===
+  function uuid() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0;
+      var v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  function getDeviceId() {
+    var id;
+    try {
+      id = localStorage.getItem('apgo_device_id');
+      if (!id) {
+        id = 'dev_' + uuid();
+        localStorage.setItem('apgo_device_id', id);
+      }
+    } catch (e) {
+      id = id || 'dev_' + uuid(); // private mode fallback (ephemeral)
+    }
+    return id;
+  }
+
+  function getSessionId() {
+    var id, lastActive = 0, now = Date.now();
+    try {
+      id = localStorage.getItem('apgo_session_id');
+      lastActive = Number(localStorage.getItem('apgo_session_last_active') || 0);
+    } catch (e) {}
+    if (!id || now - lastActive > SESSION_TIMEOUT_MS) {
+      id = 'sess_' + uuid();
+      try { localStorage.setItem('apgo_session_id', id); } catch (e) {}
+    }
+    try { localStorage.setItem('apgo_session_last_active', String(now)); } catch (e) {}
+    return id;
+  }
 
   function getGaCid() {
-    const m = document.cookie.match(/_ga=GA1\.\d+\.([\d.]+)/);
+    var m = document.cookie.match(/_ga=GA1\.\d+\.([\d.]+)/);
     return m ? m[1] : null;
   }
 
-  // === A: 進站時抓 first-touch 歸因到 sessionStorage ===
+  // === Attribution (first-touch) ===
   function captureAttribution() {
-    const u = new URLSearchParams(location.search);
-    const incoming = {};
-    for (const k of ATTR_KEYS) {
-      const v = u.get(k);
+    var u = new URLSearchParams(location.search);
+    var incoming = {};
+    for (var i = 0; i < ATTR_KEYS.length; i++) {
+      var k = ATTR_KEYS[i];
+      var v = u.get(k);
       if (v) incoming[k] = v;
     }
     if (!Object.keys(incoming).length) return;
-    const existing = JSON.parse(sessionStorage.getItem('apgo_attribution') || '{}');
-    // first-touch:已有的不蓋,保留最早來源
-    const merged = { ...incoming, ...existing };
-    sessionStorage.setItem('apgo_attribution', JSON.stringify(merged));
+    var existing = {};
+    try { existing = JSON.parse(sessionStorage.getItem('apgo_attribution') || '{}'); } catch (e) {}
+    var merged = Object.assign({}, incoming, existing); // first-touch
+    try { sessionStorage.setItem('apgo_attribution', JSON.stringify(merged)); } catch (e) {}
     log('attribution captured', merged);
   }
 
-  // === B: 攔截 LINE 登入按鈕點擊,塞 cr=short_id 到 return_to ===
-  function interceptLoginButtons() {
-    document.addEventListener('click', async (e) => {
-      // ⚠️ Selector 適配:若 B1 觀察 DOM 結構不同,調整這裡
-      const target = e.target.closest('a[href*="/account/login"]');
-      if (!target) return;
+  function getAttribution() {
+    try { return JSON.parse(sessionStorage.getItem('apgo_attribution') || '{}'); }
+    catch (e) { return {}; }
+  }
 
-      const text = (target.textContent || '').trim();
-      const isLineLogin = text.includes('LINE') || target.classList.contains('m-bottom-sheet-btn');
-      // 過濾:右上角 person icon 等非 LINE 登入連結不攔截
+  // === Event Queue + Batched Beacon ===
+  var queue = [];
+
+  function track(type, props) {
+    var ev = { type: type, url: location.pathname, ts: Date.now() };
+    if (props) for (var k in props) if (Object.prototype.hasOwnProperty.call(props, k)) ev[k] = props[k];
+    queue.push(ev);
+    log('track', type, props || {});
+  }
+
+  function flush(useBeacon) {
+    if (!queue.length) return;
+    var events = queue.splice(0, queue.length);
+    var payload = {
+      session_id: getSessionId(),
+      device_id: getDeviceId(),
+      events: events,
+      attribution: getAttribution(),
+    };
+    var body = JSON.stringify(payload);
+    var url = RECOVERY_API + '/track';
+    if (useBeacon && navigator.sendBeacon) {
+      try {
+        navigator.sendBeacon(url, new Blob([body], { type: 'application/json' }));
+        return;
+      } catch (e) { /* fall through */ }
+    }
+    try {
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: body,
+        keepalive: true,
+      }).catch(function() {});
+    } catch (e) { /* ignore */ }
+  }
+
+  setInterval(function() { flush(false); }, TRACK_BATCH_INTERVAL_MS);
+  window.addEventListener('beforeunload', function() { flush(true); });
+  window.addEventListener('pagehide', function() { flush(true); });
+
+  // === interceptLoginButtons (現有 + v2 加 session/device id) ===
+  function interceptLoginButtons() {
+    document.addEventListener('click', async function(e) {
+      var target = e.target.closest('a[href*="/account/login"]');
+      if (!target) return;
+      var text = (target.textContent || '').trim();
+      var isLineLogin = text.indexOf('LINE') !== -1 || target.classList.contains('m-bottom-sheet-btn');
       if (!isLineLogin) return;
 
       e.preventDefault();
       e.stopPropagation();
 
       try {
-        const cart = await fetch('/cart.js').then(r => r.json());
-        const payload = {
+        var cart = await fetch('/cart.js').then(function(r) { return r.json(); });
+        var payload = {
           cart_token: cart.token,
-          line_items: cart.items.map(i => ({ id: i.variant_id, quantity: i.quantity })),
-          attribution: JSON.parse(sessionStorage.getItem('apgo_attribution') || '{}'),
+          line_items: cart.items.map(function(i) { return { id: i.variant_id, quantity: i.quantity }; }),
+          attribution: getAttribution(),
           ga_cid: getGaCid(),
           page_from: location.pathname,
           ts: Date.now(),
+          session_id: getSessionId(),    // v2
+          device_id: getDeviceId(),      // v2
         };
         log('saving payload', payload);
 
-        const res = await fetch(`${RECOVERY_API}/save`, {
+        var res = await fetch(RECOVERY_API + '/save', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         });
         if (!res.ok) throw new Error('save failed ' + res.status);
-        const { id } = await res.json();
+        var data = await res.json();
+        var id = data.id;
         log('got short_id', id);
 
-        // 改寫 return_to:塞 cr= 進去
-        const url = new URL(target.href, location.origin);
-        const returnTo = url.searchParams.get('return_to') || '/cart';
-        const newReturnTo = returnTo + (returnTo.includes('?') ? '&' : '?') + `cr=${id}`;
-        url.searchParams.set('return_to', newReturnTo);
-        log('redirecting to', url.toString());
-        location.href = url.toString();
+        var u = new URL(target.href, location.origin);
+        var returnTo = u.searchParams.get('return_to') || '/cart';
+        var newReturnTo = returnTo + (returnTo.indexOf('?') !== -1 ? '&' : '?') + 'cr=' + id;
+        u.searchParams.set('return_to', newReturnTo);
+        log('redirecting to', u.toString());
+        location.href = u.toString();
       } catch (err) {
         warn('save failed, fallback to normal login', err);
-        // 失敗就走原本 href,使用者體驗不會更差
         location.href = target.href;
       }
-    }, true); // capture phase,確保比其他 listener 早跑
+    }, true);
   }
 
-  // === C: 著陸頁讀 ?cr=,拿回 payload,還原 cart + 歸因 ===
+  // === tryRecover (現有 + v2 加 session/device id in query) ===
   async function tryRecover() {
-    const params = new URLSearchParams(location.search);
-    const shortId = params.get('cr');
+    var params = new URLSearchParams(location.search);
+    var shortId = params.get('cr');
     if (!shortId) return;
     log('attempting recovery for', shortId);
 
-    let payload;
+    var payload;
     try {
-      const res = await fetch(`${RECOVERY_API}/recover?id=${encodeURIComponent(shortId)}`);
+      var u = new URL(RECOVERY_API + '/recover');
+      u.searchParams.set('id', shortId);
+      u.searchParams.set('session_id', getSessionId());   // v2
+      u.searchParams.set('device_id', getDeviceId());     // v2
+      var res = await fetch(u.toString());
       if (!res.ok) {
         log('recover not ok', res.status);
         return;
@@ -364,13 +452,13 @@
       return;
     }
 
-    // 1. 還原 cart(只在當前 cart 是空時)
-    let didRestore = false;
+    var didRestore = false;
     try {
-      const currentCart = await fetch('/cart.js').then(r => r.json());
-      const needRestore = currentCart.item_count === 0 && payload.line_items?.length > 0;
+      var currentCart = await fetch('/cart.js').then(function(r) { return r.json(); });
+      var needRestore = currentCart.item_count === 0 && payload.line_items && payload.line_items.length > 0;
       if (needRestore) {
-        for (const item of payload.line_items) {
+        for (var i = 0; i < payload.line_items.length; i++) {
+          var item = payload.line_items[i];
           await fetch('/cart/add.js', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -382,27 +470,107 @@
       }
     } catch (err) { warn('cart restore failed', err); }
 
-    // 2. 還原歸因 sessionStorage
     if (payload.attribution && Object.keys(payload.attribution).length) {
-      sessionStorage.setItem('apgo_attribution', JSON.stringify(payload.attribution));
+      try { sessionStorage.setItem('apgo_attribution', JSON.stringify(payload.attribution)); } catch (e) {}
     }
 
-    // 3. 清掉 cr=,塞回 utm_* 到 URL,location.replace 觸發 GA4/Pixel 重讀
-    const cleanUrl = new URL(location.href);
+    var cleanUrl = new URL(location.href);
     cleanUrl.searchParams.delete('cr');
-    for (const [k, v] of Object.entries(payload.attribution || {})) {
-      cleanUrl.searchParams.set(k, v);
+    var attrEntries = Object.entries(payload.attribution || {});
+    for (var j = 0; j < attrEntries.length; j++) {
+      cleanUrl.searchParams.set(attrEntries[j][0], attrEntries[j][1]);
     }
     cleanUrl.searchParams.set('cart_recovered', didRestore ? '1' : '0');
     log('redirecting to clean url', cleanUrl.toString());
     location.replace(cleanUrl.toString());
   }
 
+  // === v2 Auto Event Listeners ===
+  function setupAutoEvents() {
+    // page_view on SPA history.pushState
+    try {
+      var _ps = history.pushState;
+      history.pushState = function() {
+        _ps.apply(this, arguments);
+        track('page_view');
+      };
+      window.addEventListener('popstate', function() { track('page_view'); });
+    } catch (e) {}
+
+    // view_item on /products/
+    if (/^\/products\//.test(location.pathname)) {
+      var priceMeta = document.querySelector('meta[property="og:price:amount"], meta[property="product:price:amount"]');
+      var price = priceMeta ? Number(priceMeta.content) : 0;
+      track('view_item', { value: price });
+    }
+
+    // view_cart on /cart
+    if (location.pathname === '/cart' || location.pathname === '/cart/') {
+      fetch('/cart.js').then(function(r) { return r.json(); }).then(function(c) {
+        track('view_cart', { value: (c.total_price || 0) / 100 });
+      }).catch(function() { track('view_cart'); });
+    }
+
+    // add_to_cart / remove_from_cart via fetch hook (capture Shopify cart API)
+    var _origFetch = window.fetch;
+    window.fetch = function(input, init) {
+      var u = (typeof input === 'string') ? input : (input && input.url) || '';
+      var isAddCart = u.indexOf('/cart/add') !== -1;
+      var isChangeCart = u.indexOf('/cart/change') !== -1 || u.indexOf('/cart/update') !== -1;
+      var result = _origFetch.apply(this, arguments);
+      try {
+        if (isAddCart || isChangeCart) {
+          result.then(function(res) {
+            if (!res.ok) return;
+            res.clone().json().then(function(data) {
+              if (isAddCart) {
+                track('add_to_cart', { value: (data.line_price || data.total_price || 0) / 100 });
+              } else if (isChangeCart) {
+                // 若 quantity=0 視為 remove
+                try {
+                  var initBody = init && init.body ? init.body : null;
+                  if (typeof initBody === 'string' && /quantity"\s*:\s*0/.test(initBody)) {
+                    track('remove_from_cart');
+                  }
+                } catch (ee) {}
+              }
+            }).catch(function() {});
+          }).catch(function() {});
+        }
+      } catch (e) {}
+      return result;
+    };
+
+    // begin_checkout on click 主結帳按鈕
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('#checkout-standalone, [data-checkout-trigger], button[name="checkout"]');
+      if (!btn) return;
+      fetch('/cart.js').then(function(r) { return r.json(); }).then(function(c) {
+        track('begin_checkout', { value: (c.total_price || 0) / 100 });
+      }).catch(function() { track('begin_checkout'); });
+    }, true);
+
+    // scroll_depth 50 / 80
+    var scrolledMax = 0;
+    window.addEventListener('scroll', function() {
+      var maxScroll = document.body.scrollHeight - window.innerHeight;
+      if (maxScroll <= 0) return;
+      var pct = Math.round((window.scrollY / maxScroll) * 100);
+      if (pct >= 50 && scrolledMax < 50) { scrolledMax = 50; track('scroll_depth_50'); }
+      if (pct >= 80 && scrolledMax < 80) { scrolledMax = 80; track('scroll_depth_80'); }
+    }, { passive: true });
+  }
+
+  // === Init ===
   function run() {
     captureAttribution();
+    track('session_start');
+    track('page_view');
     interceptLoginButtons();
+    setupAutoEvents();
     tryRecover();
   }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', run);
   } else {
