@@ -526,8 +526,13 @@ body.apgo-cc-skin .search-results__no-results p {
   margin: 0;
 }
 
-/* Results list grid container — same horizontal inset as collection grid */
-body.apgo-cc-skin .product-grid-container {
+/* Results list grid container — centred at 1240px on /search ONLY.
+   .product-grid-container is also the wrapper class on main-collection
+   section, so this rule MUST stay scoped to results-list (the custom
+   element exclusive to search-results.liquid) to avoid leaking a
+   max-width constraint onto the collection page. */
+body.apgo-cc-skin results-list.product-grid-container,
+body.apgo-cc-skin results-list .product-grid-container {
   max-width: 1240px;
   margin: 0 auto;
 }
