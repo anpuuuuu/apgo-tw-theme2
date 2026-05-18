@@ -204,12 +204,21 @@
       </div>
     </div>
 
-    {%- comment -%} Footer with single CTA — label + behaviour set by JS {%- endcomment -%}
+    {%- comment -%}
+      Footer with two CTAs. Visibility per mode is controlled by
+      data-mode on the root: 'add' (only add visible), 'buy' (only buy),
+      'both' (both side-by-side). Set by JS in openPurchase().
+    {%- endcomment -%}
     <footer class="apgo-cc-purchase__footer">
       <button type="button"
+              class="apgo-cc-buybar__btn apgo-cc-buybar__btn--add apgo-cc-purchase__cta"
+              data-apgo-cc-purchase-cta="add">
+        加入購物車
+      </button>
+      <button type="button"
               class="apgo-cc-buybar__btn apgo-cc-buybar__btn--buy apgo-cc-purchase__cta"
-              data-apgo-cc-purchase-cta>
-        <span data-apgo-cc-purchase-cta-label>加入購物車</span>
+              data-apgo-cc-purchase-cta="buy">
+        立即購買
       </button>
     </footer>
   </div>

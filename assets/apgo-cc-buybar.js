@@ -244,42 +244,34 @@
 
   // ---------- Add to cart ----------
   // ---------- Purchase modal (mobile-only) ----------
-  // Buybar 加入購物車 / 立即購買 now open a confirmation modal showing
-  // image + price + variant chips (mirrored from in-panel form) + qty
-  // stepper + single CTA. CTA label/behaviour swaps based on which
-  // buybar button opened it (mode 'add' vs 'buy').
+  // Three modes via data-mode attr on .apgo-cc-purchase root:
+  //   'add'  → only 加入購物車 CTA visible (full width)
+  //   'buy'  → only 立即購買 CTA visible (full width)
+  //   'both' → both CTAs side-by-side
+  // CSS uses [data-mode] to control button visibility.
   var purchaseRoot      = document.querySelector('[data-apgo-cc-purchase]');
-  var purchaseCta       = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-cta]');
-  var purchaseCtaLabel  = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-cta-label]');
   var purchaseModeLabel = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-mode-label]');
   var purchaseQtyInput  = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-qty-input]');
   var purchaseQtyBtns   = purchaseRoot ? $$('[data-apgo-cc-purchase-qty]', purchaseRoot) : [];
   var purchasePriceEl   = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-price]');
   var purchaseImg       = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-img]');
-  var purchaseMode      = 'add'; // 'add' or 'buy'
+  var purchaseAddCta    = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-cta="add"]');
+  var purchaseBuyCta    = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-cta="buy"]');
 
   function openPurchase(mode) {
     if (!purchaseRoot) return;
-    purchaseMode = mode === 'buy' ? 'buy' : 'add';
-    var label = purchaseMode === 'buy' ? '立即購買' : '加入購物車';
-    if (purchaseCtaLabel) purchaseCtaLabel.textContent = label;
-    if (purchaseModeLabel) purchaseModeLabel.textContent = label;
-    // Swap CTA modifier class so 'add' mode renders outlined (matching the
-    // buybar's 加入購物車 button outside) and 'buy' mode renders solid orange
-    // (matching the buybar's 立即購買 button outside) — keeps inside/outside
-    // visually consistent.
-    if (purchaseCta) {
-      purchaseCta.classList.toggle('apgo-cc-buybar__btn--add', purchaseMode === 'add');
-      purchaseCta.classList.toggle('apgo-cc-buybar__btn--buy', purchaseMode === 'buy');
-    }
-    // Sync modal price + image from the in-panel display (kept fresh by
-    // apgo-cc-pdp.js's variant-switch logic)
+    var m = (mode === 'buy' || mode === 'both') ? mode : 'add';
+    purchaseRoot.setAttribute('data-mode', m);
+    // Hidden screen-reader label for the active intent (best effort)
+    var srLabel = m === 'buy' ? '立即購買' : m === 'both' ? '購買選項' : '加入購物車';
+    if (purchaseModeLabel) purchaseModeLabel.textContent = srLabel;
+    // Sync modal price + image from the in-panel display (apgo-cc-pdp.js
+    // keeps the in-panel ones fresh on variant change).
     var sourcePrice = document.querySelector('[data-apgo-cc-price]');
     if (sourcePrice && purchasePriceEl) purchasePriceEl.textContent = sourcePrice.textContent.trim();
     var sourceImg = document.querySelector('[data-apgo-cc-main-img]');
     if (sourceImg && purchaseImg) purchaseImg.src = sourceImg.src;
-    // Sync qty value with whatever the in-panel form has (always 1 by default
-    // since we hide the in-panel qty row on mobile)
+    // Sync qty value with whatever the in-panel form has
     var formQty = form.querySelector('[name="quantity"]');
     if (formQty && purchaseQtyInput) purchaseQtyInput.value = formQty.value || '1';
     purchaseRoot.setAttribute('aria-hidden', 'false');
@@ -293,19 +285,32 @@
     document.documentElement.style.overflow = '';
   }
 
-  // Buybar 加入購物車 → open modal in 'add' mode (was: direct AJAX add)
+  // Buybar 加入購物車 → open modal in 'add' mode (single CTA)
   if (addBtn) {
     addBtn.addEventListener('click', function () {
       if (addBtn.disabled) return;
       openPurchase('add');
     });
   }
-  // Buybar 立即購買 → open modal in 'buy' mode (was: direct redirect /cart)
+  // Buybar 立即購買 → open modal in 'buy' mode (single CTA)
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', function () {
       openPurchase('buy');
     });
   }
+
+  // In-panel variant chip click → open modal in 'both' mode so user can
+  // pick add OR buy. Mobile-only (matchMedia 749px); desktop in-panel
+  // chips work as a normal variant switcher with no modal.
+  // requestAnimationFrame defers so the radio's change event + apgo-cc-pdp.js's
+  // updateUI() runs first (price + variant id refreshed before modal opens).
+  var inPanelChips = $$('.apgo-cc-pdp__form .apgo-cc-pdp__chip');
+  inPanelChips.forEach(function (label) {
+    label.addEventListener('click', function () {
+      if (!window.matchMedia('(max-width: 749px)').matches) return;
+      requestAnimationFrame(function () { openPurchase('both'); });
+    });
+  });
 
   // Modal close handlers
   if (purchaseRoot) {
@@ -369,65 +374,75 @@
     });
   }
 
-  // Modal CTA — actually submits the form via /cart/add.js
-  if (purchaseCta) {
-    purchaseCta.addEventListener('click', function () {
-      if (purchaseCta.disabled) return;
-      var origLabel = purchaseCtaLabel ? purchaseCtaLabel.textContent : '';
-      purchaseCta.disabled = true;
-      if (purchaseCtaLabel) purchaseCtaLabel.textContent = '加入中…';
-
-      var fd = new FormData(form);
-      fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: fd
-      })
-        .then(function (r) {
-          return r.json().then(function (data) {
-            if (!r.ok) return Promise.reject(data);
-            return data;
-          });
-        })
-        .then(function () { return fetchCart(); })
-        .then(function (cart) {
-          renderCart(cart);
-          document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: cart } }));
-          document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart: cart } }));
-          document.dispatchEvent(new CustomEvent('cart:updated'));
-          try {
-            import('@theme/events').then(function (mod) {
-              if (mod && mod.CartUpdateEvent) {
-                document.dispatchEvent(new mod.CartUpdateEvent(cart, 'apgo-cc-buybar', {
-                  itemCount: cart.item_count, source: 'apgo-cc-buybar', sections: {}
-                }));
-              }
-              if (mod && mod.CartAddEvent) {
-                document.dispatchEvent(new mod.CartAddEvent({}, 'apgo-cc-buybar', { source: 'apgo-cc-buybar' }));
-              }
-            }).catch(function () {});
-          } catch (_) {}
-
-          if (purchaseMode === 'buy') {
-            // 立即購買 → land on /cart so user verifies cart before checkout
-            window.location.href = '/cart';
-            return;
-          }
-          // 加入購物車 mode: toast + close modal + auto-open mini cart so user
-          // sees the new line item land
-          showToast('✓ 已加入購物車');
-          purchaseCta.disabled = false;
-          if (purchaseCtaLabel) purchaseCtaLabel.textContent = origLabel;
-          closePurchase();
-          if (!bar.classList.contains('is-open')) open();
-        })
-        .catch(function (err) {
-          console.error('[apgo-cc-buybar] add failed:', err);
-          var msg = (err && err.description) || (err && err.message) || '加入失敗，請稍後再試';
-          showToast(msg, false);
-          purchaseCta.disabled = false;
-          if (purchaseCtaLabel) purchaseCtaLabel.textContent = origLabel;
+  // Shared AJAX add — both purchase modal CTAs use this. triggerBtn is
+  // the clicked button so it can be disabled + labelled "加入中…" while
+  // the request is in flight. onSuccess decides what happens after the
+  // cart is updated (toast+close OR redirect /cart).
+  function purchaseSubmit(triggerBtn, onSuccess) {
+    if (!form || !triggerBtn) return;
+    var orig = triggerBtn.textContent;
+    triggerBtn.disabled = true;
+    triggerBtn.textContent = '加入中…';
+    var fd = new FormData(form);
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: fd
+    })
+      .then(function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok) return Promise.reject(data);
+          return data;
         });
+      })
+      .then(function () { return fetchCart(); })
+      .then(function (cart) {
+        renderCart(cart);
+        document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: cart } }));
+        document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart: cart } }));
+        document.dispatchEvent(new CustomEvent('cart:updated'));
+        try {
+          import('@theme/events').then(function (mod) {
+            if (mod && mod.CartUpdateEvent) {
+              document.dispatchEvent(new mod.CartUpdateEvent(cart, 'apgo-cc-buybar', {
+                itemCount: cart.item_count, source: 'apgo-cc-buybar', sections: {}
+              }));
+            }
+            if (mod && mod.CartAddEvent) {
+              document.dispatchEvent(new mod.CartAddEvent({}, 'apgo-cc-buybar', { source: 'apgo-cc-buybar' }));
+            }
+          }).catch(function () {});
+        } catch (_) {}
+
+        triggerBtn.disabled = false;
+        triggerBtn.textContent = orig;
+        if (typeof onSuccess === 'function') onSuccess(cart);
+      })
+      .catch(function (err) {
+        console.error('[apgo-cc-buybar] add failed:', err);
+        var msg = (err && err.description) || (err && err.message) || '加入失敗，請稍後再試';
+        showToast(msg, false);
+        triggerBtn.disabled = false;
+        triggerBtn.textContent = orig;
+      });
+  }
+
+  // Modal 加入購物車 CTA — adds + toast + closes modal + opens mini cart
+  if (purchaseAddCta) {
+    purchaseAddCta.addEventListener('click', function () {
+      purchaseSubmit(purchaseAddCta, function () {
+        showToast('✓ 已加入購物車');
+        closePurchase();
+        if (!bar.classList.contains('is-open')) open();
+      });
+    });
+  }
+  // Modal 立即購買 CTA — adds + redirects to /cart for shopper to verify
+  if (purchaseBuyCta) {
+    purchaseBuyCta.addEventListener('click', function () {
+      purchaseSubmit(purchaseBuyCta, function () {
+        window.location.href = '/cart';
+      });
     });
   }
 })();
