@@ -1,22 +1,27 @@
 {%- comment -%}
   APGO · Car Care Colors — Sort Bar (dropdown)
   Left: 「共 N 項商品」(collection.products_count)
-  Right: dropdown — 綜合排序 (default) → 熱銷 / 新品 / 價格 ↑ / 價格 ↓
+  Right: dropdown — 熱銷 (default) → 新品 / 價格 ↑ / 價格 ↓
   Layout: always one row, count left + dropdown right (mobile + desktop).
-  Phase 2.5 polish of docs/CAR_CARE_REDESIGN_PLAN.md.
+
+  「綜合排序」option removed per user direction; 熱銷 is now the visual
+  default. Note: when ?sort_by isn't in the URL, Shopify uses the
+  collection's own default sort (set in admin) — for the displayed
+  "熱銷" highlight to also be the actual sort, admin should set the
+  collection's default sort to "Best selling" in Shopify admin.
 {%- endcomment -%}
 
 {%- liquid
   assign current_sort = collection.sort_by
 
-  assign options_str = '|綜合排序,best-selling|熱銷,created-descending|新品,price-ascending|價格 ↑,price-descending|價格 ↓'
+  assign options_str = 'best-selling|熱銷,created-descending|新品,price-ascending|價格 ↑,price-descending|價格 ↓'
   assign options = options_str | split: ','
 
   comment
-    Find current label. Empty current_sort (or matching the collection's
-    default-sort manual) → "綜合排序".
+    Default label = 熱銷 (first option). If the URL has ?sort_by and it
+    matches one of our options, use that label instead.
   endcomment
-  assign active_label = '綜合排序'
+  assign active_label = '熱銷'
   for opt in options
     assign parts = opt | split: '|'
     if parts[0] == current_sort and current_sort != blank
@@ -44,13 +49,12 @@
         {%- assign sort_label = parts[1] -%}
         {%- assign is_active = false -%}
         {%- if sort_token == current_sort -%}{%- assign is_active = true -%}{%- endif -%}
-        {%- if sort_token == blank and current_sort == blank -%}{%- assign is_active = true -%}{%- endif -%}
+        {%- comment -%} When URL has no ?sort_by, default-highlight the first option (熱銷). {%- endcomment -%}
+        {%- if current_sort == blank and forloop.first -%}{%- assign is_active = true -%}{%- endif -%}
         <li role="none">
-          {%- if sort_token == blank -%}
-            <a href="{{ collection.url }}#apgo-cc-sort-anchor" class="apgo-cc-sort__option{% if is_active %} is-active{% endif %}" role="menuitem">{{ sort_label }}</a>
-          {%- else -%}
-            <a href="{{ collection.url }}?sort_by={{ sort_token }}#apgo-cc-sort-anchor" class="apgo-cc-sort__option{% if is_active %} is-active{% endif %}" role="menuitem">{{ sort_label }}</a>
-          {%- endif -%}
+          <a href="{{ collection.url }}?sort_by={{ sort_token }}#apgo-cc-sort-anchor"
+             class="apgo-cc-sort__option{% if is_active %} is-active{% endif %}"
+             role="menuitem">{{ sort_label }}</a>
         </li>
       {%- endfor -%}
     </ul>
@@ -82,7 +86,7 @@
   "tag": "section",
   "class": "apgo-cc-sort-section",
   "settings": [
-    { "type": "paragraph", "content": "顯示「共 N 項商品」+ 排序下拉選單 (綜合排序 / 熱銷 / 新品 / 價格 ↑↓)。預設綜合排序。" }
+    { "type": "paragraph", "content": "顯示「共 N 項商品」+ 排序下拉選單 (熱銷 / 新品 / 價格 ↑↓)。預設熱銷。若要讓「沒選排序時」也真的按熱銷排，請至 Shopify 後台 → 商品分類 → 該 collection 的 Default sort 設成 Best selling。" }
   ],
   "presets": [
     { "name": "APGO · 排序列 (Car Care)" }
