@@ -2672,3 +2672,25 @@ body.apgo-cc-search .search-page__header .section-background {
   background: var(--cc-bg) !important;
   color: var(--cc-fg) !important;
 }
+
+/* Product card inner wrappers — Horizon's .product-card__content (and
+   any nested block group that carries a color-scheme class) still
+   inherits scheme-1 → white. Force cc-bg-alt token + explicit bg/fg
+   on the card content layer. Strictly scoped to body.apgo-cc-search. */
+body.apgo-cc-search .product-card__content,
+body.apgo-cc-search .product-grid__item,
+body.apgo-cc-search results-list [class*="color-scheme"] {
+  --color-background: 28, 31, 36;       /* --cc-bg-alt in rgb */
+  --color-foreground: 240, 236, 228;
+  background: var(--cc-bg-alt) !important;
+  color: var(--cc-fg) !important;
+}
+
+/* Title text inside search-result cards — scheme-1 foreground would
+   render dim on the now-dark bg; force white. */
+body.apgo-cc-search .product-card a[href*="/products/"] .text-block,
+body.apgo-cc-search .product-card a[href*="/products/"] .text-block *,
+body.apgo-cc-search .product-card .text-block,
+body.apgo-cc-search .product-card .text-block * {
+  color: var(--cc-fg) !important;
+}
