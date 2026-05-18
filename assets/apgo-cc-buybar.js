@@ -13,6 +13,12 @@
 (function () {
   'use strict';
 
+  // Tiny query helpers — `$$` returns a real array so .forEach works
+  // everywhere (NodeList.forEach has gaps in older browsers).
+  function $$(sel, ctx) {
+    return Array.prototype.slice.call((ctx || document).querySelectorAll(sel));
+  }
+
   var bar = document.querySelector('[data-apgo-cc-buybar]');
   if (!bar) return;
 
