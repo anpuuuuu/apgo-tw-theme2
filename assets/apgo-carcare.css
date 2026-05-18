@@ -167,6 +167,22 @@ body.apgo-cc-skin .product-card-gallery__image-wrapper {
   overflow: hidden;
 }
 
+/* When the product has no image, Horizon renders a placeholder SVG (or
+   leaves the photo slot empty so the title shows on cream). Force dark
+   bg on the placeholder so it doesn't look broken next to image cards. */
+body.apgo-cc-skin .product-card .product-card-gallery:not(:has(img)),
+body.apgo-cc-skin .product-card-gallery:not(:has(img)),
+body.apgo-cc-skin .product-card .product-card-gallery__image-wrapper:not(:has(img)),
+body.apgo-cc-skin .product-card .product-card__placeholder-image,
+body.apgo-cc-skin .product-card__placeholder-image {
+  background: var(--cc-bg-alt) !important;
+}
+body.apgo-cc-skin .product-card .product-card-gallery:not(:has(img)) *,
+body.apgo-cc-skin .product-card .product-card__placeholder-image svg {
+  color: var(--cc-fg-faint) !important;
+  fill: var(--cc-fg-faint) !important;
+}
+
 /* Product title — Horizon renders the title block as
        <a class="contents user-select-text" href="/products/...">
          <div class="text-block ... h5 ...">
@@ -412,10 +428,15 @@ body.apgo-cc-skin .pagination [aria-disabled="true"] {
    ring. Search input icon + reset button colours overridden to dim/orange.
    ============================================================================ */
 
-/* Heading area — h3 from the _heading block */
+/* Heading area — h3 from the _heading block.
+   align-items: stretch is the missing piece — the section's inline
+   --horizontal-alignment defaults to flex-start which shrinks children
+   to content, leaving the search input ~200px wide. Force stretch
+   so the input fills the row. */
 body.apgo-cc-skin .search-page__header {
-  display: flex;
-  flex-direction: column;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
   gap: 14px;
   max-width: 1240px;
   margin: 0 auto;
@@ -438,13 +459,16 @@ body.apgo-cc-skin .search-page__header h3 {
    matching the collection grid inset. */
 body.apgo-cc-skin .search-page-input__parent {
   width: 100% !important;
+  max-width: none !important;
   display: block !important;
+  align-self: stretch !important;
 }
 body.apgo-cc-skin search-page-input-component {
   display: flex !important;
   align-items: center;
   gap: 10px;
   width: 100% !important;
+  max-width: none !important;
   box-sizing: border-box;
   background: var(--cc-bg-deep) !important;
   border: 1px solid var(--cc-divider) !important;
