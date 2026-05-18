@@ -167,21 +167,9 @@ body.apgo-cc-skin .product-card-gallery__image-wrapper {
   overflow: hidden;
 }
 
-/* When the product has no image, Horizon renders a placeholder SVG (or
-   leaves the photo slot empty so the title shows on cream). Force dark
-   bg on the placeholder so it doesn't look broken next to image cards. */
-body.apgo-cc-skin .product-card .product-card-gallery:not(:has(img)),
-body.apgo-cc-skin .product-card-gallery:not(:has(img)),
-body.apgo-cc-skin .product-card .product-card-gallery__image-wrapper:not(:has(img)),
-body.apgo-cc-skin .product-card .product-card__placeholder-image,
-body.apgo-cc-skin .product-card__placeholder-image {
-  background: var(--cc-bg-alt) !important;
-}
-body.apgo-cc-skin .product-card .product-card-gallery:not(:has(img)) *,
-body.apgo-cc-skin .product-card .product-card__placeholder-image svg {
-  color: var(--cc-fg-faint) !important;
-  fill: var(--cc-fg-faint) !important;
-}
+/* Empty-image placeholder dark-bg override is scoped to the search
+   results page only (see Search section CSS below), so that the
+   collection page keeps the original cream-photo fallback. */
 
 /* Product title — Horizon renders the title block as
        <a class="contents user-select-text" href="/products/...">
@@ -561,28 +549,41 @@ body.apgo-cc-skin .search-page__header .section-background {
 }
 
 /* Belt-and-suspenders: the product card itself + any inner block group
-   that Horizon scopes a color-scheme onto. Without these, the title /
-   price area can paint with the section's scheme-1 bg (often white). */
+   that Horizon scopes a color-scheme onto inside the SEARCH RESULTS
+   page only. Collection page is intentionally left alone (its cards
+   already paint correctly without these forced token overrides). */
 body.apgo-cc-skin results-list .product-card,
 body.apgo-cc-skin results-list .product-card__content,
 body.apgo-cc-skin results-list .product-grid__item,
-body.apgo-cc-skin results-list [class*="color-scheme"],
-body.apgo-cc-skin .product-card,
-body.apgo-cc-skin .product-card__content {
+body.apgo-cc-skin results-list [class*="color-scheme"] {
   --color-background: 28, 31, 36;       /* matches --cc-bg-alt in rgb */
   --color-foreground: 240, 236, 228;    /* matches --cc-fg */
   background: var(--cc-bg-alt) !important;
   color: var(--cc-fg) !important;
 }
 
-/* Title text — make sure the title link, its text-block wrapper, and
-   any nested <p> all render in white regardless of color-scheme leakage. */
+/* Title text inside search results — make sure the title link, its
+   text-block wrapper, and any nested <p> all render in white
+   regardless of color-scheme leakage. Scoped to results-list only. */
 body.apgo-cc-skin results-list .product-card a[href*="/products/"],
 body.apgo-cc-skin results-list .product-card a[href*="/products/"] .text-block,
 body.apgo-cc-skin results-list .product-card a[href*="/products/"] .text-block *,
 body.apgo-cc-skin results-list .product-card .text-block,
 body.apgo-cc-skin results-list .product-card .text-block * {
   color: var(--cc-fg) !important;
+}
+
+/* Empty-image placeholder — only on search results, paint dark so the
+   card doesn't look like a cream popup next to image-having cards. */
+body.apgo-cc-skin results-list .product-card .product-card-gallery:not(:has(img)),
+body.apgo-cc-skin results-list .product-card .product-card-gallery__image-wrapper:not(:has(img)),
+body.apgo-cc-skin results-list .product-card .product-card__placeholder-image {
+  background: var(--cc-bg-alt) !important;
+}
+body.apgo-cc-skin results-list .product-card .product-card-gallery:not(:has(img)) *,
+body.apgo-cc-skin results-list .product-card .product-card__placeholder-image svg {
+  color: var(--cc-fg-faint) !important;
+  fill: var(--cc-fg-faint) !important;
 }
 
 /* Mobile: spread the search header edge-to-edge like the collection grid */
