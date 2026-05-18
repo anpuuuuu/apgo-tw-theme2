@@ -6,7 +6,8 @@
  *   - Variant option chips → live price + variant id update
  *   - Qty stepper
  *   - Thumbnail → main image swap
- *   - Buy now (AJAX cart add → /checkout)
+ *   - 加入購物車 (form submit) — AJAX cart add + toast, stay on page
+ *   - 立即購買 — AJAX cart add + redirect to /cart for verification
  *
  * Phase 4 of docs/CAR_CARE_REDESIGN_PLAN.md
  */
@@ -246,17 +247,104 @@
       });
     }
 
-    // ---------------- Buy now ----------------
-    var buyNow = $('[data-apgo-cc-buy-now]', root);
+    // ---------------- Toast (reuse .apgo-cc-toast CSS from quick-add) ----------------
+    var toastEl = null;
+    function showToast(msg, isErr) {
+      if (!toastEl) {
+        toastEl = document.createElement('div');
+        toastEl.className = 'apgo-cc-toast';
+        document.body.appendChild(toastEl);
+      }
+      toastEl.textContent = msg;
+      toastEl.classList.toggle('apgo-cc-toast--err', !!isErr);
+      toastEl.classList.add('is-visible');
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(function () {
+        toastEl.classList.remove('is-visible');
+      }, 2200);
+    }
+
+    function dispatchCartEvents(cart) {
+      document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: cart } }));
+      document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart: cart } }));
+      document.dispatchEvent(new CustomEvent('cart:updated'));
+      try {
+        import('@theme/events').then(function (mod) {
+          if (mod && mod.CartUpdateEvent) {
+            document.dispatchEvent(new mod.CartUpdateEvent(cart, 'apgo-cc-pdp', {
+              itemCount: cart.item_count, source: 'apgo-cc-pdp', sections: {}
+            }));
+          }
+          if (mod && mod.CartAddEvent) {
+            document.dispatchEvent(new mod.CartAddEvent({}, 'apgo-cc-pdp', { source: 'apgo-cc-pdp' }));
+          }
+        }).catch(function () {});
+      } catch (_) {}
+    }
+
+    // ---------------- Form / CTA buttons (desktop in-panel) ----------------
+    // Both buttons go AJAX. 加入購物車 (form submit) → toast + stay on page.
+    // 立即購買 → toast (optional) + redirect to /cart so user can verify
+    // their order (matching the mobile buybar behaviour).
     var form = $('form.apgo-cc-pdp__form', root);
+
+    function ajaxAdd(triggerBtn, onSuccess) {
+      if (!form) return;
+      var fd = new FormData(form);
+      var orig = triggerBtn && triggerBtn.textContent;
+      if (triggerBtn) { triggerBtn.disabled = true; triggerBtn.textContent = '加入中…'; }
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: fd
+      })
+        .then(function (r) {
+          return r.json().then(function (data) {
+            if (!r.ok) return Promise.reject(data);
+            return data;
+          });
+        })
+        .then(function () {
+          // Refetch live cart so header counters / drawer pick up the change
+          return fetch('/cart.js?_=' + Date.now(), {
+            cache: 'no-store',
+            headers: { 'Accept': 'application/json' }
+          }).then(function (r) { return r.json(); });
+        })
+        .then(function (cart) {
+          dispatchCartEvents(cart);
+          if (triggerBtn) { triggerBtn.disabled = false; triggerBtn.textContent = orig; }
+          if (typeof onSuccess === 'function') onSuccess(cart);
+        })
+        .catch(function (err) {
+          console.error('[apgo-cc-pdp] cart add failed:', err);
+          var msg = (err && err.description) || (err && err.message) || '加入失敗，請稍後再試';
+          showToast(msg, true);
+          if (triggerBtn) { triggerBtn.disabled = false; triggerBtn.textContent = orig; }
+        });
+    }
+
+    // 加入購物車 = form submit. Intercept so the browser doesn't navigate
+    // to /cart on form post — instead AJAX add + toast + stay on PDP.
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var btn = $('button[type="submit"]', form);
+        ajaxAdd(btn, function () {
+          showToast('✓ 已加入購物車');
+        });
+      });
+    }
+
+    // 立即購買 → AJAX add + redirect to /cart (so shopper can verify cart
+    // with any auto-discounts before committing). Note: NOT /checkout.
+    var buyNow = $('[data-apgo-cc-buy-now]', root);
     if (buyNow && form) {
       buyNow.addEventListener('click', function () {
-        var fd = new FormData(form);
-        fetch('/cart/add.js', {
-          method: 'POST', headers: { 'Accept': 'application/json' }, body: fd
-        }).then(function (r) { return r.json(); })
-          .then(function () { window.location.href = '/checkout'; })
-          .catch(function () { form.submit(); });
+        ajaxAdd(buyNow, function () {
+          window.location.href = '/cart';
+        });
       });
     }
 
