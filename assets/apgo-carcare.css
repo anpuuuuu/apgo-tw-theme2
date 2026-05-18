@@ -2072,21 +2072,26 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   cursor: not-allowed;
 }
 
-/* ---- Toast (top-center) ---- */
+/* ---- Toast (top-center) ----
+   Dark pill with orange text + 1px orange border. The check mark in the
+   message (added by JS) lands as inline emoji; CSS keeps the type tight
+   so it reads as a status chip. */
 .apgo-cc-toast {
   position: fixed;
   top: 24px;
   left: 50%;
   transform: translateX(-50%) translateY(-20px);
   z-index: 1200;
-  padding: 12px 24px;
-  background: #ff6b1a;
-  color: #fff;
+  padding: 10px 22px;
+  background: #0f1115;
+  color: #ff6b1a;
+  border: 1px solid rgba(255, 107, 26, .45);
   border-radius: 999px;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
   font-family: 'Inter', sans-serif;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
+  letter-spacing: .02em;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .55), 0 0 0 4px rgba(255, 107, 26, .08);
   opacity: 0;
   pointer-events: none;
   transition: transform .25s cubic-bezier(.2, .7, .2, 1), opacity .25s;
@@ -2095,8 +2100,12 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
 }
+/* Error variant — red border + red text, same dark fill */
 .apgo-cc-toast--err {
-  background: #e74c3c;
+  background: #0f1115;
+  color: #e74c3c;
+  border-color: rgba(231, 76, 60, .55);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .55), 0 0 0 4px rgba(231, 76, 60, .1);
 }
 
 /* ---- Tile base ------------------------------------------------------------- */
