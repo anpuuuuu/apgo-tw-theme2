@@ -2626,21 +2626,40 @@ body.apgo-cc-search .search__reset-button-icon svg {
   width: 14px; height: 14px;
 }
 
-/* Mobile: tighten header, drop input width cap, shorter input */
+/* Mobile: tighter header (less top/bottom space), input fully edge-to-edge,
+   shorter compact field. Also kill any Horizon section--page-width inner
+   padding that constrains the input on the right side. */
 @media (max-width: 749px) {
   body.apgo-cc-search .search-page__header {
-    padding: 20px 16px 12px;
+    padding: 12px 16px 8px !important;
+    gap: 8px !important;
+  }
+  body.apgo-cc-search .search-page__header h1,
+  body.apgo-cc-search .search-page__header h2,
+  body.apgo-cc-search .search-page__header h3 {
+    font-size: 18px !important;
   }
   body.apgo-cc-search .search-page-input__parent {
     width: 100% !important;
     max-width: none !important;
+    margin: 0 !important;
+    display: block !important;
   }
   body.apgo-cc-search search-page-input-component {
     padding: 3px 12px !important;
+    width: 100% !important;
+    max-width: none !important;
   }
   body.apgo-cc-search .search-page-input {
     font-size: 14px !important;
     padding: 10px 0 !important;
+  }
+  /* Cancel any extra padding/max-width from Horizon's section--page-width
+     wrapper that surrounds .search-page__header on small screens. */
+  body.apgo-cc-search .section--page-width:has(.search-page__header) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-width: none !important;
   }
 }
 
