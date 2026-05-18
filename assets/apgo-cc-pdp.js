@@ -82,7 +82,7 @@
       if (priceEl) priceEl.textContent = formatMoney(v.price);
       // Swap main gallery image to the variant's featured_image when one
       // is set in Shopify admin. Falls through silently if no per-variant
-      // image (cards stay on the product-level featured_media).
+      // image (card stays on the product-level featured_media).
       var mainImg = $('[data-apgo-cc-main-img]', root);
       if (mainImg && v.featured_image && v.featured_image.src) {
         var newSrc = v.featured_image.src.replace(/(\?|&)width=\d+/, '$1width=1200');
@@ -90,6 +90,14 @@
           newSrc += (newSrc.indexOf('?') > -1 ? '&' : '?') + 'width=1200';
         }
         if (mainImg.src !== newSrc) mainImg.src = newSrc;
+      }
+      // Sync the active thumb/dot to the variant's featured_media so the
+      // gallery indicator reflects which photo belongs to this variant.
+      if (v.featured_media && v.featured_media.id != null) {
+        var activeMediaId = String(v.featured_media.id);
+        $$('[data-apgo-cc-thumb]', root).forEach(function (el) {
+          el.classList.toggle('is-active', el.getAttribute('data-apgo-cc-media-id') === activeMediaId);
+        });
       }
       if (submitBtn) {
         if (v.available) {
@@ -186,6 +194,9 @@
     // ---------------- Thumb / dot → main img ----------------
     // Both thumbnails (with nested <img>) and dots (no <img>, just a
     // data-apgo-cc-thumb-src attribute) use the same hook.
+    // Also: if this media is a variant's featured_media, propagate
+    // the click back into the variant chips so the chip below highlights
+    // the matching option (and price / variant id stay in sync).
     var mainImg = $('[data-apgo-cc-main-img]', root);
     $$('[data-apgo-cc-thumb]', root).forEach(function (thumb) {
       thumb.addEventListener('click', function () {
@@ -203,6 +214,37 @@
         mainImg.src = src;
         $$('[data-apgo-cc-thumb]', root).forEach(function (t) { t.classList.remove('is-active'); });
         thumb.classList.add('is-active');
+
+        // If this thumb's media is a variant's featured_media, find that
+        // variant and select its options so the chip below highlights.
+        var mediaId = thumb.getAttribute('data-apgo-cc-media-id');
+        if (!mediaId) return;
+        var matchedVariant = null;
+        for (var vi = 0; vi < variants.length; vi++) {
+          var vv = variants[vi];
+          if (vv && vv.featured_media && String(vv.featured_media.id) === String(mediaId)) {
+            matchedVariant = vv; break;
+          }
+        }
+        if (!matchedVariant) return;
+        var vOpts = [matchedVariant.option1, matchedVariant.option2, matchedVariant.option3];
+        var groups = $$('[data-apgo-cc-option-group]', root);
+        var changed = false;
+        for (var gi = 0; gi < groups.length; gi++) {
+          var optVal = vOpts[gi];
+          if (optVal == null) continue;
+          var group = groups[gi];
+          var radio = group.querySelector(
+            'input[data-apgo-cc-option-input][value="' + optVal.replace(/"/g, '\\"') + '"]'
+          );
+          if (radio && !radio.checked) { radio.checked = true; changed = true; }
+        }
+        // Fire updateUI() once at the end via a synthetic change so price /
+        // variant id / chip is-active states refresh in one pass (avoids
+        // re-running updateUI per option group).
+        if (changed) {
+          updateUI();
+        }
       });
     });
 

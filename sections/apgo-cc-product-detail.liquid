@@ -68,6 +68,7 @@
                 class="apgo-cc-pdp__gallery-dot{% if forloop.first %} is-active{% endif %}"
                 data-apgo-cc-thumb
                 data-apgo-cc-thumb-src="{{ m | image_url: width: 1200 }}"
+                data-apgo-cc-media-id="{{ m.id }}"
                 aria-label="顯示第 {{ forloop.index }} 張圖"
               ></button>
             {%- endfor -%}
@@ -88,6 +89,7 @@
               type="button"
               class="apgo-cc-pdp__gallery-thumb {% if forloop.first %}is-active{% endif %}"
               data-apgo-cc-thumb
+              data-apgo-cc-media-id="{{ m.id }}"
               aria-label="顯示第 {{ forloop.index }} 張圖"
             >
               <img
