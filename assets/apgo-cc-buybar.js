@@ -237,15 +237,133 @@
   });
 
   // ---------- Add to cart ----------
+  // ---------- Purchase modal (mobile-only) ----------
+  // Buybar 加入購物車 / 立即購買 now open a confirmation modal showing
+  // image + price + variant chips (mirrored from in-panel form) + qty
+  // stepper + single CTA. CTA label/behaviour swaps based on which
+  // buybar button opened it (mode 'add' vs 'buy').
+  var purchaseRoot      = document.querySelector('[data-apgo-cc-purchase]');
+  var purchaseCta       = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-cta]');
+  var purchaseCtaLabel  = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-cta-label]');
+  var purchaseModeLabel = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-mode-label]');
+  var purchaseQtyInput  = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-qty-input]');
+  var purchaseQtyBtns   = purchaseRoot ? $$('[data-apgo-cc-purchase-qty]', purchaseRoot) : [];
+  var purchasePriceEl   = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-price]');
+  var purchaseImg       = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-img]');
+  var purchaseMode      = 'add'; // 'add' or 'buy'
+
+  function openPurchase(mode) {
+    if (!purchaseRoot) return;
+    purchaseMode = mode === 'buy' ? 'buy' : 'add';
+    var label = purchaseMode === 'buy' ? '立即購買' : '加入購物車';
+    if (purchaseCtaLabel) purchaseCtaLabel.textContent = label;
+    if (purchaseModeLabel) purchaseModeLabel.textContent = label;
+    // Sync modal price + image from the in-panel display (kept fresh by
+    // apgo-cc-pdp.js's variant-switch logic)
+    var sourcePrice = document.querySelector('[data-apgo-cc-price]');
+    if (sourcePrice && purchasePriceEl) purchasePriceEl.textContent = sourcePrice.textContent.trim();
+    var sourceImg = document.querySelector('[data-apgo-cc-main-img]');
+    if (sourceImg && purchaseImg) purchaseImg.src = sourceImg.src;
+    // Sync qty value with whatever the in-panel form has (always 1 by default
+    // since we hide the in-panel qty row on mobile)
+    var formQty = form.querySelector('[name="quantity"]');
+    if (formQty && purchaseQtyInput) purchaseQtyInput.value = formQty.value || '1';
+    purchaseRoot.setAttribute('aria-hidden', 'false');
+    purchaseRoot.classList.add('is-open');
+    document.documentElement.style.overflow = 'hidden';
+  }
+  function closePurchase() {
+    if (!purchaseRoot) return;
+    purchaseRoot.classList.remove('is-open');
+    purchaseRoot.setAttribute('aria-hidden', 'true');
+    document.documentElement.style.overflow = '';
+  }
+
+  // Buybar 加入購物車 → open modal in 'add' mode (was: direct AJAX add)
   if (addBtn) {
     addBtn.addEventListener('click', function () {
       if (addBtn.disabled) return;
+      openPurchase('add');
+    });
+  }
+  // Buybar 立即購買 → open modal in 'buy' mode (was: direct redirect /cart)
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', function () {
+      openPurchase('buy');
+    });
+  }
+
+  // Modal close handlers
+  if (purchaseRoot) {
+    $$('[data-apgo-cc-purchase-close]', purchaseRoot).forEach(function (el) {
+      el.addEventListener('click', closePurchase);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && purchaseRoot.classList.contains('is-open')) closePurchase();
+    });
+  }
+
+  // Modal qty stepper — writes back to in-panel form's quantity input so
+  // the FormData submission uses the right number.
+  purchaseQtyBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (!purchaseQtyInput) return;
+      var dir = btn.getAttribute('data-apgo-cc-purchase-qty');
+      var q = parseInt(purchaseQtyInput.value, 10);
+      if (isNaN(q) || q < 1) q = 1;
+      if (dir === 'up') q += 1;
+      if (dir === 'down') q = Math.max(1, q - 1);
+      purchaseQtyInput.value = q;
+      // Mirror into in-panel form's hidden quantity input so /cart/add.js
+      // FormData picks it up on submit
+      var formQty = form.querySelector('[name="quantity"]');
+      if (formQty) formQty.value = q;
+    });
+  });
+
+  // Modal variant chips — when user picks a variant in the modal, find the
+  // matching radio in the in-panel form, check it, and fire 'change' so
+  // apgo-cc-pdp.js's updateUI() runs (updates variant id, price, chip
+  // active state, etc.). Also flip the visual is-active class on the
+  // modal chip wrappers so the modal's own chips show selected state.
+  if (purchaseRoot) {
+    $$('[data-apgo-cc-modal-option-input]', purchaseRoot).forEach(function (input) {
+      input.addEventListener('change', function () {
+        var optionName = input.getAttribute('data-option-name');
+        var value = input.value;
+        // 1. Update sibling chip active states inside this option group
+        var group = input.closest('.apgo-cc-pdp__option-group');
+        if (group) {
+          $$('label.apgo-cc-pdp__chip', group).forEach(function (lbl) {
+            var lblInput = lbl.querySelector('input[data-apgo-cc-modal-option-input]');
+            lbl.classList.toggle('is-active', !!lblInput && lblInput.checked);
+          });
+        }
+        // 2. Mirror into the in-panel form's hidden option radio so the
+        //    existing variant-change handler in apgo-cc-pdp.js fires
+        var realInput = form.querySelector(
+          'input[data-apgo-cc-option-input][name="options[' + optionName + ']"][value="' + value + '"]'
+        );
+        if (realInput) {
+          realInput.checked = true;
+          realInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        // 3. Refresh modal price + image to match new variant
+        var sourcePrice = document.querySelector('[data-apgo-cc-price]');
+        if (sourcePrice && purchasePriceEl) purchasePriceEl.textContent = sourcePrice.textContent.trim();
+      });
+    });
+  }
+
+  // Modal CTA — actually submits the form via /cart/add.js
+  if (purchaseCta) {
+    purchaseCta.addEventListener('click', function () {
+      if (purchaseCta.disabled) return;
+      var origLabel = purchaseCtaLabel ? purchaseCtaLabel.textContent : '';
+      purchaseCta.disabled = true;
+      if (purchaseCtaLabel) purchaseCtaLabel.textContent = '加入中…';
+
       var fd = new FormData(form);
-
-      var orig = addBtn.textContent;
-      addBtn.disabled = true;
-      addBtn.textContent = '加入中…';
-
       fetch('/cart/add.js', {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
@@ -260,11 +378,9 @@
         .then(function () { return fetchCart(); })
         .then(function (cart) {
           renderCart(cart);
-
           document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: cart } }));
           document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart: cart } }));
           document.dispatchEvent(new CustomEvent('cart:updated'));
-
           try {
             import('@theme/events').then(function (mod) {
               if (mod && mod.CartUpdateEvent) {
@@ -278,28 +394,26 @@
             }).catch(function () {});
           } catch (_) {}
 
+          if (purchaseMode === 'buy') {
+            // 立即購買 → land on /cart so user verifies cart before checkout
+            window.location.href = '/cart';
+            return;
+          }
+          // 加入購物車 mode: toast + close modal + auto-open mini cart so user
+          // sees the new line item land
           showToast('✓ 已加入購物車');
-          addBtn.disabled = false;
-          addBtn.textContent = orig;
-
-          // Nudge: auto-open the sheet so user sees the new item land in cart
+          purchaseCta.disabled = false;
+          if (purchaseCtaLabel) purchaseCtaLabel.textContent = origLabel;
+          closePurchase();
           if (!bar.classList.contains('is-open')) open();
         })
         .catch(function (err) {
           console.error('[apgo-cc-buybar] add failed:', err);
           var msg = (err && err.description) || (err && err.message) || '加入失敗，請稍後再試';
           showToast(msg, false);
-          addBtn.disabled = false;
-          addBtn.textContent = orig;
+          purchaseCta.disabled = false;
+          if (purchaseCtaLabel) purchaseCtaLabel.textContent = origLabel;
         });
-    });
-  }
-
-  // ---------- 立即購買 → go to /cart so user can verify their cart
-  // (with any auto-discounts applied) before committing to checkout. ----------
-  if (checkoutBtn) {
-    checkoutBtn.addEventListener('click', function () {
-      window.location.href = '/cart';
     });
   }
 })();

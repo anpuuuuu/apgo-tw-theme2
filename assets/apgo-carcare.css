@@ -1177,10 +1177,12 @@ body.apgo-cc-skin .apgo-cc-pdp {
   margin-top: 12px;
 }
 
-/* Hide the in-panel CTA row on mobile — the sticky bottom buybar takes
-   over there to avoid duplicate buttons. Desktop keeps the in-panel CTAs. */
+/* Hide the in-panel CTA row + qty row on mobile — the sticky bottom
+   buybar (and its purchase modal) take over there. In-panel variant
+   chips stay visible as a read-only display. Desktop keeps both. */
 @media (max-width: 749px) {
   .apgo-cc-pdp__cta-row { display: none; }
+  body.apgo-cc-skin .apgo-cc-pdp__form .apgo-cc-pdp__qty-row { display: none; }
 
   /* Per Mobile-Detail-Spec mock, mobile drops the heavy card chrome
      around info / tabs / gallery wrappers so content flows directly on
@@ -2544,6 +2546,180 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 }
 
 .apgo-cc-buybar__btn:active { transform: scale(.96); }
+
+/* Buybar CTA + purchase-modal CTA share the same compact button height.
+   .apgo-cc-buybar__btn defaults to padding: 11px 16px — leave that.
+   Purchase modal CTA matches via .apgo-cc-purchase__cta (no extra
+   padding override). */
+
+/* ============================================================================
+   Purchase modal — mobile only (buybar 加入購物車 / 立即購買 → modal)
+   ----------------------------------------------------------------------------
+   Slides up full-screen on mobile, lets user confirm variant + qty,
+   single CTA at the bottom whose label/behaviour depends on which
+   buybar button opened the modal ('add' vs 'buy' mode). Hidden on
+   desktop (buybar itself is hidden there).
+   ============================================================================ */
+.apgo-cc-purchase {
+  display: none;
+}
+@media (max-width: 749px) {
+  .apgo-cc-purchase { display: block; }
+}
+
+.apgo-cc-purchase__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(0, 0, 0, .55);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+.apgo-cc-purchase.is-open .apgo-cc-purchase__backdrop {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Sheet — full-height on mobile, slides up from bottom */
+.apgo-cc-purchase__sheet {
+  position: fixed;
+  left: 0; right: 0;
+  top: 0; bottom: 0;
+  z-index: 100;
+  background: var(--cc-bg-alt);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  transform: translateY(100%);
+  transition: transform .3s cubic-bezier(.2, .8, .2, 1);
+  -webkit-overflow-scrolling: touch;
+}
+.apgo-cc-purchase.is-open .apgo-cc-purchase__sheet {
+  transform: translateY(0);
+}
+
+/* Header — sticky at top of sheet */
+.apgo-cc-purchase__head {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: max(12px, env(safe-area-inset-top)) 16px 12px;
+  border-bottom: 1px solid var(--cc-divider);
+  background: var(--cc-bg-alt);
+}
+.apgo-cc-purchase__title {
+  font-family: var(--cc-font-body);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--cc-fg);
+  margin: 0;
+  letter-spacing: 0;
+}
+.apgo-cc-purchase__close {
+  width: 32px; height: 32px;
+  border: 1px solid var(--cc-divider);
+  border-radius: 50%;
+  background: var(--cc-bg-deep);
+  color: var(--cc-fg-mid);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.apgo-cc-purchase__close:hover {
+  color: var(--cc-orange);
+  border-color: var(--cc-orange);
+}
+
+/* Body — scrollable middle */
+.apgo-cc-purchase__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Image + price preview */
+.apgo-cc-purchase__preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.apgo-cc-purchase__img {
+  width: min(260px, 60vw);
+  aspect-ratio: 1 / 1;
+  border-radius: var(--cc-r2);
+  background: var(--cc-photo-bg-dark);
+  object-fit: cover;
+  display: block;
+}
+.apgo-cc-purchase__img--blank {
+  background: var(--cc-bg-deep);
+}
+.apgo-cc-purchase__price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.apgo-cc-purchase__price {
+  font-family: var(--cc-font-body);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--cc-orange);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.01em;
+}
+.apgo-cc-purchase__compare {
+  font-size: 13px;
+  color: var(--cc-fg-faint);
+  text-decoration: line-through;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Options + qty containers — reuse existing .apgo-cc-pdp__option-group
+   / chip / qty styles (already chip + qty styled identically to in-panel) */
+.apgo-cc-purchase__options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.apgo-cc-purchase__option-group {
+  /* The first-of-type divider on .apgo-cc-pdp__option-group:first-of-type
+     would draw a divider above the first row; cancel inside modal. */
+  margin-bottom: 6px !important;
+}
+.apgo-cc-purchase__options .apgo-cc-pdp__option-group:first-of-type {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+.apgo-cc-purchase__qty-row {
+  margin: 0 !important;
+}
+
+/* Footer — sticky single CTA */
+.apgo-cc-purchase__footer {
+  flex-shrink: 0;
+  padding: 10px 16px max(10px, env(safe-area-inset-bottom)) 16px;
+  background: var(--cc-bg-alt);
+  border-top: 1px solid var(--cc-divider);
+}
+.apgo-cc-purchase__cta {
+  width: 100%;
+  /* Inherits .apgo-cc-buybar__btn (compact 11px 16px padding,
+     14px font, 600 weight). Same shape inside + outside. */
+}
 
 /* ============================================================================
    /search page — Car Care styling

@@ -99,3 +99,107 @@
     </div>
   </div>
 </aside>
+
+{%- comment -%}
+  ============================================================================
+  Purchase Modal (mobile-only)
+  ----------------------------------------------------------------------------
+  Triggered by 加入購物車 or 立即購買 in the buybar. Slides up full-screen,
+  shows: image + price (top) → variant chips → qty stepper → single CTA at
+  the bottom. CTA label and behaviour swap based on which buybar button
+  opened it ('add' vs 'buy' mode).
+
+  Chip + qty changes inside the modal sync back into the in-panel form's
+  hidden inputs / radios so apgo-cc-pdp.js's existing variant-switch logic
+  fires (price + variant id update). Submitting the modal CTA submits the
+  in-panel form via /cart/add.js.
+
+  Inspired by apgo_product_page_v3.liquid's .apgo-variant-modal pattern,
+  but using our cc-* tokens + .apgo-cc-pdp__chip / __qty for consistency
+  with the in-panel display.
+  Hidden on desktop via CSS — buybar itself is hidden on desktop already.
+{%- endcomment -%}
+<div class="apgo-cc-purchase" data-apgo-cc-purchase aria-hidden="true">
+  <div class="apgo-cc-purchase__backdrop" data-apgo-cc-purchase-close></div>
+  <div class="apgo-cc-purchase__sheet" role="dialog" aria-modal="true" aria-labelledby="apgo-cc-purchase-title">
+    <header class="apgo-cc-purchase__head">
+      <h3 class="apgo-cc-purchase__title" id="apgo-cc-purchase-title" data-apgo-cc-purchase-mode-label>加入購物車</h3>
+      <button type="button"
+              class="apgo-cc-purchase__close"
+              data-apgo-cc-purchase-close
+              aria-label="關閉">×</button>
+    </header>
+
+    <div class="apgo-cc-purchase__body">
+      {%- comment -%} Product image + price preview {%- endcomment -%}
+      <div class="apgo-cc-purchase__preview">
+        {%- if product.featured_media -%}
+          <img class="apgo-cc-purchase__img"
+               src="{{ product.featured_media | image_url: width: 600 }}"
+               alt="{{ product.featured_media.alt | default: product.title }}"
+               data-apgo-cc-purchase-img>
+        {%- else -%}
+          <div class="apgo-cc-purchase__img apgo-cc-purchase__img--blank" aria-hidden="true"></div>
+        {%- endif -%}
+        <div class="apgo-cc-purchase__price-row">
+          <span class="apgo-cc-purchase__price" data-apgo-cc-purchase-price>
+            {{ product.selected_or_first_available_variant.price | money }}
+          </span>
+          {%- if product.compare_at_price > product.price -%}
+            <span class="apgo-cc-purchase__compare">{{ product.compare_at_price | money }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%}
+        Variant options — same chip markup as the in-panel form. Inputs
+        carry data-apgo-cc-modal-option-input so JS can sync them with
+        the in-panel hidden form's radios.
+      {%- endcomment -%}
+      {%- if product.options_with_values.size > 0 -%}
+        <div class="apgo-cc-purchase__options" data-apgo-cc-purchase-options>
+          {%- for option in product.options_with_values -%}
+            <div class="apgo-cc-pdp__option-group apgo-cc-purchase__option-group"
+                 data-option-position="{{ option.position }}">
+              <div class="apgo-cc-pdp__option-label">
+                <span class="apgo-cc-pdp__option-name">{{ option.name }}</span>
+              </div>
+              <div class="apgo-cc-pdp__option-chips">
+                {%- for value in option.values -%}
+                  <label class="apgo-cc-pdp__chip {% if option.selected_value == value %}is-active{% endif %}">
+                    <input type="radio"
+                           name="apgo-cc-purchase-options[{{ option.name | escape }}]"
+                           value="{{ value | escape }}"
+                           data-apgo-cc-modal-option-input
+                           data-option-name="{{ option.name | escape }}"
+                           {% if option.selected_value == value %}checked{% endif %}>
+                    <span>{{ value }}</span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Qty stepper (same markup as in-panel) {%- endcomment -%}
+      <div class="apgo-cc-pdp__qty-row apgo-cc-purchase__qty-row">
+        <span class="apgo-cc-pdp__qty-label">數量</span>
+        <div class="apgo-cc-pdp__qty">
+          <button type="button" data-apgo-cc-purchase-qty="down" aria-label="減少">−</button>
+          <input type="number" value="1" min="1" data-apgo-cc-purchase-qty-input>
+          <button type="button" data-apgo-cc-purchase-qty="up" aria-label="增加">+</button>
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} Footer with single CTA — label + behaviour set by JS {%- endcomment -%}
+    <footer class="apgo-cc-purchase__footer">
+      <button type="button"
+              class="apgo-cc-buybar__btn apgo-cc-buybar__btn--buy apgo-cc-purchase__cta"
+              data-apgo-cc-purchase-cta>
+        <span data-apgo-cc-purchase-cta-label>加入購物車</span>
+      </button>
+    </footer>
+  </div>
+</div>
