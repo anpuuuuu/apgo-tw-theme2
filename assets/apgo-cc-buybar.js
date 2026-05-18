@@ -368,8 +368,12 @@
           realInput.dispatchEvent(new Event('change', { bubbles: true }));
         }
         // 3. Refresh modal price + image to match new variant
+        // (apgo-cc-pdp.js's updateUI() already updated main img / price
+        // by now since the change event ran on the in-panel radio above)
         var sourcePrice = document.querySelector('[data-apgo-cc-price]');
         if (sourcePrice && purchasePriceEl) purchasePriceEl.textContent = sourcePrice.textContent.trim();
+        var sourceImg = document.querySelector('[data-apgo-cc-main-img]');
+        if (sourceImg && purchaseImg) purchaseImg.src = sourceImg.src;
       });
     });
   }

@@ -80,6 +80,17 @@
       if (!v) return;
       if (variantIdInput) variantIdInput.value = v.id;
       if (priceEl) priceEl.textContent = formatMoney(v.price);
+      // Swap main gallery image to the variant's featured_image when one
+      // is set in Shopify admin. Falls through silently if no per-variant
+      // image (cards stay on the product-level featured_media).
+      var mainImg = $('[data-apgo-cc-main-img]', root);
+      if (mainImg && v.featured_image && v.featured_image.src) {
+        var newSrc = v.featured_image.src.replace(/(\?|&)width=\d+/, '$1width=1200');
+        if (!newSrc.match(/[?&]width=/)) {
+          newSrc += (newSrc.indexOf('?') > -1 ? '&' : '?') + 'width=1200';
+        }
+        if (mainImg.src !== newSrc) mainImg.src = newSrc;
+      }
       if (submitBtn) {
         if (v.available) {
           submitBtn.removeAttribute('disabled');
