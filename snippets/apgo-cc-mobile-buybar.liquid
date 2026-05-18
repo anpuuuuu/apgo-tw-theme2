@@ -162,8 +162,12 @@
         Variant options — same chip markup as the in-panel form. Inputs
         carry data-apgo-cc-modal-option-input so JS can sync them with
         the in-panel hidden form's radios.
+
+        Skip the whole block when product has no real options (Shopify's
+        synthetic "Title = Default Title" placeholder otherwise leaks
+        through into the modal as an ugly single-chip row).
       {%- endcomment -%}
-      {%- if product.options_with_values.size > 0 -%}
+      {%- if product.options_with_values.size > 0 and product.has_only_default_variant == false -%}
         <div class="apgo-cc-purchase__options" data-apgo-cc-purchase-options>
           {%- for option in product.options_with_values -%}
             <div class="apgo-cc-pdp__option-group apgo-cc-purchase__option-group"

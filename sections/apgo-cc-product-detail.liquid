@@ -179,6 +179,13 @@
       <form action="/cart/add" method="post" enctype="multipart/form-data" class="apgo-cc-pdp__form">
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-apgo-cc-variant-id>
 
+        {%- comment -%}
+          Skip the variant picker entirely when the product has no real
+          options (Shopify auto-generates a synthetic "Title = Default Title"
+          option in that case — ugly to expose to shoppers). Loop only when
+          there's a genuine option set.
+        {%- endcomment -%}
+        {%- unless product.has_only_default_variant -%}
         {%- for option in product.options_with_values -%}
           <div class="apgo-cc-pdp__option-group" data-apgo-cc-option-group data-option-position="{{ option.position }}">
             <div class="apgo-cc-pdp__option-label">
@@ -201,6 +208,7 @@
             </div>
           </div>
         {%- endfor -%}
+        {%- endunless -%}
 
         <div class="apgo-cc-pdp__qty-row">
           {%- comment -%}
