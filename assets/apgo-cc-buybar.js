@@ -264,6 +264,14 @@
     var label = purchaseMode === 'buy' ? '立即購買' : '加入購物車';
     if (purchaseCtaLabel) purchaseCtaLabel.textContent = label;
     if (purchaseModeLabel) purchaseModeLabel.textContent = label;
+    // Swap CTA modifier class so 'add' mode renders outlined (matching the
+    // buybar's 加入購物車 button outside) and 'buy' mode renders solid orange
+    // (matching the buybar's 立即購買 button outside) — keeps inside/outside
+    // visually consistent.
+    if (purchaseCta) {
+      purchaseCta.classList.toggle('apgo-cc-buybar__btn--add', purchaseMode === 'add');
+      purchaseCta.classList.toggle('apgo-cc-buybar__btn--buy', purchaseMode === 'buy');
+    }
     // Sync modal price + image from the in-panel display (kept fresh by
     // apgo-cc-pdp.js's variant-switch logic)
     var sourcePrice = document.querySelector('[data-apgo-cc-price]');

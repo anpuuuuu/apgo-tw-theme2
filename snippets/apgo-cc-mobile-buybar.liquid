@@ -121,17 +121,24 @@
 {%- endcomment -%}
 <div class="apgo-cc-purchase" data-apgo-cc-purchase aria-hidden="true">
   <div class="apgo-cc-purchase__backdrop" data-apgo-cc-purchase-close></div>
-  <div class="apgo-cc-purchase__sheet" role="dialog" aria-modal="true" aria-labelledby="apgo-cc-purchase-title">
-    <header class="apgo-cc-purchase__head">
-      <h3 class="apgo-cc-purchase__title" id="apgo-cc-purchase-title" data-apgo-cc-purchase-mode-label>加入購物車</h3>
-      <button type="button"
-              class="apgo-cc-purchase__close"
-              data-apgo-cc-purchase-close
-              aria-label="關閉">×</button>
-    </header>
+  <div class="apgo-cc-purchase__sheet" role="dialog" aria-modal="true" aria-label="商品選擇">
+    {%- comment -%} Floating close button (no header bar — popup style) {%- endcomment -%}
+    <button type="button"
+            class="apgo-cc-purchase__close"
+            data-apgo-cc-purchase-close
+            aria-label="關閉">×</button>
+
+    {%- comment -%}
+      Hidden mode label kept for JS to read/write a screen-reader-only
+      title; user-facing modal has no header title now.
+    {%- endcomment -%}
+    <span class="visually-hidden" data-apgo-cc-purchase-mode-label>加入購物車</span>
 
     <div class="apgo-cc-purchase__body">
-      {%- comment -%} Product image + price preview {%- endcomment -%}
+      {%- comment -%}
+        Image (left) + price (right) — horizontal row. Compare-at price
+        renders below current when on sale.
+      {%- endcomment -%}
       <div class="apgo-cc-purchase__preview">
         {%- if product.featured_media -%}
           <img class="apgo-cc-purchase__img"
@@ -141,7 +148,7 @@
         {%- else -%}
           <div class="apgo-cc-purchase__img apgo-cc-purchase__img--blank" aria-hidden="true"></div>
         {%- endif -%}
-        <div class="apgo-cc-purchase__price-row">
+        <div class="apgo-cc-purchase__price-area">
           <span class="apgo-cc-purchase__price" data-apgo-cc-purchase-price>
             {{ product.selected_or_first_available_variant.price | money }}
           </span>
