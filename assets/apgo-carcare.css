@@ -2532,3 +2532,143 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 }
 
 .apgo-cc-buybar__btn:active { transform: scale(.96); }
+
+/* ============================================================================
+   /search page — Car Care styling
+   ----------------------------------------------------------------------------
+   STRICTLY scoped to body.apgo-cc-search (set in theme.liquid only when
+   template.name == 'search'). Every rule below MUST be prefixed with
+   `body.apgo-cc-search` so it can never leak to /collections or PDPs.
+
+   Cards inherit from the existing body.apgo-cc-skin .product-card rules
+   above — search products look identical to collection products without
+   us re-styling them here.
+   ============================================================================ */
+
+/* ---- Header (heading + search input row, left-aligned) ---- */
+body.apgo-cc-search .search-page__header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 14px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 28px 16px 16px;
+}
+
+/* "搜尋" / "搜尋結果" heading — Inter 22/700/white */
+body.apgo-cc-search .search-page__header h1,
+body.apgo-cc-search .search-page__header h2,
+body.apgo-cc-search .search-page__header h3 {
+  font-family: var(--cc-font-body) !important;
+  font-weight: 700 !important;
+  font-size: 22px !important;
+  color: var(--cc-fg) !important;
+  letter-spacing: 0 !important;
+  margin: 0 !important;
+  line-height: 1.3 !important;
+}
+
+/* ---- Search input field ----
+   Desktop: 2/3 width capped at 720px.
+   Mobile: full row edge-to-edge + shorter vertical padding. */
+body.apgo-cc-search .search-page-input__parent {
+  width: 66.6667% !important;
+  max-width: 720px !important;
+  display: block !important;
+}
+body.apgo-cc-search search-page-input-component {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  width: 100% !important;
+  box-sizing: border-box;
+  background: var(--cc-bg-deep) !important;
+  border: 1px solid var(--cc-divider) !important;
+  border-radius: var(--cc-r2) !important;
+  padding: 6px 14px !important;
+  transition: border-color .15s ease;
+}
+body.apgo-cc-search search-page-input-component:focus-within {
+  border-color: var(--cc-orange) !important;
+}
+body.apgo-cc-search .search-page-input {
+  background: transparent !important;
+  border: none !important;
+  color: var(--cc-fg) !important;
+  font-family: var(--cc-font-body) !important;
+  font-size: 15px !important;
+  padding: 14px 0 !important;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100% !important;
+  outline: none !important;
+}
+body.apgo-cc-search .search-page-input::placeholder {
+  color: var(--cc-fg-dim) !important;
+}
+
+/* Search-icon + reset-button colours */
+body.apgo-cc-search .search__icon,
+body.apgo-cc-search .search__icon svg {
+  color: var(--cc-orange) !important;
+  fill: var(--cc-orange) !important;
+}
+body.apgo-cc-search .search__reset-button {
+  color: var(--cc-fg-dim) !important;
+  font-size: 12px !important;
+  padding: 4px 8px !important;
+  flex-shrink: 0;
+}
+body.apgo-cc-search .search__reset-button:hover { color: var(--cc-orange) !important; }
+body.apgo-cc-search .search__reset-button-icon,
+body.apgo-cc-search .search__reset-button-icon svg {
+  width: 14px; height: 14px;
+}
+
+/* Mobile: tighten header, drop input width cap, shorter input */
+@media (max-width: 749px) {
+  body.apgo-cc-search .search-page__header {
+    padding: 20px 16px 12px;
+  }
+  body.apgo-cc-search .search-page-input__parent {
+    width: 100% !important;
+    max-width: none !important;
+  }
+  body.apgo-cc-search search-page-input-component {
+    padding: 3px 12px !important;
+  }
+  body.apgo-cc-search .search-page-input {
+    font-size: 14px !important;
+    padding: 10px 0 !important;
+  }
+}
+
+/* ---- No-results notice (when search.terms != blank but 0 hits) ---- */
+body.apgo-cc-search .search-results__no-results {
+  max-width: 1240px;
+  margin: 16px auto 0;
+  padding: 12px 16px;
+  color: var(--cc-fg-mid);
+  font-size: 13px;
+  border-left: 2px solid var(--cc-orange);
+  background: var(--cc-bg-alt);
+  border-radius: var(--cc-r2);
+}
+body.apgo-cc-search .search-results__no-results p { margin: 0; }
+
+/* ---- Force-override Horizon's per-section color_scheme tokens ----
+   The search header / results-list custom element get their bg/fg from
+   admin's color_scheme choice (often scheme-1 = LIGHT on most Horizon
+   themes). Override the tokens AND set explicit bg/fg as fallback,
+   strictly within body.apgo-cc-search so collection is untouched. */
+body.apgo-cc-search results-list,
+body.apgo-cc-search results-list .section,
+body.apgo-cc-search results-list .section-background,
+body.apgo-cc-search .search-page__header,
+body.apgo-cc-search .search-page__header .section-background {
+  --color-background: 22, 24, 28;       /* --cc-bg in rgb */
+  --color-foreground: 240, 236, 228;    /* --cc-fg in rgb */
+  background: var(--cc-bg) !important;
+  color: var(--cc-fg) !important;
+}
