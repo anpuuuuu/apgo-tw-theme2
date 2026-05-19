@@ -405,15 +405,17 @@
         document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: cart } }));
         document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart: cart } }));
         document.dispatchEvent(new CustomEvent('cart:updated'));
+        // Only CartUpdateEvent — both event classes share ThemeEvents.cartUpdate
+        // and cart-icon takes itemCount from the event's data. Firing both
+        // would let the second (CartAddEvent without itemCount → 0) blank
+        // the cart bubble.
         try {
           import('@theme/events').then(function (mod) {
             if (mod && mod.CartUpdateEvent) {
               document.dispatchEvent(new mod.CartUpdateEvent(cart, 'apgo-cc-buybar', {
-                itemCount: cart.item_count, source: 'apgo-cc-buybar', sections: {}
+                itemCount: cart.item_count,
+                source: 'apgo-cc-buybar'
               }));
-            }
-            if (mod && mod.CartAddEvent) {
-              document.dispatchEvent(new mod.CartAddEvent({}, 'apgo-cc-buybar', { source: 'apgo-cc-buybar' }));
             }
           }).catch(function () {});
         } catch (_) {}

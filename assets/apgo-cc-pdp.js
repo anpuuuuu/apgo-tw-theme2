@@ -356,15 +356,17 @@
       document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: cart } }));
       document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart: cart } }));
       document.dispatchEvent(new CustomEvent('cart:updated'));
+      // Dispatch ONLY CartUpdateEvent (not also CartAddEvent). cart-icon
+      // listens on ThemeEvents.cartUpdate which both event types share —
+      // dispatching both made the second one (CartAddEvent without
+      // itemCount → 0) overwrite the first and hide the cart badge.
       try {
         import('@theme/events').then(function (mod) {
           if (mod && mod.CartUpdateEvent) {
             document.dispatchEvent(new mod.CartUpdateEvent(cart, 'apgo-cc-pdp', {
-              itemCount: cart.item_count, source: 'apgo-cc-pdp', sections: {}
+              itemCount: cart.item_count,
+              source: 'apgo-cc-pdp'
             }));
-          }
-          if (mod && mod.CartAddEvent) {
-            document.dispatchEvent(new mod.CartAddEvent({}, 'apgo-cc-pdp', { source: 'apgo-cc-pdp' }));
           }
         }).catch(function () {});
       } catch (_) {}

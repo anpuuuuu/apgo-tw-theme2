@@ -2082,12 +2082,13 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 }
 
 /* ---- Toast (top-center) ----
-   Dark pill with orange text + 1px orange border. The check mark in the
-   message (added by JS) lands as inline emoji; CSS keeps the type tight
-   so it reads as a status chip. */
+   Dark pill with orange text + 1px orange border. Positioned BELOW the
+   header + announcement bar (戰術條) using Horizon's live --header-group-height
+   variable (set on body by header.js / critical.js). Fallback offset
+   of 100px covers most header+promo-bar combinations. */
 .apgo-cc-toast {
   position: fixed;
-  top: 24px;
+  top: calc(var(--header-group-height, 100px) + 16px);
   left: 50%;
   transform: translateX(-50%) translateY(-20px);
   z-index: 1200;
