@@ -10,9 +10,11 @@
   discounts). This section only DISPLAYS the marketing message.
 
   Visibility rules per block, evaluated server-side:
-    - start_date in future  → hidden
-    - end_date in past      → hidden
-    - member_only && customer not logged in → hidden
+    - start_date in future                      → hidden
+    - end_date in past                          → hidden
+    - visibility = 'members' && not logged in   → hidden (members-only banner)
+    - visibility = 'guests'  && logged in       → hidden (guest-only banner)
+    - visibility = 'all' (default)              → always shown (timing aside)
 {%- endcomment -%}
 
 
@@ -33,8 +35,13 @@
         assign show = false
       endif
     endif
-    if show and block.settings.member_only and customer == blank
-      assign show = false
+    if show
+      assign vis = block.settings.visibility | default: 'all'
+      if vis == 'members' and customer == blank
+        assign show = false
+      elsif vis == 'guests' and customer != blank
+        assign show = false
+      endif
     endif
     if show
       assign visible_count = visible_count | plus: 1
@@ -55,8 +62,13 @@
         {%- assign end_ts = block.settings.end_date | date: '%s' | times: 1 -%}
         {%- if now_ts > end_ts -%}{%- assign show = false -%}{%- endif -%}
       {%- endif -%}
-      {%- if show and block.settings.member_only and customer == blank -%}
-        {%- assign show = false -%}
+      {%- if show -%}
+        {%- assign vis = block.settings.visibility | default: 'all' -%}
+        {%- if vis == 'members' and customer == blank -%}
+          {%- assign show = false -%}
+        {%- elsif vis == 'guests' and customer != blank -%}
+          {%- assign show = false -%}
+        {%- endif -%}
       {%- endif -%}
       {%- if show -%}
         {%- assign tag = 'div' -%}
@@ -125,7 +137,17 @@
         { "type": "text", "id": "start_date", "label": "開始日期", "info": "格式 YYYY-MM-DD。留空 = 立即生效" },
         { "type": "text", "id": "end_date", "label": "結束日期", "info": "格式 YYYY-MM-DD。留空 = 不過期" },
         { "type": "header", "content": "顯示條件" },
-        { "type": "checkbox", "id": "member_only", "label": "只給已登入會員看", "default": false }
+        {
+          "type": "select",
+          "id": "visibility",
+          "label": "顯示對象",
+          "options": [
+            { "value": "all",     "label": "所有訪客都看" },
+            { "value": "members", "label": "只給已登入會員看" },
+            { "value": "guests",  "label": "只給未登入訪客看（招募會員）" }
+          ],
+          "default": "all"
+        }
       ]
     }
   ],
