@@ -143,7 +143,7 @@
             "title": "全站滿千免運",
             "subtitle": "",
             "cta_label": "立即逛",
-            "cta_url": "https://apgo.tw/pages/26_may_promo",
+            "cta_url": "shopify://pages/26_may_promo",
             "style": "gradient",
             "start_date": "",
             "end_date": "",
