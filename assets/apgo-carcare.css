@@ -3006,7 +3006,9 @@ body.apgo-cc-search .main-collection-grid__title {
 .apgo-cc-promo-section__wrap {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 12px 16px;
+  /* Horizontal padding matches .apgo-cc-mosaic (28px) so the banner
+     aligns with the category mosaic tiles when they appear together. */
+  padding: 12px 28px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -3093,10 +3095,11 @@ a.apgo-cc-promo:hover .apgo-cc-promo__arrow {
   color: var(--cc-orange, #ff6b1a);
 }
 
-/* Mobile: tighter padding */
+/* Mobile: tighter vertical padding but keep 28px horizontal so the
+   banner edges line up with the mosaic tiles below it. */
 @media (max-width: 749px) {
   .apgo-cc-promo-section__wrap {
-    padding: 8px 14px;
+    padding: 8px 28px;
   }
   .apgo-cc-promo {
     padding: 12px 14px;
