@@ -154,27 +154,42 @@
       </div>
 
       {%- comment -%}
-        §1.5 促銷 ICON 列 — orange/green/blue/red/neutral pills.
-        Driven entirely by section settings so admin toggles in editor;
-        each blank slot is skipped so admin can use 1, 2, or 3.
+        §1.5 促銷 ICON 列 — driven by product metafield apgo.promo_pills
+        (JSON). Shape: [{ "text": "滿千免運", "color": "orange" }, ...]
+        Color values: orange | green | blue | red | neutral.
+        Empty entries auto-skip. Block hides if metafield is empty.
       {%- endcomment -%}
-      {%- if section.settings.show_promo_pills -%}
-        {%- assign p1 = section.settings.promo_pill_1_text -%}
-        {%- assign p2 = section.settings.promo_pill_2_text -%}
-        {%- assign p3 = section.settings.promo_pill_3_text -%}
-        {%- if p1 != blank or p2 != blank or p3 != blank -%}
-          <div class="apgo-cc-pdp__promos">
-            {%- if p1 != blank -%}
-              <span class="apgo-cc-pdp__promo apgo-cc-pdp__promo--{{ section.settings.promo_pill_1_color }}">{{ p1 }}</span>
+      {%- assign mf_pills = product.metafields.apgo.promo_pills.value -%}
+      {%- if mf_pills != blank and mf_pills.size > 0 -%}
+        <div class="apgo-cc-pdp__promos">
+          {%- for pill in mf_pills -%}
+            {%- if pill.text != blank -%}
+              <span class="apgo-cc-pdp__promo apgo-cc-pdp__promo--{{ pill.color | default: 'orange' }}">{{ pill.text }}</span>
             {%- endif -%}
-            {%- if p2 != blank -%}
-              <span class="apgo-cc-pdp__promo apgo-cc-pdp__promo--{{ section.settings.promo_pill_2_color }}">{{ p2 }}</span>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%}
+        §1.6 服務保證 — driven by product metafield apgo.guarantees
+        (JSON). Shape: [{ "title": "30 天", "desc": "無條件退費" }, ...]
+        3 cells side-by-side; empty entries auto-skip; block hides if
+        metafield is empty.
+      {%- endcomment -%}
+      {%- assign mf_warranties = product.metafields.apgo.guarantees.value -%}
+      {%- if mf_warranties != blank and mf_warranties.size > 0 -%}
+        <div class="apgo-cc-pdp__warranty">
+          {%- for g in mf_warranties -%}
+            {%- if g.title != blank -%}
+              <div class="apgo-cc-pdp__warranty-cell">
+                <div class="apgo-cc-pdp__warranty-title">{{ g.title }}</div>
+                {%- if g.desc != blank -%}
+                  <div class="apgo-cc-pdp__warranty-desc">{{ g.desc }}</div>
+                {%- endif -%}
+              </div>
             {%- endif -%}
-            {%- if p3 != blank -%}
-              <span class="apgo-cc-pdp__promo apgo-cc-pdp__promo--{{ section.settings.promo_pill_3_color }}">{{ p3 }}</span>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
+          {%- endfor -%}
+        </div>
       {%- endif -%}
 
       {%- comment -%} Variant picker + add-to-cart form {%- endcomment -%}
@@ -550,42 +565,8 @@
     { "type": "header", "content": "影片區（apgo.demo_videos）" },
     { "type": "text", "id": "videos_heading", "label": "影片區標題", "default": "商品實測影片" },
 
-    { "type": "header", "content": "促銷膠囊（§1.5）" },
-    { "type": "paragraph", "content": "在價格區下方顯示 1～3 個彩色膠囊（滿千免運 / 會員 9 折 / ...）。空白欄會自動跳過。" },
-    { "type": "checkbox", "id": "show_promo_pills", "label": "顯示促銷膠囊", "default": false },
-    { "type": "text", "id": "promo_pill_1_text", "label": "膠囊 1 · 文字" },
-    { "type": "select", "id": "promo_pill_1_color", "label": "膠囊 1 · 顏色",
-      "options": [
-        { "value": "orange",  "label": "橘" },
-        { "value": "green",   "label": "綠" },
-        { "value": "blue",    "label": "藍" },
-        { "value": "red",     "label": "紅" },
-        { "value": "neutral", "label": "灰（中性）" }
-      ],
-      "default": "orange"
-    },
-    { "type": "text", "id": "promo_pill_2_text", "label": "膠囊 2 · 文字" },
-    { "type": "select", "id": "promo_pill_2_color", "label": "膠囊 2 · 顏色",
-      "options": [
-        { "value": "orange",  "label": "橘" },
-        { "value": "green",   "label": "綠" },
-        { "value": "blue",    "label": "藍" },
-        { "value": "red",     "label": "紅" },
-        { "value": "neutral", "label": "灰（中性）" }
-      ],
-      "default": "green"
-    },
-    { "type": "text", "id": "promo_pill_3_text", "label": "膠囊 3 · 文字" },
-    { "type": "select", "id": "promo_pill_3_color", "label": "膠囊 3 · 顏色",
-      "options": [
-        { "value": "orange",  "label": "橘" },
-        { "value": "green",   "label": "綠" },
-        { "value": "blue",    "label": "藍" },
-        { "value": "red",     "label": "紅" },
-        { "value": "neutral", "label": "灰（中性）" }
-      ],
-      "default": "blue"
-    },
+    { "type": "header", "content": "促銷膠囊 & 服務保證（metafields）" },
+    { "type": "paragraph", "content": "這兩個區塊改用 product metafield 編輯。請到 Shopify 後台 → 產品 → Metafields 設定：apgo.promo_pills (JSON，格式 [{text,color}]，color 為 orange/green/blue/red/neutral) 及 apgo.guarantees (JSON，格式 [{title,desc}])。設好後該商品才會顯示。" },
 
     { "type": "header", "content": "運送資訊（§1.8）" },
     { "type": "checkbox", "id": "show_shipping", "label": "顯示運送資訊", "default": true },
