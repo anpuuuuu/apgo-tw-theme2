@@ -2996,3 +2996,115 @@ body.apgo-cc-search .main-collection-grid__title {
     padding: 0 16px !important;
   }
 }
+
+/* ============================================================================
+   APGO 行銷 Banner section
+   Each .apgo-cc-promo card lives inside the section's wrap, multiple
+   cards stack with small gap. Four colour variants: solid orange,
+   gradient, dark, dark-with-orange-outline.
+   ============================================================================ */
+.apgo-cc-promo-section__wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.apgo-cc-promo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: var(--cc-r2, 10px);
+  font-family: var(--cc-font-body, 'Inter', sans-serif);
+  text-decoration: none;
+  transition: transform .15s ease, box-shadow .2s ease;
+}
+a.apgo-cc-promo:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
+}
+.apgo-cc-promo__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+.apgo-cc-promo__title {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: .01em;
+}
+.apgo-cc-promo__sub {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: .9;
+  line-height: 1.35;
+}
+.apgo-cc-promo__cta {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, .22);
+  padding: 7px 14px;
+  border-radius: var(--cc-r5, 999px);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.apgo-cc-promo__arrow {
+  display: inline-block;
+  transition: transform .2s ease;
+}
+a.apgo-cc-promo:hover .apgo-cc-promo__arrow {
+  transform: translateX(2px);
+}
+
+/* Style variants */
+.apgo-cc-promo--orange {
+  background: var(--cc-orange, #ff6b1a);
+  color: #fff;
+}
+.apgo-cc-promo--gradient {
+  background: linear-gradient(135deg, #ff6b1a 0%, #d65a16 100%);
+  color: #fff;
+}
+.apgo-cc-promo--dark {
+  background: var(--cc-bg-alt, #1c1f24);
+  color: var(--cc-fg, #f0ece4);
+  border: 1px solid var(--cc-divider, #2a2e35);
+}
+.apgo-cc-promo--dark .apgo-cc-promo__cta {
+  background: var(--cc-orange, #ff6b1a);
+  color: #fff;
+}
+.apgo-cc-promo--outline {
+  background: var(--cc-bg-deep, #0f1115);
+  color: var(--cc-fg, #f0ece4);
+  border: 1px solid var(--cc-orange, #ff6b1a);
+}
+.apgo-cc-promo--outline .apgo-cc-promo__title { color: var(--cc-orange, #ff6b1a); }
+.apgo-cc-promo--outline .apgo-cc-promo__cta {
+  background: var(--cc-orange-soft, rgba(255, 107, 26, .15));
+  color: var(--cc-orange, #ff6b1a);
+}
+
+/* Mobile: tighter padding */
+@media (max-width: 749px) {
+  .apgo-cc-promo-section__wrap {
+    padding: 8px 14px;
+  }
+  .apgo-cc-promo {
+    padding: 12px 14px;
+  }
+  .apgo-cc-promo__title { font-size: 14px; }
+  .apgo-cc-promo__sub { font-size: 11px; }
+  .apgo-cc-promo__cta {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+}

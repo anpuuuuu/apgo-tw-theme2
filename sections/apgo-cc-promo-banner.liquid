@@ -1,0 +1,148 @@
+{%- comment -%}
+  APGO · Car Care 行銷 Banner
+
+  Admin drags this section onto homepage / collection page / PDP via
+  Shopify theme editor. Add one or more "Banner" blocks; each block is
+  an independent card with title / subtitle / CTA / colour style + an
+  optional schedule (start/end date) + member-only toggle.
+
+  Discount logic itself lives in Shopify Admin → Discounts (Automatic
+  discounts). This section only DISPLAYS the marketing message.
+
+  Visibility rules per block, evaluated server-side:
+    - start_date in future  → hidden
+    - end_date in past      → hidden
+    - member_only && customer not logged in → hidden
+{%- endcomment -%}
+
+{%- liquid
+  assign now_ts = 'now' | date: '%s' | times: 1
+  assign visible_count = 0
+  for block in section.blocks
+    assign show = true
+    if block.settings.start_date != blank
+      assign start_ts = block.settings.start_date | date: '%s' | times: 1
+      if now_ts < start_ts
+        assign show = false
+      endif
+    endif
+    if show and block.settings.end_date != blank
+      assign end_ts = block.settings.end_date | date: '%s' | times: 1
+      if now_ts > end_ts
+        assign show = false
+      endif
+    endif
+    if show and block.settings.member_only and customer == blank
+      assign show = false
+    endif
+    if show
+      assign visible_count = visible_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if visible_count > 0 -%}
+<section class="apgo-cc-promo-section" data-section-id="{{ section.id }}">
+  <div class="apgo-cc-promo-section__wrap">
+    {%- for block in section.blocks -%}
+      {%- assign show = true -%}
+      {%- if block.settings.start_date != blank -%}
+        {%- assign start_ts = block.settings.start_date | date: '%s' | times: 1 -%}
+        {%- if now_ts < start_ts -%}{%- assign show = false -%}{%- endif -%}
+      {%- endif -%}
+      {%- if show and block.settings.end_date != blank -%}
+        {%- assign end_ts = block.settings.end_date | date: '%s' | times: 1 -%}
+        {%- if now_ts > end_ts -%}{%- assign show = false -%}{%- endif -%}
+      {%- endif -%}
+      {%- if show and block.settings.member_only and customer == blank -%}
+        {%- assign show = false -%}
+      {%- endif -%}
+      {%- if show -%}
+        {%- assign tag = 'div' -%}
+        {%- if block.settings.cta_url != blank -%}{%- assign tag = 'a' -%}{%- endif -%}
+        <{{ tag }}
+          class="apgo-cc-promo apgo-cc-promo--{{ block.settings.style | default: 'orange' }}"
+          {% if tag == 'a' %}href="{{ block.settings.cta_url }}"{% endif %}
+          {{ block.shopify_attributes }}>
+          <div class="apgo-cc-promo__text">
+            {%- if block.settings.title != blank -%}
+              <span class="apgo-cc-promo__title">{{ block.settings.title }}</span>
+            {%- endif -%}
+            {%- if block.settings.subtitle != blank -%}
+              <span class="apgo-cc-promo__sub">{{ block.settings.subtitle }}</span>
+            {%- endif -%}
+          </div>
+          {%- if block.settings.cta_label != blank -%}
+            <span class="apgo-cc-promo__cta" aria-hidden="true">
+              {{ block.settings.cta_label }} <span class="apgo-cc-promo__arrow">→</span>
+            </span>
+          {%- endif -%}
+        </{{ tag }}>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "APGO · 行銷 Banner (Car Care)",
+  "tag": "section",
+  "class": "apgo-cc-promo-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "拖此 section 到要顯示的頁面（首頁 / 商品列表 / 商品頁），新增「優惠 Banner」blocks。每個 block 可獨立設「橘色 / 漸層 / 深色」配色、排程（開始/結束日）、是否只給登入會員看。"
+    },
+    {
+      "type": "paragraph",
+      "content": "⚠️ 此 section 只負責顯示。實際折扣請至 Shopify Admin → Discounts → Automatic discounts 設定（例：滿 NT$999 免運、會員自動 8 折）。"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "優惠 Banner",
+      "settings": [
+        { "type": "text", "id": "title", "label": "主標", "default": "全站滿千免運" },
+        { "type": "text", "id": "subtitle", "label": "副標（選填）", "default": "會員再享 8 折 · 新春檔期" },
+        { "type": "text", "id": "cta_label", "label": "按鈕文字（選填）", "default": "立即逛" },
+        { "type": "url", "id": "cta_url", "label": "按鈕連結（選填）" },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "配色",
+          "options": [
+            { "value": "orange",   "label": "橘色實心（主推）" },
+            { "value": "gradient", "label": "橘色漸層" },
+            { "value": "dark",     "label": "深色低調" },
+            { "value": "outline",  "label": "深底橘框" }
+          ],
+          "default": "orange"
+        },
+        { "type": "header", "content": "排程（選填）" },
+        { "type": "text", "id": "start_date", "label": "開始日期", "info": "格式 YYYY-MM-DD。留空 = 立即生效" },
+        { "type": "text", "id": "end_date", "label": "結束日期", "info": "格式 YYYY-MM-DD。留空 = 不過期" },
+        { "type": "header", "content": "顯示條件" },
+        { "type": "checkbox", "id": "member_only", "label": "只給已登入會員看", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO · 行銷 Banner",
+      "blocks": [
+        {
+          "type": "banner",
+          "settings": {
+            "title": "全站滿千免運",
+            "subtitle": "會員再享 8 折 · 新春檔期",
+            "cta_label": "立即逛",
+            "style": "gradient"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
