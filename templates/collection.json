@@ -134,6 +134,30 @@
         "padding-block-end": 14
       }
     },
+    "apgo_cc_promo_banner_cedTtQ": {
+      "type": "apgo-cc-promo-banner",
+      "blocks": {
+        "banner_qPpB8a": {
+          "type": "banner",
+          "disabled": true,
+          "settings": {
+            "title": "全站滿千免運",
+            "subtitle": "會員再享 8 折 · 新春檔期",
+            "cta_label": "立即逛",
+            "cta_url": "",
+            "style": "gradient",
+            "start_date": "",
+            "end_date": "",
+            "visibility": "all"
+          }
+        }
+      },
+      "block_order": [
+        "banner_qPpB8a"
+      ],
+      "name": "APGO · 行銷 Banner",
+      "settings": {}
+    },
     "apgo_cc_mosaic": {
       "type": "apgo-cc-category-mosaic",
       "blocks": {
@@ -515,6 +539,7 @@
   "order": [
     "section",
     "collection_links_pNT4Ld",
+    "apgo_cc_promo_banner_cedTtQ",
     "apgo_cc_mosaic",
     "apgo_cc_sort",
     "main"
