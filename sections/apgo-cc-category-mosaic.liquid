@@ -110,9 +110,11 @@
         {%- assign label = block.settings.label_override | default: coll.title -%}
         {%- assign tile_count = block.settings.count_override | default: coll.products_count -%}
         {%- assign tile_url = block.settings.url_override | default: coll.url | default: '#' -%}
+        {%- assign is_featured = false -%}
+        {%- if forloop.first -%}{%- assign is_featured = true -%}{%- endif -%}
         <a
           href="{{ tile_url }}"
-          class="apgo-cc-mosaic__tile apgo-cc-mosaic__tile--small"
+          class="apgo-cc-mosaic__tile{% if is_featured %} apgo-cc-mosaic__tile--featured{% else %} apgo-cc-mosaic__tile--small{% endif %}"
           {{ block.shopify_attributes }}
           {%- if block.settings.image != blank -%}
             style="--tile-image: url('{{ block.settings.image | image_url: width: 800 }}');"
@@ -127,7 +129,9 @@
               <span class="apgo-cc-mosaic__tile-arrow" aria-hidden="true">›</span>
             </span>
           </div>
-          <span class="apgo-cc-mosaic__tile-accent" aria-hidden="true"></span>
+          {%- unless is_featured -%}
+            <span class="apgo-cc-mosaic__tile-accent" aria-hidden="true"></span>
+          {%- endunless -%}
         </a>
       {%- endfor -%}
     </div>
