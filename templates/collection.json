@@ -139,6 +139,7 @@
       "blocks": {
         "banner_qPpB8a": {
           "type": "banner",
+          "disabled": true,
           "settings": {
             "title": "全站滿千免運",
             "subtitle": "",
