@@ -558,9 +558,11 @@ body.apgo-cc-skin .empty-state {
    Other blocks = bg-alt + 2px orange bottom-bar accent.
    ============================================================================ */
 
-/* The mosaic is a top-level section so it has its own breathing room. */
+/* The mosaic is a top-level section so it has its own breathing room.
+   Top padding shaved to 12px so when the promo banner sits above the
+   mosaic the gap doesn't feel oversized; sides + bottom keep 28px. */
 .apgo-cc-mosaic {
-  padding: var(--cc-mosaic-pad, 28px);
+  padding: 12px var(--cc-mosaic-pad, 28px) var(--cc-mosaic-pad, 28px);
   /* When --cc-* tokens aren't on the html node (i.e. when the section is in
      theme editor preview without the body skin class), fall back gracefully. */
   --cc-bg: #16181c;
