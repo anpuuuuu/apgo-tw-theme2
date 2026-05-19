@@ -402,23 +402,23 @@
       .then(function () { return fetchCart(); })
       .then(function (cart) {
         renderCart(cart);
-        document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: cart } }));
-        document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart: cart } }));
-        document.dispatchEvent(new CustomEvent('cart:updated'));
-        // Only CartUpdateEvent — both event classes share ThemeEvents.cartUpdate
-        // and cart-icon takes itemCount from the event's data. Firing both
-        // would let the second (CartAddEvent without itemCount → 0) blank
-        // the cart bubble.
-        try {
-          import('@theme/events').then(function (mod) {
-            if (mod && mod.CartUpdateEvent) {
-              document.dispatchEvent(new mod.CartUpdateEvent(cart, 'apgo-cc-buybar', {
-                itemCount: cart.item_count,
-                source: 'apgo-cc-buybar'
-              }));
+        // Horizon ThemeEvents.cartUpdate ('cart:update') with the proper
+        // detail.data.itemCount shape so cart-icon.js can update the
+        // header badge. Dynamic import('@theme/events') was unreliable
+        // in this theme so build the event directly.
+        document.dispatchEvent(new CustomEvent('cart:update', {
+          bubbles: true,
+          detail: {
+            resource: cart,
+            sourceId: 'apgo-cc-buybar',
+            data: {
+              itemCount: cart.item_count,
+              source: 'apgo-cc-buybar'
             }
-          }).catch(function () {});
-        } catch (_) {}
+          }
+        }));
+        document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart: cart } }));
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: cart } }));
 
         triggerBtn.disabled = false;
         triggerBtn.textContent = orig;
