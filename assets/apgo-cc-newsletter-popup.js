@@ -2,7 +2,7 @@
   'use strict';
 
   var STORAGE_DEFAULT = 'apgo-newsletter-state';
-  var DAY = 24 * 60 * 60;
+  var SESSION_SUFFIX = ':shown';
   var SUCCESS_CLOSE_MS = 3000;
 
   function nowSeconds() {
@@ -24,19 +24,23 @@
     } catch (e) {}
   }
 
-  function canShow(state) {
-    if (!state || typeof state !== 'object') return true;
+  function wasShownThisSession(key) {
+    try {
+      return sessionStorage.getItem(key) === 'true';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function markShownThisSession(key) {
+    try {
+      sessionStorage.setItem(key, 'true');
+    } catch (e) {}
+  }
+
+  function canShow(state, sessionKey) {
     if (state.status === 'subscribed') return false;
-    if (state.status !== 'dismissed') return true;
-
-    var count = Number(state.count) || 0;
-    var ts = Number(state.ts) || 0;
-    var age = nowSeconds() - ts;
-
-    if (count >= 3) return false;
-    if (count === 1) return age >= 7 * DAY;
-    if (count === 2) return age >= 30 * DAY;
-    return true;
+    return !wasShownThisSession(sessionKey);
   }
 
   function looksLikeEmail(value) {
@@ -52,7 +56,8 @@
     if (!root) return;
 
     var storageKey = root.getAttribute('data-storage-key') || STORAGE_DEFAULT;
-    if (!canShow(readState(storageKey))) return;
+    var sessionKey = storageKey + SESSION_SUFFIX;
+    if (!canShow(readState(storageKey) || {}, sessionKey)) return;
 
     var sheet = root.querySelector('.apgo-cc-newsletter__sheet');
     var formView = root.querySelector('[data-apgo-newsletter-form-view]');
@@ -86,6 +91,7 @@
 
     function open() {
       lastFocus = document.activeElement;
+      markShownThisSession(sessionKey);
       root.classList.add('is-open');
       root.setAttribute('aria-hidden', 'false');
       lockScroll(true);
@@ -97,13 +103,7 @@
 
     function close(rememberDismiss) {
       if (rememberDismiss) {
-        var prev = readState(storageKey);
-        var prevCount = prev && prev.status === 'dismissed' ? Number(prev.count) || 0 : 0;
-        writeState(storageKey, {
-          status: 'dismissed',
-          count: prevCount + 1,
-          ts: nowSeconds()
-        });
+        markShownThisSession(sessionKey);
       }
 
       window.clearTimeout(closeTimer);
