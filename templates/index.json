@@ -13,6 +13,7 @@
       "type": "apgo-cc-newsletter-popup",
       "settings": {
         "enabled": true,
+        "eyebrow": "JOIN OUR COMMUNITY",
         "title": "加入 APGO 電子報",
         "subtitle": "不錯過新品上市 & 限時優惠",
         "cta_label": "立即訂閱",

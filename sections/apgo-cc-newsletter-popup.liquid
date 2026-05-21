@@ -24,17 +24,36 @@
       aria-labelledby="apgo-newsletter-title-{{ section.id }}"
       tabindex="-1"
     >
+      {%- comment -%}
+        Side-by-side layout: media (left, fills full sheet height) +
+        right panel (content / success view stacked via grid placement,
+        JS toggles which one is visible via hidden attr).
+      {%- endcomment -%}
+
+      {%- if section.settings.image != blank -%}
+        <div class="apgo-cc-newsletter__media">
+          {{ section.settings.image
+             | image_url: width: 800
+             | image_tag: loading: 'lazy', alt: shop.name, widths: '320, 480, 640, 800' }}
+        </div>
+      {%- else -%}
+        <div class="apgo-cc-newsletter__media">
+          <img
+            src="{{ 'subscribe.jpeg' | asset_url }}"
+            alt="APGO newsletter"
+            loading="lazy"
+            onerror="this.parentNode.classList.add('apgo-cc-newsletter__media--fallback'); this.remove();"
+          >
+        </div>
+      {%- endif -%}
+
       <button class="apgo-cc-newsletter__close" type="button" data-apgo-newsletter-dismiss aria-label="關閉">
         <span aria-hidden="true">&times;</span>
       </button>
 
       <div class="apgo-cc-newsletter__content" data-apgo-newsletter-form-view>
-        {%- if section.settings.image != blank -%}
-          <div class="apgo-cc-newsletter__media">
-            {{ section.settings.image | image_url: width: 240 | image_tag: loading: 'lazy', alt: shop.name }}
-          </div>
-        {%- else -%}
-          <div class="apgo-cc-newsletter__mark" aria-hidden="true">APGO</div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="apgo-cc-newsletter__eyebrow">{{ section.settings.eyebrow | escape }}</p>
         {%- endif -%}
 
         <h2 class="apgo-cc-newsletter__title" id="apgo-newsletter-title-{{ section.id }}">
@@ -106,6 +125,12 @@
       "id": "enabled",
       "label": "啟用電子報彈窗",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "小標",
+      "default": "JOIN OUR COMMUNITY"
     },
     {
       "type": "text",
