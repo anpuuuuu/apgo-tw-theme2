@@ -64,6 +64,7 @@
 
         {%- form 'customer', id: newsletter_form_id, class: 'apgo-cc-newsletter__form' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
+          <input type="hidden" name="return_to" value="/?customer_posted=true">
 
           <label class="visually-hidden" for="apgo-newsletter-email-{{ section.id }}">Email</label>
           <input
