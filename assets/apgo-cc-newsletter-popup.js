@@ -4,7 +4,7 @@
   var STORAGE_DEFAULT = 'apgo-newsletter-state';
   var SESSION_SUFFIX = ':shown';
   var PENDING_EMAIL_SUFFIX = ':pending-email';
-  var SUCCESS_CLOSE_MS = 3000;
+  var SUCCESS_CLOSE_MS = 8000;
 
   function nowSeconds() {
     return Math.floor(Date.now() / 1000);
