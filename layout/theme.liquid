@@ -580,6 +580,51 @@
   }
 })();
 </script>
+
+{%- comment -%}
+  Bot Protection challenge page: auto-submit captcha_form when hCaptcha token appears,
+  and pin the fallback 提交 button so it's reachable if auto-submit misses.
+  Without this, the full theme layout buries the challenge button and users get stuck.
+{%- endcomment -%}
+{%- if request.path contains '/challenge' -%}
+<style>
+  .shopify-challenge__button {
+    position: fixed !important;
+    left: 50% !important;
+    bottom: 24px !important;
+    transform: translateX(-50%) !important;
+    z-index: 99999 !important;
+    padding: 14px 32px !important;
+    background: #ff6b1a !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 12px 32px rgba(0,0,0,.42) !important;
+    cursor: pointer !important;
+  }
+</style>
+<script>
+(function () {
+  if (location.pathname.indexOf('/challenge') !== 0) return;
+  var submitted = false;
+  function tryAutoSubmit() {
+    if (submitted) return;
+    var form = document.querySelector('#captcha_form');
+    if (!form) return;
+    var token = form.querySelector('[name="h-captcha-response"], [name="g-recaptcha-response"]');
+    if (token && token.value && token.value.length > 0) {
+      submitted = true;
+      form.submit();
+    }
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    setInterval(tryAutoSubmit, 600);
+  });
+})();
+</script>
+{%- endif -%}
   </body>
   
 </html>
