@@ -353,10 +353,10 @@
   }
 
   .apgo-cc-newsletter__media img {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1 / 1.12;
     height: auto;
     min-height: 0;
-    max-height: min(360px, 46vh);
+    max-height: min(390px, 49vh);
     object-fit: cover;
     object-position: center;
     filter: none;
@@ -413,12 +413,13 @@
     height: 42px;
     padding-inline: 12px;
     font-size: 13px;
+    border-color: rgba(255, 255, 255, .1);
   }
 
   .apgo-cc-newsletter__field,
   .apgo-cc-newsletter__field:hover,
   .apgo-cc-newsletter__field:focus {
-    background: rgba(255, 255, 255, .12);
+    background: rgba(255, 255, 255, .09);
   }
 
   .apgo-cc-newsletter__consent {
@@ -434,13 +435,15 @@
   }
 
   .apgo-cc-newsletter__cta {
+    align-self: center;
+    width: min(260px, 82%);
     min-height: 42px;
     font-size: 13px;
   }
 
   .apgo-cc-newsletter__dismiss {
-    margin-top: 9px;
-    padding-bottom: 5px;
+    margin-top: 6px;
+    padding-bottom: 3px;
     font-size: 12px;
   }
 }
