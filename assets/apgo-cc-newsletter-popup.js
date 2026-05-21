@@ -89,6 +89,12 @@
       setError('訂閱失敗，請稍後再試');
     }
 
+    function goToChallenge(url) {
+      clearShownThisSession(sessionKey);
+      setError('請先完成安全驗證');
+      if (url) window.location.href = url;
+    }
+
     function setLoading(isLoading) {
       if (!submit) return;
       submit.disabled = isLoading;
@@ -193,6 +199,11 @@
             var response = result.response;
             var url = response.url || '';
             var text = result.text || '';
+
+            if (url.indexOf('/challenge') !== -1) {
+              goToChallenge(url);
+              return;
+            }
 
             if (url.indexOf('customer_posted=true') !== -1 || text.indexOf('customer_posted=true') !== -1) {
               showSuccess(address, false);
