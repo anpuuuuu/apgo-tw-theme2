@@ -3,6 +3,7 @@
 
   var STORAGE_DEFAULT = 'apgo-newsletter-state';
   var SESSION_SUFFIX = ':shown';
+  var PENDING_EMAIL_SUFFIX = ':pending-email';
   var SUCCESS_CLOSE_MS = 3000;
 
   function nowSeconds() {
@@ -38,12 +39,6 @@
     } catch (e) {}
   }
 
-  function clearShownThisSession(key) {
-    try {
-      sessionStorage.removeItem(key);
-    } catch (e) {}
-  }
-
   function canShow(state, sessionKey) {
     if (state.status === 'subscribed') return false;
     return !wasShownThisSession(sessionKey);
@@ -53,8 +48,8 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  function bodyLooksAlreadySubscribed(text) {
-    return /email[^<]*(already|taken|exists|associated)|already subscribed|has already been taken|電子郵件[^<]*(已被使用|已存在)|email[^<]*(已被使用|已存在)|已經訂閱|已訂閱過/i.test(text || '');
+  function hasCustomerPosted() {
+    return window.location.search.indexOf('customer_posted=true') !== -1;
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -63,7 +58,10 @@
 
     var storageKey = root.getAttribute('data-storage-key') || STORAGE_DEFAULT;
     var sessionKey = storageKey + SESSION_SUFFIX;
-    if (!canShow(readState(storageKey) || {}, sessionKey)) return;
+    var pendingEmailKey = storageKey + PENDING_EMAIL_SUFFIX;
+    var postedSuccessfully = hasCustomerPosted();
+
+    if (!postedSuccessfully && !canShow(readState(storageKey) || {}, sessionKey)) return;
 
     var sheet = root.querySelector('.apgo-cc-newsletter__sheet');
     var formView = root.querySelector('[data-apgo-newsletter-form-view]');
@@ -84,21 +82,10 @@
       error.hidden = !message;
     }
 
-    function showFailure() {
-      clearShownThisSession(sessionKey);
-      setError('訂閱失敗，請稍後再試');
-    }
-
-    function goToChallenge(url) {
-      clearShownThisSession(sessionKey);
-      setError('請先完成安全驗證');
-      if (url) window.location.href = url;
-    }
-
     function setLoading(isLoading) {
       if (!submit) return;
       submit.disabled = isLoading;
-      submit.textContent = isLoading ? '處理中…' : submit.getAttribute('data-original-label');
+      submit.textContent = isLoading ? '處理中...' : submit.getAttribute('data-original-label');
     }
 
     function lockScroll(lock) {
@@ -119,9 +106,7 @@
     }
 
     function close(rememberDismiss) {
-      if (rememberDismiss) {
-        markShownThisSession(sessionKey);
-      }
+      if (rememberDismiss) markShownThisSession(sessionKey);
 
       window.clearTimeout(closeTimer);
       root.classList.remove('is-open');
@@ -136,15 +121,33 @@
         count: 1,
         ts: nowSeconds()
       });
+      try {
+        sessionStorage.removeItem(pendingEmailKey);
+      } catch (e) {}
+
       setError('');
       if (formView) formView.hidden = true;
       if (successView) successView.hidden = false;
       if (successTitle && alreadySubscribed) successTitle.textContent = '您已訂閱 ✓';
-      if (successCopy) successCopy.textContent = alreadySubscribed ? '我們會持續把新品與優惠通知寄給您。' : '最新優惠會寄到 ' + address;
+      if (successCopy) {
+        successCopy.textContent = alreadySubscribed
+          ? '我們會持續把新品與優惠通知寄給您。'
+          : (address ? '最新優惠會寄到 ' + address : '最新優惠會寄到您的信箱。');
+      }
       closeTimer = window.setTimeout(function () { close(false); }, SUCCESS_CLOSE_MS);
     }
 
     if (submit) submit.setAttribute('data-original-label', submit.textContent);
+
+    if (postedSuccessfully) {
+      var pendingAddress = '';
+      try {
+        pendingAddress = sessionStorage.getItem(pendingEmailKey) || '';
+      } catch (e) {}
+      open();
+      showSuccess(pendingAddress, false);
+      return;
+    }
 
     root.querySelectorAll('[data-apgo-newsletter-dismiss]').forEach(function (button) {
       button.addEventListener('click', function () { close(true); });
@@ -160,74 +163,33 @@
 
     if (form) {
       form.addEventListener('submit', function (event) {
-        event.preventDefault();
         setError('');
 
         var address = email ? email.value.trim() : '';
         if (!address) {
+          event.preventDefault();
           if (email && typeof email.reportValidity === 'function') email.reportValidity();
           return;
         }
+
         if (!looksLikeEmail(address)) {
+          event.preventDefault();
           setError('請輸入有效 email');
           if (email) email.focus();
           return;
         }
+
         if (!consent || !consent.checked) {
+          event.preventDefault();
           setError('請同意條款後再訂閱');
           if (consent) consent.focus();
           return;
         }
 
+        try {
+          sessionStorage.setItem(pendingEmailKey, address);
+        } catch (e) {}
         setLoading(true);
-        var formData = new FormData(form);
-        var action = '/contact?form_type=customer';
-
-        fetch(action, {
-          method: 'POST',
-          body: formData,
-          redirect: 'follow',
-          credentials: 'same-origin',
-          headers: { Accept: 'text/html' }
-        })
-          .then(function (response) {
-            return response.text().then(function (text) {
-              return { response: response, text: text };
-            });
-          })
-          .then(function (result) {
-            var response = result.response;
-            var url = response.url || '';
-            var text = result.text || '';
-
-            if (url.indexOf('/challenge') !== -1) {
-              goToChallenge(url);
-              return;
-            }
-
-            if (url.indexOf('customer_posted=true') !== -1 || text.indexOf('customer_posted=true') !== -1) {
-              showSuccess(address, false);
-              return;
-            }
-
-            if (response.status === 422 || bodyLooksAlreadySubscribed(text)) {
-              showSuccess(address, true);
-              return;
-            }
-
-            if (response.redirected && response.ok && response.status < 400) {
-              showSuccess(address, false);
-              return;
-            }
-
-            showFailure();
-          })
-          .catch(function () {
-            showFailure();
-          })
-          .finally(function () {
-            setLoading(false);
-          });
       });
     }
 
