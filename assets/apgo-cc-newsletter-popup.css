@@ -184,6 +184,15 @@
   color: var(--apgo-newsletter-dim);
 }
 
+.apgo-cc-newsletter__field:hover {
+  border-color: rgba(255, 107, 26, .34);
+  background: rgba(255, 255, 255, .08);
+}
+
+.apgo-cc-newsletter__field:hover::placeholder {
+  color: rgba(248, 245, 238, .58);
+}
+
 .apgo-cc-newsletter__field:focus {
   border-color: var(--apgo-newsletter-orange);
   background: rgba(255, 255, 255, .09);
@@ -216,6 +225,14 @@
   color: var(--apgo-newsletter-orange);
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+.apgo-cc-newsletter__consent a:hover,
+.apgo-cc-newsletter__consent a:focus-visible,
+.apgo-cc-newsletter__consent a:active {
+  color: #0b0d10;
+  background: var(--apgo-newsletter-orange);
+  text-decoration-color: transparent;
 }
 
 .apgo-cc-newsletter__error {
@@ -336,10 +353,11 @@
   }
 
   .apgo-cc-newsletter__media img {
+    aspect-ratio: 1 / 1;
     height: auto;
     min-height: 0;
-    max-height: 42vh;
-    object-fit: contain;
+    max-height: min(360px, 46vh);
+    object-fit: cover;
     object-position: center;
     filter: none;
     transform: none;
@@ -352,7 +370,7 @@
     grid-row: 2;
     z-index: 1;
     min-height: 0;
-    padding: 26px 22px 28px;
+    padding: 18px 20px 22px;
     background:
       radial-gradient(circle at 50% 0%, rgba(255, 107, 26, .12), transparent 34%),
       #111419;
@@ -368,23 +386,51 @@
 
   .apgo-cc-newsletter__title,
   .apgo-cc-newsletter__success-title {
-    font-size: 30px;
+    font-size: 28px;
+    line-height: 1.05;
   }
 
   .apgo-cc-newsletter__sub,
   .apgo-cc-newsletter__success-copy {
+    margin-top: 8px;
     color: var(--apgo-newsletter-muted);
+    font-size: 13px;
+    line-height: 1.35;
   }
 
   .apgo-cc-newsletter__bonus {
-    margin-bottom: 22px;
+    margin-top: 5px;
+    margin-bottom: 16px;
+    font-size: 12px;
+  }
+
+  .apgo-cc-newsletter__form {
+    gap: 9px;
   }
 
   .apgo-cc-newsletter__field {
+    height: 48px;
+    padding-inline: 14px;
+    font-size: 14px;
+  }
+
+  .apgo-cc-newsletter__field,
+  .apgo-cc-newsletter__field:hover,
+  .apgo-cc-newsletter__field:focus {
     background: rgba(255, 255, 255, .12);
   }
 
   .apgo-cc-newsletter__consent {
     color: var(--apgo-newsletter-muted);
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .apgo-cc-newsletter__cta {
+    min-height: 48px;
+  }
+
+  .apgo-cc-newsletter__dismiss {
+    margin-top: 12px;
   }
 }
