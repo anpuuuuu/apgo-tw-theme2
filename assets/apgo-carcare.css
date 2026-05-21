@@ -1047,11 +1047,14 @@ body.apgo-cc-skin .apgo-cc-pdp {
    Cells side-by-side in a single rounded panel; 1px dividers between
    cells. Driven by product metafield apgo.guarantees (JSON).
 
-   Uses flexbox (not a 3-column grid) so the row adapts to whatever
-   count admin provides: 3 → 33/33/33, 2 → 50/50, 1 → 100% — no empty
-   slot leftover when fewer than 3 entries are filled. */
+   Layout adapts to cell count:
+     3 entries → 33% / 33% / 33% across full row
+     2 entries → 50% / 50% across full row
+     1 entry   → panel shrinks to fit-content, renders as a chip-style
+                 badge instead of a stretched full-width banner */
 .apgo-cc-pdp__warranty {
   display: flex;
+  justify-content: center;
   border: 1px solid var(--cc-divider);
   border-radius: var(--cc-r2);
   background: var(--cc-bg-deep);
@@ -1063,6 +1066,17 @@ body.apgo-cc-skin .apgo-cc-pdp {
   padding: 10px 8px;
   text-align: center;
   border-right: 1px solid var(--cc-divider);
+}
+/* Single-cell case: panel + cell both fit-content so the guarantee
+   reads as a left-aligned chip badge rather than a stretched bar. */
+.apgo-cc-pdp__warranty:has(> .apgo-cc-pdp__warranty-cell:only-child) {
+  width: fit-content;
+  max-width: 100%;
+}
+.apgo-cc-pdp__warranty-cell:only-child {
+  flex: 0 1 auto;
+  min-width: 120px;
+  padding: 10px 24px;
 }
 .apgo-cc-pdp__warranty-cell:last-child { border-right: none; }
 .apgo-cc-pdp__warranty-title {
