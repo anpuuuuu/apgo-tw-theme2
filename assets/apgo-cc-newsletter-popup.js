@@ -38,6 +38,12 @@
     } catch (e) {}
   }
 
+  function clearShownThisSession(key) {
+    try {
+      sessionStorage.removeItem(key);
+    } catch (e) {}
+  }
+
   function canShow(state, sessionKey) {
     if (state.status === 'subscribed') return false;
     return !wasShownThisSession(sessionKey);
@@ -76,6 +82,11 @@
       if (!error) return;
       error.textContent = message || '';
       error.hidden = !message;
+    }
+
+    function showFailure() {
+      clearShownThisSession(sessionKey);
+      setError('訂閱失敗，請稍後再試');
     }
 
     function setLoading(isLoading) {
@@ -164,11 +175,12 @@
 
         setLoading(true);
         var formData = new FormData(form);
-        var action = form.getAttribute('action') || '/contact?form_type=customer';
+        var action = '/contact?form_type=customer';
 
         fetch(action, {
           method: 'POST',
           body: formData,
+          redirect: 'follow',
           credentials: 'same-origin',
           headers: { Accept: 'text/html' }
         })
@@ -182,7 +194,7 @@
             var url = response.url || '';
             var text = result.text || '';
 
-            if (response.redirected || url.indexOf('customer_posted=true') !== -1 || text.indexOf('customer_posted=true') !== -1) {
+            if (url.indexOf('customer_posted=true') !== -1 || text.indexOf('customer_posted=true') !== -1) {
               showSuccess(address, false);
               return;
             }
@@ -192,15 +204,15 @@
               return;
             }
 
-            if (response.ok) {
+            if (response.redirected && response.ok && response.status < 400) {
               showSuccess(address, false);
               return;
             }
 
-            setError('訂閱失敗，請稍後再試');
+            showFailure();
           })
           .catch(function () {
-            setError('訂閱失敗，請稍後再試');
+            showFailure();
           })
           .finally(function () {
             setLoading(false);
