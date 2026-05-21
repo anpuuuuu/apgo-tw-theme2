@@ -1044,18 +1044,22 @@ body.apgo-cc-skin .apgo-cc-pdp {
 .apgo-cc-pdp__promo--neutral { background: var(--cc-surface);                           color: var(--cc-fg-mid); }
 
 /* ---- §1.6 Service guarantee row ----
-   Three cells side-by-side in a single rounded panel; 1px dividers
-   between cells. Title bold/white, desc dim/small. Driven by product
-   metafield apgo.guarantees (JSON). */
+   Cells side-by-side in a single rounded panel; 1px dividers between
+   cells. Driven by product metafield apgo.guarantees (JSON).
+
+   Uses flexbox (not a 3-column grid) so the row adapts to whatever
+   count admin provides: 3 → 33/33/33, 2 → 50/50, 1 → 100% — no empty
+   slot leftover when fewer than 3 entries are filled. */
 .apgo-cc-pdp__warranty {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
   border: 1px solid var(--cc-divider);
   border-radius: var(--cc-r2);
   background: var(--cc-bg-deep);
   margin: 10px 0;
 }
 .apgo-cc-pdp__warranty-cell {
+  flex: 1 1 0;
+  min-width: 0;
   padding: 10px 8px;
   text-align: center;
   border-right: 1px solid var(--cc-divider);
