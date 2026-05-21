@@ -1,0 +1,158 @@
+{%- liquid
+  assign newsletter_popup_enabled = false
+  if section.settings.enabled and template.name == 'index' and customer == blank
+    assign newsletter_popup_enabled = true
+  endif
+-%}
+
+{%- if newsletter_popup_enabled -%}
+  {{ 'apgo-cc-newsletter-popup.css' | asset_url | stylesheet_tag }}
+  {%- assign newsletter_form_id = 'apgo-newsletter-form-' | append: section.id -%}
+
+  <div
+    class="apgo-cc-newsletter"
+    data-apgo-newsletter
+    data-storage-key="apgo-newsletter-state"
+    aria-hidden="true"
+  >
+    <button class="apgo-cc-newsletter__backdrop" type="button" data-apgo-newsletter-dismiss aria-label="關閉電子報訂閱彈窗"></button>
+
+    <div
+      class="apgo-cc-newsletter__sheet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="apgo-newsletter-title-{{ section.id }}"
+      tabindex="-1"
+    >
+      <button class="apgo-cc-newsletter__close" type="button" data-apgo-newsletter-dismiss aria-label="關閉">
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+      <div class="apgo-cc-newsletter__content" data-apgo-newsletter-form-view>
+        {%- if section.settings.image != blank -%}
+          <div class="apgo-cc-newsletter__media">
+            {{ section.settings.image | image_url: width: 240 | image_tag: loading: 'lazy', alt: shop.name }}
+          </div>
+        {%- else -%}
+          <div class="apgo-cc-newsletter__mark" aria-hidden="true">APGO</div>
+        {%- endif -%}
+
+        <h2 class="apgo-cc-newsletter__title" id="apgo-newsletter-title-{{ section.id }}">
+          {{ section.settings.title | escape }}
+        </h2>
+        <p class="apgo-cc-newsletter__sub">
+          {{ section.settings.subtitle | escape }}
+        </p>
+
+        {%- form 'customer', id: newsletter_form_id, class: 'apgo-cc-newsletter__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+
+          <label class="visually-hidden" for="apgo-newsletter-email-{{ section.id }}">Email</label>
+          <input
+            class="apgo-cc-newsletter__field"
+            id="apgo-newsletter-email-{{ section.id }}"
+            type="email"
+            name="contact[email]"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            placeholder="you@example.com"
+            required
+            data-apgo-newsletter-email
+          >
+
+          <label class="apgo-cc-newsletter__consent">
+            <input type="checkbox" name="contact[accepts_marketing]" value="true" data-apgo-newsletter-consent>
+            <span class="apgo-cc-newsletter__consent-copy">{{ section.settings.consent_label }}</span>
+          </label>
+
+          <p class="apgo-cc-newsletter__error" data-apgo-newsletter-error role="alert" hidden></p>
+
+          <button class="apgo-cc-newsletter__cta" type="submit" data-apgo-newsletter-submit>
+            {{ section.settings.cta_label | escape }}
+          </button>
+        {%- endform -%}
+
+        <button class="apgo-cc-newsletter__dismiss" type="button" data-apgo-newsletter-dismiss>
+          {{ section.settings.dismiss_label | escape }}
+        </button>
+      </div>
+
+      <div class="apgo-cc-newsletter__success" data-apgo-newsletter-success-view hidden>
+        <div class="apgo-cc-newsletter__success-icon" aria-hidden="true">✓</div>
+        <h2 class="apgo-cc-newsletter__success-title" data-apgo-newsletter-success-title>
+          {{ section.settings.success_title | escape }}
+        </h2>
+        <p class="apgo-cc-newsletter__success-copy" data-apgo-newsletter-success-copy></p>
+        <button class="apgo-cc-newsletter__cta" type="button" data-apgo-newsletter-close-success>
+          開始逛 →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ 'apgo-cc-newsletter-popup.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "APGO · 電子報訂閱",
+  "enabled_on": {
+    "templates": ["index"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "啟用電子報彈窗",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "標題",
+      "default": "加入 APGO 電子報"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "副標題",
+      "default": "不錯過新品上市 & 限時優惠"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "按鈕文字",
+      "default": "立即訂閱"
+    },
+    {
+      "type": "text",
+      "id": "dismiss_label",
+      "label": "略過文字",
+      "default": "今天先不要"
+    },
+    {
+      "type": "richtext",
+      "id": "consent_label",
+      "label": "同意條款文字",
+      "default": "<p>我同意接收 APGO 行銷郵件並了解 <a href=\"/policies/privacy-policy\">隱私條款</a></p>"
+    },
+    {
+      "type": "text",
+      "id": "success_title",
+      "label": "成功標題",
+      "default": "感謝訂閱 APGO 電子報！"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "品牌圖片"
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO · 電子報訂閱"
+    }
+  ]
+}
+{% endschema %}
