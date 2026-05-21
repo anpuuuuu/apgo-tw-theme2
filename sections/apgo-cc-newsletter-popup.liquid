@@ -52,15 +52,14 @@
       </button>
 
       <div class="apgo-cc-newsletter__content" data-apgo-newsletter-form-view>
-        {%- if section.settings.eyebrow != blank -%}
-          <p class="apgo-cc-newsletter__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-        {%- endif -%}
-
         <h2 class="apgo-cc-newsletter__title" id="apgo-newsletter-title-{{ section.id }}">
           {{ section.settings.title | escape }}
         </h2>
         <p class="apgo-cc-newsletter__sub">
           {{ section.settings.subtitle | escape }}
+        </p>
+        <p class="apgo-cc-newsletter__bonus">
+          {{ section.settings.bonus_text | escape }}
         </p>
 
         {%- form 'customer', id: newsletter_form_id, class: 'apgo-cc-newsletter__form' -%}
@@ -128,12 +127,6 @@
     },
     {
       "type": "text",
-      "id": "eyebrow",
-      "label": "小標",
-      "default": "JOIN OUR COMMUNITY"
-    },
-    {
-      "type": "text",
       "id": "title",
       "label": "標題",
       "default": "加入 APGO 電子報"
@@ -143,6 +136,12 @@
       "id": "subtitle",
       "label": "副標題",
       "default": "不錯過新品上市 & 限時優惠"
+    },
+    {
+      "type": "text",
+      "id": "bonus_text",
+      "label": "購物金文字",
+      "default": "現在訂閱即可獲得一張100元購物金"
     },
     {
       "type": "text",
