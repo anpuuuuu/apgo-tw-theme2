@@ -385,12 +385,11 @@
             "section_title": "✨鍍膜滿額折",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/01_0_c0f3a824-2e96-4a7b-9737-364996cad697.jpg",
+            "banner_img": "shopify://shop_images/1280_0601-0630_2_9_3_85.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
             "product_list": [
-              "apgo-atomic-colored-glaze",
               "原子封體鍍膜",
               "atomic-cyrstal-coating",
               "aurora-coating",
@@ -401,7 +400,8 @@
               "原子微晶鍍膜-2",
               "apgo-原子釉鍍膜補充包",
               "原子鍍膜補充包",
-              "apgo-plastic-hard-coating"
+              "apgo-plastic-hard-coating",
+              "apgo-atomic-colored-glaze"
             ],
             "card_tag": "TAG",
             "card_layout": "vertical",
@@ -417,7 +417,7 @@
             "section_title": "✨滿額75折起",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/01_0_1f0106f3-4fd8-4ef8-a4de-c71a4db79966.jpg",
+            "banner_img": "shopify://shop_images/1280_0601-0611_4_85_6_7_-01_0.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
