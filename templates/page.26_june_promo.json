@@ -379,10 +379,10 @@
         },
         "product_grid_A6kewb": {
           "type": "product_grid",
-          "name": "鍍膜全系列滿$899折$100",
+          "name": "鍍膜全系列滿2件9折、3件85折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨鍍膜滿額折",
+            "section_title": "✨鍍膜滿件85折起",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1280_0601-0630_2_9_3_85.jpg",
@@ -411,10 +411,10 @@
         },
         "product_grid_JAm4Qp": {
           "type": "product_grid",
-          "name": "清潔藥劑．滿$390享8折、滿$690享75折",
+          "name": "清潔藥劑．4件85折、6件享7折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨滿額75折起",
+            "section_title": "✨滿件7折起",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1280_0601-0611_4_85_6_7_-01_0.jpg",
