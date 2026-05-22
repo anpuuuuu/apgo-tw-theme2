@@ -443,20 +443,20 @@
         },
         "product_grid_AYia8B": {
           "type": "product_grid",
-          "name": "買玻璃去油鍍膜組*1組送玻璃去油劑200ml*2瓶",
+          "name": "6/12-6/22原子琉璃釉買一送一",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨現折↘$598",
+            "section_title": "✨搶先預告 6/12-6/22開搶",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/03_0.jpg",
+            "banner_img": "shopify://shop_images/1080_0612-0622.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
             "product_list": [
-              "glass-coating"
+              "apgo-atomic-colored-glaze"
             ],
-            "card_tag": "TAG",
+            "card_tag": "超值必收",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
@@ -464,20 +464,41 @@
         },
         "product_grid_jNQtE7": {
           "type": "product_grid",
-          "name": "壓力泡沫洗車噴壺(電動噴壺組)】優惠價$1699",
+          "name": "6/12-6/22【洗車美容豪華組】",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨現折↘$300",
+            "section_title": "✨6/12-6/22開搶",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/APGO_-01.jpg",
+            "banner_img": "shopify://shop_images/0612-0622.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
             "product_list": [
-              "apgo-pressure-foam-sprayer"
+              "acg12sets"
             ],
-            "card_tag": "TAG",
+            "card_tag": "現折$1265",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_HrcFDb": {
+          "type": "product_grid",
+          "name": "6/12-6/22原子極光鍍膜買一送一",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨6/12-6/22開搶",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080x1080_0612-0622.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "aurora-coating"
+            ],
+            "card_tag": "狂降3折",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
@@ -823,6 +844,7 @@
         "product_grid_JAm4Qp",
         "product_grid_AYia8B",
         "product_grid_jNQtE7",
+        "product_grid_HrcFDb",
         "product_grid_p7CgbC",
         "product_grid_qjN9Hb",
         "product_grid_nrB4HP",
