@@ -471,7 +471,7 @@
             "section_title": "滿件折扣✨無效退費",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1-03_0.jpg",
+            "banner_img": "shopify://shop_images/1280_0601-0630__66.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
@@ -489,23 +489,20 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "product_grid_bbmJhL": {
-          "type": "product_grid",
+        "simple_banner_slot_V38Hcr": {
+          "type": "simple_banner_slot",
           "name": "6/5-6/16免運券限量500張",
           "settings": {
             "custom_anchor_id": "",
             "section_title": "✨搶先預告 6/5-6/16開搶",
             "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_0605-0616_699_500.jpg",
+            "section_icon": "fa-image",
             "show_banner": true,
+            "banner_img": "shopify://shop_images/1080_0605-0616_699_500.jpg",
             "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [],
-            "card_tag": "超值必收",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
           }
         },
         "product_grid_63pFYA": {
@@ -569,6 +566,22 @@
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
+          }
+        },
+        "simple_banner_slot_e46GFp": {
+          "type": "simple_banner_slot",
+          "name": "6/12-6/22指定洗車藥劑✨ 任選$77",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "6/12-6/22✨指定款$77",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1280_0612-0622_618_500ml_77.jpg",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
           }
         },
         "product_grid_qjN9Hb": {
@@ -863,10 +876,11 @@
         "product_grid_JAm4Qp",
         "product_grid_p7CgbC",
         "product_grid_XMR9K3",
-        "product_grid_bbmJhL",
+        "simple_banner_slot_V38Hcr",
         "product_grid_63pFYA",
         "product_grid_jNQtE7",
         "product_grid_HrcFDb",
+        "simple_banner_slot_e46GFp",
         "product_grid_qjN9Hb",
         "product_grid_nrB4HP",
         "product_grid_feF934",
