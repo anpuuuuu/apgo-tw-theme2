@@ -584,30 +584,10 @@
             "banner_anchor_id": ""
           }
         },
-        "product_grid_qjN9Hb": {
-          "type": "product_grid",
-          "name": "暢銷禮組-洗車美容12件組",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨現折↘$1265",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080__12_196f5e72-60bf-47d7-a7f2-857e89a7fe12.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "acg12sets"
-            ],
-            "card_tag": "TAG",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
         "product_grid_nrB4HP": {
           "type": "product_grid",
           "name": "暢銷禮組-內裝全效清潔組",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "✨搶↘只要$309",
@@ -881,7 +861,6 @@
         "product_grid_jNQtE7",
         "product_grid_HrcFDb",
         "simple_banner_slot_e46GFp",
-        "product_grid_qjN9Hb",
         "product_grid_nrB4HP",
         "product_grid_feF934",
         "product_grid_azzQYb",
