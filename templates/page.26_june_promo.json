@@ -568,6 +568,48 @@
             "vertical_cards_per_view": "2.5"
           }
         },
+        "product_grid_fXt3Nh": {
+          "type": "product_grid",
+          "name": "6/1-6/30夏日抗曬防護組",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨6/1-6/30開搶",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080_0622-0630_618_93182ba8-2a26-4702-888a-c4bfe6fd348f.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "618樂購季-夏日抗曬防護組"
+            ],
+            "card_tag": "夏日抗曬防護組↘狂降7折",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
+        "product_grid_3mVxFr": {
+          "type": "product_grid",
+          "name": "6/1-6/30全車深層淨化8件組",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨6/1-6/30開搶",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080_0622-0630_618_8_1126fc15-6d45-484d-8f45-248af64bdf19.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "618樂購季-全車深層淨化8件組"
+            ],
+            "card_tag": "全車深層淨化8件組↘狂降7折",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
         "simple_banner_slot_e46GFp": {
           "type": "simple_banner_slot",
           "name": "6/12-6/22指定洗車藥劑✨ 任選$77",
@@ -876,6 +918,8 @@
         "product_grid_63pFYA",
         "product_grid_jNQtE7",
         "product_grid_HrcFDb",
+        "product_grid_fXt3Nh",
+        "product_grid_3mVxFr",
         "simple_banner_slot_e46GFp",
         "simple_banner_slot_pxYmgd",
         "product_grid_nrB4HP",
