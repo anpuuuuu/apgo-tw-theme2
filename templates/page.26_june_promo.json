@@ -382,7 +382,7 @@
           "name": "6/1-6/22原子琉璃釉買一送一",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "6/1-6/22開搶",
+            "section_title": "買一送一",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1080_0612-0622.jpg",
@@ -392,7 +392,7 @@
             "product_list": [
               "apgo-atomic-colored-glaze"
             ],
-            "card_tag": "超值必收",
+            "card_tag": "6/1-6/22開搶",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "1"
@@ -403,7 +403,7 @@
           "name": "6/12-6/22原子極光鍍膜買一送一",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨6/12-6/22開搶",
+            "section_title": "狂降3折",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1080x1080_0612-0622.jpg",
@@ -413,7 +413,7 @@
             "product_list": [
               "aurora-coating"
             ],
-            "card_tag": "狂降3折",
+            "card_tag": "6/12-6/22開搶",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
@@ -424,7 +424,7 @@
           "name": "6/1-6/22【洗車美容豪華組】",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨6/1-6/22開搶",
+            "section_title": "現折$1265",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/0612-0622.jpg",
@@ -434,7 +434,7 @@
             "product_list": [
               "清洗-鍍膜一次搞定🏆-洗車美容豪華組-副本"
             ],
-            "card_tag": "現折$1265",
+            "card_tag": "6/1-6/22開搶",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
@@ -445,7 +445,7 @@
           "name": "6/1-6/30全車深層淨化8件組",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨6/1-6/30開搶",
+            "section_title": "深層淨化組",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1080_0622-0630_618_8_1126fc15-6d45-484d-8f45-248af64bdf19.jpg",
@@ -455,7 +455,7 @@
             "product_list": [
               "618樂購季-全車深層淨化8件組"
             ],
-            "card_tag": "全車深層淨化8件組↘狂降7折",
+            "card_tag": "6/1-6/30開搶",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "1"
@@ -466,7 +466,7 @@
           "name": "6/1-6/30【30分鐘快速亮車組】",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨6/1-6/30開搶",
+            "section_title": "快速亮車組",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1080_0622-0630_618_30.jpg",
@@ -476,7 +476,7 @@
             "product_list": [
               "618樂購季-30分鐘快速亮車組"
             ],
-            "card_tag": "30分鐘快速亮車組↘狂降7折",
+            "card_tag": "6/1-6/30開搶",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "1"
@@ -487,7 +487,7 @@
           "name": "6/1-6/30夏日抗曬防護組",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨6/1-6/30開搶",
+            "section_title": "抗曬防護組",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1080_0622-0630_618_93182ba8-2a26-4702-888a-c4bfe6fd348f.jpg",
@@ -497,7 +497,7 @@
             "product_list": [
               "618樂購季-夏日抗曬防護組"
             ],
-            "card_tag": "夏日抗曬防護組↘狂降7折",
+            "card_tag": "6/1-6/30開搶",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "1"
@@ -508,7 +508,7 @@
           "name": "6/1-6/22指定洗車藥劑✨ 任選$77",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨指定款$77",
+            "section_title": "指定款$77",
             "nav_label_override": "",
             "section_icon": "",
             "show_banner": true,
@@ -572,7 +572,7 @@
           "name": "6/1-6/30鍍膜全系列滿2件9折、3件85折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨鍍膜85折起",
+            "section_title": "鍍膜85折起",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1280_0601-0630_2_9_3_85.jpg",
@@ -604,7 +604,7 @@
           "name": "6/1-6/30清潔藥劑．4件85折、6件享7折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨滿件7折起",
+            "section_title": "滿件7折起",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1280_0601-0611_4_85_6_7_-01_0.jpg",
@@ -652,7 +652,7 @@
           "name": "6/17-6/18搶$618免運券✨ ",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "6/17-6/18搶$618免運券",
+            "section_title": "6/17-6/18開搶",
             "nav_label_override": "",
             "section_icon": "",
             "show_banner": true,
@@ -775,7 +775,7 @@
           "type": "coupon_slot",
           "name": "7.優惠版位標題",
           "settings": {
-            "section_title": "現領超殺折券",
+            "section_title": "現領折券",
             "section_icon": "fa-ticket",
             "nav_label_override": "✨現搶折券"
           }
