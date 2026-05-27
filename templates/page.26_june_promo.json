@@ -409,36 +409,20 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "product_grid_JAm4Qp": {
-          "type": "product_grid",
-          "name": "清潔藥劑．4件85折、6件享7折",
+        "simple_banner_slot_e46GFp": {
+          "type": "simple_banner_slot",
+          "name": "6/1-6/22指定洗車藥劑✨ 任選$77",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨滿件7折起",
+            "section_title": "6/1-6/22✨指定款$77",
             "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1280_0601-0611_4_85_6_7_-01_0.jpg",
+            "section_icon": "",
             "show_banner": true,
+            "banner_img": "shopify://shop_images/1280_0612-0622_618_500ml_77.jpg",
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
-            "product_list": [
-              "extreme-iron-remover",
-              "apgo-plastic-protectant",
-              "apgo-car-shampoo",
-              "apgo-natural-interior-protectant",
-              "apgo-anti-scratch-prewash-cleaner",
-              "water-stain-removeer",
-              "apgo-all-purpose-cleaner",
-              "apgo-wiper-fluid",
-              "apgo-wheel-cleaner",
-              "apgo-glass-cleaner",
-              "apgo-fresh-interior-cleaner",
-              "apgo-bug-tar-remover"
-            ],
-            "card_tag": "TAG",
-            "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
+            "banner_link": "",
+            "banner_anchor_id": ""
           }
         },
         "product_grid_p7CgbC": {
@@ -531,7 +515,7 @@
           "name": "6/12-6/22【洗車美容豪華組】",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨6/12-6/22開搶",
+            "section_title": "✨6/1-6/22開搶",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/0612-0622.jpg",
@@ -539,7 +523,7 @@
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
             "product_list": [
-              "acg12sets"
+              "清洗-鍍膜一次搞定🏆-洗車美容豪華組-副本"
             ],
             "card_tag": "現折$1265",
             "card_layout": "horizontal",
@@ -631,20 +615,36 @@
             "vertical_cards_per_view": "1"
           }
         },
-        "simple_banner_slot_e46GFp": {
-          "type": "simple_banner_slot",
-          "name": "6/12-6/22指定洗車藥劑✨ 任選$77",
+        "product_grid_JAm4Qp": {
+          "type": "product_grid",
+          "name": "清潔藥劑．4件85折、6件享7折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "6/12-6/22✨指定款$77",
+            "section_title": "✨滿件7折起",
             "nav_label_override": "",
-            "section_icon": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1280_0601-0611_4_85_6_7_-01_0.jpg",
             "show_banner": true,
-            "banner_img": "shopify://shop_images/1280_0612-0622_618_500ml_77.jpg",
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
+            "product_list": [
+              "extreme-iron-remover",
+              "apgo-plastic-protectant",
+              "apgo-car-shampoo",
+              "apgo-natural-interior-protectant",
+              "apgo-anti-scratch-prewash-cleaner",
+              "water-stain-removeer",
+              "apgo-all-purpose-cleaner",
+              "apgo-wiper-fluid",
+              "apgo-wheel-cleaner",
+              "apgo-glass-cleaner",
+              "apgo-fresh-interior-cleaner",
+              "apgo-bug-tar-remover"
+            ],
+            "card_tag": "TAG",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
           }
         },
         "simple_banner_slot_pxYmgd": {
@@ -782,30 +782,30 @@
         },
         "coupon_item_hH3EcG": {
           "type": "coupon_item",
-          "name": "7.1 92折",
+          "name": "7.1 滿618折18",
           "settings": {
-            "condition": "滿$799",
-            "discount": "折$70",
+            "condition": "滿$618",
+            "discount": "折$17",
             "theme_color": "#f08418",
             "highlight_discount": false
           }
         },
         "coupon_item_r6aVaY": {
           "type": "coupon_item",
-          "name": "7.2 9折",
+          "name": "7.2 滿1688折168",
           "settings": {
-            "condition": "滿$1499",
-            "discount": "折$140",
+            "condition": "滿$1688",
+            "discount": "折$168",
             "theme_color": "#9ca3af",
             "highlight_discount": false
           }
         },
         "coupon_item_AaWikn": {
           "type": "coupon_item",
-          "name": "7.3 88折",
+          "name": "7.3 滿3000折618",
           "settings": {
-            "condition": "滿$2499",
-            "discount": "折$300",
+            "condition": "滿$3000",
+            "discount": "折$618",
             "theme_color": "#f08418",
             "highlight_discount": true
           }
@@ -932,7 +932,7 @@
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
         "product_grid_A6kewb",
-        "product_grid_JAm4Qp",
+        "simple_banner_slot_e46GFp",
         "product_grid_p7CgbC",
         "product_grid_XMR9K3",
         "simple_banner_slot_V38Hcr",
@@ -942,7 +942,7 @@
         "product_grid_fXt3Nh",
         "product_grid_3mVxFr",
         "product_grid_zF47dN",
-        "simple_banner_slot_e46GFp",
+        "product_grid_JAm4Qp",
         "simple_banner_slot_pxYmgd",
         "product_grid_nrB4HP",
         "product_grid_feF934",
