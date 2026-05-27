@@ -610,6 +610,27 @@
             "vertical_cards_per_view": "1"
           }
         },
+        "product_grid_zF47dN": {
+          "type": "product_grid",
+          "name": "6/1-6/30【30分鐘快速亮車組】",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨6/1-6/30開搶",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080_0622-0630_618_30.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "618樂購季-30分鐘快速亮車組"
+            ],
+            "card_tag": "30分鐘快速亮車組↘狂降7折",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
         "simple_banner_slot_e46GFp": {
           "type": "simple_banner_slot",
           "name": "6/12-6/22指定洗車藥劑✨ 任選$77",
@@ -920,6 +941,7 @@
         "product_grid_HrcFDb",
         "product_grid_fXt3Nh",
         "product_grid_3mVxFr",
+        "product_grid_zF47dN",
         "simple_banner_slot_e46GFp",
         "simple_banner_slot_pxYmgd",
         "product_grid_nrB4HP",
