@@ -377,6 +377,64 @@
             "success_button_text": "前往結帳，以保有優惠"
           }
         },
+        "product_grid_63pFYA": {
+          "type": "product_grid",
+          "name": "6/1-6/22原子琉璃釉買一送一",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "6/1-6/22開搶",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080_0612-0622.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "apgo-atomic-colored-glaze"
+            ],
+            "card_tag": "超值必收",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
+        "product_grid_HrcFDb": {
+          "type": "product_grid",
+          "name": "6/12-6/22原子極光鍍膜買一送一",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨6/12-6/22開搶",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080x1080_0612-0622.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "aurora-coating"
+            ],
+            "card_tag": "狂降3折",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "simple_banner_slot_e46GFp": {
+          "type": "simple_banner_slot",
+          "name": "6/1-6/22指定洗車藥劑✨ 任選$77",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨指定款$77",
+            "nav_label_override": "",
+            "section_icon": "",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1280_0612-0622_618_500ml_77.jpg",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "https://apgo.tw/collections/%E6%B8%85%E6%BD%94%E8%97%A5%E5%8A%91%E5%85%A8%E7%B3%BB%E5%88%97",
+            "banner_anchor_id": ""
+          }
+        },
         "product_grid_A6kewb": {
           "type": "product_grid",
           "name": "6/1-6/30鍍膜全系列滿2件9折、3件85折",
@@ -409,28 +467,12 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "simple_banner_slot_e46GFp": {
-          "type": "simple_banner_slot",
-          "name": "6/1-6/22指定洗車藥劑✨ 任選$77",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨指定款$77",
-            "nav_label_override": "",
-            "section_icon": "",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/1280_0612-0622_618_500ml_77.jpg",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "https://apgo.tw/collections/%E6%B8%85%E6%BD%94%E8%97%A5%E5%8A%91%E5%85%A8%E7%B3%BB%E5%88%97",
-            "banner_anchor_id": ""
-          }
-        },
         "product_grid_p7CgbC": {
           "type": "product_grid",
-          "name": "測速器現折$600",
+          "name": "6/1-6/30測速器現折$600",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "測速器✨現折$600",
+            "section_title": "測速器折$600",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1280_G9G11_600.jpg",
@@ -444,15 +486,15 @@
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
+            "vertical_cards_per_view": "2"
           }
         },
         "product_grid_XMR9K3": {
           "type": "product_grid",
-          "name": "超級洗衣精✨滿件最高66折",
+          "name": "6/1-6/30超級洗衣精✨滿件最高66折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "滿件折扣✨無效退費",
+            "section_title": "✨無效退費",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1280_0601-0630__66.jpg",
@@ -478,7 +520,7 @@
           "name": "6/5-6/16免運券限量500張",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨搶先預告 6/5-6/16開搶",
+            "section_title": "6/5-6/16開搶",
             "nav_label_override": "",
             "section_icon": "fa-image",
             "show_banner": true,
@@ -489,30 +531,9 @@
             "banner_anchor_id": ""
           }
         },
-        "product_grid_63pFYA": {
-          "type": "product_grid",
-          "name": "6/12-6/22原子琉璃釉買一送一",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨搶先預告 6/1-6/22開搶",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_0612-0622.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "apgo-atomic-colored-glaze"
-            ],
-            "card_tag": "超值必收",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
         "product_grid_jNQtE7": {
           "type": "product_grid",
-          "name": "6/12-6/22【洗車美容豪華組】",
+          "name": "6/1-6/22【洗車美容豪華組】",
           "settings": {
             "custom_anchor_id": "",
             "section_title": "✨6/1-6/22開搶",
@@ -526,27 +547,6 @@
               "清洗-鍍膜一次搞定🏆-洗車美容豪華組-副本"
             ],
             "card_tag": "現折$1265",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_HrcFDb": {
-          "type": "product_grid",
-          "name": "6/12-6/22原子極光鍍膜買一送一",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨6/12-6/22開搶",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080x1080_0612-0622.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "aurora-coating"
-            ],
-            "card_tag": "狂降3折",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
@@ -931,14 +931,14 @@
         "flash_sale_item_MXr8TC",
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
-        "product_grid_A6kewb",
+        "product_grid_63pFYA",
+        "product_grid_HrcFDb",
         "simple_banner_slot_e46GFp",
+        "product_grid_A6kewb",
         "product_grid_p7CgbC",
         "product_grid_XMR9K3",
         "simple_banner_slot_V38Hcr",
-        "product_grid_63pFYA",
         "product_grid_jNQtE7",
-        "product_grid_HrcFDb",
         "product_grid_fXt3Nh",
         "product_grid_3mVxFr",
         "product_grid_zF47dN",
