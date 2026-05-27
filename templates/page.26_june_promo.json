@@ -419,6 +419,90 @@
             "vertical_cards_per_view": "2.5"
           }
         },
+        "product_grid_jNQtE7": {
+          "type": "product_grid",
+          "name": "6/1-6/22【洗車美容豪華組】",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨6/1-6/22開搶",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/0612-0622.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "清洗-鍍膜一次搞定🏆-洗車美容豪華組-副本"
+            ],
+            "card_tag": "現折$1265",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_3mVxFr": {
+          "type": "product_grid",
+          "name": "6/1-6/30全車深層淨化8件組",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨6/1-6/30開搶",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080_0622-0630_618_8_1126fc15-6d45-484d-8f45-248af64bdf19.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "618樂購季-全車深層淨化8件組"
+            ],
+            "card_tag": "全車深層淨化8件組↘狂降7折",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
+        "product_grid_zF47dN": {
+          "type": "product_grid",
+          "name": "6/1-6/30【30分鐘快速亮車組】",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨6/1-6/30開搶",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080_0622-0630_618_30.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "618樂購季-30分鐘快速亮車組"
+            ],
+            "card_tag": "30分鐘快速亮車組↘狂降7折",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
+        "product_grid_fXt3Nh": {
+          "type": "product_grid",
+          "name": "6/1-6/30夏日抗曬防護組",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨6/1-6/30開搶",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080_0622-0630_618_93182ba8-2a26-4702-888a-c4bfe6fd348f.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "618樂購季-夏日抗曬防護組"
+            ],
+            "card_tag": "夏日抗曬防護組↘狂降7折",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
         "simple_banner_slot_e46GFp": {
           "type": "simple_banner_slot",
           "name": "6/1-6/22指定洗車藥劑✨ 任選$77",
@@ -433,38 +517,6 @@
             "banner_spacing_bottom": true,
             "banner_link": "https://apgo.tw/collections/%E6%B8%85%E6%BD%94%E8%97%A5%E5%8A%91%E5%85%A8%E7%B3%BB%E5%88%97",
             "banner_anchor_id": ""
-          }
-        },
-        "product_grid_A6kewb": {
-          "type": "product_grid",
-          "name": "6/1-6/30鍍膜全系列滿2件9折、3件85折",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨鍍膜85折起",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1280_0601-0630_2_9_3_85.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "原子封體鍍膜",
-              "atomic-cyrstal-coating",
-              "aurora-coating",
-              "apgo-enamel-crystal-coating",
-              "glaze_coating",
-              "atomic-coating",
-              "原子封體鍍膜補充包",
-              "原子微晶鍍膜-2",
-              "apgo-原子釉鍍膜補充包",
-              "原子鍍膜補充包",
-              "apgo-plastic-hard-coating",
-              "apgo-atomic-colored-glaze"
-            ],
-            "card_tag": "TAG",
-            "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
           }
         },
         "product_grid_p7CgbC": {
@@ -515,109 +567,41 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "simple_banner_slot_V38Hcr": {
-          "type": "simple_banner_slot",
-          "name": "6/5-6/16免運券限量500張",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "6/5-6/16開搶",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/1080_0605-0616_699_500.jpg",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
-        "product_grid_jNQtE7": {
+        "product_grid_A6kewb": {
           "type": "product_grid",
-          "name": "6/1-6/22【洗車美容豪華組】",
+          "name": "6/1-6/30鍍膜全系列滿2件9折、3件85折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨6/1-6/22開搶",
+            "section_title": "✨鍍膜85折起",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/0612-0622.jpg",
+            "banner_img": "shopify://shop_images/1280_0601-0630_2_9_3_85.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
+            "banner_spacing_bottom": true,
             "product_list": [
-              "清洗-鍍膜一次搞定🏆-洗車美容豪華組-副本"
+              "原子封體鍍膜",
+              "atomic-cyrstal-coating",
+              "aurora-coating",
+              "apgo-enamel-crystal-coating",
+              "glaze_coating",
+              "atomic-coating",
+              "原子封體鍍膜補充包",
+              "原子微晶鍍膜-2",
+              "apgo-原子釉鍍膜補充包",
+              "原子鍍膜補充包",
+              "apgo-plastic-hard-coating",
+              "apgo-atomic-colored-glaze"
             ],
-            "card_tag": "現折$1265",
-            "card_layout": "horizontal",
+            "card_tag": "TAG",
+            "card_layout": "vertical",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
           }
         },
-        "product_grid_fXt3Nh": {
-          "type": "product_grid",
-          "name": "6/1-6/30夏日抗曬防護組",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨6/1-6/30開搶",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_0622-0630_618_93182ba8-2a26-4702-888a-c4bfe6fd348f.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "618樂購季-夏日抗曬防護組"
-            ],
-            "card_tag": "夏日抗曬防護組↘狂降7折",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
-          }
-        },
-        "product_grid_3mVxFr": {
-          "type": "product_grid",
-          "name": "6/1-6/30全車深層淨化8件組",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨6/1-6/30開搶",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_0622-0630_618_8_1126fc15-6d45-484d-8f45-248af64bdf19.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "618樂購季-全車深層淨化8件組"
-            ],
-            "card_tag": "全車深層淨化8件組↘狂降7折",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
-          }
-        },
-        "product_grid_zF47dN": {
-          "type": "product_grid",
-          "name": "6/1-6/30【30分鐘快速亮車組】",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨6/1-6/30開搶",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_0622-0630_618_30.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "618樂購季-30分鐘快速亮車組"
-            ],
-            "card_tag": "30分鐘快速亮車組↘狂降7折",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
-          }
-        },
         "product_grid_JAm4Qp": {
           "type": "product_grid",
-          "name": "清潔藥劑．4件85折、6件享7折",
+          "name": "6/1-6/30清潔藥劑．4件85折、6件享7折",
           "settings": {
             "custom_anchor_id": "",
             "section_title": "✨滿件7折起",
@@ -645,6 +629,22 @@
             "card_layout": "vertical",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
+          }
+        },
+        "simple_banner_slot_V38Hcr": {
+          "type": "simple_banner_slot",
+          "name": "6/5-6/16免運券限量500張",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "6/5-6/16開搶",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1080_0605-0616_699_500.jpg",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
           }
         },
         "simple_banner_slot_pxYmgd": {
@@ -933,16 +933,16 @@
         "flash_sale_item_DLfea8",
         "product_grid_63pFYA",
         "product_grid_HrcFDb",
-        "simple_banner_slot_e46GFp",
-        "product_grid_A6kewb",
-        "product_grid_p7CgbC",
-        "product_grid_XMR9K3",
-        "simple_banner_slot_V38Hcr",
         "product_grid_jNQtE7",
-        "product_grid_fXt3Nh",
         "product_grid_3mVxFr",
         "product_grid_zF47dN",
+        "product_grid_fXt3Nh",
+        "simple_banner_slot_e46GFp",
+        "product_grid_p7CgbC",
+        "product_grid_XMR9K3",
+        "product_grid_A6kewb",
         "product_grid_JAm4Qp",
+        "simple_banner_slot_V38Hcr",
         "simple_banner_slot_pxYmgd",
         "product_grid_nrB4HP",
         "product_grid_feF934",
