@@ -633,11 +633,12 @@
         "product_grid_JAm4Qp": {
           "type": "product_grid",
           "name": "6/1-6/30清潔藥劑．4件85折、6件享7折",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "滿件7折起",
             "nav_label_override": "",
-            "section_icon": "fa-box",
+            "section_icon": "6/1-6/30",
             "banner_img": "shopify://shop_images/1280_0601-0611_4_85_6_7_-01_0.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
@@ -667,7 +668,7 @@
           "name": "6/5-6/16免運券限量500張",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "699免運券",
+            "section_title": "699免運券(6/5-6/16)",
             "nav_label_override": "",
             "section_icon": "fa-image",
             "show_banner": true,
@@ -683,7 +684,7 @@
           "name": "6/17-6/18搶$618免運券✨ ",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "618免運券",
+            "section_title": "618免運券(6/17-6/18)",
             "nav_label_override": "",
             "section_icon": "",
             "show_banner": true,
