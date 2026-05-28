@@ -463,8 +463,8 @@
       "name": "APGO 戰術廣播條",
       "settings": {
         "homepage_only": false,
-        "exclude_handles": "https://apgo.tw/pages/26_may_promo",
-        "link_url": "shopify://pages/26_may_promo",
+        "exclude_handles": "https://apgo.tw/pages/26_june_promo",
+        "link_url": "shopify://pages/26_june_promo",
         "bg_color": "#050505",
         "border_color": "#f08418",
         "enable_shimmer": true,
