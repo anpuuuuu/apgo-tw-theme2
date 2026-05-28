@@ -445,6 +445,7 @@
         },
         "flip_text_t4YW3L": {
           "type": "flip_text",
+          "disabled": true,
           "settings": {
             "text": "母親節領75折券",
             "text_color": "#f08418"
