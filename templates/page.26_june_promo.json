@@ -377,6 +377,180 @@
             "success_button_text": "前往結帳，以保有優惠"
           }
         },
+        "product_grid_A6kewb": {
+          "type": "product_grid",
+          "name": "6/1-6/30鍍膜全系列滿2件9折、3件85折",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "鍍膜85折起",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1280_0601-0630_2_9_3_85.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "原子封體鍍膜",
+              "atomic-cyrstal-coating",
+              "aurora-coating",
+              "apgo-enamel-crystal-coating",
+              "glaze_coating",
+              "atomic-coating",
+              "原子封體鍍膜補充包",
+              "原子微晶鍍膜-2",
+              "apgo-原子釉鍍膜補充包",
+              "原子鍍膜補充包",
+              "apgo-plastic-hard-coating",
+              "apgo-atomic-colored-glaze"
+            ],
+            "card_tag": "TAG",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_3mVxFr": {
+          "type": "product_grid",
+          "name": "6/1-6/30全車深層淨化8件組",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "深層淨化組",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080_0622-0630_618_8_1126fc15-6d45-484d-8f45-248af64bdf19.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "618樂購季-全車深層淨化8件組"
+            ],
+            "card_tag": "6/1-6/30開搶",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
+        "product_grid_zF47dN": {
+          "type": "product_grid",
+          "name": "6/1-6/30【30分鐘快速亮車組】",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "快速亮車組",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080_0622-0630_618_30.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "618樂購季-30分鐘快速亮車組"
+            ],
+            "card_tag": "6/1-6/30開搶",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
+        "product_grid_fXt3Nh": {
+          "type": "product_grid",
+          "name": "6/1-6/30夏日抗曬防護組",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "抗曬防護組",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080_0622-0630_618_93182ba8-2a26-4702-888a-c4bfe6fd348f.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "618樂購季-夏日抗曬防護組"
+            ],
+            "card_tag": "6/1-6/30開搶",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
+        "product_grid_p7CgbC": {
+          "type": "product_grid",
+          "name": "6/1-6/30測速器G11只要$1688",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "G11只要$1688",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/G9G11_600-02_0.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "apgo-g11-plus"
+            ],
+            "card_tag": "TAG",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_JAm4Qp": {
+          "type": "product_grid",
+          "name": "6/1-6/5清潔藥劑．4件85折、6件享7折",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "滿件7折起",
+            "nav_label_override": "",
+            "section_icon": "6/1-6/5",
+            "banner_img": "shopify://shop_images/1280_0601-0611_4_85_6_7_-01_0.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "extreme-iron-remover",
+              "apgo-plastic-protectant",
+              "apgo-car-shampoo",
+              "apgo-natural-interior-protectant",
+              "apgo-anti-scratch-prewash-cleaner",
+              "water-stain-removeer",
+              "apgo-all-purpose-cleaner",
+              "apgo-wiper-fluid",
+              "apgo-wheel-cleaner",
+              "apgo-glass-cleaner",
+              "apgo-fresh-interior-cleaner",
+              "apgo-bug-tar-remover"
+            ],
+            "card_tag": "TAG",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_XMR9K3": {
+          "type": "product_grid",
+          "name": "6/1-6/30超級洗衣精✨滿件最高66折",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨無效退費",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/11_-02.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "apgorose",
+              "apgoocean",
+              "apgocotton",
+              "apgowhitetea",
+              "apgofreesia",
+              "apgolavender"
+            ],
+            "card_tag": "TAG",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "product_grid_3BCxpy": {
           "type": "product_grid",
           "name": "6/6-6/22指定洗車藥劑✨ 任選$55",
@@ -484,181 +658,6 @@
             ],
             "card_tag": "6/1-6/22開搶",
             "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_3mVxFr": {
-          "type": "product_grid",
-          "name": "6/1-6/30全車深層淨化8件組",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "深層淨化組",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_0622-0630_618_8_1126fc15-6d45-484d-8f45-248af64bdf19.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "618樂購季-全車深層淨化8件組"
-            ],
-            "card_tag": "6/1-6/30開搶",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
-          }
-        },
-        "product_grid_zF47dN": {
-          "type": "product_grid",
-          "name": "6/1-6/30【30分鐘快速亮車組】",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "快速亮車組",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_0622-0630_618_30.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "618樂購季-30分鐘快速亮車組"
-            ],
-            "card_tag": "6/1-6/30開搶",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
-          }
-        },
-        "product_grid_fXt3Nh": {
-          "type": "product_grid",
-          "name": "6/1-6/30夏日抗曬防護組",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "抗曬防護組",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_0622-0630_618_93182ba8-2a26-4702-888a-c4bfe6fd348f.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "618樂購季-夏日抗曬防護組"
-            ],
-            "card_tag": "6/1-6/30開搶",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
-          }
-        },
-        "product_grid_p7CgbC": {
-          "type": "product_grid",
-          "name": "6/1-6/30測速器G11只要$1688",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "G11只要$1688",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/G9G11_600-02_0.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "apgo-g11-plus"
-            ],
-            "card_tag": "TAG",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_XMR9K3": {
-          "type": "product_grid",
-          "name": "6/1-6/30超級洗衣精✨滿件最高66折",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨無效退費",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/11_-02.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "apgorose",
-              "apgoocean",
-              "apgocotton",
-              "apgowhitetea",
-              "apgofreesia",
-              "apgolavender"
-            ],
-            "card_tag": "TAG",
-            "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_A6kewb": {
-          "type": "product_grid",
-          "name": "6/1-6/30鍍膜全系列滿2件9折、3件85折",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "鍍膜85折起",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1280_0601-0630_2_9_3_85.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "原子封體鍍膜",
-              "atomic-cyrstal-coating",
-              "aurora-coating",
-              "apgo-enamel-crystal-coating",
-              "glaze_coating",
-              "atomic-coating",
-              "原子封體鍍膜補充包",
-              "原子微晶鍍膜-2",
-              "apgo-原子釉鍍膜補充包",
-              "原子鍍膜補充包",
-              "apgo-plastic-hard-coating",
-              "apgo-atomic-colored-glaze"
-            ],
-            "card_tag": "TAG",
-            "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_JAm4Qp": {
-          "type": "product_grid",
-          "name": "6/1-6/30清潔藥劑．4件85折、6件享7折",
-          "disabled": true,
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "滿件7折起",
-            "nav_label_override": "",
-            "section_icon": "6/1-6/30",
-            "banner_img": "shopify://shop_images/1280_0601-0611_4_85_6_7_-01_0.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "extreme-iron-remover",
-              "apgo-plastic-protectant",
-              "apgo-car-shampoo",
-              "apgo-natural-interior-protectant",
-              "apgo-anti-scratch-prewash-cleaner",
-              "water-stain-removeer",
-              "apgo-all-purpose-cleaner",
-              "apgo-wiper-fluid",
-              "apgo-wheel-cleaner",
-              "apgo-glass-cleaner",
-              "apgo-fresh-interior-cleaner",
-              "apgo-bug-tar-remover"
-            ],
-            "card_tag": "TAG",
-            "card_layout": "vertical",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
           }
@@ -963,18 +962,18 @@
         "flash_sale_item_MXr8TC",
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
+        "product_grid_A6kewb",
+        "product_grid_3mVxFr",
+        "product_grid_zF47dN",
+        "product_grid_fXt3Nh",
+        "product_grid_p7CgbC",
+        "product_grid_JAm4Qp",
+        "product_grid_XMR9K3",
         "product_grid_3BCxpy",
         "product_grid_63pFYA",
         "product_grid_HrcFDb",
         "product_grid_jNQtE7",
         "product_grid_ctn3Nm",
-        "product_grid_3mVxFr",
-        "product_grid_zF47dN",
-        "product_grid_fXt3Nh",
-        "product_grid_p7CgbC",
-        "product_grid_XMR9K3",
-        "product_grid_A6kewb",
-        "product_grid_JAm4Qp",
         "simple_banner_slot_V38Hcr",
         "simple_banner_slot_pxYmgd",
         "product_grid_nrB4HP",
