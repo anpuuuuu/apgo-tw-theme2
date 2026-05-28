@@ -548,15 +548,17 @@
             "section_title": "G11只要$1688",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1280_G9G11_600.jpg",
+            "banner_img": "shopify://shop_images/G9G11_600-02_0.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
-            "product_list": [],
+            "product_list": [
+              "apgo-g11-plus"
+            ],
             "card_tag": "TAG",
-            "card_layout": "vertical",
+            "card_layout": "horizontal",
             "vertical_rows": "1",
-            "vertical_cards_per_view": "2"
+            "vertical_cards_per_view": "2.5"
           }
         },
         "product_grid_XMR9K3": {
