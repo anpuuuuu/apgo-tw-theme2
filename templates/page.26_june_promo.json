@@ -421,13 +421,13 @@
         },
         "product_grid_jNQtE7": {
           "type": "product_grid",
-          "name": "6/1-6/22【洗車美容豪華組】",
+          "name": "6/6-6/22【原子琉璃釉豪華組】",
           "settings": {
             "custom_anchor_id": "",
             "section_title": "現折$1265",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/0612-0622.jpg",
+            "banner_img": "shopify://shop_images/03_0_c2d62781-2ebf-44e2-9a05-fc584ccda34a.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
