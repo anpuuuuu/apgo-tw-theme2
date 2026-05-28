@@ -400,20 +400,20 @@
         },
         "product_grid_HrcFDb": {
           "type": "product_grid",
-          "name": "6/12-6/22原子極光鍍膜買一送一",
+          "name": "6/6-6/22原子極光鍍膜買一送一",
           "settings": {
             "custom_anchor_id": "",
             "section_title": "狂降3折",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080x1080_0612-0622.jpg",
+            "banner_img": "shopify://shop_images/04_0_31b84096-fff5-4e7e-b131-9494cfcbfd7e.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
             "product_list": [
               "aurora-coating"
             ],
-            "card_tag": "6/12-6/22開搶",
+            "card_tag": "6/6-6/22開搶",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
