@@ -377,22 +377,6 @@
             "success_button_text": "前往結帳，以保有優惠"
           }
         },
-        "simple_banner_slot_e46GFp": {
-          "type": "simple_banner_slot",
-          "name": "6/6-6/22指定洗車藥劑✨ 任選$55",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "指定款$55",
-            "nav_label_override": "",
-            "section_icon": "",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/3_-02_0.jpg",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "https://apgo.tw/collections/%E6%B8%85%E6%BD%94%E8%97%A5%E5%8A%91%E5%85%A8%E7%B3%BB%E5%88%97",
-            "banner_anchor_id": ""
-          }
-        },
         "product_grid_3BCxpy": {
           "type": "product_grid",
           "name": "6/6-6/22指定洗車藥劑✨ 任選$55",
@@ -407,17 +391,12 @@
             "banner_spacing_bottom": true,
             "product_list": [
               "extreme-iron-remover",
-              "apgo-plastic-protectant",
-              "apgo-car-shampoo",
-              "apgo-natural-interior-protectant",
-              "apgo-anti-scratch-prewash-cleaner",
-              "water-stain-removeer",
-              "apgo-all-purpose-cleaner",
-              "apgo-wiper-fluid",
-              "apgo-wheel-cleaner",
-              "apgo-glass-cleaner",
               "apgo-fresh-interior-cleaner",
-              "apgo-bug-tar-remover"
+              "apgo-car-shampoo",
+              "apgo-all-purpose-cleaner",
+              "apgo-anti-scratch-prewash-cleaner",
+              "apgo-wheel-cleaner",
+              "apgo-plastic-protectant"
             ],
             "card_tag": "TAG",
             "card_layout": "vertical",
@@ -983,7 +962,6 @@
         "flash_sale_item_MXr8TC",
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
-        "simple_banner_slot_e46GFp",
         "product_grid_3BCxpy",
         "product_grid_63pFYA",
         "product_grid_HrcFDb",
