@@ -526,14 +526,14 @@
         },
         "simple_banner_slot_e46GFp": {
           "type": "simple_banner_slot",
-          "name": "6/1-6/22指定洗車藥劑✨ 任選$77",
+          "name": "6/6-6/22指定洗車藥劑✨ 任選$77",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "指定款$77",
+            "section_title": "指定款$55",
             "nav_label_override": "",
             "section_icon": "",
             "show_banner": true,
-            "banner_img": "shopify://shop_images/1280_0612-0622_618_500ml_77.jpg",
+            "banner_img": "shopify://shop_images/3_-02_0.jpg",
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
             "banner_link": "https://apgo.tw/collections/%E6%B8%85%E6%BD%94%E8%97%A5%E5%8A%91%E5%85%A8%E7%B3%BB%E5%88%97",
