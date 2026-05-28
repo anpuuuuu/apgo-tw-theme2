@@ -379,20 +379,20 @@
         },
         "product_grid_63pFYA": {
           "type": "product_grid",
-          "name": "6/1-6/22原子琉璃釉買一送一",
+          "name": "6/6-6/22原子琉璃釉買一送一",
           "settings": {
             "custom_anchor_id": "",
             "section_title": "買一送一",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_0612-0622.jpg",
+            "banner_img": "shopify://shop_images/02_0_c840d756-3405-4656-8cc9-d32261adfda5.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
             "product_list": [
               "apgo-atomic-colored-glaze"
             ],
-            "card_tag": "6/1-6/22開搶",
+            "card_tag": "6/6-6/22開搶",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "1"
