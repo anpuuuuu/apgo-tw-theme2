@@ -377,6 +377,22 @@
             "success_button_text": "前往結帳，以保有優惠"
           }
         },
+        "simple_banner_slot_e46GFp": {
+          "type": "simple_banner_slot",
+          "name": "6/6-6/22指定洗車藥劑✨ 任選$77",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "指定款$55",
+            "nav_label_override": "",
+            "section_icon": "",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/3_-02_0.jpg",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "https://apgo.tw/collections/%E6%B8%85%E6%BD%94%E8%97%A5%E5%8A%91%E5%85%A8%E7%B3%BB%E5%88%97",
+            "banner_anchor_id": ""
+          }
+        },
         "product_grid_63pFYA": {
           "type": "product_grid",
           "name": "6/6-6/22原子琉璃釉買一送一",
@@ -524,38 +540,19 @@
             "vertical_cards_per_view": "1"
           }
         },
-        "simple_banner_slot_e46GFp": {
-          "type": "simple_banner_slot",
-          "name": "6/6-6/22指定洗車藥劑✨ 任選$77",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "指定款$55",
-            "nav_label_override": "",
-            "section_icon": "",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/3_-02_0.jpg",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "https://apgo.tw/collections/%E6%B8%85%E6%BD%94%E8%97%A5%E5%8A%91%E5%85%A8%E7%B3%BB%E5%88%97",
-            "banner_anchor_id": ""
-          }
-        },
         "product_grid_p7CgbC": {
           "type": "product_grid",
-          "name": "6/1-6/30測速器現折$600",
+          "name": "6/1-6/30測速器G11只要$1688",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "測速器折$600",
+            "section_title": "G11只要$1688",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1280_G9G11_600.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
-            "product_list": [
-              "apgo-g11-plus",
-              "g9-plus"
-            ],
+            "product_list": [],
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -952,6 +949,7 @@
         "flash_sale_item_MXr8TC",
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
+        "simple_banner_slot_e46GFp",
         "product_grid_63pFYA",
         "product_grid_HrcFDb",
         "product_grid_jNQtE7",
@@ -959,7 +957,6 @@
         "product_grid_3mVxFr",
         "product_grid_zF47dN",
         "product_grid_fXt3Nh",
-        "simple_banner_slot_e46GFp",
         "product_grid_p7CgbC",
         "product_grid_XMR9K3",
         "product_grid_A6kewb",
