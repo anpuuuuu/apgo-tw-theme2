@@ -182,6 +182,22 @@
             "gift_product": "water-stain-removeer"
           }
         },
+        "reward_a9jdNM": {
+          "type": "reward",
+          "settings": {
+            "reward_type": "gift",
+            "icon_fallback": "🎁",
+            "icon_image": "shopify://shop_images/1_4fcd303c-66c5-4061-bae8-61ad4903a754.png",
+            "title": "滿額贈-塑膠保護劑500ml",
+            "reward_subtitle": "滿 $2680 即享（618專屬）",
+            "locked_text": "下一階段解鎖",
+            "unlocked_text": "已達成",
+            "better_tier_text": "已享更優",
+            "threshold_amount": 2680,
+            "reward_description": "",
+            "gift_product": "apgo-plastic-protectant"
+          }
+        },
         "reward_rjGwP6": {
           "type": "reward",
           "settings": {
@@ -242,6 +258,7 @@
         "reward_discount",
         "reward_gift",
         "reward_zBK6Bp",
+        "reward_a9jdNM",
         "reward_rjGwP6",
         "popup_tab_LxfNGk",
         "popup_tab_all",
