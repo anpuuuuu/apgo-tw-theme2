@@ -168,6 +168,7 @@
         },
         "reward_zBK6Bp": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -184,6 +185,7 @@
         },
         "reward_a9jdNM": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -200,6 +202,7 @@
         },
         "reward_DWVHdQ": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -216,6 +219,7 @@
         },
         "reward_g6J8nJ": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
