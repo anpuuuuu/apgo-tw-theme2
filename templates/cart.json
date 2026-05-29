@@ -168,19 +168,18 @@
         },
         "reward_zBK6Bp": {
           "type": "reward",
-          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
-            "icon_image": "shopify://shop_images/APGO_b1d96f4e-d898-4e67-8f64-d0af16aad6f6.png",
-            "title": "滿額贈-珊瑚絨毛巾",
-            "reward_subtitle": "滿 $2200 即享",
+            "icon_image": "shopify://shop_images/1_bb6aa5f5-3a91-47ad-bb0f-b24e9c42ace8.png",
+            "title": "滿額贈-水漬去除劑500ml",
+            "reward_subtitle": "滿 $1680 即享",
             "locked_text": "下一階段解鎖",
             "unlocked_text": "已達成",
             "better_tier_text": "已享更優",
-            "threshold_amount": 2200,
+            "threshold_amount": 1680,
             "reward_description": "",
-            "gift_product": "apgo珊瑚絨毛巾贈品-勿下單"
+            "gift_product": "water-stain-removeer"
           }
         },
         "reward_rjGwP6": {
