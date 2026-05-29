@@ -198,6 +198,22 @@
             "gift_product": "apgo-plastic-protectant"
           }
         },
+        "reward_DWVHdQ": {
+          "type": "reward",
+          "settings": {
+            "reward_type": "gift",
+            "icon_fallback": "🎁",
+            "icon_image": "shopify://shop_images/522eb0c16ecf85591cc4b3190fa81238_eb282738-9231-483b-9530-8fcd622cae3a.png",
+            "title": "滿額贈-鐵粉去除劑500ml",
+            "reward_subtitle": "滿 $3680 即享（618專屬）",
+            "locked_text": "下一階段解鎖",
+            "unlocked_text": "已達成",
+            "better_tier_text": "已享更優",
+            "threshold_amount": 3680,
+            "reward_description": "",
+            "gift_product": "extreme-iron-remover"
+          }
+        },
         "reward_rjGwP6": {
           "type": "reward",
           "settings": {
@@ -259,6 +275,7 @@
         "reward_gift",
         "reward_zBK6Bp",
         "reward_a9jdNM",
+        "reward_DWVHdQ",
         "reward_rjGwP6",
         "popup_tab_LxfNGk",
         "popup_tab_all",
