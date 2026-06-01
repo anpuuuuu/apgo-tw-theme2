@@ -142,12 +142,12 @@
           "settings": {
             "reward_type": "order_discount",
             "icon_fallback": "🏷️",
-            "title": "滿$1499折$140",
+            "title": "滿$1680折$168",
             "reward_subtitle": "滿 $1499 即享，部分商品不適用",
             "locked_text": "下一階段解鎖",
             "unlocked_text": "已解鎖",
             "better_tier_text": "已享更優",
-            "threshold_amount": 1499,
+            "threshold_amount": 168,
             "reward_description": "",
             "gift_product": ""
           }
