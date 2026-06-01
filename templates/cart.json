@@ -43,6 +43,7 @@
       "blocks": {
         "reward_BndqRc": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "order_discount",
             "icon_fallback": "🏷️",
@@ -137,6 +138,7 @@
         },
         "reward_discount": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "order_discount",
             "icon_fallback": "🏷️",
@@ -168,7 +170,6 @@
         },
         "reward_zBK6Bp": {
           "type": "reward",
-          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -185,7 +186,6 @@
         },
         "reward_a9jdNM": {
           "type": "reward",
-          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -202,7 +202,6 @@
         },
         "reward_DWVHdQ": {
           "type": "reward",
-          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -219,7 +218,6 @@
         },
         "reward_g6J8nJ": {
           "type": "reward",
-          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -236,6 +234,7 @@
         },
         "reward_rjGwP6": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "order_discount",
             "icon_fallback": "🏷️",
