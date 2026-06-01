@@ -140,12 +140,12 @@
           "settings": {
             "reward_type": "order_discount",
             "icon_fallback": "🏷️",
-            "title": "滿$1680折$168",
-            "reward_subtitle": "滿 $1680 即享，部分商品不適用",
+            "title": "滿$1688折$168",
+            "reward_subtitle": "滿 $1688 即享，部分商品不適用",
             "locked_text": "下一階段解鎖",
             "unlocked_text": "已解鎖",
             "better_tier_text": "已享更優",
-            "threshold_amount": 1680,
+            "threshold_amount": 1688,
             "reward_description": "",
             "gift_product": ""
           }
@@ -232,7 +232,6 @@
         },
         "reward_rjGwP6": {
           "type": "reward",
-          "disabled": true,
           "settings": {
             "reward_type": "order_discount",
             "icon_fallback": "🏷️",
