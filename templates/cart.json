@@ -152,6 +152,7 @@
         },
         "reward_gift": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
