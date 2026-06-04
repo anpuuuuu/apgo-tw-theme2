@@ -409,6 +409,7 @@
       "blocks": {
         "flip_text_C9X4fy": {
           "type": "flip_text",
+          "disabled": true,
           "settings": {
             "text": "滿額送玻璃雨刷小幫手",
             "text_color": "#f08418"
@@ -439,7 +440,7 @@
         "flip_text_R9TD7F": {
           "type": "flip_text",
           "settings": {
-            "text": "拒收罰單79折起",
+            "text": "拒收罰單65折起",
             "text_color": "#f08418"
           }
         },
