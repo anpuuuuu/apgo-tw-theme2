@@ -471,7 +471,7 @@
         "enable_shimmer": true,
         "status_text": "NEWS",
         "status_color": "#dc2626",
-        "text_prefix": "618更多折扣點我！",
+        "text_prefix": "618折扣點我！",
         "text_suffix": "- 限時搶購中",
         "cta_text": "立即前往",
         "cta_color": "#f08418"
