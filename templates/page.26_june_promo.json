@@ -425,9 +425,94 @@
             "vertical_cards_per_view": "1"
           }
         },
+        "product_grid_HrcFDb": {
+          "type": "product_grid",
+          "name": "6/6-6/22原子極光鍍膜買一送一",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "狂降3折",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/04_0_31b84096-fff5-4e7e-b131-9494cfcbfd7e.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "aurora-coating"
+            ],
+            "card_tag": "-6/22售完為止",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_p7CgbC": {
+          "type": "product_grid",
+          "name": "6/1-6/30測速器G11只要$1688",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "G11只要$1688",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/G9G11_600-02_0.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "apgo-g11-plus"
+            ],
+            "card_tag": "單件現折↘$900",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_jNQtE7": {
+          "type": "product_grid",
+          "name": "6/6-6/22【原子琉璃釉豪華組】",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "現折$1285",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/03_0_c2d62781-2ebf-44e2-9a05-fc584ccda34a.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "618topcoating-12set"
+            ],
+            "card_tag": "-6/22售完為止",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_ctn3Nm": {
+          "type": "product_grid",
+          "name": "6/6-6/22【原子極光豪華組】",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "現折$1285",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/12_1480-2.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "618aurora-coating12set"
+            ],
+            "card_tag": "6/6-6/22開搶",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "product_grid_A6kewb": {
           "type": "product_grid",
           "name": "6/1-6/30鍍膜全系列滿2件9折、3件85折",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "鍍膜85折起",
@@ -518,30 +603,10 @@
             "vertical_cards_per_view": "1"
           }
         },
-        "product_grid_p7CgbC": {
-          "type": "product_grid",
-          "name": "6/1-6/30測速器G11只要$1688",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "G11只要$1688",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/G9G11_600-02_0.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "apgo-g11-plus"
-            ],
-            "card_tag": "單件現折↘$900",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
         "product_grid_JAm4Qp": {
           "type": "product_grid",
           "name": "6/1-6/5清潔藥劑．4件85折、6件享7折",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "滿件7折起",
@@ -592,69 +657,6 @@
             ],
             "card_tag": "TAG",
             "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_HrcFDb": {
-          "type": "product_grid",
-          "name": "6/6-6/22原子極光鍍膜買一送一",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "狂降3折",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/04_0_31b84096-fff5-4e7e-b131-9494cfcbfd7e.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "aurora-coating"
-            ],
-            "card_tag": "6/6-6/22開搶",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_jNQtE7": {
-          "type": "product_grid",
-          "name": "6/6-6/22【原子琉璃釉豪華組】",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "現折$1285",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/03_0_c2d62781-2ebf-44e2-9a05-fc584ccda34a.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "618topcoating-12set"
-            ],
-            "card_tag": "6/2-6/22開搶",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_ctn3Nm": {
-          "type": "product_grid",
-          "name": "6/6-6/22【原子極光豪華組】",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "現折$1285",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/12_1480-2.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "618aurora-coating12set"
-            ],
-            "card_tag": "6/6-6/22開搶",
-            "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
           }
@@ -961,16 +963,16 @@
         "flash_sale_item_DLfea8",
         "product_grid_3BCxpy",
         "product_grid_63pFYA",
+        "product_grid_HrcFDb",
+        "product_grid_p7CgbC",
+        "product_grid_jNQtE7",
+        "product_grid_ctn3Nm",
         "product_grid_A6kewb",
         "product_grid_3mVxFr",
         "product_grid_zF47dN",
         "product_grid_fXt3Nh",
-        "product_grid_p7CgbC",
         "product_grid_JAm4Qp",
         "product_grid_XMR9K3",
-        "product_grid_HrcFDb",
-        "product_grid_jNQtE7",
-        "product_grid_ctn3Nm",
         "simple_banner_slot_V38Hcr",
         "simple_banner_slot_pxYmgd",
         "product_grid_nrB4HP",
