@@ -430,6 +430,13 @@
             "text_color": "#f08418"
           }
         },
+        "flip_text_BMnDtr": {
+          "type": "flip_text",
+          "settings": {
+            "text": "全館 $88 起",
+            "text_color": "#f08418"
+          }
+        },
         "flip_text_AiHEUp": {
           "type": "flip_text",
           "settings": {
@@ -463,6 +470,7 @@
         "flip_text_C9X4fy",
         "flip_text_NX3zpz",
         "flip_text_bJtk8x",
+        "flip_text_BMnDtr",
         "flip_text_AiHEUp",
         "flip_text_petMdb",
         "flip_text_R9TD7F",
