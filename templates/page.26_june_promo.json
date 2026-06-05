@@ -377,6 +377,54 @@
             "success_button_text": "前往結帳，以保有優惠"
           }
         },
+        "product_grid_3BCxpy": {
+          "type": "product_grid",
+          "name": "6/6-6/22指定洗車藥劑✨ 任選$55",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "指定款$55 今日開搶，售完為止",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/3_-02_0_f83f05e0-1b62-471c-84a5-0d8eb8609475.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "extreme-iron-remover",
+              "apgo-fresh-interior-cleaner",
+              "apgo-car-shampoo",
+              "apgo-all-purpose-cleaner",
+              "apgo-anti-scratch-prewash-cleaner",
+              "apgo-wheel-cleaner",
+              "apgo-plastic-protectant"
+            ],
+            "card_tag": "6/6-6/22開搶",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_63pFYA": {
+          "type": "product_grid",
+          "name": "6/6-6/22原子琉璃釉買一送一",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "買一送一",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/02_0_c840d756-3405-4656-8cc9-d32261adfda5.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "apgo-atomic-colored-glaze"
+            ],
+            "card_tag": "-6/22售完為止",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
         "product_grid_A6kewb": {
           "type": "product_grid",
           "name": "6/1-6/30鍍膜全系列滿2件9折、3件85折",
@@ -546,54 +594,6 @@
             "card_layout": "vertical",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_3BCxpy": {
-          "type": "product_grid",
-          "name": "6/6-6/22指定洗車藥劑✨ 任選$55",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "指定款$55 今日開搶，售完為止",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/3_-02_0_f83f05e0-1b62-471c-84a5-0d8eb8609475.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "extreme-iron-remover",
-              "apgo-fresh-interior-cleaner",
-              "apgo-car-shampoo",
-              "apgo-all-purpose-cleaner",
-              "apgo-anti-scratch-prewash-cleaner",
-              "apgo-wheel-cleaner",
-              "apgo-plastic-protectant"
-            ],
-            "card_tag": "6/6-6/22開搶",
-            "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_63pFYA": {
-          "type": "product_grid",
-          "name": "6/6-6/22原子琉璃釉買一送一",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "買一送一",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/02_0_c840d756-3405-4656-8cc9-d32261adfda5.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "apgo-atomic-colored-glaze"
-            ],
-            "card_tag": "6/6-6/22開搶",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
           }
         },
         "product_grid_HrcFDb": {
@@ -959,6 +959,8 @@
         "flash_sale_item_MXr8TC",
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
+        "product_grid_3BCxpy",
+        "product_grid_63pFYA",
         "product_grid_A6kewb",
         "product_grid_3mVxFr",
         "product_grid_zF47dN",
@@ -966,8 +968,6 @@
         "product_grid_p7CgbC",
         "product_grid_JAm4Qp",
         "product_grid_XMR9K3",
-        "product_grid_3BCxpy",
-        "product_grid_63pFYA",
         "product_grid_HrcFDb",
         "product_grid_jNQtE7",
         "product_grid_ctn3Nm",
