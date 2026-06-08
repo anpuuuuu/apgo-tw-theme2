@@ -607,7 +607,7 @@
 </style>
 <script>
 (function () {
-  if (location.pathname.indexOf('/challenge') !== 0) return;
+  if (location.pathname.indexOf('/challenge') === -1) return;
   var submitted = false;
   function tryAutoSubmit() {
     if (submitted) return;
