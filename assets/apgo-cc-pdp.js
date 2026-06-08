@@ -80,20 +80,26 @@
       if (!v) return;
       if (variantIdInput) variantIdInput.value = v.id;
       if (priceEl) priceEl.textContent = formatMoney(v.price);
-      // Swap main gallery image to the variant's featured_image when one
-      // is set in Shopify admin. Falls through silently if no per-variant
-      // image (card stays on the product-level featured_media).
-      var mainImg = $('[data-apgo-cc-main-img]', root);
-      if (mainImg && v.featured_image && v.featured_image.src) {
-        var newSrc = v.featured_image.src.replace(/(\?|&)width=\d+/, '$1width=1200');
-        if (!newSrc.match(/[?&]width=/)) {
-          newSrc += (newSrc.indexOf('?') > -1 ? '&' : '?') + 'width=1200';
-        }
-        if (mainImg.src !== newSrc) mainImg.src = newSrc;
-      }
-      // Sync the active thumb/dot to the variant's featured_media so the
-      // gallery indicator reflects which photo belongs to this variant.
+      // Scroll the gallery track to the variant's featured_media slide so
+      // the gallery shows the photo bound to this variant. The track is
+      // initialized later in this section, so we resolve elements lazily.
       if (v.featured_media && v.featured_media.id != null) {
+        var trackEl = $('[data-apgo-cc-gallery-track]', root);
+        var targetSlide = null;
+        if (trackEl) {
+          var allSlides = $$('[data-apgo-cc-gallery-slide]', trackEl);
+          for (var si = 0; si < allSlides.length; si++) {
+            if (allSlides[si].getAttribute('data-apgo-cc-media-id') === String(v.featured_media.id)) {
+              targetSlide = allSlides[si]; break;
+            }
+          }
+          if (targetSlide) {
+            var sIdx = parseInt(targetSlide.getAttribute('data-slide-index'), 10) || 0;
+            trackEl.scrollTo({ left: sIdx * trackEl.clientWidth, behavior: 'smooth' });
+          }
+        }
+        // Also flip thumb / dot active state immediately so the indicator
+        // updates before the scroll-end debounce fires.
         var activeMediaId = String(v.featured_media.id);
         $$('[data-apgo-cc-thumb]', root).forEach(function (el) {
           el.classList.toggle('is-active', el.getAttribute('data-apgo-cc-media-id') === activeMediaId);
@@ -226,114 +232,128 @@
       });
     }
 
-    // ---------------- Thumb / dot → main img ----------------
-    // Both thumbnails (with nested <img>) and dots (no <img>, just a
-    // data-apgo-cc-thumb-src attribute) use the same hook.
-    // Also: if this media is a variant's featured_media, propagate
-    // the click back into the variant chips so the chip below highlights
-    // the matching option (and price / variant id stay in sync).
-    var mainImg = $('[data-apgo-cc-main-img]', root);
+    // ---------------- Gallery track (scroll-snap) ----------------
+    // The gallery is a horizontal scroll track of all product.media slides.
+    // Native scroll-snap handles finger-follow drag + momentum + snap.
+    // JS responsibilities:
+    //  1. Thumb / dot click → scrollIntoView the matching slide
+    //  2. Variant chip change → scrollIntoView the variant's featured_media slide
+    //  3. On scroll-end, detect which slide is centered → toggle:
+    //     - data-apgo-cc-main-img attribute (so buybar / modal selectors
+    //       always reference the currently-visible image)
+    //     - thumb / dot is-active state
+    //     - propagate to variant chip if that media is a variant's
+    //       featured_media (mirrors the old click-to-swap behavior)
+    var galleryTrack = $('[data-apgo-cc-gallery-track]', root);
+    var slides = galleryTrack ? $$('[data-apgo-cc-gallery-slide]', galleryTrack) : [];
+
+    function slideByMediaId(mediaId) {
+      if (mediaId == null) return null;
+      var id = String(mediaId);
+      for (var i = 0; i < slides.length; i++) {
+        if (slides[i].getAttribute('data-apgo-cc-media-id') === id) return slides[i];
+      }
+      return null;
+    }
+
+    function scrollToSlide(slide, smooth) {
+      if (!slide || !galleryTrack) return;
+      var idx = parseInt(slide.getAttribute('data-slide-index'), 10) || 0;
+      // Use left offset rather than scrollIntoView to avoid scrolling the
+      // whole page (scrollIntoView would also scroll the viewport vertically
+      // to bring the gallery into view, which is not desired here).
+      galleryTrack.scrollTo({
+        left: idx * galleryTrack.clientWidth,
+        behavior: smooth === false ? 'auto' : 'smooth'
+      });
+    }
+
+    function setActiveSlide(slide) {
+      if (!slide) return;
+      slides.forEach(function (s) { s.classList.toggle('is-active', s === slide); });
+      // Move data-apgo-cc-main-img to the active slide's <img> so external
+      // selectors (buybar modal sync, etc.) read the currently-visible image.
+      slides.forEach(function (s) {
+        var img = $('img', s);
+        if (!img) return;
+        if (s === slide) img.setAttribute('data-apgo-cc-main-img', '');
+        else img.removeAttribute('data-apgo-cc-main-img');
+      });
+      // Mirror to thumb / dot active state
+      var activeMediaId = slide.getAttribute('data-apgo-cc-media-id');
+      $$('[data-apgo-cc-thumb]', root).forEach(function (t) {
+        t.classList.toggle('is-active', t.getAttribute('data-apgo-cc-media-id') === activeMediaId);
+      });
+    }
+
+    function activeSlideFromScroll() {
+      if (!galleryTrack || slides.length === 0) return null;
+      var idx = Math.round(galleryTrack.scrollLeft / galleryTrack.clientWidth);
+      idx = Math.max(0, Math.min(slides.length - 1, idx));
+      return slides[idx];
+    }
+
+    function propagateActiveToChips(slide) {
+      if (!slide) return;
+      var mediaId = slide.getAttribute('data-apgo-cc-media-id');
+      if (!mediaId) return;
+      var matchedVariant = null;
+      for (var vi = 0; vi < variants.length; vi++) {
+        var vv = variants[vi];
+        if (vv && vv.featured_media && String(vv.featured_media.id) === String(mediaId)) {
+          matchedVariant = vv; break;
+        }
+      }
+      if (!matchedVariant) return;
+      var vOpts = [matchedVariant.option1, matchedVariant.option2, matchedVariant.option3];
+      var groups = $$('[data-apgo-cc-option-group]', root);
+      var changed = false;
+      for (var gi = 0; gi < groups.length; gi++) {
+        var optVal = vOpts[gi];
+        if (optVal == null) continue;
+        var group = groups[gi];
+        var radio = group.querySelector(
+          'input[data-apgo-cc-option-input][value="' + optVal.replace(/"/g, '\\"') + '"]'
+        );
+        if (radio && !radio.checked) { radio.checked = true; changed = true; }
+      }
+      if (changed) {
+        // Set a flag so updateUI() doesn't loop back into scrolling
+        suppressScrollFromVariant = true;
+        updateUI();
+        suppressScrollFromVariant = false;
+      }
+    }
+
+    // Debounced scroll-end handler (no native scrollend support yet on Safari).
+    var scrollDebounce;
+    var suppressScrollFromVariant = false;
+    if (galleryTrack) {
+      galleryTrack.addEventListener('scroll', function () {
+        clearTimeout(scrollDebounce);
+        scrollDebounce = setTimeout(function () {
+          var slide = activeSlideFromScroll();
+          if (!slide || slide.classList.contains('is-active')) return;
+          setActiveSlide(slide);
+          if (!suppressScrollFromVariant) propagateActiveToChips(slide);
+        }, 120);
+      }, { passive: true });
+    }
+
+    // Thumb / dot click → scroll the track to the matching slide
     $$('[data-apgo-cc-thumb]', root).forEach(function (thumb) {
       thumb.addEventListener('click', function () {
-        if (!mainImg) return;
-        var src;
-        var img = $('img', thumb);
-        if (img) {
-          // Thumbnail with nested <img>: upgrade the width param
-          src = (img.currentSrc || img.src).replace(/(\?|&)width=\d+/, '$1width=1200');
-        } else if (thumb.dataset.apgoCcThumbSrc) {
-          // Dot indicator: full-size url passed via data attribute
-          src = thumb.dataset.apgoCcThumbSrc;
-        }
-        if (!src) return;
-        mainImg.src = src;
-        $$('[data-apgo-cc-thumb]', root).forEach(function (t) { t.classList.remove('is-active'); });
-        thumb.classList.add('is-active');
-
-        // If this thumb's media is a variant's featured_media, find that
-        // variant and select its options so the chip below highlights.
         var mediaId = thumb.getAttribute('data-apgo-cc-media-id');
-        if (!mediaId) return;
-        var matchedVariant = null;
-        for (var vi = 0; vi < variants.length; vi++) {
-          var vv = variants[vi];
-          if (vv && vv.featured_media && String(vv.featured_media.id) === String(mediaId)) {
-            matchedVariant = vv; break;
-          }
-        }
-        if (!matchedVariant) return;
-        var vOpts = [matchedVariant.option1, matchedVariant.option2, matchedVariant.option3];
-        var groups = $$('[data-apgo-cc-option-group]', root);
-        var changed = false;
-        for (var gi = 0; gi < groups.length; gi++) {
-          var optVal = vOpts[gi];
-          if (optVal == null) continue;
-          var group = groups[gi];
-          var radio = group.querySelector(
-            'input[data-apgo-cc-option-input][value="' + optVal.replace(/"/g, '\\"') + '"]'
-          );
-          if (radio && !radio.checked) { radio.checked = true; changed = true; }
-        }
-        // Fire updateUI() once at the end via a synthetic change so price /
-        // variant id / chip is-active states refresh in one pass (avoids
-        // re-running updateUI per option group).
-        if (changed) {
-          updateUI();
-        }
+        var slide = slideByMediaId(mediaId);
+        if (slide) scrollToSlide(slide, true);
       });
     });
 
-    // ---------------- Swipe gesture on main gallery image ----------------
-    // Mainly for the dot-indicator mode (show_thumbs off), but also
-    // works when thumbnails are shown. Reuses the same is-active logic
-    // by programmatically triggering the relevant thumb's click handler.
-    var galleryMain = $('.apgo-cc-pdp__gallery-main', root);
-    if (galleryMain) {
-      var swipeStartX = 0;
-      var swipeStartY = 0;
-      var swipeActive = false;
-      var SWIPE_MIN = 40; // px horizontal travel to count as swipe
-
-      function getThumbs() {
-        return $$('[data-apgo-cc-thumb]', root);
-      }
-      function currentIdx(thumbs) {
-        for (var i = 0; i < thumbs.length; i++) {
-          if (thumbs[i].classList.contains('is-active')) return i;
-        }
-        return 0;
-      }
-      function go(delta) {
-        var thumbs = getThumbs();
-        if (thumbs.length < 2) return;
-        var idx = currentIdx(thumbs);
-        var next = (idx + delta + thumbs.length) % thumbs.length;
-        thumbs[next].click();
-      }
-
-      galleryMain.addEventListener('touchstart', function (e) {
-        if (!e.touches || e.touches.length !== 1) return;
-        swipeStartX = e.touches[0].clientX;
-        swipeStartY = e.touches[0].clientY;
-        swipeActive = true;
-      }, { passive: true });
-
-      galleryMain.addEventListener('touchend', function (e) {
-        if (!swipeActive) return;
-        swipeActive = false;
-        var touch = e.changedTouches && e.changedTouches[0];
-        if (!touch) return;
-        var dx = touch.clientX - swipeStartX;
-        var dy = touch.clientY - swipeStartY;
-        // Horizontal swipe only — ignore vertical scroll gestures
-        if (Math.abs(dx) < SWIPE_MIN || Math.abs(dy) > Math.abs(dx)) return;
-        go(dx < 0 ? 1 : -1); // swipe left → next, swipe right → previous
-      });
-
-      galleryMain.addEventListener('touchcancel', function () {
-        swipeActive = false;
-      });
-    }
+    // Re-snap on viewport resize so we stay aligned to a slide boundary
+    window.addEventListener('resize', function () {
+      var slide = activeSlideFromScroll();
+      if (slide) scrollToSlide(slide, false);
+    });
 
     // ---------------- Toast (reuse .apgo-cc-toast CSS from quick-add) ----------------
     var toastEl = null;

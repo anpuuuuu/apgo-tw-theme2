@@ -41,14 +41,35 @@
     {%- endcomment -%}
     <div class="apgo-cc-pdp__gallery">
       <div class="apgo-cc-pdp__gallery-main">
-        {%- if product.featured_media -%}
-          <img
-            class="apgo-cc-pdp__gallery-img"
-            src="{{ product.featured_media | image_url: width: 1200 }}"
-            alt="{{ product.featured_media.alt | default: product.title }}"
-            data-apgo-cc-main-img
-            loading="eager"
-          >
+        {%- if product.media.size > 0 -%}
+          {%- comment -%}
+            Horizontal scroll track — all media rendered as snap slides.
+            Mobile gets native finger-follow drag + momentum + snap via
+            CSS scroll-snap-type. Desktop also uses the track so thumb
+            clicks scrollIntoView() the matching slide (same UX as before).
+            The currently-centered slide's <img> carries data-apgo-cc-main-img
+            (moved by JS) so buybar / modal / variant-swap selectors keep
+            working without changes elsewhere.
+          {%- endcomment -%}
+          <div class="apgo-cc-pdp__gallery-track" data-apgo-cc-gallery-track>
+            {%- for m in product.media -%}
+              <div
+                class="apgo-cc-pdp__gallery-slide{% if forloop.first %} is-active{% endif %}"
+                data-apgo-cc-gallery-slide
+                data-apgo-cc-media-id="{{ m.id }}"
+                data-slide-index="{{ forloop.index0 }}"
+              >
+                <img
+                  class="apgo-cc-pdp__gallery-img"
+                  src="{{ m | image_url: width: 1200 }}"
+                  alt="{{ m.alt | default: product.title }}"
+                  {% if forloop.first %}data-apgo-cc-main-img{% endif %}
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  draggable="false"
+                >
+              </div>
+            {%- endfor -%}
+          </div>
         {%- else -%}
           <div class="apgo-cc-pdp__gallery-placeholder">尚未上傳商品圖</div>
         {%- endif -%}

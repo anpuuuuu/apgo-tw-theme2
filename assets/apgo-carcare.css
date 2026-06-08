@@ -798,10 +798,40 @@ body.apgo-cc-skin .apgo-cc-pdp {
   overflow: hidden;
   display: flex; align-items: center; justify-content: center;
 }
+
+/* Horizontal scroll track — uses native scroll-snap for finger-follow drag */
+.apgo-cc-pdp__gallery-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scrollbar-width: none;          /* Firefox */
+  overscroll-behavior-x: contain; /* don't trigger page back-nav swipe */
+}
+.apgo-cc-pdp__gallery-track::-webkit-scrollbar { display: none; }
+
+.apgo-cc-pdp__gallery-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .apgo-cc-pdp__gallery-img {
   width: 100%; height: 100%;
   object-fit: cover;
   display: block;
+  user-select: none;
+  -webkit-user-drag: none;        /* don't show image-drag ghost on desktop */
+  pointer-events: none;           /* let drag events bubble to track */
 }
 .apgo-cc-pdp__gallery-placeholder {
   color: var(--cc-fg-dim);
