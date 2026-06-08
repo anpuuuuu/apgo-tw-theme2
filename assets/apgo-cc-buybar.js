@@ -258,6 +258,33 @@
   var purchaseAddCta    = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-cta="add"]');
   var purchaseBuyCta    = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-cta="buy"]');
 
+  // Mirror the in-panel form's currently checked option radios onto the
+  // modal's own chip radios. Without this, the modal always shows the
+  // first variant as active (whatever Shopify rendered as option.selected_value
+  // at page load), regardless of which chip the user actually clicked.
+  function syncModalChipsFromForm() {
+    if (!purchaseRoot || !form) return;
+    var inPanelChecked = $$('input[data-apgo-cc-option-input]:checked', form);
+    inPanelChecked.forEach(function (panelInput) {
+      var optionName = panelInput.getAttribute('data-option-name')
+        || (panelInput.name || '').replace(/^options\[(.+)\]$/, '$1');
+      if (!optionName) return;
+      var modalInput = purchaseRoot.querySelector(
+        'input[data-apgo-cc-modal-option-input][data-option-name="' + optionName + '"][value="' + panelInput.value.replace(/"/g, '\\"') + '"]'
+      );
+      if (!modalInput) return;
+      modalInput.checked = true;
+      // Flip is-active class on this group's chip labels
+      var group = modalInput.closest('.apgo-cc-pdp__option-group');
+      if (group) {
+        $$('label.apgo-cc-pdp__chip', group).forEach(function (lbl) {
+          var lblInput = lbl.querySelector('input[data-apgo-cc-modal-option-input]');
+          lbl.classList.toggle('is-active', !!lblInput && lblInput.checked);
+        });
+      }
+    });
+  }
+
   function openPurchase(mode) {
     if (!purchaseRoot) return;
     var m = (mode === 'buy' || mode === 'both') ? mode : 'add';
@@ -265,6 +292,9 @@
     // Hidden screen-reader label for the active intent (best effort)
     var srLabel = m === 'buy' ? '立即購買' : m === 'both' ? '購買選項' : '加入購物車';
     if (purchaseModeLabel) purchaseModeLabel.textContent = srLabel;
+    // Sync modal chips to in-panel selection BEFORE syncing price/img so
+    // any downstream state derived from chip state is consistent.
+    syncModalChipsFromForm();
     // Sync modal price + image from the in-panel display (apgo-cc-pdp.js
     // keeps the in-panel ones fresh on variant change).
     var sourcePrice = document.querySelector('[data-apgo-cc-price]');
