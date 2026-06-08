@@ -733,13 +733,23 @@
   /* Section spans FULL width; inner content centered to 1280 */
   .apgo-mpdp { width: 100%; padding: 0 0 80px; margin: 0; max-width: none; }
 
-  /* ---------- Tabs (desktop) ---------- */
+  /* ---------- Feature card + Tabs (desktop): constrain to 3/4 width, centered ---------- */
+  .apgo-mpdp-feature-card {
+    width: 75%;
+    max-width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .apgo-mpdp-tabs {
     display: flex; justify-content: center; gap: 20px;
     border-top: 1px solid var(--apgo-line);
     border-bottom: 1px solid var(--apgo-line);
-    margin: 0 0 0; padding: 0 32px; overflow: visible;
-    max-width: none;
+    margin: 0 auto;
+    padding: 0 32px;
+    overflow: visible;
+    width: 75%;
+    max-width: 75%;
+    box-sizing: border-box;
   }
   .apgo-mpdp-tab {
     flex: 0 0 auto; padding: 20px 0; font-size: 13px;
