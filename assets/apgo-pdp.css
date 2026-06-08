@@ -733,23 +733,13 @@
   /* Section spans FULL width; inner content centered to 1280 */
   .apgo-mpdp { width: 100%; padding: 0 0 80px; margin: 0; max-width: none; }
 
-  /* ---------- Feature card + Tabs (desktop): constrain to 3/4 width, centered ---------- */
-  .apgo-mpdp-feature-card {
-    width: 75%;
-    max-width: 75%;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  /* ---------- Tabs (desktop) — full-width bar ---------- */
   .apgo-mpdp-tabs {
     display: flex; justify-content: center; gap: 20px;
     border-top: 1px solid var(--apgo-line);
     border-bottom: 1px solid var(--apgo-line);
-    margin: 0 auto;
-    padding: 0 32px;
-    overflow: visible;
-    width: 75%;
-    max-width: 75%;
-    box-sizing: border-box;
+    margin: 0 0 0; padding: 0 32px; overflow: visible;
+    max-width: none;
   }
   .apgo-mpdp-tab {
     flex: 0 0 auto; padding: 20px 0; font-size: 13px;
@@ -1221,6 +1211,25 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
 .apgo-mpdp-feature-body strong { font-weight: 600; color: var(--apgo-ink); }
 .apgo-mpdp-feature-body img { max-width: 100%; height: auto; display: block; margin: 12px auto; border-radius: 6px; }
 .apgo-mpdp-feature-body a { color: var(--apgo-sage); text-decoration: underline; }
+
+/* Desktop: feature card + tab content panels constrained to 75% width, centered.
+   Declared AFTER the base feature-card rule so the centering margin wins
+   the cascade over the mobile `margin: 16px 16px 0` shorthand. */
+@media (min-width: 769px) {
+  .apgo-mpdp-feature-card {
+    width: 75%;
+    max-width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .apgo-mpdp-panel {
+    width: 75%;
+    max-width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+}
 
 /* ==========================================================================
    APGO · Feature gallery — long-form product images inside 商品特色 tab
