@@ -325,16 +325,44 @@
       }
     }
 
-    // Debounced scroll-end handler (no native scrollend support yet on Safari).
+    // Scroll handler — split into two passes:
+    //   1. Live tick (rAF-throttled): update thumb/dot/slide is-active class
+    //      so the dot indicator follows the user's finger in real time
+    //   2. Debounced settle (120ms after scroll stops): the heavier work —
+    //      move data-apgo-cc-main-img attribute + propagate to variant chips
+    //      (deferred because it triggers DOM mutations external code reads)
     var scrollDebounce;
+    var scrollRaf = 0;
+    var lastLiveSlide = null;
     var suppressScrollFromVariant = false;
+
+    function setActiveSlideLive(slide) {
+      // Cheap, idempotent — only flips class names, no attribute moves
+      if (!slide || slide === lastLiveSlide) return;
+      lastLiveSlide = slide;
+      slides.forEach(function (s) { s.classList.toggle('is-active', s === slide); });
+      var activeMediaId = slide.getAttribute('data-apgo-cc-media-id');
+      $$('[data-apgo-cc-thumb]', root).forEach(function (t) {
+        t.classList.toggle('is-active', t.getAttribute('data-apgo-cc-media-id') === activeMediaId);
+      });
+    }
+
     if (galleryTrack) {
       galleryTrack.addEventListener('scroll', function () {
+        // Live indicator update — runs every scroll frame
+        if (!scrollRaf) {
+          scrollRaf = requestAnimationFrame(function () {
+            scrollRaf = 0;
+            var slide = activeSlideFromScroll();
+            if (slide) setActiveSlideLive(slide);
+          });
+        }
+        // Debounced settle — moves data-apgo-cc-main-img + chip propagation
         clearTimeout(scrollDebounce);
         scrollDebounce = setTimeout(function () {
           var slide = activeSlideFromScroll();
-          if (!slide || slide.classList.contains('is-active')) return;
-          setActiveSlide(slide);
+          if (!slide) return;
+          setActiveSlide(slide); // moves data-apgo-cc-main-img attr
           if (!suppressScrollFromVariant) propagateActiveToChips(slide);
         }, 120);
       }, { passive: true });
