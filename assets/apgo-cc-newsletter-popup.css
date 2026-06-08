@@ -1,0 +1,449 @@
+.apgo-cc-newsletter {
+  --apgo-newsletter-panel: #111419;
+  --apgo-newsletter-panel-soft: #1b1f26;
+  --apgo-newsletter-ink: #f8f5ee;
+  --apgo-newsletter-muted: rgba(248, 245, 238, .72);
+  --apgo-newsletter-dim: rgba(248, 245, 238, .48);
+  --apgo-newsletter-line: rgba(255, 255, 255, .16);
+  --apgo-newsletter-orange: var(--cc-orange, #ff6b1a);
+  --apgo-newsletter-orange-hi: var(--cc-orange-hi, #ff8240);
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  color: var(--apgo-newsletter-ink);
+  font-family: Inter, var(--font-body--family), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.apgo-cc-newsletter.is-open {
+  display: block;
+}
+
+.apgo-cc-newsletter [hidden] {
+  display: none !important;
+}
+
+.apgo-cc-newsletter__backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: rgba(3, 8, 7, .78);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+.apgo-cc-newsletter__sheet {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  grid-template-columns: minmax(330px, 1.04fr) minmax(340px, .96fr);
+  width: min(940px, calc(100vw - 48px));
+  height: min(560px, calc(100vh - 48px));
+  overflow: hidden;
+  border: 1px solid rgba(255, 107, 26, .22);
+  border-radius: 8px;
+  background: var(--apgo-newsletter-panel);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, .62);
+  transform: translate(-50%, -48%) scale(.97);
+  opacity: 0;
+  transition: opacity .22s ease, transform .22s ease;
+}
+
+.apgo-cc-newsletter.is-open .apgo-cc-newsletter__sheet {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.apgo-cc-newsletter__media {
+  min-height: 0;
+  height: 100%;
+  background: #151515;
+}
+
+.apgo-cc-newsletter__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.apgo-cc-newsletter__media--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(135deg, rgba(255, 107, 26, .24), rgba(0, 0, 0, .08)),
+    #1c1f24;
+}
+
+.apgo-cc-newsletter__media--fallback::before {
+  content: "APGO";
+  color: var(--apgo-newsletter-orange);
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.apgo-cc-newsletter__close {
+  position: absolute;
+  right: 18px;
+  top: 16px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .18);
+  color: var(--apgo-newsletter-muted);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color .2s ease, border-color .2s ease, background .2s ease, transform .2s ease;
+}
+
+.apgo-cc-newsletter__close:hover,
+.apgo-cc-newsletter__close:focus-visible {
+  border-color: rgba(255, 107, 26, .45);
+  background: rgba(255, 107, 26, .12);
+  color: var(--apgo-newsletter-orange);
+  transform: rotate(90deg);
+}
+
+.apgo-cc-newsletter__content,
+.apgo-cc-newsletter__success {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 52px 52px 44px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 107, 26, .14), transparent 34%),
+    var(--apgo-newsletter-panel);
+}
+
+.apgo-cc-newsletter__title,
+.apgo-cc-newsletter__success-title {
+  margin: 0;
+  color: var(--apgo-newsletter-ink);
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.apgo-cc-newsletter__title strong {
+  color: var(--apgo-newsletter-orange);
+}
+
+.apgo-cc-newsletter__sub,
+.apgo-cc-newsletter__success-copy {
+  margin: 12px auto 0;
+  max-width: 340px;
+  color: var(--apgo-newsletter-muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.apgo-cc-newsletter__bonus {
+  margin: 8px auto 26px;
+  max-width: 340px;
+  color: var(--apgo-newsletter-orange);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.apgo-cc-newsletter__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.apgo-cc-newsletter__field {
+  width: 100%;
+  height: 54px;
+  padding: 0 17px;
+  border: 1px solid var(--apgo-newsletter-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .06);
+  color: var(--apgo-newsletter-ink);
+  font-size: 15px;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.apgo-cc-newsletter__field::placeholder {
+  color: var(--apgo-newsletter-dim);
+}
+
+.apgo-cc-newsletter__field:hover {
+  border-color: rgba(255, 107, 26, .34);
+  background: rgba(255, 255, 255, .08);
+}
+
+.apgo-cc-newsletter__field:hover::placeholder {
+  color: rgba(248, 245, 238, .58);
+}
+
+.apgo-cc-newsletter__field:focus {
+  border-color: var(--apgo-newsletter-orange);
+  background: rgba(255, 255, 255, .09);
+  box-shadow: 0 0 0 3px rgba(255, 107, 26, .14);
+}
+
+.apgo-cc-newsletter__consent {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 9px;
+  text-align: left;
+  color: var(--apgo-newsletter-muted);
+  font-size: 12px;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.apgo-cc-newsletter__consent input {
+  width: 15px;
+  height: 15px;
+  margin: 1px 0 0;
+  accent-color: var(--apgo-newsletter-orange);
+}
+
+.apgo-cc-newsletter__consent p {
+  margin: 0;
+}
+
+.apgo-cc-newsletter__consent a {
+  color: var(--apgo-newsletter-orange);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.apgo-cc-newsletter__consent a:hover,
+.apgo-cc-newsletter__consent a:focus-visible,
+.apgo-cc-newsletter__consent a:active {
+  color: #0b0d10;
+  background: var(--apgo-newsletter-orange);
+  text-decoration-color: transparent;
+}
+
+.apgo-cc-newsletter__error {
+  margin: 0;
+  color: #ff8d82;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.apgo-cc-newsletter__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 54px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--apgo-newsletter-orange);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background .2s ease, opacity .2s ease, transform .2s ease;
+}
+
+.apgo-cc-newsletter__cta:hover,
+.apgo-cc-newsletter__cta:focus-visible {
+  background: var(--apgo-newsletter-orange-hi);
+  transform: translateY(-1px);
+}
+
+.apgo-cc-newsletter__cta:disabled {
+  cursor: wait;
+  opacity: .6;
+  transform: none;
+}
+
+.apgo-cc-newsletter__dismiss {
+  position: relative;
+  align-self: center;
+  margin-top: 18px;
+  padding: 0 0 7px;
+  border: 0;
+  background: transparent;
+  color: var(--apgo-newsletter-dim);
+  font-size: 14px;
+  cursor: pointer;
+  transition: color .2s ease;
+}
+
+.apgo-cc-newsletter__dismiss::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--apgo-newsletter-orange);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.apgo-cc-newsletter__dismiss:hover,
+.apgo-cc-newsletter__dismiss:focus-visible {
+  color: var(--apgo-newsletter-orange);
+}
+
+.apgo-cc-newsletter__dismiss:hover::after,
+.apgo-cc-newsletter__dismiss:focus-visible::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.apgo-cc-newsletter__success-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 20px;
+  border-radius: 999px;
+  background: rgba(255, 107, 26, .14);
+  color: var(--apgo-newsletter-orange);
+  font-size: 38px;
+  font-weight: 800;
+}
+
+@media (max-width: 749px) {
+  .apgo-cc-newsletter__sheet {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: min(392px, calc(100vw - 18px));
+    height: auto;
+    min-height: 0;
+    max-height: calc(100vh - 18px);
+    overflow-y: auto;
+    border-radius: 8px;
+    background: #080b0d;
+  }
+
+  .apgo-cc-newsletter__media {
+    position: relative;
+    grid-row: 1;
+    height: auto;
+    min-height: 0;
+    padding: 10px 10px 0;
+    background: #080b0d;
+  }
+
+  .apgo-cc-newsletter__media::after {
+    display: none;
+  }
+
+  .apgo-cc-newsletter__media img {
+    aspect-ratio: 1 / 1.12;
+    height: auto;
+    min-height: 0;
+    max-height: min(390px, 49vh);
+    object-fit: cover;
+    object-position: center;
+    filter: none;
+    transform: none;
+    border-radius: 6px 6px 0 0;
+  }
+
+  .apgo-cc-newsletter__content,
+  .apgo-cc-newsletter__success {
+    grid-column: 1;
+    grid-row: 2;
+    z-index: 1;
+    min-height: 0;
+    padding: 14px 18px 18px;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255, 107, 26, .12), transparent 34%),
+      #111419;
+  }
+
+  .apgo-cc-newsletter__close {
+    right: 15px;
+    top: 15px;
+    color: #fff;
+    background: rgba(0, 0, 0, .28);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, .45);
+  }
+
+  .apgo-cc-newsletter__title,
+  .apgo-cc-newsletter__success-title {
+    font-size: 25px;
+    line-height: 1.05;
+  }
+
+  .apgo-cc-newsletter__sub,
+  .apgo-cc-newsletter__success-copy {
+    margin-top: 6px;
+    color: var(--apgo-newsletter-muted);
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .apgo-cc-newsletter__bonus {
+    margin-top: 4px;
+    margin-bottom: 12px;
+    font-size: 11px;
+    line-height: 1.25;
+  }
+
+  .apgo-cc-newsletter__form {
+    gap: 7px;
+  }
+
+  .apgo-cc-newsletter__field {
+    height: 42px;
+    padding-inline: 12px;
+    font-size: 13px;
+    border-color: rgba(255, 255, 255, .1);
+  }
+
+  .apgo-cc-newsletter__field,
+  .apgo-cc-newsletter__field:hover,
+  .apgo-cc-newsletter__field:focus {
+    background: rgba(255, 255, 255, .09);
+  }
+
+  .apgo-cc-newsletter__consent {
+    color: var(--apgo-newsletter-muted);
+    font-size: 10px;
+    line-height: 1.3;
+    gap: 7px;
+  }
+
+  .apgo-cc-newsletter__consent input {
+    width: 13px;
+    height: 13px;
+  }
+
+  .apgo-cc-newsletter__cta {
+    align-self: center;
+    width: min(260px, 82%);
+    min-height: 42px;
+    font-size: 13px;
+  }
+
+  .apgo-cc-newsletter__dismiss {
+    margin-top: 6px;
+    padding-bottom: 3px;
+    font-size: 12px;
+  }
+}

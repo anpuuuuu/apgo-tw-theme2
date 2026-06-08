@@ -9,6 +9,20 @@
  */
 {
   "sections": {
+    "apgo_cc_newsletter_popup": {
+      "type": "apgo-cc-newsletter-popup",
+      "settings": {
+        "enabled": true,
+        "title": "加入 APGO 電子報",
+        "subtitle": "不錯過新品上市 & 限時優惠",
+        "bonus_text": "現在訂閱即可獲得一張100元購物金",
+        "cta_label": "立即訂閱",
+        "dismiss_label": "今天先不要",
+        "consent_label": "<p>我同意接收 APGO 行銷郵件並了解 <a href=\"/policies/privacy-policy\">隱私條款</a></p>",
+        "success_title": "感謝訂閱 APGO 電子報！",
+        "image": ""
+      }
+    },
     "promotional_banner_PgHgtX": {
       "type": "promotional-banner",
       "disabled": true,
@@ -648,6 +662,7 @@
     }
   },
   "order": [
+    "apgo_cc_newsletter_popup",
     "promotional_banner_PgHgtX",
     "marquee_p8YTpL",
     "section_NcGDMK",
