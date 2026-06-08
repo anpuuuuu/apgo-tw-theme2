@@ -12,6 +12,26 @@
   Bundle widget (right rail in the desktop mock) is deferred to Phase 6.
 {%- endcomment -%}
 
+{%- comment -%}
+  限時特價 gate — section setting `sale_tag` (default "限時特價") combined
+  with compare_at_price > price decides whether the sale label / styling /
+  特價 badge / 省 NT$ X pill appear. Admin can prep compare_at_price in
+  advance and just toggle the tag on/off to activate the sale UI per
+  product. If sale_tag is left blank in the section settings, falls back
+  to the old behaviour (compare > price alone triggers the sale UI).
+{%- endcomment -%}
+{%- assign sale_tag = section.settings.sale_tag | default: '限時特價' -%}
+{%- assign has_sale_tag = false -%}
+{%- if sale_tag == blank -%}
+  {%- assign has_sale_tag = true -%}
+{%- elsif product.tags contains sale_tag -%}
+  {%- assign has_sale_tag = true -%}
+{%- endif -%}
+{%- assign is_on_sale = false -%}
+{%- if has_sale_tag and product.compare_at_price > product.price -%}
+  {%- assign is_on_sale = true -%}
+{%- endif -%}
+
 <section class="apgo-cc-pdp" data-apgo-cc-pdp data-section-id="{{ section.id }}">
 
   {%- comment -%} Breadcrumb {%- endcomment -%}
@@ -73,7 +93,7 @@
         {%- else -%}
           <div class="apgo-cc-pdp__gallery-placeholder">尚未上傳商品圖</div>
         {%- endif -%}
-        {%- if product.compare_at_price > product.price -%}
+        {%- if is_on_sale -%}
           <span class="apgo-cc-pdp__sale-tag">特價</span>
         {%- endif -%}
 
@@ -151,8 +171,8 @@
         Countdown timer (spec §5.1) needs apgo.active_campaign metafield;
         deferred until that's wired.
       {%- endcomment -%}
-      <div class="apgo-cc-pdp__price-card{% if product.compare_at_price > product.price %} apgo-cc-pdp__price-card--sale{% endif %}">
-        {%- if product.compare_at_price > product.price -%}
+      <div class="apgo-cc-pdp__price-card{% if is_on_sale %} apgo-cc-pdp__price-card--sale{% endif %}">
+        {%- if is_on_sale -%}
           {%- assign save_amount = product.compare_at_price | minus: product.price -%}
           {%- comment -%}
             2-row layout per design:
@@ -560,7 +580,7 @@
 </section>
 
 {%- comment -%} Mobile sticky buy bar — fixed bottom, hidden on desktop {%- endcomment -%}
-{% render 'apgo-cc-mobile-buybar', product: product %}
+{% render 'apgo-cc-mobile-buybar', product: product, is_on_sale: is_on_sale %}
 
 {% schema %}
 {
@@ -568,6 +588,9 @@
   "tag": "section",
   "class": "apgo-cc-pdp-section",
   "settings": [
+    { "type": "header", "content": "限時特價" },
+    { "type": "text", "id": "sale_tag", "label": "限時特價 tag 名稱", "info": "商品有這個 tag 且 compare_at_price > price 時才顯示「限時特價」標籤、原價刪線、省 $X 標。留空則退回舊行為（只看 compare_at_price）。", "default": "限時特價" },
+
     { "type": "header", "content": "頁面開關" },
     { "type": "checkbox", "id": "show_breadcrumb", "label": "顯示麵包屑", "default": true },
     { "type": "checkbox", "id": "show_rating",     "label": "顯示星等評分", "default": true },

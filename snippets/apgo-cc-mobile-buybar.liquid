@@ -152,7 +152,7 @@
           <span class="apgo-cc-purchase__price" data-apgo-cc-purchase-price>
             {{ product.selected_or_first_available_variant.price | money }}
           </span>
-          {%- if product.compare_at_price > product.price -%}
+          {%- if is_on_sale -%}
             <span class="apgo-cc-purchase__compare">{{ product.compare_at_price | money }}</span>
           {%- endif -%}
         </div>
