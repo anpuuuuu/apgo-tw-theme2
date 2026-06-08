@@ -466,16 +466,15 @@
 
 .apgo-mpdp-tab {
   flex: 0 0 auto;                 /* don't squish — let content size dictate */
-  min-width: 25vw;                /* still spreads evenly when ≤4 tabs fit screen */
-  padding: 12px 16px;
+  padding: 12px 10px;             /* tighter horizontal padding so tabs sit closer */
   font-size: 12px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   color: var(--apgo-muted);
   border: none;
   background: none;
   cursor: pointer;
   border-bottom: 2px solid transparent;
-  white-space: nowrap;            /* keep "不滿意全額退" + "活動詳情" on their own lines, but not wrap mid-word */
+  white-space: nowrap;
   line-height: 1.25;
   scroll-snap-align: start;
 }
@@ -736,7 +735,7 @@
 
   /* ---------- Tabs (desktop) ---------- */
   .apgo-mpdp-tabs {
-    display: flex; justify-content: center; gap: 48px;
+    display: flex; justify-content: center; gap: 20px;
     border-top: 1px solid var(--apgo-line);
     border-bottom: 1px solid var(--apgo-line);
     margin: 0 0 0; padding: 0 32px; overflow: visible;
@@ -915,7 +914,7 @@
 @media (min-width: 769px) and (max-width: 1080px) {
   .apgo-mpdp-ritual-wrap { gap: 32px; padding: 48px 24px; }
   .apgo-mpdp-ritual-text h2 { font-size: 26px; }
-  .apgo-mpdp-tabs { gap: 32px; padding: 0 24px; }
+  .apgo-mpdp-tabs { gap: 14px; padding: 0 24px; }
   .apgo-mpdp-pain-wrap { padding: 48px 0; }
   .apgo-mpdp-pain-grid { max-width: 100%; }
   .apgo-mpdp-pain-card { padding: 14px 20px; gap: 12px; }
