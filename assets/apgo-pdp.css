@@ -450,20 +450,57 @@
 }
 .apgo-mpdp-ship-sep { height: 1px; background: var(--apgo-line); }
 
-/* Tabs */
+/* Tabs (mobile) — horizontally scrollable when content overflows */
 .apgo-mpdp-tabs {
-  display: flex; background: var(--apgo-bg-alt);
-  border-top: 1px solid rgba(94,111,93,0.2); border-bottom: 1px solid rgba(94,111,93,0.2);
+  display: flex;
+  background: var(--apgo-bg-alt);
+  border-top: 1px solid rgba(94,111,93,0.2);
+  border-bottom: 1px solid rgba(94,111,93,0.2);
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;          /* Firefox */
+  scroll-snap-type: x proximity;
 }
+.apgo-mpdp-tabs::-webkit-scrollbar { display: none; } /* WebKit */
+
 .apgo-mpdp-tab {
-  flex: 1; padding: 12px 0; font-size: 12px; letter-spacing: 0.1em;
-  color: var(--apgo-muted); border: none; background: none; cursor: pointer;
+  flex: 0 0 auto;                 /* don't squish — let content size dictate */
+  min-width: 25vw;                /* still spreads evenly when ≤4 tabs fit screen */
+  padding: 12px 16px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--apgo-muted);
+  border: none;
+  background: none;
+  cursor: pointer;
   border-bottom: 2px solid transparent;
+  white-space: nowrap;            /* keep "不滿意全額退" + "活動詳情" on their own lines, but not wrap mid-word */
+  line-height: 1.25;
+  scroll-snap-align: start;
+}
+/* 2-line label support (mobile: line2 wraps below; desktop: inline w/ space) */
+.apgo-mpdp-tab-line2 {
+  display: block;
 }
 .apgo-mpdp-tab.active { color: var(--apgo-ink); border-bottom-color: var(--apgo-ink); }
 
 .apgo-mpdp-panel { display: none; }
 .apgo-mpdp-panel.active { display: block; }
+
+/* 不滿意全額退 panel — full-width image stack */
+.apgo-mpdp-warranty {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+}
+.apgo-mpdp-warranty-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
 
 /* Ritual */
 .apgo-mpdp-ritual { position: relative; background: transparent; border-radius: 12px; overflow: hidden; }
@@ -714,6 +751,8 @@
   .apgo-mpdp-tab.active {
     color: var(--apgo-ink); border-bottom-color: var(--apgo-ink); font-weight: 500;
   }
+  /* desktop: collapse 2-line label back to single line with a space */
+  .apgo-mpdp-tab-line2 { display: inline; margin-left: 0.35em; }
 
   /* ---------- Panel: full-width container, inner blocks decide their own width ---------- */
   .apgo-mpdp-panel { padding: 0; max-width: none; margin: 0; }
