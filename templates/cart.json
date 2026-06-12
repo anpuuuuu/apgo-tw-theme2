@@ -73,6 +73,7 @@
         },
         "reward_YpAQfz": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -84,7 +85,23 @@
             "better_tier_text": "已享更優",
             "threshold_amount": 1680,
             "reward_description": "",
-            "gift_product": "apgo水漬去除劑500ml贈品-勿下單"
+            "gift_product": "apgo塑膠保護劑500ml贈品-勿下單"
+          }
+        },
+        "reward_kwq3Dx": {
+          "type": "reward",
+          "settings": {
+            "reward_type": "standard",
+            "icon_fallback": "🎁",
+            "icon_image": "shopify://shop_images/06a7d28cd9515ad58e8c0cd5deb91e92.webp",
+            "title": "滿額贈-水漬去除劑",
+            "reward_subtitle": "滿 $1680 即享（618專屬)",
+            "locked_text": "下一階段解鎖",
+            "unlocked_text": "已達成",
+            "better_tier_text": "已享更優",
+            "threshold_amount": 1680,
+            "reward_description": "",
+            "gift_product": "apgo塑膠保護劑500ml贈品-勿下單"
           }
         },
         "reward_discount": {
@@ -104,10 +121,27 @@
         },
         "reward_a9jdNM": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
             "icon_image": "shopify://shop_images/1_4fcd303c-66c5-4061-bae8-61ad4903a754.png",
+            "title": "滿額贈-塑膠保護劑",
+            "reward_subtitle": "滿 $2680 即享（618專屬）",
+            "locked_text": "下一階段解鎖",
+            "unlocked_text": "部分商品不適用",
+            "better_tier_text": "已享更優",
+            "threshold_amount": 2680,
+            "reward_description": "",
+            "gift_product": "apgo塑膠保護劑500ml贈品-勿下單"
+          }
+        },
+        "reward_NCHjbq": {
+          "type": "reward",
+          "settings": {
+            "reward_type": "gift",
+            "icon_fallback": "🎁",
+            "icon_image": "shopify://shop_images/ea434f24e900f249964902afbc2c3077.webp",
             "title": "滿額贈-塑膠保護劑",
             "reward_subtitle": "滿 $2680 即享（618專屬）",
             "locked_text": "下一階段解鎖",
@@ -146,7 +180,7 @@
             "better_tier_text": "已享更優",
             "threshold_amount": 3680,
             "reward_description": "",
-            "gift_product": "apgo鐵粉去除劑500ml贈品-勿下單"
+            "gift_product": "apgo塑膠保護劑500ml贈品-勿下單"
           }
         },
         "reward_g6J8nJ": {
@@ -204,8 +238,10 @@
         "reward_BndqRc",
         "reward_ship",
         "reward_YpAQfz",
+        "reward_kwq3Dx",
         "reward_discount",
         "reward_a9jdNM",
+        "reward_NCHjbq",
         "reward_rjGwP6",
         "reward_pGFXLa",
         "reward_g6J8nJ",
