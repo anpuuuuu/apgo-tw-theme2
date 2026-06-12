@@ -4201,6 +4201,10 @@
       "name": "Reward",
       "settings": [
         {
+          "type": "paragraph",
+          "content": "⚠️ 此卡片僅為「解鎖進度」前台顯示。贈品、免運、滿額折扣全部由 Shopify 後台 AIOD app 實際發放，主題不再自動加購物車。這裡的門檻只控制卡片何時顯示「已達成」，請與 AIOD app 的規則門檻保持一致。"
+        },
+        {
           "type": "select",
           "id": "reward_type",
           "label": "Reward type",
@@ -4259,7 +4263,8 @@
           "type": "number",
           "id": "threshold_amount",
           "label": "Threshold amount",
-          "default": 1000
+          "default": 1000,
+          "info": "卡片顯示「已達成」的金額門檻。⚠️ 必須與 AIOD app 對應規則的門檻一致，否則卡片說已解鎖但 AIOD 沒發、或相反。"
         },
         {
           "type": "textarea",
@@ -4270,8 +4275,8 @@
         {
           "type": "product",
           "id": "gift_product",
-          "label": "滿額贈品商品",
-          "info": "僅「Reward type」選「Gift」時使用。達標時自動加入購物車。"
+          "label": "滿額贈品商品（已停用）",
+          "info": "⚠️ 已停用：主題不再自動加購。實際贈品由 AIOD app 發放。此欄位僅在卡片沒設 Icon image 時，拿來當卡片縮圖備援。"
         }
       ]
     },
