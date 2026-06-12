@@ -1084,16 +1084,34 @@
       const cartTotalCents = cartData.total_price || 0;
       const targetGifts = new Set();
 
+      // #region agent log
+      try { fetch('http://127.0.0.1:7883/ingest/56372bb2-e1ec-41c8-8343-498e97236bc3',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'7b872e'},body:JSON.stringify({sessionId:'7b872e',hypothesisId:'H1+H2+H4',location:'cart-shell-v2.liquid:syncGiftRewards:entry',message:'enter syncGiftRewardsFromCart',data:{cartTotalCents:cartTotalCents,total_price:cartData.total_price,items_subtotal_price:cartData.items_subtotal_price,total_discount:cartData.total_discount,giftCardsCount:allGiftCards.length,cartItems:(cartData.items||[]).map(function(i){return{variant_id:i.variant_id,product_title:i.product_title,quantity:i.quantity,key:i.key,properties:i.properties};})},timestamp:Date.now()})}).catch(function(){}); } catch(e){}
+      // #endregion
+
       allGiftCards.forEach(function (card) {
         const vid = card.getAttribute('data-gift-variant-id');
         const th = parseInt(card.getAttribute('data-threshold') || '0', 10);
-        if (vid && cartTotalCents >= th) targetGifts.add(String(vid));
+        const unlocked = !!(vid && cartTotalCents >= th);
+        if (unlocked) targetGifts.add(String(vid));
+        // #region agent log
+        try { fetch('http://127.0.0.1:7883/ingest/56372bb2-e1ec-41c8-8343-498e97236bc3',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'7b872e'},body:JSON.stringify({sessionId:'7b872e',hypothesisId:'H2+H4',location:'cart-shell-v2.liquid:syncGiftRewards:card',message:'gift card scan',data:{rewardId:card.getAttribute('data-reward-id'),title:card.getAttribute('data-reward-title'),variant_id:vid,threshold:th,cartTotalCents:cartTotalCents,unlocked:unlocked},timestamp:Date.now()})}).catch(function(){}); } catch(e){}
+        // #endregion
       });
 
       const currentGifts = {};
       const allPossibleGiftIds = new Set(Array.from(allGiftCards).map(function (c) {
         return String(c.getAttribute('data-gift-variant-id'));
       }));
+
+      // #region agent log
+      try {
+        const orphanGiftAuto = (cartData.items || []).filter(function(i){
+          const isGiftAuto = i.properties && (i.properties._gift_auto === 'true' || i.properties._gift_auto === true);
+          return isGiftAuto && !allPossibleGiftIds.has(String(i.variant_id));
+        }).map(function(i){return{variant_id:i.variant_id,product_title:i.product_title,quantity:i.quantity,key:i.key};});
+        fetch('http://127.0.0.1:7883/ingest/56372bb2-e1ec-41c8-8343-498e97236bc3',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'7b872e'},body:JSON.stringify({sessionId:'7b872e',hypothesisId:'H1',location:'cart-shell-v2.liquid:syncGiftRewards:orphanCheck',message:'orphan _gift_auto items not in current allPossibleGiftIds',data:{allPossibleGiftIds:Array.from(allPossibleGiftIds),orphanGiftAuto:orphanGiftAuto},timestamp:Date.now()})}).catch(function(){});
+      } catch(e){}
+      // #endregion
 
       (cartData.items || []).forEach(function (item) {
         const vid = String(item.variant_id);
@@ -1120,6 +1138,10 @@
           requiresUpdate = true;
         }
       }
+
+      // #region agent log
+      try { fetch('http://127.0.0.1:7883/ingest/56372bb2-e1ec-41c8-8343-498e97236bc3',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'7b872e'},body:JSON.stringify({sessionId:'7b872e',hypothesisId:'H1+H2+H3',location:'cart-shell-v2.liquid:syncGiftRewards:plan',message:'sync plan computed',data:{targetGifts:Array.from(targetGifts),currentGifts:currentGifts,itemsToAdd:itemsToAdd,bulkUpdates:bulkUpdates,requiresUpdate:requiresUpdate},timestamp:Date.now()})}).catch(function(){}); } catch(e){}
+      // #endregion
 
       if (!requiresUpdate) {
         return { cartData, mutated: false };
