@@ -56,22 +56,6 @@
             "gift_product": ""
           }
         },
-        "reward_7fyfhM": {
-          "type": "reward",
-          "disabled": true,
-          "settings": {
-            "reward_type": "standard",
-            "icon_fallback": "🚚",
-            "title": "滿$99免運折扣碼【99free04】",
-            "reward_subtitle": "限時(4/2-4/6)限量100張(部分優惠商品不適用)",
-            "locked_text": "下一階段解鎖",
-            "unlocked_text": "已達成",
-            "better_tier_text": "已享更優",
-            "threshold_amount": 99,
-            "reward_description": "",
-            "gift_product": ""
-          }
-        },
         "reward_ship": {
           "type": "reward",
           "settings": {
@@ -83,54 +67,6 @@
             "unlocked_text": "已解鎖",
             "better_tier_text": "已享更優",
             "threshold_amount": 999,
-            "reward_description": "",
-            "gift_product": ""
-          }
-        },
-        "reward_miPgYC": {
-          "type": "reward",
-          "disabled": true,
-          "settings": {
-            "reward_type": "gift",
-            "icon_fallback": "🎁",
-            "title": "滿額贈-地板清潔劑",
-            "reward_subtitle": "滿 $1000 即享",
-            "locked_text": "下一階段解鎖",
-            "unlocked_text": "已達成",
-            "better_tier_text": "已享更優",
-            "threshold_amount": 1000,
-            "reward_description": "",
-            "gift_product": "apgo-地板清潔劑"
-          }
-        },
-        "reward_mamLfE": {
-          "type": "reward",
-          "disabled": true,
-          "settings": {
-            "reward_type": "standard",
-            "icon_fallback": "🏷️",
-            "title": "85折券折扣碼【04apgo85】",
-            "reward_subtitle": "限時(4/2-4/6)限量300張(部分優惠商品不適用)",
-            "locked_text": "下一階段解鎖",
-            "unlocked_text": "已達成",
-            "better_tier_text": "已享更優",
-            "threshold_amount": 1000,
-            "reward_description": "",
-            "gift_product": ""
-          }
-        },
-        "reward_7MVWzE": {
-          "type": "reward",
-          "disabled": true,
-          "settings": {
-            "reward_type": "standard",
-            "icon_fallback": "🏷️",
-            "title": "9折券折扣碼【04apgo9】",
-            "reward_subtitle": "限時(4/2-4/6)限量700張(部分優惠商品不適用)",
-            "locked_text": "下一階段解鎖",
-            "unlocked_text": "已達成",
-            "better_tier_text": "已享更優",
-            "threshold_amount": 1000,
             "reward_description": "",
             "gift_product": ""
           }
@@ -172,15 +108,15 @@
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
-            "icon_image": "shopify://shop_images/1_d3001d49-74f7-4fbe-b1ac-1d8478e73505.webp",
-            "title": "滿額贈-玻璃雨刷小幫手",
-            "reward_subtitle": "滿 $2200 送玻璃雨刷小幫手",
+            "icon_image": "shopify://shop_images/1_bb6aa5f5-3a91-47ad-bb0f-b24e9c42ace8.png",
+            "title": "滿額贈-水漬去除劑",
+            "reward_subtitle": "滿 $1680 即享（618專屬)",
             "locked_text": "gift tiers JS",
             "unlocked_text": "已解鎖",
             "better_tier_text": "已享更優",
-            "threshold_amount": 2200,
+            "threshold_amount": 1680,
             "reward_description": "",
-            "gift_product": "玻璃雨刷小幫手-副本"
+            "gift_product": "apgo水漬去除劑500ml贈品-勿下單"
           }
         },
         "reward_a9jdNM": {
@@ -283,11 +219,7 @@
       },
       "block_order": [
         "reward_BndqRc",
-        "reward_7fyfhM",
         "reward_ship",
-        "reward_miPgYC",
-        "reward_mamLfE",
-        "reward_7MVWzE",
         "reward_zBK6Bp",
         "reward_discount",
         "reward_gift",
