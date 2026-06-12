@@ -18,14 +18,23 @@
     assign progress_percentage = 100
   endif
 
+  comment
+    「再差 $X / 即將解鎖」目標 = 所有未達標 reward 中「門檻最接近目前金額」的那一個。
+    不能依賴 block 在編輯器裡的拖拉順序（admin 重排就會指錯目標），
+    所以掃全部取最小 gap，並記下 block.id 給卡片高亮用。
+  endcomment
   assign next_locked_title = blank
   assign next_locked_amount = 0
+  assign next_locked_block_id = blank
   for block in reward_blocks
     assign threshold_cents = block.settings.threshold_amount | times: 100
     if cart.total_price < threshold_cents
-      assign next_locked_title = block.settings.title
-      assign next_locked_amount = threshold_cents | minus: cart.total_price
-      break
+      assign gap_to_tier = threshold_cents | minus: cart.total_price
+      if next_locked_block_id == blank or gap_to_tier < next_locked_amount
+        assign next_locked_title = block.settings.title
+        assign next_locked_amount = gap_to_tier
+        assign next_locked_block_id = block.id
+      endif
     endif
   endfor
 
@@ -89,7 +98,6 @@
         </div>
         {% comment %} 參考: progress-bar width % → progress_percentage, data-mission-target {% endcomment %}
         <div class="m-track"><div class="m-fill" style="width: {{ progress_percentage }}%;" data-mission-fill data-mission-target="{{ progress_percentage }}"></div></div>
-        {% assign first_locked_found = false %}
         <div class="m-rewards m-rewards-grid">
         {% for block in reward_blocks %}
           {%- liquid
@@ -138,10 +146,13 @@
             if gap_cents < 0
               assign gap_cents = 0
             endif
+            comment
+              「下一階段解鎖」高亮 = 門檻離目前金額最近的未達標 reward
+              （header 已算好 next_locked_block_id），與 block 拖拉順序無關。
+            endcomment
             assign is_next_locked = false
-            if is_unlocked == false and first_locked_found == false
+            if is_unlocked == false and block.id == next_locked_block_id
               assign is_next_locked = true
-              assign first_locked_found = true
             endif
             assign display_note = reward_note
             if is_unlocked and display_note == '已解鎖'
