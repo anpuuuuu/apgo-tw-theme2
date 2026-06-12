@@ -1206,8 +1206,13 @@
       document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: cartData } }));
     }
 
-    // 初次進入購物車／編輯器載入：達標即補贈品並重繪 section（與加購後路徑一致）
+    // 初次進入購物車：達標即補贈品並重繪 section（與加購後路徑一致）
+    // ⚠️ 主題編輯器內絕對不能跑：這段會 (1) 真的改商家預覽 session 的購物車
+    //    (2) 用「已儲存資料」渲染的 HTML 整段 replaceWith 預覽 DOM，
+    //    導致編輯器側欄 block 綁定錯亂 → product picker 顯示漂移 →
+    //    商家在錯亂狀態下存檔會把錯值寫回 settings（gift_product 串块事故的根因）。
     function hydrateGiftRewardsOnEnter(root) {
+      if (window.Shopify && window.Shopify.designMode) return;
       if (!root) return;
       (async function () {
         try {
@@ -1687,6 +1692,7 @@
     // 🔥 bfcache 恢復（從結帳/登入按返回）：DOMContentLoaded 不會再觸發，
     //    必須用 pageshow + event.persisted 偵測，並強制重繪整個 section。
     window.addEventListener('pageshow', function(event) {
+      if (window.Shopify && window.Shopify.designMode) return; // 編輯器內不重繪
       // event.persisted === true 代表從 bfcache 恢復，頁面是凍結快照
       var isBackNav = event.persisted ||
         (window.performance && window.performance.navigation &&
