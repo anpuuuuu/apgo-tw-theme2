@@ -99,7 +99,7 @@
             "better_tier_text": "已享更優",
             "threshold_amount": 1680,
             "reward_description": "",
-            "gift_product": "apgo水漬去除劑500ml贈品-勿下單"
+            "gift_product": "apgo塑膠保護劑500ml贈品-勿下單"
           }
         },
         "reward_a9jdNM": {
@@ -136,7 +136,7 @@
         "reward_pGFXLa": {
           "type": "reward",
           "settings": {
-            "reward_type": "standard",
+            "reward_type": "gift",
             "icon_fallback": "🎁",
             "icon_image": "shopify://shop_images/522eb0c16ecf85591cc4b3190fa81238_eb282738-9231-483b-9530-8fcd622cae3a.png",
             "title": "滿額贈-鐵粉去除劑",
@@ -146,7 +146,7 @@
             "better_tier_text": "已享更優",
             "threshold_amount": 3680,
             "reward_description": "",
-            "gift_product": "apgo塑膠保護劑500ml贈品-勿下單"
+            "gift_product": "apgo鐵粉去除劑500ml贈品-勿下單"
           }
         },
         "reward_g6J8nJ": {
