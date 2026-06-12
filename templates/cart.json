@@ -71,21 +71,6 @@
             "gift_product": ""
           }
         },
-        "reward_discount": {
-          "type": "reward",
-          "settings": {
-            "reward_type": "order_discount",
-            "icon_fallback": "🏷️",
-            "title": "滿$1688折$168",
-            "reward_subtitle": "滿 $1688 解鎖",
-            "locked_text": "下一階段解鎖",
-            "unlocked_text": "部分商品不適用",
-            "better_tier_text": "已享更優",
-            "threshold_amount": 1688,
-            "reward_description": "",
-            "gift_product": ""
-          }
-        },
         "reward_YpAQfz": {
           "type": "reward",
           "settings": {
@@ -100,6 +85,21 @@
             "threshold_amount": 1680,
             "reward_description": "",
             "gift_product": "apgo水漬去除劑500ml贈品-勿下單"
+          }
+        },
+        "reward_discount": {
+          "type": "reward",
+          "settings": {
+            "reward_type": "order_discount",
+            "icon_fallback": "🏷️",
+            "title": "滿$1688折$168",
+            "reward_subtitle": "滿 $1688 解鎖",
+            "locked_text": "下一階段解鎖",
+            "unlocked_text": "部分商品不適用",
+            "better_tier_text": "已享更優",
+            "threshold_amount": 1688,
+            "reward_description": "",
+            "gift_product": ""
           }
         },
         "reward_a9jdNM": {
@@ -203,8 +203,8 @@
       "block_order": [
         "reward_BndqRc",
         "reward_ship",
-        "reward_discount",
         "reward_YpAQfz",
+        "reward_discount",
         "reward_a9jdNM",
         "reward_rjGwP6",
         "reward_pGFXLa",
