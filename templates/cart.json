@@ -73,7 +73,6 @@
         },
         "reward_YpAQfz": {
           "type": "reward",
-          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -105,7 +104,6 @@
         },
         "reward_a9jdNM": {
           "type": "reward",
-          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -137,7 +135,6 @@
         },
         "reward_pGFXLa": {
           "type": "reward",
-          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
