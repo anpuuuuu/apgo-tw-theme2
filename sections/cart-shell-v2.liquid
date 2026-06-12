@@ -1113,14 +1113,25 @@
       } catch(e){}
       // #endregion
 
+      const orphanAutoGiftKeys = [];
       (cartData.items || []).forEach(function (item) {
         const vid = String(item.variant_id);
-        if (allPossibleGiftIds.has(vid)) currentGifts[vid] = { key: item.key, qty: item.quantity };
+        if (allPossibleGiftIds.has(vid)) {
+          currentGifts[vid] = { key: item.key, qty: item.quantity };
+        } else if (item.properties && (item.properties._gift_auto === 'true' || item.properties._gift_auto === true)) {
+          // 之前 reward 配置加進來、現在已不再對應任何 reward block 的 _gift_auto 殘留
+          orphanAutoGiftKeys.push(item.key);
+        }
       });
 
       let requiresUpdate = false;
       const bulkUpdates = {};
       const itemsToAdd = [];
+
+      orphanAutoGiftKeys.forEach(function (k) {
+        bulkUpdates[k] = 0;
+        requiresUpdate = true;
+      });
 
       for (const vid of allPossibleGiftIds) {
         if (!targetGifts.has(vid) && currentGifts[vid]) {
@@ -1140,7 +1151,7 @@
       }
 
       // #region agent log
-      try { console.log('[GIFT_DEBUG]',JSON.stringify({hypothesisId:'H1+H2+H3',location:'syncGiftRewards:plan',data:{targetGifts:Array.from(targetGifts),currentGifts:currentGifts,itemsToAdd:itemsToAdd,bulkUpdates:bulkUpdates,requiresUpdate:requiresUpdate}})); } catch(e){}
+      try { console.log('[GIFT_DEBUG]',JSON.stringify({runId:'post-fix',hypothesisId:'H1+H2+H3',location:'syncGiftRewards:plan',data:{targetGifts:Array.from(targetGifts),currentGifts:currentGifts,orphanAutoGiftKeys:orphanAutoGiftKeys,itemsToAdd:itemsToAdd,bulkUpdates:bulkUpdates,requiresUpdate:requiresUpdate}})); } catch(e){}
       // #endregion
 
       if (!requiresUpdate) {
