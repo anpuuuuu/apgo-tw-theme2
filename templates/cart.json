@@ -73,6 +73,7 @@
         },
         "reward_kwq3Dx": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -84,7 +85,7 @@
             "better_tier_text": "已享更優",
             "threshold_amount": 1680,
             "reward_description": "",
-            "gift_product": "apgo水漬去除劑500ml贈品-勿下單"
+            "gift_product": "apgo鐵粉去除劑500ml贈品-勿下單"
           }
         },
         "reward_discount": {
@@ -104,6 +105,7 @@
         },
         "reward_NCHjbq": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -115,7 +117,7 @@
             "better_tier_text": "已享更優",
             "threshold_amount": 2680,
             "reward_description": "",
-            "gift_product": "apgo塑膠保護劑500ml贈品-勿下單"
+            "gift_product": "apgo鐵粉去除劑500ml贈品-勿下單"
           }
         },
         "reward_rjGwP6": {
@@ -135,6 +137,7 @@
         },
         "reward_pGFXLa": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -151,6 +154,7 @@
         },
         "reward_g6J8nJ": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
