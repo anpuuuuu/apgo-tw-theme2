@@ -1082,88 +1082,17 @@
       });
     }
 
-    // 取得 /cart.js 並依門檻同步滿額贈（加／扣／校正數量）
+    // 純讀取購物車（不再增刪滿額贈）。
+    // ── 贈品 / 免運 / 滿折全部改由 Shopify 後台 AIOD app 統一處理 ──
+    // 主題不再碰購物車的 gift line item：解鎖進度卡片只是 UI，
+    // 顯示「已達成 / 下一階段解鎖」純靠 Liquid 比對 cart 金額。
+    // ⚠️ 這裡刻意不做任何 /cart/add、/cart/update、孤兒清除——
+    //    過去那套會把 AIOD 加的贈品當孤兒刪掉，造成兩套引擎互相打架、
+    //    贈品忽有忽無。移除後 AIOD 是唯一的購物車操作者。
     async function syncGiftRewardsFromCart(root) {
       const cartRes = await fetch(getCartUrl('/cart.js'));
-      let cartData = await parseResponseAsJsonSafe(cartRes);
-
-      const allGiftCards = root.querySelectorAll('[data-reward-type="gift"][data-gift-variant-id]');
-      if (allGiftCards.length === 0 || !cartData) {
-        return { cartData, mutated: false };
-      }
-
-      const cartTotalCents = cartData.total_price || 0;
-      const targetGifts = new Set();
-
-      allGiftCards.forEach(function (card) {
-        const vid = card.getAttribute('data-gift-variant-id');
-        const th = parseInt(card.getAttribute('data-threshold') || '0', 10);
-        if (vid && cartTotalCents >= th) targetGifts.add(String(vid));
-      });
-
-      const currentGifts = {};
-      const allPossibleGiftIds = new Set(Array.from(allGiftCards).map(function (c) {
-        return String(c.getAttribute('data-gift-variant-id'));
-      }));
-
-      const orphanAutoGiftKeys = [];
-      (cartData.items || []).forEach(function (item) {
-        const vid = String(item.variant_id);
-        if (allPossibleGiftIds.has(vid)) {
-          currentGifts[vid] = { key: item.key, qty: item.quantity };
-        } else if (item.properties && (item.properties._gift_auto === 'true' || item.properties._gift_auto === true)) {
-          // 之前 reward 配置加進來、現在已不再對應任何 reward block 的 _gift_auto 殘留
-          orphanAutoGiftKeys.push(item.key);
-        }
-      });
-
-      let requiresUpdate = false;
-      const bulkUpdates = {};
-      const itemsToAdd = [];
-
-      orphanAutoGiftKeys.forEach(function (k) {
-        bulkUpdates[k] = 0;
-        requiresUpdate = true;
-      });
-
-      for (const vid of allPossibleGiftIds) {
-        if (!targetGifts.has(vid) && currentGifts[vid]) {
-          bulkUpdates[currentGifts[vid].key] = 0;
-          requiresUpdate = true;
-        } else if (targetGifts.has(vid) && currentGifts[vid] && currentGifts[vid].qty !== 1) {
-          bulkUpdates[currentGifts[vid].key] = 1;
-          requiresUpdate = true;
-        }
-      }
-
-      for (const vid of targetGifts) {
-        if (!currentGifts[vid]) {
-          itemsToAdd.push({ id: parseInt(vid, 10), quantity: 1, properties: { _gift_auto: 'true' } });
-          requiresUpdate = true;
-        }
-      }
-
-      if (!requiresUpdate) {
-        return { cartData, mutated: false };
-      }
-
-      if (Object.keys(bulkUpdates).length > 0) {
-        await fetch(getCartUrl('/cart/update.js'), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ updates: bulkUpdates })
-        });
-      }
-      if (itemsToAdd.length > 0) {
-        await fetch(getCartUrl('/cart/add.js'), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items: itemsToAdd })
-        });
-      }
-      const finalCartRes = await fetch(getCartUrl('/cart.js'));
-      cartData = await parseResponseAsJsonSafe(finalCartRes);
-      return { cartData, mutated: true };
+      const cartData = await parseResponseAsJsonSafe(cartRes);
+      return { cartData, mutated: false };
     }
 
     async function refreshCartSection(root, state, cartData) {
