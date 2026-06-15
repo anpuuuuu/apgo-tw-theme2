@@ -393,6 +393,22 @@
             "banner_anchor_id": ""
           }
         },
+        "simple_banner_slot_mFXA4r": {
+          "type": "simple_banner_slot",
+          "name": "滿618贈雨刷玻璃光亮劑",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "滿3000送3罐組",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/618.png",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
         "product_grid_3BCxpy": {
           "type": "product_grid",
           "name": "6/6-6/22指定洗車藥劑✨ 任選$55",
@@ -982,6 +998,7 @@
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
         "simple_banner_slot_Dip9ED",
+        "simple_banner_slot_mFXA4r",
         "product_grid_3BCxpy",
         "product_grid_63pFYA",
         "product_grid_HrcFDb",
