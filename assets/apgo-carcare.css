@@ -2349,10 +2349,10 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 /* ---- Right-side product thumbnail — transparent PNG, no frame, BEHIND text - */
 .apgo-cc-mosaic__tile-thumb {
   position: absolute;
-  right: 6px;
-  bottom: 14px;                 /* bottom-right, lifted off the edge */
-  width: 104px;
-  height: 104px;
+  right: 4px;
+  bottom: 0;                    /* stick to the bottom-right corner */
+  width: 88px;
+  height: 88px;
   object-fit: contain;          /* show whole product, no crop, no box */
   object-position: bottom right;
   z-index: 1;                   /* above tile bg, but below the text layer */
@@ -2365,14 +2365,14 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 }
 /* featured (big) tile → slightly larger product image */
 .apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-thumb {
-  width: 124px;
-  height: 124px;
+  width: 104px;
+  height: 104px;
 }
-/* mobile → a touch smaller, keep the lifted bottom gap */
+/* mobile → smaller */
 @media (max-width: 749px) {
-  .apgo-cc-mosaic__tile-thumb { width: 80px; height: 80px; right: 6px; bottom: 10px; }
-  .apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-thumb { width: 96px; height: 96px; }
-  .apgo-cc-mosaic__mobile-scroll .apgo-cc-mosaic__tile-thumb { width: 50px; height: 50px; bottom: 8px; }
+  .apgo-cc-mosaic__tile-thumb { width: 60px; height: 60px; right: 4px; }
+  .apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-thumb { width: 72px; height: 72px; }
+  .apgo-cc-mosaic__mobile-scroll .apgo-cc-mosaic__tile-thumb { width: 42px; height: 42px; }
 }
 
 /* ---- Empty state (no blocks) ---------------------------------------------- */
