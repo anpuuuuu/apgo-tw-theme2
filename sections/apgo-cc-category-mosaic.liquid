@@ -71,6 +71,9 @@
               <span class="apgo-cc-mosaic__tile-arrow" aria-hidden="true">›</span>
             </span>
           </div>
+          {%- if block.settings.side_image != blank -%}
+            <img class="apgo-cc-mosaic__tile-thumb" src="{{ block.settings.side_image | image_url: width: 220 }}" alt="{{ label }}" loading="lazy" width="220" height="220">
+          {%- endif -%}
           {%- unless is_featured -%}
             <span class="apgo-cc-mosaic__tile-accent" aria-hidden="true"></span>
           {%- endunless -%}
@@ -112,6 +115,9 @@
                 <span class="apgo-cc-mosaic__tile-arrow" aria-hidden="true">›</span>
               </span>
             </div>
+            {%- if block.settings.side_image != blank -%}
+              <img class="apgo-cc-mosaic__tile-thumb" src="{{ block.settings.side_image | image_url: width: 160 }}" alt="{{ label }}" loading="lazy" width="160" height="160">
+            {%- endif -%}
             <span class="apgo-cc-mosaic__tile-accent" aria-hidden="true"></span>
           </a>
         {%- endfor -%}
@@ -156,6 +162,9 @@
               <span class="apgo-cc-mosaic__tile-arrow" aria-hidden="true">›</span>
             </span>
           </div>
+          {%- if block.settings.side_image != blank -%}
+            <img class="apgo-cc-mosaic__tile-thumb" src="{{ block.settings.side_image | image_url: width: 220 }}" alt="{{ label }}" loading="lazy" width="220" height="220">
+          {%- endif -%}
           {%- unless is_featured -%}
             <span class="apgo-cc-mosaic__tile-accent" aria-hidden="true"></span>
           {%- endunless -%}
@@ -252,7 +261,8 @@
         { "type": "number",          "id": "count_override",  "label": "商品數覆蓋（不填用實際數量）" },
 
         { "type": "header",          "content": "視覺" },
-        { "type": "image_picker",    "id": "image",           "label": "背景圖（選填，建議 800x500）", "info": "未設定則純色，第 1 個 block（手機 featured）會是橘色大磚" }
+        { "type": "image_picker",    "id": "image",           "label": "背景圖（選填，建議 800x500）", "info": "未設定則純色，第 1 個 block（手機 featured）會是橘色大磚" },
+        { "type": "image_picker",    "id": "side_image",      "label": "右側縮圖（選填）", "info": "顯示在磚右側的正方形縮圖。可上傳正方形或 2:3 直式圖，會置中裁切成正方形。" }
       ]
     }
   ],

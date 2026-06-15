@@ -2346,6 +2346,45 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   background: var(--cc-orange);
 }
 
+/* ---- Right-side square thumbnail (optional per-tile foreground image) ------ */
+.apgo-cc-mosaic__tile-thumb {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 72px;
+  height: 72px;
+  object-fit: cover;            /* 2:3 or any aspect → center-cropped to square */
+  border-radius: 10px;
+  z-index: 1;
+  pointer-events: none;
+  background: var(--cc-bg-deep);
+}
+/* reserve right padding so the label/meta never run under the thumb */
+.apgo-cc-mosaic__tile:has(.apgo-cc-mosaic__tile-thumb) {
+  padding-right: 100px;
+}
+/* featured (big) tile → larger thumb + more reserve */
+.apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-thumb {
+  width: 92px;
+  height: 92px;
+}
+.apgo-cc-mosaic__tile--featured:has(.apgo-cc-mosaic__tile-thumb) {
+  padding-right: 122px;
+}
+/* mobile swipe strip tiles are only 72px tall — use a compact thumb */
+@media (max-width: 749px) {
+  .apgo-cc-mosaic__mobile-scroll .apgo-cc-mosaic__tile-thumb {
+    width: 48px;
+    height: 48px;
+    right: 10px;
+    border-radius: 8px;
+  }
+  .apgo-cc-mosaic__mobile-scroll .apgo-cc-mosaic__tile:has(.apgo-cc-mosaic__tile-thumb) {
+    padding-right: 66px;
+  }
+}
+
 /* ---- Empty state (no blocks) ---------------------------------------------- */
 
 .apgo-cc-mosaic__empty {
