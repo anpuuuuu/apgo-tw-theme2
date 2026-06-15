@@ -102,7 +102,7 @@
       },
       "9022822286719573313": {
         "type": "shopify://apps/aiod-discount-gift/blocks/free-gift-manager/f216dffa-6875-4930-b932-dd7950bc93e6",
-        "disabled": true,
+        "disabled": false,
         "settings": {}
       }
     },
