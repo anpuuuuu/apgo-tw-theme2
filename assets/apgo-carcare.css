@@ -2350,7 +2350,7 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 .apgo-cc-mosaic__tile-thumb {
   position: absolute;
   right: 4px;
-  bottom: 0;                    /* stick to the bottom-right corner */
+  bottom: 6px;                  /* bottom-right, small gap from the edge */
   width: 88px;
   height: 88px;
   object-fit: contain;          /* show whole product, no crop, no box */
