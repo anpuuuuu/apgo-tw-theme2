@@ -2241,23 +2241,22 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 }
 .apgo-cc-mosaic__tile[style*="--tile-image"]:hover::before { opacity: .75; }
 
-/* ---- Featured tile (first block) — now WHITE, not orange ------------------- */
+/* ---- Featured tile (first block) — dark with ORANGE OUTLINE (ghost) -------- */
 
 .apgo-cc-mosaic__tile--featured {
-  background-color: #fff;
+  background-color: var(--cc-bg-alt);
   background-image: none;
-  border-color: #fff;
-  color: #141414;
+  border-color: var(--cc-orange);
+  box-shadow: inset 0 0 0 1px var(--cc-orange);   /* crisper orange outline */
+  color: var(--cc-orange);
 }
 .apgo-cc-mosaic__tile--featured:hover {
-  border-color: #fff;
-  filter: brightness(.97);
+  border-color: var(--cc-orange-hi, #ff8240);
+  box-shadow: inset 0 0 0 1px var(--cc-orange-hi, #ff8240);
+  filter: none;
 }
-.apgo-cc-mosaic__tile--featured[style*="--tile-image"]::after {
-  background: linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.82) 100%);
-}
-.apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-label { color: #141414; }
-.apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-meta  { color: rgba(20,20,20,.6); }
+.apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-label { color: var(--cc-orange); }
+.apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-meta  { color: var(--cc-fg-dim); }
 .apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-arrow { background: var(--cc-orange); color: #fff; }
 
 /* ---- Active tile (current collection being viewed) — ORANGE ---------------- */
@@ -2313,7 +2312,7 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   margin-top: 6px;
 }
 .apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-meta {
-  color: rgba(20,20,20,.6);
+  color: var(--cc-fg-dim);
 }
 .apgo-cc-mosaic__tile-arrow {
   display: inline-flex;
