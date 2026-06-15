@@ -43,11 +43,20 @@
         {%- assign label = block.settings.label_override | default: coll.title -%}
         {%- assign tile_count = block.settings.count_override | default: coll.products_count -%}
         {%- assign tile_url = block.settings.url_override | default: coll.url | default: '#' -%}
+        {%- comment -%} active = 此磚對應的集合 == 目前正在瀏覽的集合 {%- endcomment -%}
+        {%- assign is_active = false -%}
+        {%- if collection != blank -%}
+          {%- if block.settings.collection != blank and block.settings.collection.id == collection.id -%}
+            {%- assign is_active = true -%}
+          {%- elsif block.settings.url_override != blank and block.settings.url_override contains collection.handle -%}
+            {%- assign is_active = true -%}
+          {%- endif -%}
+        {%- endif -%}
         {%- assign is_featured = false -%}
         {%- if forloop.first -%}{%- assign is_featured = true -%}{%- endif -%}
         <a
           href="{{ tile_url }}"
-          class="apgo-cc-mosaic__tile{% if is_featured %} apgo-cc-mosaic__tile--featured{% endif %}"
+          class="apgo-cc-mosaic__tile{% if is_featured %} apgo-cc-mosaic__tile--featured{% endif %}{% if is_active %} apgo-cc-mosaic__tile--active{% endif %}"
           {{ block.shopify_attributes }}
           {%- if block.settings.image != blank -%}
             style="--tile-image: url('{{ block.settings.image | image_url: width: 800 }}');"
@@ -77,9 +86,18 @@
           {%- assign label = block.settings.label_override | default: coll.title -%}
           {%- assign tile_count = block.settings.count_override | default: coll.products_count -%}
           {%- assign tile_url = block.settings.url_override | default: coll.url | default: '#' -%}
+        {%- comment -%} active = 此磚對應的集合 == 目前正在瀏覽的集合 {%- endcomment -%}
+        {%- assign is_active = false -%}
+        {%- if collection != blank -%}
+          {%- if block.settings.collection != blank and block.settings.collection.id == collection.id -%}
+            {%- assign is_active = true -%}
+          {%- elsif block.settings.url_override != blank and block.settings.url_override contains collection.handle -%}
+            {%- assign is_active = true -%}
+          {%- endif -%}
+        {%- endif -%}
           <a
             href="{{ tile_url }}"
-            class="apgo-cc-mosaic__tile apgo-cc-mosaic__tile--small"
+            class="apgo-cc-mosaic__tile apgo-cc-mosaic__tile--small{% if is_active %} apgo-cc-mosaic__tile--active{% endif %}"
             {{ block.shopify_attributes }}
             {%- if block.settings.image != blank -%}
               style="--tile-image: url('{{ block.settings.image | image_url: width: 600 }}');"
@@ -110,11 +128,20 @@
         {%- assign label = block.settings.label_override | default: coll.title -%}
         {%- assign tile_count = block.settings.count_override | default: coll.products_count -%}
         {%- assign tile_url = block.settings.url_override | default: coll.url | default: '#' -%}
+        {%- comment -%} active = 此磚對應的集合 == 目前正在瀏覽的集合 {%- endcomment -%}
+        {%- assign is_active = false -%}
+        {%- if collection != blank -%}
+          {%- if block.settings.collection != blank and block.settings.collection.id == collection.id -%}
+            {%- assign is_active = true -%}
+          {%- elsif block.settings.url_override != blank and block.settings.url_override contains collection.handle -%}
+            {%- assign is_active = true -%}
+          {%- endif -%}
+        {%- endif -%}
         {%- assign is_featured = false -%}
         {%- if forloop.first -%}{%- assign is_featured = true -%}{%- endif -%}
         <a
           href="{{ tile_url }}"
-          class="apgo-cc-mosaic__tile{% if is_featured %} apgo-cc-mosaic__tile--featured{% else %} apgo-cc-mosaic__tile--small{% endif %}"
+          class="apgo-cc-mosaic__tile{% if is_featured %} apgo-cc-mosaic__tile--featured{% else %} apgo-cc-mosaic__tile--small{% endif %}{% if is_active %} apgo-cc-mosaic__tile--active{% endif %}"
           {{ block.shopify_attributes }}
           {%- if block.settings.image != blank -%}
             style="--tile-image: url('{{ block.settings.image | image_url: width: 800 }}');"

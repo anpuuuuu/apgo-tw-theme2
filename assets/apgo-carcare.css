@@ -2241,21 +2241,46 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 }
 .apgo-cc-mosaic__tile[style*="--tile-image"]:hover::before { opacity: .75; }
 
-/* ---- Featured tile (first block) ------------------------------------------- */
+/* ---- Featured tile (first block) — now WHITE, not orange ------------------- */
 
 .apgo-cc-mosaic__tile--featured {
+  background-color: #fff;
+  background-image: none;
+  border-color: #fff;
+  color: #141414;
+}
+.apgo-cc-mosaic__tile--featured:hover {
+  border-color: #fff;
+  filter: brightness(.97);
+}
+.apgo-cc-mosaic__tile--featured[style*="--tile-image"]::after {
+  background: linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.82) 100%);
+}
+.apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-label { color: #141414; }
+.apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-meta  { color: rgba(20,20,20,.6); }
+.apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-arrow { background: var(--cc-orange); color: #fff; }
+
+/* ---- Active tile (current collection being viewed) — ORANGE ---------------- */
+/* Declared AFTER --featured so when the first tile is also the active one,
+   the orange "you are here" state wins over the white featured style. */
+.apgo-cc-mosaic__tile--active {
   background-color: var(--cc-orange);
   background-image: linear-gradient(135deg, var(--cc-orange) 0%, #d65a16 100%);
   border-color: transparent;
   color: #fff;
 }
-.apgo-cc-mosaic__tile--featured:hover {
+.apgo-cc-mosaic__tile--active:hover {
   border-color: transparent;
   filter: brightness(1.05);
 }
-.apgo-cc-mosaic__tile--featured[style*="--tile-image"]::after {
+.apgo-cc-mosaic__tile--active[style*="--tile-image"]::after {
   background: linear-gradient(135deg, rgba(255,107,26,.85) 0%, rgba(214,90,22,.7) 100%);
 }
+.apgo-cc-mosaic__tile--active .apgo-cc-mosaic__tile-label { color: #fff; }
+.apgo-cc-mosaic__tile--active .apgo-cc-mosaic__tile-meta  { color: rgba(255,255,255,.85); }
+.apgo-cc-mosaic__tile--active .apgo-cc-mosaic__tile-arrow { background: rgba(255,255,255,.25); color: #fff; }
+/* active tile hides the thin orange bottom accent (whole tile is already orange) */
+.apgo-cc-mosaic__tile--active .apgo-cc-mosaic__tile-accent { display: none; }
 
 /* ---- Tile content ---------------------------------------------------------- */
 
@@ -2288,7 +2313,7 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   margin-top: 6px;
 }
 .apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-meta {
-  color: rgba(255,255,255,.85);
+  color: rgba(20,20,20,.6);
 }
 .apgo-cc-mosaic__tile-arrow {
   display: inline-flex;
@@ -2302,8 +2327,16 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   line-height: 1;
 }
 .apgo-cc-mosaic__tile--featured .apgo-cc-mosaic__tile-arrow {
+  background: var(--cc-orange);
+  color: #fff;
+}
+/* active tile (orange bg) → semi-transparent white arrow, declared last to win */
+.apgo-cc-mosaic__tile--active .apgo-cc-mosaic__tile-arrow {
   background: rgba(255,255,255,.25);
   color: #fff;
+}
+.apgo-cc-mosaic__tile--active .apgo-cc-mosaic__tile-meta {
+  color: rgba(255,255,255,.85);
 }
 
 /* Orange bottom-bar accent for non-featured tiles */
