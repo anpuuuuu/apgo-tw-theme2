@@ -10,6 +10,26 @@
 
 {%- liquid
   assign total = section.blocks.size
+
+  comment
+    先掃一遍：目前瀏覽的集合有沒有對應到任何一個磚。
+    若沒有（例如「全部商品」頁 / 其他未列為磚的集合），就讓第一個磚（熱銷排行）預設 active。
+  endcomment
+  assign any_active = false
+  if collection != blank
+    for block in section.blocks
+      if block.settings.collection != blank and block.settings.collection.id == collection.id
+        assign any_active = true
+      elsif block.settings.url_override != blank and block.settings.url_override contains collection.handle
+        assign any_active = true
+      endif
+    endfor
+  endif
+  assign default_active_id = ''
+  if any_active == false
+    assign first_block = section.blocks.first
+    assign default_active_id = first_block.id
+  endif
 -%}
 
 <section
@@ -51,6 +71,10 @@
           {%- elsif block.settings.url_override != blank and block.settings.url_override contains collection.handle -%}
             {%- assign is_active = true -%}
           {%- endif -%}
+        {%- endif -%}
+        {%- comment -%} 全部商品/未對應集合頁：第一個磚預設 active（用 block.id 比對，三種佈局都正確） {%- endcomment -%}
+        {%- if default_active_id != blank and block.id == default_active_id -%}
+          {%- assign is_active = true -%}
         {%- endif -%}
         {%- assign is_featured = false -%}
         {%- if forloop.first -%}{%- assign is_featured = true -%}{%- endif -%}
@@ -98,6 +122,10 @@
             {%- assign is_active = true -%}
           {%- endif -%}
         {%- endif -%}
+        {%- comment -%} 全部商品/未對應集合頁：第一個磚預設 active（用 block.id 比對，三種佈局都正確） {%- endcomment -%}
+        {%- if default_active_id != blank and block.id == default_active_id -%}
+          {%- assign is_active = true -%}
+        {%- endif -%}
           <a
             href="{{ tile_url }}"
             class="apgo-cc-mosaic__tile apgo-cc-mosaic__tile--small{% if is_active %} apgo-cc-mosaic__tile--active{% endif %}"
@@ -142,6 +170,10 @@
           {%- elsif block.settings.url_override != blank and block.settings.url_override contains collection.handle -%}
             {%- assign is_active = true -%}
           {%- endif -%}
+        {%- endif -%}
+        {%- comment -%} 全部商品/未對應集合頁：第一個磚預設 active（用 block.id 比對，三種佈局都正確） {%- endcomment -%}
+        {%- if default_active_id != blank and block.id == default_active_id -%}
+          {%- assign is_active = true -%}
         {%- endif -%}
         {%- assign is_featured = false -%}
         {%- if forloop.first -%}{%- assign is_featured = true -%}{%- endif -%}
