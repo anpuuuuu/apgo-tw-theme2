@@ -2349,12 +2349,12 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 /* ---- Right-side product thumbnail — transparent PNG, no frame, BEHIND text - */
 .apgo-cc-mosaic__tile-thumb {
   position: absolute;
-  right: 6px;
-  top: 50%;
-  transform: translateY(-50%);
+  right: 4px;
+  bottom: 0;                    /* stick to the bottom-right corner */
   width: 88px;
   height: 88px;
   object-fit: contain;          /* show whole product, no crop, no box */
+  object-position: bottom right;
   z-index: 1;                   /* above tile bg, but below the text layer */
   pointer-events: none;
 }
