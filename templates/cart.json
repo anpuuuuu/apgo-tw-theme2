@@ -43,6 +43,7 @@
       "blocks": {
         "reward_BndqRc": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "order_discount",
             "icon_fallback": "🏷️",
@@ -50,6 +51,22 @@
             "reward_subtitle": "滿 $618 解鎖",
             "locked_text": "下一階段解鎖",
             "unlocked_text": "部分商品不適用",
+            "better_tier_text": "已享更優",
+            "threshold_amount": 618,
+            "reward_description": "",
+            "gift_product": ""
+          }
+        },
+        "reward_PgXXyy": {
+          "type": "reward",
+          "settings": {
+            "reward_type": "gift",
+            "icon_fallback": "🎁",
+            "icon_image": "shopify://shop_images/618.png",
+            "title": "滿額贈-雨刷玻璃光亮劑",
+            "reward_subtitle": "滿 $618即享(限量618)",
+            "locked_text": "下一階段解鎖",
+            "unlocked_text": "已達成",
             "better_tier_text": "已享更優",
             "threshold_amount": 618,
             "reward_description": "",
@@ -73,6 +90,7 @@
         },
         "reward_discount": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "order_discount",
             "icon_fallback": "🏷️",
@@ -105,6 +123,7 @@
         },
         "reward_rjGwP6": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "order_discount",
             "icon_fallback": "🏷️",
@@ -203,6 +222,7 @@
       },
       "block_order": [
         "reward_BndqRc",
+        "reward_PgXXyy",
         "reward_ship",
         "reward_discount",
         "reward_NCHjbq",
