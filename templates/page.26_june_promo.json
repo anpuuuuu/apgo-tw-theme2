@@ -396,6 +396,7 @@
         "simple_banner_slot_mFXA4r": {
           "type": "simple_banner_slot",
           "name": "滿618贈雨刷玻璃光亮劑",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "滿618贈雨刷玻璃光亮劑",
