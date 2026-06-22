@@ -701,6 +701,7 @@
         "simple_banner_slot_V38Hcr": {
           "type": "simple_banner_slot",
           "name": "6/5-6/16免運券限量500張",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "699免運券(6/5-6/16)",
@@ -717,6 +718,7 @@
         "simple_banner_slot_pxYmgd": {
           "type": "simple_banner_slot",
           "name": "6/17-6/18搶$618免運券✨ ",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "618免運券(6/17-6/18)",
