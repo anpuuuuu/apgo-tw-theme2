@@ -489,7 +489,7 @@
           "name": "6/6-6/22原子極光鍍膜買一送一",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "狂降3折",
+            "section_title": "鍍膜前置清潔套組",
             "nav_label_override": "",
             "section_icon": "fa-box",
             "banner_img": "shopify://shop_images/1779_5061019f-0d32-4a33-b38a-278d53aed9a7.jpg",
@@ -510,17 +510,17 @@
           "name": "6/6-6/22【原子琉璃釉豪華組】",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "現折$1285",
+            "section_title": "亮車、淨衣全能組",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/03_0_c2d62781-2ebf-44e2-9a05-fc584ccda34a.jpg",
+            "banner_img": "shopify://shop_images/2499.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
             "product_list": [
-              "618topcoating-12set"
+              "🚗-全能守護組合-亮車-淨衣一次到位"
             ],
-            "card_tag": "-6/22售完為止",
+            "card_tag": "現折$525",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
