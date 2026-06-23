@@ -856,8 +856,8 @@
           "type": "coupon_item",
           "name": "7.1 滿618折18",
           "settings": {
-            "condition": "滿$618",
-            "discount": "折$17",
+            "condition": "滿$899",
+            "discount": "折$79",
             "theme_color": "#f08418",
             "highlight_discount": false
           }
@@ -866,8 +866,8 @@
           "type": "coupon_item",
           "name": "7.2 滿1688折168",
           "settings": {
-            "condition": "滿$1688",
-            "discount": "折$168",
+            "condition": "滿$1599",
+            "discount": "折$159",
             "theme_color": "#9ca3af",
             "highlight_discount": false
           }
@@ -876,8 +876,8 @@
           "type": "coupon_item",
           "name": "7.3 滿3000折618",
           "settings": {
-            "condition": "滿$3000",
-            "discount": "折$618",
+            "condition": "滿$2699",
+            "discount": "折$359",
             "theme_color": "#f08418",
             "highlight_discount": true
           }
@@ -1045,7 +1045,7 @@
         "coupon_sec_title": "6/1(一)準時開搶折券",
         "coupon_nav_label": "優惠券版位",
         "nav_mode": "auto",
-        "coupon_banner_img": "shopify://shop_images/2501x522.jpg",
+        "coupon_banner_img": "shopify://shop_images/fe4927d9451da44055c672231862594c.jpg",
         "coupon_banner_spacing_top": false,
         "coupon_banner_spacing_bottom": true,
         "c1_condition": "條件一",
