@@ -526,27 +526,6 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "product_grid_ctn3Nm": {
-          "type": "product_grid",
-          "name": "6/6-6/22【原子極光豪華組】",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "現折$1285",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/12_1480-2.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "618aurora-coating12set"
-            ],
-            "card_tag": "-6/22售完為止",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
         "product_grid_A6kewb": {
           "type": "product_grid",
           "name": "6/1-6/30鍍膜全系列滿2件9折、3件85折",
@@ -576,69 +555,6 @@
             "card_layout": "vertical",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_3mVxFr": {
-          "type": "product_grid",
-          "name": "6/1-6/30全車深層淨化8件組",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "深層淨化組",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_0622-0630_618_8_1126fc15-6d45-484d-8f45-248af64bdf19.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "618樂購季-全車深層淨化8件組"
-            ],
-            "card_tag": "6/1-6/30開搶",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
-          }
-        },
-        "product_grid_zF47dN": {
-          "type": "product_grid",
-          "name": "6/1-6/30【30分鐘快速亮車組】",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "快速亮車組",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_0622-0630_618_30.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "618樂購季-30分鐘快速亮車組"
-            ],
-            "card_tag": "6/1-6/30開搶",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
-          }
-        },
-        "product_grid_fXt3Nh": {
-          "type": "product_grid",
-          "name": "6/1-6/30夏日抗曬防護組",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "抗曬防護組",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_0622-0630_618_93182ba8-2a26-4702-888a-c4bfe6fd348f.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "618樂購季-夏日抗曬防護組"
-            ],
-            "card_tag": "6/1-6/30開搶",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
           }
         },
         "product_grid_JAm4Qp": {
@@ -1010,11 +926,7 @@
         "product_grid_63pFYA",
         "product_grid_HrcFDb",
         "product_grid_jNQtE7",
-        "product_grid_ctn3Nm",
         "product_grid_A6kewb",
-        "product_grid_3mVxFr",
-        "product_grid_zF47dN",
-        "product_grid_fXt3Nh",
         "product_grid_JAm4Qp",
         "product_grid_XMR9K3",
         "simple_banner_slot_V38Hcr",
