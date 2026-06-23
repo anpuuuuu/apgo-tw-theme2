@@ -238,7 +238,7 @@
           "settings": {
             "slot_time": "2026/04/04 12:00",
             "end_time": "2026/04/04 23:59",
-            "product": "apgo-地板清潔劑",
+            "product": "apgo-特效淨白粉",
             "badge_text": "限量 60 組",
             "coupon_code": "FFF88",
             "coupon_hint": "結帳輸入折扣碼享驚喜價",
@@ -441,48 +441,6 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "product_grid_63pFYA": {
-          "type": "product_grid",
-          "name": "6/6-6/22原子琉璃釉買一送一",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "買一送一",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/02_0_c840d756-3405-4656-8cc9-d32261adfda5.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "apgo-atomic-colored-glaze"
-            ],
-            "card_tag": "-6/22售完為止",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
-          }
-        },
-        "product_grid_HrcFDb": {
-          "type": "product_grid",
-          "name": "6/6-6/22原子極光鍍膜買一送一",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "狂降3折",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/04_0_31b84096-fff5-4e7e-b131-9494cfcbfd7e.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "aurora-coating"
-            ],
-            "card_tag": "-6/22售完為止",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
         "product_grid_p7CgbC": {
           "type": "product_grid",
           "name": "測速器任選75折",
@@ -500,6 +458,48 @@
               "g9-plus"
             ],
             "card_tag": "測速器任選↘75折",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_63pFYA": {
+          "type": "product_grid",
+          "name": "6/6-6/22原子琉璃釉買一送一",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "原子鍍膜新手全配組",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/999_633fd9dc-8785-479e-97c2-7b468ed073a5.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "原子鍍膜新手全配組🚗-一盒搞定-開箱即亮"
+            ],
+            "card_tag": "現折$577",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
+        "product_grid_HrcFDb": {
+          "type": "product_grid",
+          "name": "6/6-6/22原子極光鍍膜買一送一",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "狂降3折",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1779_5061019f-0d32-4a33-b38a-278d53aed9a7.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "🚗-鍍膜前置清潔套組"
+            ],
+            "card_tag": "現折$558",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
@@ -1006,9 +1006,9 @@
         "simple_banner_slot_Dip9ED",
         "simple_banner_slot_mFXA4r",
         "product_grid_3BCxpy",
+        "product_grid_p7CgbC",
         "product_grid_63pFYA",
         "product_grid_HrcFDb",
-        "product_grid_p7CgbC",
         "product_grid_jNQtE7",
         "product_grid_ctn3Nm",
         "product_grid_A6kewb",
