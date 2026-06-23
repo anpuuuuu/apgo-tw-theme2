@@ -412,13 +412,13 @@
         },
         "product_grid_3BCxpy": {
           "type": "product_grid",
-          "name": "6/6-6/22指定洗車藥劑✨ 任選$55",
+          "name": " 洗車藥劑 任選三件8 折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "指定款$55 今日開搶，售完為止",
+            "section_title": "任選三件 85 折",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/3_-02_0_f83f05e0-1b62-471c-84a5-0d8eb8609475.jpg",
+            "banner_img": "shopify://shop_images/1280__3_75.png",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
@@ -485,20 +485,21 @@
         },
         "product_grid_p7CgbC": {
           "type": "product_grid",
-          "name": "6/1-6/30測速器G11只要$1688",
+          "name": "測速器任選75折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "G11只要$1688",
+            "section_title": "測速器任選75折",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/G9G11_600-02_0.jpg",
+            "banner_img": "shopify://shop_images/1280__75.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
             "product_list": [
-              "apgo-g11-plus"
+              "apgo-g11-plus",
+              "g9-plus"
             ],
-            "card_tag": "單件現折↘$900",
+            "card_tag": "測速器任選↘75折",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
@@ -1036,7 +1037,7 @@
       "settings": {
         "target_amount": 0,
         "target_reward": "",
-        "hero_image_pc": "shopify://shop_images/1920__899_79.jpg",
+        "hero_image_pc": "shopify://shop_images/04_57d3f43a-7b2e-4761-bca1-3dc461701ada.jpg",
         "hero_image_mb": "shopify://shop_images/3126__899_79.jpg",
         "coupon_sec_icon": "fa-ticket",
         "coupon_sec_title": "6/1(一)準時開搶折券",
