@@ -345,24 +345,41 @@
   // 訂單本身仍帶著進站時抓到的真實來源,歸因分析可直接讀,免猜。
   async function stampCartAttribution() {
     try {
-      var attr = getAttribution();
-      if (!attr || !Object.keys(attr).length) return;
       if (sessionStorage.getItem('apgo_attr_stamped') === '1') return;
-      var attributes = { _apgo_attribution: JSON.stringify(attr) };
-      if (attr.utm_source)   attributes._apgo_utm_source   = attr.utm_source;
-      if (attr.utm_medium)   attributes._apgo_utm_medium   = attr.utm_medium;
-      if (attr.utm_campaign) attributes._apgo_utm_campaign = attr.utm_campaign;
-      if (attr.utm_content)  attributes._apgo_utm_content  = attr.utm_content;
-      if (attr.utm_term)     attributes._apgo_utm_term     = attr.utm_term;
-      if (attr.fbclid)       attributes._apgo_fbclid       = attr.fbclid;
-      if (attr.gclid)        attributes._apgo_gclid        = attr.gclid;
-      if (attr.ttclid)       attributes._apgo_ttclid       = attr.ttclid;
+      var attr = getAttribution();
+      var hasAttr = attr && Object.keys(attr).length;
+      // 沒廣告來源時,只在「購物車已有商品」(代表真的會成單)才蓋,避免替純逛訪客建立空購物車
+      if (!hasAttr) {
+        var cart = await fetch('/cart.js').then(function (r) { return r.json(); }).catch(function () { return null; });
+        if (!cart || !cart.item_count) return;
+      }
+      var sid = getSessionId(), did = getDeviceId();
+      // session_id / device_id 一律蓋 → 任何訂單都能 join 回站內行為事件,重建完整動線
+      var attributes = { _apgo_session_id: sid, _apgo_device_id: did };
+      if (hasAttr) {
+        attributes._apgo_attribution = JSON.stringify(attr);
+        if (attr.utm_source)   attributes._apgo_utm_source   = attr.utm_source;
+        if (attr.utm_medium)   attributes._apgo_utm_medium   = attr.utm_medium;
+        if (attr.utm_campaign) attributes._apgo_utm_campaign = attr.utm_campaign;
+        if (attr.utm_content)  attributes._apgo_utm_content  = attr.utm_content;
+        if (attr.utm_term)     attributes._apgo_utm_term     = attr.utm_term;
+        if (attr.fbclid)       attributes._apgo_fbclid       = attr.fbclid;
+        if (attr.gclid)        attributes._apgo_gclid        = attr.gclid;
+        if (attr.ttclid)       attributes._apgo_ttclid       = attr.ttclid;
+      }
       await fetch('/cart/update.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ attributes: attributes }),
       });
       try { sessionStorage.setItem('apgo_attr_stamped', '1'); } catch (e) {}
+      // 同一個 session_id 也打進 Clarity 自訂標籤 → 之後用它在 Clarity 找這位顧客的錄影回放
+      if (typeof window.clarity === 'function') {
+        try {
+          window.clarity('set', 'apgo_session_id', sid);
+          if (hasAttr && attr.utm_source) window.clarity('set', 'apgo_src', attr.utm_source);
+        } catch (e) {}
+      }
       log('cart attribution stamped', attributes);
     } catch (err) { warn('stamp cart attribution failed', err); }
   }
@@ -559,6 +576,7 @@
             res.clone().json().then(function(data) {
               if (isAddCart) {
                 track('add_to_cart', { value: (data.line_price || data.total_price || 0) / 100 });
+                stampCartAttribution(); // 開始購物 → 確保 session_id 蓋進購物車(任何訂單都帶得到)
               } else if (isChangeCart) {
                 // 若 quantity=0 視為 remove
                 try {
@@ -598,7 +616,7 @@
   // === Init ===
   function run() {
     captureAttribution();
-    stampCartAttribution();
+    if (Object.keys(getAttribution()).length) stampCartAttribution(); // 有廣告來源 → 進站即蓋(含 session_id)
     track('session_start');
     track('page_view');
     interceptLoginButtons();
