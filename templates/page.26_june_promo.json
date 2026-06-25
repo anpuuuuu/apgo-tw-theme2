@@ -413,6 +413,7 @@
         "product_grid_3BCxpy": {
           "type": "product_grid",
           "name": "6/6-6/22指定洗車藥劑✨ 任選$55",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "指定款$55 今日開搶，售完為止",
@@ -444,6 +445,7 @@
         "product_grid_63pFYA": {
           "type": "product_grid",
           "name": "6/6-6/22原子琉璃釉買一送一",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "買一送一",
@@ -465,6 +467,7 @@
         "product_grid_HrcFDb": {
           "type": "product_grid",
           "name": "6/6-6/22原子極光鍍膜買一送一",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "狂降3折",
@@ -507,6 +510,7 @@
         "product_grid_jNQtE7": {
           "type": "product_grid",
           "name": "6/6-6/22【原子琉璃釉豪華組】",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "現折$1285",
@@ -528,6 +532,7 @@
         "product_grid_ctn3Nm": {
           "type": "product_grid",
           "name": "6/6-6/22【原子極光豪華組】",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "現折$1285",
