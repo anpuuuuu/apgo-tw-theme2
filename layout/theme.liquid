@@ -339,6 +339,34 @@
     catch (e) { return {}; }
   }
 
+  // === v2.1 把歸因蓋進 Shopify cart attributes ===
+  // cart attributes 會變成訂單的 customAttributes,永久存在訂單上。
+  // 這樣即使跨瀏覽器/走 LINE 登入導致 Shopify 自己的 journey 變成 hiko/direct,
+  // 訂單本身仍帶著進站時抓到的真實來源,歸因分析可直接讀,免猜。
+  async function stampCartAttribution() {
+    try {
+      var attr = getAttribution();
+      if (!attr || !Object.keys(attr).length) return;
+      if (sessionStorage.getItem('apgo_attr_stamped') === '1') return;
+      var attributes = { _apgo_attribution: JSON.stringify(attr) };
+      if (attr.utm_source)   attributes._apgo_utm_source   = attr.utm_source;
+      if (attr.utm_medium)   attributes._apgo_utm_medium   = attr.utm_medium;
+      if (attr.utm_campaign) attributes._apgo_utm_campaign = attr.utm_campaign;
+      if (attr.utm_content)  attributes._apgo_utm_content  = attr.utm_content;
+      if (attr.utm_term)     attributes._apgo_utm_term     = attr.utm_term;
+      if (attr.fbclid)       attributes._apgo_fbclid       = attr.fbclid;
+      if (attr.gclid)        attributes._apgo_gclid        = attr.gclid;
+      if (attr.ttclid)       attributes._apgo_ttclid       = attr.ttclid;
+      await fetch('/cart/update.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ attributes: attributes }),
+      });
+      try { sessionStorage.setItem('apgo_attr_stamped', '1'); } catch (e) {}
+      log('cart attribution stamped', attributes);
+    } catch (err) { warn('stamp cart attribution failed', err); }
+  }
+
   // === Event Queue + Batched Beacon ===
   var queue = [];
 
@@ -474,6 +502,10 @@
 
     if (payload.attribution && Object.keys(payload.attribution).length) {
       try { sessionStorage.setItem('apgo_attribution', JSON.stringify(payload.attribution)); } catch (e) {}
+      // 跨瀏覽器:在新瀏覽器這顆還原出來的購物車上,把真實來源蓋進 cart attributes。
+      // 用 await 確保 /cart/update.js 在底下 location.replace 之前完成(否則導頁會中斷 fetch)。
+      try { sessionStorage.removeItem('apgo_attr_stamped'); } catch (e) {}
+      await stampCartAttribution();
     }
 
     var cleanUrl = new URL(location.href);
@@ -566,6 +598,7 @@
   // === Init ===
   function run() {
     captureAttribution();
+    stampCartAttribution();
     track('session_start');
     track('page_view');
     interceptLoginButtons();
