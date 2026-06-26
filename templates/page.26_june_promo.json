@@ -469,7 +469,7 @@
             "banner_img": "shopify://shop_images/1280__88.png",
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
-            "banner_link": "",
+            "banner_link": "shopify://collections/coating-series",
             "banner_anchor_id": ""
           }
         },
