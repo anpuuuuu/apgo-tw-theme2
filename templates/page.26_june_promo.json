@@ -409,6 +409,27 @@
             "banner_anchor_id": ""
           }
         },
+        "product_grid_jNQtE7": {
+          "type": "product_grid",
+          "name": "【老闆生日慶 職人精選福箱】",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "狂殺↘24折",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080.png",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "狂殺↘24折-老闆生日慶-職人精選福箱-拆開現賺-11400"
+            ],
+            "card_tag": "-6/22售完為止",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "simple_banner_slot_Dip9ED": {
           "type": "simple_banner_slot",
           "name": "滿額送清潔藥劑3罐組",
@@ -568,28 +589,6 @@
               "apgo-g11-plus"
             ],
             "card_tag": "單件現折↘$900",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_jNQtE7": {
-          "type": "product_grid",
-          "name": "6/6-6/22【原子琉璃釉豪華組】",
-          "disabled": true,
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "現折$1285",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/03_0_c2d62781-2ebf-44e2-9a05-fc584ccda34a.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "618topcoating-12set"
-            ],
-            "card_tag": "-6/22售完為止",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
@@ -1124,6 +1123,7 @@
         "flash_sale_item_DLfea8",
         "simple_banner_slot_c4GqJF",
         "simple_banner_slot_bky9zY",
+        "product_grid_jNQtE7",
         "simple_banner_slot_Dip9ED",
         "simple_banner_slot_YxQfUA",
         "simple_banner_slot_Abbmm9",
@@ -1132,7 +1132,6 @@
         "product_grid_63pFYA",
         "product_grid_HrcFDb",
         "product_grid_p7CgbC",
-        "product_grid_jNQtE7",
         "product_grid_ctn3Nm",
         "product_grid_A6kewb",
         "product_grid_3mVxFr",
