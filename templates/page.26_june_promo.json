@@ -473,6 +473,22 @@
             "banner_anchor_id": ""
           }
         },
+        "simple_banner_slot_Abbmm9": {
+          "type": "simple_banner_slot",
+          "name": "6/27-6/30洗車用品$59up",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "6/27-6/30洗車用品$59up",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1280.png",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "shopify://collections/洗車用品",
+            "banner_anchor_id": ""
+          }
+        },
         "simple_banner_slot_mFXA4r": {
           "type": "simple_banner_slot",
           "name": "滿618贈雨刷玻璃光亮劑",
@@ -1111,6 +1127,7 @@
         "simple_banner_slot_Dip9ED",
         "simple_banner_slot_7pebBp",
         "simple_banner_slot_YxQfUA",
+        "simple_banner_slot_Abbmm9",
         "simple_banner_slot_mFXA4r",
         "product_grid_3BCxpy",
         "product_grid_63pFYA",
