@@ -22,7 +22,7 @@
     data-autoplay="{{ section.settings.autoplay }}"
     data-interval="{{ section.settings.interval | times: 1000 }}"
     aria-label="{{ section.settings.aria_label | default: '優惠輪播' | escape }}"
-    style="--badge-pad: {{ section.settings.side_padding }}px; --badge-radius: {{ section.settings.radius }}px; --badge-maxw: {% if section.settings.max_width > 0 %}{{ section.settings.max_width }}px{% else %}100%{% endif %}; --badge-gap: {{ section.settings.gap_top }}px {{ section.settings.gap_bottom }}px;"
+    style="--badge-pad: {{ section.settings.side_padding }}px; --badge-radius: {{ section.settings.radius }}px; --badge-maxw: {% if section.settings.max_width > 0 %}{{ section.settings.max_width }}px{% else %}100%{% endif %}; --badge-gap-top: {{ section.settings.gap_top }}px; --badge-gap-bottom: {{ section.settings.gap_bottom }}px;"
   >
     <div class="apgo-cc-badge__track" data-apgo-cc-badge-track>
       {%- for block in banners -%}
@@ -118,13 +118,17 @@
     }
   })();
   </script>
+{%- endif -%}
 
-  {% stylesheet %}
+{% stylesheet %}
     .apgo-cc-badge {
       position: relative;
       width: 100%;
       max-width: var(--badge-maxw, 100%);
-      margin: var(--badge-gap, 0 0) auto;
+      margin-top: var(--badge-gap-top, 0px);
+      margin-bottom: var(--badge-gap-bottom, 0px);
+      margin-left: auto;
+      margin-right: auto;
       padding-left: var(--badge-pad, 0px);
       padding-right: var(--badge-pad, 0px);
       box-sizing: border-box;
@@ -177,8 +181,7 @@
       width: 18px;
       background: #fff;
     }
-  {% endstylesheet %}
-{%- endif -%}
+{% endstylesheet %}
 
 {% schema %}
 {
