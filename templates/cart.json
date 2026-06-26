@@ -140,6 +140,7 @@
         },
         "reward_pGFXLa": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
