@@ -412,6 +412,7 @@
         "simple_banner_slot_Dip9ED": {
           "type": "simple_banner_slot",
           "name": "滿額送清潔藥劑3罐組",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "滿3000送3罐組",
@@ -746,6 +747,22 @@
             "vertical_cards_per_view": "2.5"
           }
         },
+        "simple_banner_slot_QAmTNd": {
+          "type": "simple_banner_slot",
+          "name": "運費折抵券$50",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "6/27-6/30領運費折券$50",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1280__50_new._5f2be5a4-7ca2-4c25-88de-be39794a95f5.png",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
         "simple_banner_slot_9C6cyY": {
           "type": "simple_banner_slot",
           "name": "獨享折扣碼",
@@ -984,22 +1001,6 @@
             "highlight_discount": true
           }
         },
-        "simple_banner_slot_QAmTNd": {
-          "type": "simple_banner_slot",
-          "name": "運費折抵券$50",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "6/27-6/30領運費折券$50",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/1280__50_new..png",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
         "simple_banner_slot_TA9VG7": {
           "type": "simple_banner_slot",
           "name": "限量200張，$599免運券",
@@ -1138,6 +1139,7 @@
         "product_grid_zF47dN",
         "product_grid_fXt3Nh",
         "product_grid_JAm4Qp",
+        "simple_banner_slot_QAmTNd",
         "simple_banner_slot_9C6cyY",
         "simple_banner_slot_7pebBp",
         "product_grid_XMR9K3",
@@ -1152,7 +1154,6 @@
         "coupon_item_hH3EcG",
         "coupon_item_r6aVaY",
         "coupon_item_AaWikn",
-        "simple_banner_slot_QAmTNd",
         "simple_banner_slot_TA9VG7",
         "simple_banner_slot_TYahzg",
         "product_grid_DRGBxw",
