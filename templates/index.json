@@ -173,6 +173,7 @@
       "blocks": {
         "banner_jGTL4Q": {
           "type": "banner",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/1280__4099_6099__new.png",
             "link": "",
@@ -183,7 +184,6 @@
       "block_order": [
         "banner_jGTL4Q"
       ],
-      "disabled": true,
       "settings": {
         "autoplay": true,
         "interval": 4,
