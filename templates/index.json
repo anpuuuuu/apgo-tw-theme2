@@ -177,7 +177,9 @@
         "show_dots": true,
         "max_width": 0,
         "side_padding": 0,
-        "radius": 0,
+        "radius": 12,
+        "border_width": 1,
+        "border_color": "#3d4148",
         "gap_top": 0,
         "gap_bottom": 0,
         "aria_label": "優惠輪播"

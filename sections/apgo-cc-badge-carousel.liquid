@@ -22,7 +22,7 @@
     data-autoplay="{{ section.settings.autoplay }}"
     data-interval="{{ section.settings.interval | times: 1000 }}"
     aria-label="{{ section.settings.aria_label | default: '優惠輪播' | escape }}"
-    style="--badge-pad: {{ section.settings.side_padding }}px; --badge-radius: {{ section.settings.radius }}px; --badge-maxw: {% if section.settings.max_width > 0 %}{{ section.settings.max_width }}px{% else %}100%{% endif %}; --badge-gap-top: {{ section.settings.gap_top }}px; --badge-gap-bottom: {{ section.settings.gap_bottom }}px;"
+    style="--badge-pad: {{ section.settings.side_padding }}px; --badge-radius: {{ section.settings.radius }}px; --badge-maxw: {% if section.settings.max_width > 0 %}{{ section.settings.max_width }}px{% else %}100%{% endif %}; --badge-gap-top: {{ section.settings.gap_top }}px; --badge-gap-bottom: {{ section.settings.gap_bottom }}px; --badge-border-w: {{ section.settings.border_width }}px; --badge-border-color: {{ section.settings.border_color }};"
   >
     <div class="apgo-cc-badge__track" data-apgo-cc-badge-track>
       {%- for block in banners -%}
@@ -142,6 +142,7 @@
       scrollbar-width: none;
       overscroll-behavior-x: contain;
       border-radius: var(--badge-radius, 0px);
+      border: var(--badge-border-w, 0px) solid var(--badge-border-color, transparent);
       overflow-y: hidden;
     }
     .apgo-cc-badge__track::-webkit-scrollbar { display: none; }
@@ -196,7 +197,9 @@
     { "type": "header", "content": "版面" },
     { "type": "range", "id": "max_width", "label": "最大寬度（px，0 = 滿版）", "min": 0, "max": 1600, "step": 20, "default": 0 },
     { "type": "range", "id": "side_padding", "label": "左右邊距（px）", "min": 0, "max": 40, "step": 2, "default": 0 },
-    { "type": "range", "id": "radius", "label": "圓角（px）", "min": 0, "max": 24, "step": 2, "default": 0 },
+    { "type": "range", "id": "radius", "label": "圓角（px）", "min": 0, "max": 24, "step": 2, "default": 12 },
+    { "type": "range", "id": "border_width", "label": "邊框寬度（px，0 = 無邊框）", "min": 0, "max": 6, "step": 1, "default": 1 },
+    { "type": "color", "id": "border_color", "label": "邊框顏色", "default": "#3d4148" },
     { "type": "range", "id": "gap_top", "label": "上方間距（px）", "min": 0, "max": 40, "step": 2, "default": 0 },
     { "type": "range", "id": "gap_bottom", "label": "下方間距（px）", "min": 0, "max": 40, "step": 2, "default": 0 },
     { "type": "text", "id": "aria_label", "label": "無障礙標籤", "default": "優惠輪播" }
