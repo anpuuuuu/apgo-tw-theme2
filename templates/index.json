@@ -19,8 +19,7 @@
         "cta_label": "立即訂閱",
         "dismiss_label": "今天先不要",
         "consent_label": "<p>我同意接收 APGO 行銷郵件並了解 <a href=\"/policies/privacy-policy\">隱私條款</a></p>",
-        "success_title": "感謝訂閱 APGO 電子報！",
-        "image": ""
+        "success_title": "感謝訂閱 APGO 電子報！"
       }
     },
     "promotional_banner_PgHgtX": {
@@ -171,17 +170,31 @@
     },
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
+      "blocks": {
+        "banner_jGTL4Q": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/1280__4099_6099__new.png",
+            "link": "",
+            "alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "banner_jGTL4Q"
+      ],
+      "disabled": true,
       "settings": {
         "autoplay": true,
         "interval": 4,
         "show_dots": true,
         "max_width": 0,
-        "side_padding": 0,
-        "radius": 12,
+        "side_padding": 8,
+        "radius": 14,
         "border_width": 1,
         "border_color": "#3d4148",
-        "gap_top": 0,
-        "gap_bottom": 0,
+        "gap_top": 4,
+        "gap_bottom": 4,
         "aria_label": "優惠輪播"
       }
     },
