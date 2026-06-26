@@ -430,6 +430,27 @@
             "vertical_cards_per_view": "2.5"
           }
         },
+        "product_grid_bY6hrM": {
+          "type": "product_grid",
+          "name": "【2026周年慶限定】滿漢盛宴",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "狂殺↘2折",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/096bc3d0a5b0aefdc5cb8b190db0911e.png",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "2026周年慶限定-滿漢盛宴-限量盲盒"
+            ],
+            "card_tag": "現賺$13,612",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "simple_banner_slot_Dip9ED": {
           "type": "simple_banner_slot",
           "name": "滿額送清潔藥劑3罐組",
@@ -1124,6 +1145,7 @@
         "simple_banner_slot_c4GqJF",
         "simple_banner_slot_bky9zY",
         "product_grid_jNQtE7",
+        "product_grid_bY6hrM",
         "simple_banner_slot_Dip9ED",
         "simple_banner_slot_YxQfUA",
         "simple_banner_slot_Abbmm9",
