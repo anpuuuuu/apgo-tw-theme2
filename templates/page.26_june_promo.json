@@ -377,6 +377,54 @@
             "success_button_text": "前往結帳，以保有優惠"
           }
         },
+        "simple_banner_slot_9C6cyY": {
+          "type": "simple_banner_slot",
+          "name": "獨享折扣碼",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "6/27-6/30獨享折扣碼",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1280__200_new.png",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
+        "simple_banner_slot_c4GqJF": {
+          "type": "simple_banner_slot",
+          "name": "人氣下單禮",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "6/27-6/30下單即送",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1280__LEAD.png",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
+        "simple_banner_slot_bky9zY": {
+          "type": "simple_banner_slot",
+          "name": "滿$2000送撲克牌",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "6/27-6/30滿額贈",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1280__2000.png",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
         "simple_banner_slot_Dip9ED": {
           "type": "simple_banner_slot",
           "name": "滿額送清潔藥劑3罐組",
@@ -393,16 +441,32 @@
             "banner_anchor_id": ""
           }
         },
-        "simple_banner_slot_c4GqJF": {
+        "simple_banner_slot_7pebBp": {
           "type": "simple_banner_slot",
-          "name": "人氣下單禮",
+          "name": "周年慶！達標禮 ",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "下單即送",
+            "section_title": "6/27-6/30周年慶！達標禮",
             "nav_label_override": "",
             "section_icon": "fa-image",
             "show_banner": true,
-            "banner_img": "shopify://shop_images/1280__LEAD.png",
+            "banner_img": "shopify://shop_images/1280___new...png",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
+        "simple_banner_slot_YxQfUA": {
+          "type": "simple_banner_slot",
+          "name": "6/27-6/30指定鍍膜88折",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "6/27-6/30指定鍍膜88折",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1280__88.png",
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
             "banner_link": "",
@@ -505,6 +569,7 @@
         "product_grid_p7CgbC": {
           "type": "product_grid",
           "name": "6/1-6/30測速器G11只要$1688",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "G11只要$1688",
@@ -601,6 +666,7 @@
         "product_grid_3mVxFr": {
           "type": "product_grid",
           "name": "6/1-6/30全車深層淨化8件組",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "深層淨化組",
@@ -622,6 +688,7 @@
         "product_grid_zF47dN": {
           "type": "product_grid",
           "name": "6/1-6/30【30分鐘快速亮車組】",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "快速亮車組",
@@ -643,6 +710,7 @@
         "product_grid_fXt3Nh": {
           "type": "product_grid",
           "name": "6/1-6/30夏日抗曬防護組",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "抗曬防護組",
@@ -900,6 +968,22 @@
             "highlight_discount": true
           }
         },
+        "simple_banner_slot_QAmTNd": {
+          "type": "simple_banner_slot",
+          "name": "運費折抵券$50",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "6/27-6/30領運費折券$50",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1080__50_new.png",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
         "simple_banner_slot_TA9VG7": {
           "type": "simple_banner_slot",
           "name": "限量200張，$599免運券",
@@ -1021,8 +1105,12 @@
         "flash_sale_item_MXr8TC",
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
-        "simple_banner_slot_Dip9ED",
+        "simple_banner_slot_9C6cyY",
         "simple_banner_slot_c4GqJF",
+        "simple_banner_slot_bky9zY",
+        "simple_banner_slot_Dip9ED",
+        "simple_banner_slot_7pebBp",
+        "simple_banner_slot_YxQfUA",
         "simple_banner_slot_mFXA4r",
         "product_grid_3BCxpy",
         "product_grid_63pFYA",
@@ -1047,6 +1135,7 @@
         "coupon_item_hH3EcG",
         "coupon_item_r6aVaY",
         "coupon_item_AaWikn",
+        "simple_banner_slot_QAmTNd",
         "simple_banner_slot_TA9VG7",
         "simple_banner_slot_TYahzg",
         "product_grid_DRGBxw",
