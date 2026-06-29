@@ -175,7 +175,7 @@
           "type": "banner",
           "settings": {
             "image": "shopify://shop_images/1280__LEAD.png",
-            "link": "",
+            "link": "shopify://pages/26_june_promo",
             "alt": ""
           }
         }
