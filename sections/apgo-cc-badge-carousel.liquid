@@ -144,29 +144,15 @@
       box-sizing: border-box;
       z-index: 5;
     }
-    /* Overlay mode: section takes no flow height; banner floats over the next
-       section (hero) and is anchored by its BOTTOM edge at the floor line, so a
-       taller image grows UPWARD (above the hero) and never covers the text. */
-    .apgo-cc-badge--overlay {
-      height: 0;
-      margin: 0;
-      overflow: visible;
-      pointer-events: none;
-    }
     .apgo-cc-badge__inner {
       max-width: var(--badge-maxw, 100%);
       margin-left: auto;
       margin-right: auto;
       position: relative;
     }
-    .apgo-cc-badge--overlay .apgo-cc-badge__inner {
-      position: absolute;
-      top: var(--badge-floor, 320px);            /* floor line, measured from hero top */
-      left: 50%;
-      transform: translate(-50%, -100%);         /* bottom edge sits ON the floor; grow up */
-      width: min(var(--badge-maxw, 100%), calc(100% - 2 * var(--badge-pad, 0px)));
-      pointer-events: auto;
-    }
+    /* DESKTOP (≥750px): even in overlay mode, the banner sits in its OWN
+       in-flow band (pushes hero down) — the band IS the blank area, so a tall
+       image never covers the header. Overlap/float is mobile-only (below). */
     .apgo-cc-badge__track {
       display: flex;
       width: 100%;
@@ -217,9 +203,22 @@
       width: 18px;
       background: #fff;
     }
+    /* MOBILE (≤749px): overlay/float mode — banner floats over the hero,
+       bottom anchored at the floor line, grows upward. */
     @media (max-width: 749px) {
+      .apgo-cc-badge--overlay {
+        height: 0;
+        margin: 0;
+        overflow: visible;
+        pointer-events: none;
+      }
       .apgo-cc-badge--overlay .apgo-cc-badge__inner {
+        position: absolute;
         top: var(--badge-floor-mobile, 220px);
+        left: 50%;
+        transform: translate(-50%, -100%);
+        width: min(var(--badge-maxw, 100%), calc(100% - 2 * var(--badge-pad, 0px)));
+        pointer-events: auto;
       }
     }
 {% endstylesheet %}
