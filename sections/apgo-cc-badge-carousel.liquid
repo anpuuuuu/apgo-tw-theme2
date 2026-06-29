@@ -1,12 +1,13 @@
 {%- comment -%}
   APGO · Badge 輪播
   内容區頂部的自動輪播 banner 帶。1-5 張圖，橫向 slide 自動輪播。
-  固定比例框（aspect-ratio，預設 3.5:1）→ 圖片用 object-fit:cover 填滿，
-  高度可控、多張不會跳。後台請依比例出圖（例：1280×366 ≈ 3.5:1，retina 出 2x）。
+  圖片高度「不限制」（height:auto，由圖片決定）。
 
-  叠加模式（overlay）：section 本身不佔垂直空間，banner 以絕對定位「浮」在
-  下一個區塊（hero）的上方，可用「頂部偏移」控制落點，不會把 hero 擠下去。
-  關閉叠加 → 變回獨立一條 banner（正常佔位）。
+  叠加模式（overlay）：banner 以絕對定位浮在下一個區塊（hero）上方，
+  且「底邊」錨定在一條基準線（floor，從 hero 頂端往下 N px）。
+  → 圖片再高也只會「往上長」（高出 hero 頂部），底邊永遠不會越過基準線、
+    不會壓到 hero 的標題文字。基準線請拖到 hero 標題上方。
+  關閉叠加 → 變回獨立一條 banner（正常佔位、不錨定）。
   單張時靜態不輪播；0 張時整個 section 不顯示。
 {%- endcomment -%}
 
@@ -31,9 +32,8 @@
       --badge-pad: {{ section.settings.side_padding }}px;
       --badge-radius: {{ section.settings.radius }}px;
       --badge-maxw: {% if section.settings.max_width > 0 %}{{ section.settings.max_width }}px{% else %}100%{% endif %};
-      --badge-ar: {{ section.settings.aspect_ratio }};
-      --badge-top: {{ section.settings.top_offset }}px;
-      --badge-top-mobile: {{ section.settings.top_offset_mobile }}px;
+      --badge-floor: {{ section.settings.floor }}px;
+      --badge-floor-mobile: {{ section.settings.floor_mobile }}px;
       --badge-gap-top: {{ section.settings.gap_top }}px;
       --badge-gap-bottom: {{ section.settings.gap_bottom }}px;
       --badge-border-w: {{ section.settings.border_width }}px;
@@ -52,6 +52,8 @@
               sizes="100vw"
               alt="{{ block.settings.alt | escape }}"
               loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}"
               draggable="false"
             >
           {%- endcapture -%}
@@ -142,13 +144,14 @@
       box-sizing: border-box;
       z-index: 5;
     }
-    /* Overlay mode: section contributes no flow height, banner floats over the
-       next section (hero). Banner is absolutely placed + horizontally centered. */
+    /* Overlay mode: section takes no flow height; banner floats over the next
+       section (hero) and is anchored by its BOTTOM edge at the floor line, so a
+       taller image grows UPWARD (above the hero) and never covers the text. */
     .apgo-cc-badge--overlay {
       height: 0;
       margin: 0;
       overflow: visible;
-      pointer-events: none;   /* let the empty area pass clicks to hero; inner re-enables */
+      pointer-events: none;
     }
     .apgo-cc-badge__inner {
       max-width: var(--badge-maxw, 100%);
@@ -158,16 +161,15 @@
     }
     .apgo-cc-badge--overlay .apgo-cc-badge__inner {
       position: absolute;
-      top: var(--badge-top, 0px);
+      top: var(--badge-floor, 320px);            /* floor line, measured from hero top */
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, -100%);         /* bottom edge sits ON the floor; grow up */
       width: min(var(--badge-maxw, 100%), calc(100% - 2 * var(--badge-pad, 0px)));
       pointer-events: auto;
     }
     .apgo-cc-badge__track {
       display: flex;
       width: 100%;
-      aspect-ratio: var(--badge-ar, 3.5);   /* fixed-ratio box → controlled height */
       overflow-x: auto;
       overflow-y: hidden;
       scroll-snap-type: x mandatory;
@@ -181,7 +183,6 @@
     .apgo-cc-badge__track::-webkit-scrollbar { display: none; }
     .apgo-cc-badge__slide {
       flex: 0 0 100%;
-      height: 100%;
       scroll-snap-align: center;
       scroll-snap-stop: always;
       display: block;
@@ -189,8 +190,7 @@
     }
     .apgo-cc-badge__img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;       /* fill the fixed-ratio box; designer matches ratio → no crop */
+      height: auto;            /* image decides its own height — no constraint */
       display: block;
       user-select: none;
       -webkit-user-drag: none;
@@ -219,7 +219,7 @@
     }
     @media (max-width: 749px) {
       .apgo-cc-badge--overlay .apgo-cc-badge__inner {
-        top: var(--badge-top-mobile, 0px);
+        top: var(--badge-floor-mobile, 220px);
       }
     }
 {% endstylesheet %}
@@ -230,21 +230,20 @@
   "tag": "section",
   "class": "apgo-cc-badge-section",
   "settings": [
-    { "type": "paragraph", "content": "新增 1–5 個「Banner」block，每個上傳一張圖。圖片請依「比例」設定出圖（預設 3.5:1，例 1280×366，retina 出 2x 2560×732），各張同尺寸。單張時不輪播。" },
+    { "type": "paragraph", "content": "新增 1–5 個「Banner」block，每個上傳一張圖。圖片高度不限制（由圖片決定）。叠加模式下，banner 底邊固定在「底部基準線」，圖片越高就往上長、不會壓到下方文字。" },
     { "type": "checkbox", "id": "autoplay", "label": "自動輪播", "default": true },
     { "type": "range", "id": "interval", "label": "輪播間隔（秒）", "min": 2, "max": 8, "step": 1, "default": 4 },
     { "type": "checkbox", "id": "show_dots", "label": "顯示圓點指示器", "default": true },
-    { "type": "header", "content": "比例與版面" },
-    { "type": "range", "id": "aspect_ratio", "label": "Banner 比例（寬÷高）", "min": 2, "max": 5, "step": 0.1, "default": 3.5, "info": "3.5 = 扁長條；數字越小越高。請讓設計師依此比例出圖。" },
+    { "type": "header", "content": "版面" },
     { "type": "range", "id": "max_width", "label": "最大寬度（px，0 = 滿版）", "min": 0, "max": 1600, "step": 20, "default": 1040 },
     { "type": "range", "id": "side_padding", "label": "左右邊距（px）", "min": 0, "max": 60, "step": 2, "default": 16 },
-    { "type": "range", "id": "radius", "label": "圓角（px）", "min": 0, "max": 24, "step": 2, "default": 12 },
-    { "type": "range", "id": "border_width", "label": "邊框寬度（px，0 = 無邊框）", "min": 0, "max": 6, "step": 1, "default": 0 },
+    { "type": "range", "id": "radius", "label": "圓角（px）", "min": 0, "max": 24, "step": 2, "default": 14 },
+    { "type": "range", "id": "border_width", "label": "邊框寬度（px，0 = 無邊框）", "min": 0, "max": 6, "step": 1, "default": 1 },
     { "type": "color", "id": "border_color", "label": "邊框顏色", "default": "#3d4148" },
     { "type": "header", "content": "叠加（浮在下方 hero 上）" },
-    { "type": "checkbox", "id": "overlay_on_hero", "label": "浮在下一個區塊上方（叠加模式）", "default": true, "info": "開啟：banner 浮在下方 hero 上，不佔垂直空間。關閉：變回獨立一條。" },
-    { "type": "range", "id": "top_offset", "label": "桌機：距頂偏移（px）", "min": 0, "max": 300, "step": 4, "default": 24, "info": "叠加模式下，banner 從 hero 頂往下多少。拖到不擋住標題與車頭圖。" },
-    { "type": "range", "id": "top_offset_mobile", "label": "手機：距頂偏移（px）", "min": 0, "max": 200, "step": 4, "default": 12 },
+    { "type": "checkbox", "id": "overlay_on_hero", "label": "浮在下一個區塊上方（叠加模式）", "default": true, "info": "開啟：banner 浮在下方 hero 上、底邊錨定在基準線。關閉：變回獨立一條。" },
+    { "type": "range", "id": "floor", "label": "桌機：底部基準線（從 hero 頂往下 px）", "min": 0, "max": 600, "step": 4, "default": 320, "info": "banner 的底邊固定在這條線。請拖到剛好在 hero 標題的上方——圖片再高也只往上長，底邊不會越過這條線。" },
+    { "type": "range", "id": "floor_mobile", "label": "手機：底部基準線（px）", "min": 0, "max": 500, "step": 4, "default": 220 },
     { "type": "header", "content": "非叠加模式間距" },
     { "type": "range", "id": "gap_top", "label": "上方間距（px）", "min": 0, "max": 40, "step": 2, "default": 0 },
     { "type": "range", "id": "gap_bottom", "label": "下方間距（px）", "min": 0, "max": 40, "step": 2, "default": 0 },
