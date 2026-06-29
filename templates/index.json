@@ -171,6 +171,24 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
+        "banner_jGTL4Q": {
+          "type": "banner",
+          "name": "Banner-下單禮",
+          "settings": {
+            "image": "shopify://shop_images/1280__LEAD.png",
+            "link": "shopify://pages/26_june_promo",
+            "alt": ""
+          }
+        },
+        "banner_xj9FpC": {
+          "type": "banner",
+          "name": "Banner-送撲克牌",
+          "settings": {
+            "image": "shopify://shop_images/1280__2000.png",
+            "link": "shopify://pages/26_june_promo",
+            "alt": ""
+          }
+        },
         "banner_T8KwPX": {
           "type": "banner",
           "name": "Banner-鍍膜88折",
@@ -189,30 +207,22 @@
             "alt": ""
           }
         },
-        "banner_xj9FpC": {
+        "banner_r6gpWn": {
           "type": "banner",
-          "name": "Banner-送撲克牌",
+          "name": "Banner-洗車用品",
           "settings": {
-            "image": "shopify://shop_images/1280__2000.png",
-            "link": "shopify://pages/26_june_promo",
-            "alt": ""
-          }
-        },
-        "banner_jGTL4Q": {
-          "type": "banner",
-          "name": "Banner-下單禮",
-          "settings": {
-            "image": "shopify://shop_images/1280__LEAD.png",
-            "link": "shopify://pages/26_june_promo",
+            "image": "shopify://shop_images/1280.png",
+            "link": "shopify://collections/洗車用品",
             "alt": ""
           }
         }
       },
       "block_order": [
+        "banner_jGTL4Q",
+        "banner_xj9FpC",
         "banner_T8KwPX",
         "banner_cNRtiH",
-        "banner_xj9FpC",
-        "banner_jGTL4Q"
+        "banner_r6gpWn"
       ],
       "settings": {
         "autoplay": true,
