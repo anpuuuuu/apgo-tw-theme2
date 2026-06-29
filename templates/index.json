@@ -235,7 +235,7 @@
         "border_color": "#3d4148",
         "overlay_on_hero": true,
         "overlap": 200,
-        "overlap_mobile": 60,
+        "overlap_mobile": 160,
         "gap_top": 0,
         "gap_bottom": 0,
         "aria_label": "優惠輪播"
