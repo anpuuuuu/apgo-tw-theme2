@@ -173,7 +173,6 @@
       "blocks": {
         "banner_jGTL4Q": {
           "type": "banner",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/1280__4099_6099__new.png",
             "link": "",
@@ -188,14 +187,14 @@
         "autoplay": true,
         "interval": 4,
         "show_dots": true,
-        "max_width": 1040,
+        "max_width": 1600,
         "side_padding": 16,
         "radius": 14,
         "border_width": 1,
         "border_color": "#3d4148",
         "overlay_on_hero": true,
-        "floor": 320,
-        "floor_mobile": 220,
+        "floor": 220,
+        "floor_mobile": 180,
         "gap_top": 0,
         "gap_bottom": 0,
         "aria_label": "優惠輪播"
