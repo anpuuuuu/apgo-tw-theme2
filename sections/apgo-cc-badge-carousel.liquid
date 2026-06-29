@@ -32,8 +32,8 @@
       --badge-pad: {{ section.settings.side_padding }}px;
       --badge-radius: {{ section.settings.radius }}px;
       --badge-maxw: {% if section.settings.max_width > 0 %}{{ section.settings.max_width }}px{% else %}100%{% endif %};
-      --badge-floor: {{ section.settings.floor }}px;
-      --badge-floor-mobile: {{ section.settings.floor_mobile }}px;
+      --badge-overlap: {{ section.settings.overlap }}px;
+      --badge-overlap-mobile: {{ section.settings.overlap_mobile }}px;
       --badge-gap-top: {{ section.settings.gap_top }}px;
       --badge-gap-bottom: {{ section.settings.gap_bottom }}px;
       --badge-border-w: {{ section.settings.border_width }}px;
@@ -142,7 +142,7 @@
       padding-left: var(--badge-pad, 0px);
       padding-right: var(--badge-pad, 0px);
       box-sizing: border-box;
-      z-index: 5;
+      z-index: 10;
     }
     .apgo-cc-badge__inner {
       max-width: var(--badge-maxw, 100%);
@@ -150,9 +150,14 @@
       margin-right: auto;
       position: relative;
     }
-    /* DESKTOP (≥750px): even in overlay mode, the banner sits in its OWN
-       in-flow band (pushes hero down) — the band IS the blank area, so a tall
-       image never covers the header. Overlap/float is mobile-only (below). */
+    /* Overlay mode: banner stays IN FLOW (so it can never cover the header
+       above it). A negative bottom margin pulls the hero UP by --badge-overlap,
+       so the banner's bottom presses onto the hero by that much. Any banner
+       height beyond the overlap pushes the hero down (= the "blank space above
+       hero" for tall images). z-index keeps the banner painted over the hero. */
+    .apgo-cc-badge--overlay {
+      margin-bottom: calc(-1 * var(--badge-overlap, 0px));
+    }
     .apgo-cc-badge__track {
       display: flex;
       width: 100%;
@@ -203,22 +208,10 @@
       width: 18px;
       background: #fff;
     }
-    /* MOBILE (≤749px): overlay/float mode — banner floats over the hero,
-       bottom anchored at the floor line, grows upward. */
+    /* MOBILE (≤749px): same model, separate overlap amount. */
     @media (max-width: 749px) {
       .apgo-cc-badge--overlay {
-        height: 0;
-        margin: 0;
-        overflow: visible;
-        pointer-events: none;
-      }
-      .apgo-cc-badge--overlay .apgo-cc-badge__inner {
-        position: absolute;
-        top: var(--badge-floor-mobile, 220px);
-        left: 50%;
-        transform: translate(-50%, -100%);
-        width: min(var(--badge-maxw, 100%), calc(100% - 2 * var(--badge-pad, 0px)));
-        pointer-events: auto;
+        margin-bottom: calc(-1 * var(--badge-overlap-mobile, 0px));
       }
     }
 {% endstylesheet %}
@@ -240,9 +233,9 @@
     { "type": "range", "id": "border_width", "label": "邊框寬度（px，0 = 無邊框）", "min": 0, "max": 6, "step": 1, "default": 1 },
     { "type": "color", "id": "border_color", "label": "邊框顏色", "default": "#3d4148" },
     { "type": "header", "content": "叠加（浮在下方 hero 上）" },
-    { "type": "checkbox", "id": "overlay_on_hero", "label": "浮在下一個區塊上方（叠加模式）", "default": true, "info": "開啟：banner 浮在下方 hero 上、底邊錨定在基準線。關閉：變回獨立一條。" },
-    { "type": "range", "id": "floor", "label": "桌機：底部基準線（從 hero 頂往下 px）", "min": 0, "max": 600, "step": 10, "default": 320, "info": "banner 的底邊固定在這條線。請拖到剛好在 hero 標題的上方——圖片再高也只往上長，底邊不會越過這條線。" },
-    { "type": "range", "id": "floor_mobile", "label": "手機：底部基準線（px）", "min": 0, "max": 500, "step": 10, "default": 220 },
+    { "type": "checkbox", "id": "overlay_on_hero", "label": "壓在下方 hero 上（叠加模式）", "default": true, "info": "開啟：banner 壓在下方 hero 上，超出的高度自動把 hero 往下推（不會蓋到上方 header）。關閉：變回獨立一條。" },
+    { "type": "range", "id": "overlap", "label": "桌機：壓進 hero 的深度（px）", "min": 0, "max": 400, "step": 10, "default": 120, "info": "banner 底部壓進 hero 多少。數字越大壓得越深。banner 比這個高的部分會把 hero 往下推、不會蓋到 header。" },
+    { "type": "range", "id": "overlap_mobile", "label": "手機：壓進 hero 的深度（px）", "min": 0, "max": 300, "step": 10, "default": 60 },
     { "type": "header", "content": "非叠加模式間距" },
     { "type": "range", "id": "gap_top", "label": "上方間距（px）", "min": 0, "max": 40, "step": 2, "default": 0 },
     { "type": "range", "id": "gap_bottom", "label": "下方間距（px）", "min": 0, "max": 40, "step": 2, "default": 0 },
