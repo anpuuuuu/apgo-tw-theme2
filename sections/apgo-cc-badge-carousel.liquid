@@ -22,6 +22,27 @@
 -%}
 
 {%- if shown > 0 -%}
+  {%- comment -%}
+    Overlap is applied to the SHOPIFY SECTION WRAPPER (#shopify-section-…),
+    not the inner element — a negative margin on the inner div is trapped
+    inside the wrapper and won't pull the next section (hero) up. Targeting
+    the wrapper reliably overlaps the hero by `overlap` px; z-index keeps the
+    banner painted over it. Tall banners still push the hero down naturally.
+  {%- endcomment -%}
+  {%- if section.settings.overlay_on_hero -%}
+    <style>
+      #shopify-section-{{ section.id }} {
+        position: relative;
+        z-index: 10;
+        margin-bottom: -{{ section.settings.overlap }}px;
+      }
+      @media (max-width: 749px) {
+        #shopify-section-{{ section.id }} {
+          margin-bottom: -{{ section.settings.overlap_mobile }}px;
+        }
+      }
+    </style>
+  {%- endif -%}
   <section
     class="apgo-cc-badge{% if section.settings.overlay_on_hero %} apgo-cc-badge--overlay{% endif %}"
     data-apgo-cc-badge
@@ -150,14 +171,10 @@
       margin-right: auto;
       position: relative;
     }
-    /* Overlay mode: banner stays IN FLOW (so it can never cover the header
-       above it). A negative bottom margin pulls the hero UP by --badge-overlap,
-       so the banner's bottom presses onto the hero by that much. Any banner
-       height beyond the overlap pushes the hero down (= the "blank space above
-       hero" for tall images). z-index keeps the banner painted over the hero. */
-    .apgo-cc-badge--overlay {
-      margin-bottom: calc(-1 * var(--badge-overlap, 0px));
-    }
+    /* Overlay overlap is applied on the section WRAPPER via the inline
+       <style> above (#shopify-section-…). The banner stays in flow so it
+       never covers the header; the wrapper's negative margin presses it onto
+       the hero, and a tall banner still pushes the hero down. */
     .apgo-cc-badge__track {
       display: flex;
       width: 100%;
@@ -207,12 +224,6 @@
     .apgo-cc-badge__dot.is-active {
       width: 18px;
       background: #fff;
-    }
-    /* MOBILE (≤749px): same model, separate overlap amount. */
-    @media (max-width: 749px) {
-      .apgo-cc-badge--overlay {
-        margin-bottom: calc(-1 * var(--badge-overlap-mobile, 0px));
-      }
     }
 {% endstylesheet %}
 
