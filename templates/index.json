@@ -39,7 +39,7 @@
         "movement_direction": "normal",
         "color_scheme": "scheme-a27d2d12-7174-40fe-a01c-a128174b4c26",
         "padding-block-start": 3,
-        "padding-block-end": 3,
+        "padding-block-end": 26,
         "gap_between_elements": 10
       }
     },
@@ -184,7 +184,6 @@
           "type": "banner",
           "name": "Banner-送撲克牌",
           "settings": {
-            "image": "shopify://shop_images/1280__2000.png",
             "link": "shopify://pages/26_june_promo",
             "alt": ""
           }
