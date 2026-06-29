@@ -184,6 +184,7 @@
           "type": "banner",
           "name": "Banner-送撲克牌",
           "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_2026_6_29_07_06_26.png",
             "link": "shopify://pages/26_june_promo",
             "alt": ""
           }
