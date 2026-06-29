@@ -1,8 +1,13 @@
 {%- comment -%}
-  APGO · Badge 輪播 (Car Care)
+  APGO · Badge 輪播
   内容區頂部的自動輪播 banner 帶。1-5 張圖，橫向 slide 自動輪播。
-  尺寸由圖片決定（width:100%; height:auto）——後台請確保各張圖尺寸/比例一致。
-  單張時退化成靜態 banner（不輪播、無圓點）。0 張時整個 section 不顯示。
+  固定比例框（aspect-ratio，預設 3.5:1）→ 圖片用 object-fit:cover 填滿，
+  高度可控、多張不會跳。後台請依比例出圖（例：1280×366 ≈ 3.5:1，retina 出 2x）。
+
+  叠加模式（overlay）：section 本身不佔垂直空間，banner 以絕對定位「浮」在
+  下一個區塊（hero）的上方，可用「頂部偏移」控制落點，不會把 hero 擠下去。
+  關閉叠加 → 變回獨立一條 banner（正常佔位）。
+  單張時靜態不輪播；0 張時整個 section 不顯示。
 {%- endcomment -%}
 
 {%- liquid
@@ -17,44 +22,55 @@
 
 {%- if shown > 0 -%}
   <section
-    class="apgo-cc-badge"
+    class="apgo-cc-badge{% if section.settings.overlay_on_hero %} apgo-cc-badge--overlay{% endif %}"
     data-apgo-cc-badge
     data-autoplay="{{ section.settings.autoplay }}"
     data-interval="{{ section.settings.interval | times: 1000 }}"
     aria-label="{{ section.settings.aria_label | default: '優惠輪播' | escape }}"
-    style="--badge-pad: {{ section.settings.side_padding }}px; --badge-radius: {{ section.settings.radius }}px; --badge-maxw: {% if section.settings.max_width > 0 %}{{ section.settings.max_width }}px{% else %}100%{% endif %}; --badge-gap-top: {{ section.settings.gap_top }}px; --badge-gap-bottom: {{ section.settings.gap_bottom }}px; --badge-border-w: {{ section.settings.border_width }}px; --badge-border-color: {{ section.settings.border_color }};"
+    style="
+      --badge-pad: {{ section.settings.side_padding }}px;
+      --badge-radius: {{ section.settings.radius }}px;
+      --badge-maxw: {% if section.settings.max_width > 0 %}{{ section.settings.max_width }}px{% else %}100%{% endif %};
+      --badge-ar: {{ section.settings.aspect_ratio }};
+      --badge-top: {{ section.settings.top_offset }}px;
+      --badge-top-mobile: {{ section.settings.top_offset_mobile }}px;
+      --badge-gap-top: {{ section.settings.gap_top }}px;
+      --badge-gap-bottom: {{ section.settings.gap_bottom }}px;
+      --badge-border-w: {{ section.settings.border_width }}px;
+      --badge-border-color: {{ section.settings.border_color }};
+    "
   >
-    <div class="apgo-cc-badge__track" data-apgo-cc-badge-track>
-      {%- for block in banners -%}
-        {%- if block.settings.image == blank -%}{%- continue -%}{%- endif -%}
-        {%- capture img -%}
-          <img
-            class="apgo-cc-badge__img"
-            src="{{ block.settings.image | image_url: width: 1600 }}"
-            srcset="{{ block.settings.image | image_url: width: 800 }} 800w, {{ block.settings.image | image_url: width: 1200 }} 1200w, {{ block.settings.image | image_url: width: 1600 }} 1600w"
-            sizes="100vw"
-            alt="{{ block.settings.alt | escape }}"
-            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-            width="{{ block.settings.image.width }}"
-            height="{{ block.settings.image.height }}"
-            draggable="false"
-          >
-        {%- endcapture -%}
-        {%- if block.settings.link != blank -%}
-          <a class="apgo-cc-badge__slide" href="{{ block.settings.link }}" data-badge-slide {{ block.shopify_attributes }}>{{ img }}</a>
-        {%- else -%}
-          <div class="apgo-cc-badge__slide" data-badge-slide {{ block.shopify_attributes }}>{{ img }}</div>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-
-    {%- if shown > 1 and section.settings.show_dots -%}
-      <div class="apgo-cc-badge__dots" data-apgo-cc-badge-dots>
-        {%- for i in (1..shown) -%}
-          <button type="button" class="apgo-cc-badge__dot{% if forloop.first %} is-active{% endif %}" data-badge-dot="{{ forloop.index0 }}" aria-label="第 {{ forloop.index }} 張"></button>
+    <div class="apgo-cc-badge__inner">
+      <div class="apgo-cc-badge__track" data-apgo-cc-badge-track>
+        {%- for block in banners -%}
+          {%- if block.settings.image == blank -%}{%- continue -%}{%- endif -%}
+          {%- capture img -%}
+            <img
+              class="apgo-cc-badge__img"
+              src="{{ block.settings.image | image_url: width: 1600 }}"
+              srcset="{{ block.settings.image | image_url: width: 800 }} 800w, {{ block.settings.image | image_url: width: 1200 }} 1200w, {{ block.settings.image | image_url: width: 1600 }} 1600w"
+              sizes="100vw"
+              alt="{{ block.settings.alt | escape }}"
+              loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              draggable="false"
+            >
+          {%- endcapture -%}
+          {%- if block.settings.link != blank -%}
+            <a class="apgo-cc-badge__slide" href="{{ block.settings.link }}" data-badge-slide {{ block.shopify_attributes }}>{{ img }}</a>
+          {%- else -%}
+            <div class="apgo-cc-badge__slide" data-badge-slide {{ block.shopify_attributes }}>{{ img }}</div>
+          {%- endif -%}
         {%- endfor -%}
       </div>
-    {%- endif -%}
+
+      {%- if shown > 1 and section.settings.show_dots -%}
+        <div class="apgo-cc-badge__dots" data-apgo-cc-badge-dots>
+          {%- for i in (1..shown) -%}
+            <button type="button" class="apgo-cc-badge__dot{% if forloop.first %} is-active{% endif %}" data-badge-dot="{{ forloop.index0 }}" aria-label="第 {{ forloop.index }} 張"></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
   </section>
 
   <script>
@@ -73,11 +89,9 @@
         var i = current();
         for (var d = 0; d < dots.length; d++) dots[d].classList.toggle('is-active', d === i);
       }
-      // live dot highlight while scrolling (rAF-throttled)
       track.addEventListener('scroll', function () {
         if (!raf) raf = requestAnimationFrame(function () { raf = 0; updateDots(); });
       }, { passive: true });
-      // dot click → jump
       for (var d = 0; d < dots.length; d++) {
         (function (dot) {
           dot.addEventListener('click', function () {
@@ -86,10 +100,8 @@
           });
         })(dots[d]);
       }
-      // resize → re-align to current slide
       window.addEventListener('resize', function () { goTo(current()); });
 
-      // autoplay (only when >1 slide)
       var autoplay = root.getAttribute('data-autoplay') === 'true';
       var interval = parseInt(root.getAttribute('data-interval') || '4000', 10);
       if (interval < 1500) interval = 1500;
@@ -102,7 +114,6 @@
       function start() { if (autoplay && slides.length > 1 && !timer) timer = setInterval(function () { if (!paused) next(); }, interval); }
       function stop() { if (timer) { clearInterval(timer); timer = null; } }
       function restart() { stop(); start(); }
-      // pause on hover / touch
       root.addEventListener('pointerenter', function () { paused = true; });
       root.addEventListener('pointerleave', function () { paused = false; });
       root.addEventListener('touchstart', function () { paused = true; }, { passive: true });
@@ -124,18 +135,41 @@
     .apgo-cc-badge {
       position: relative;
       width: 100%;
-      max-width: var(--badge-maxw, 100%);
       margin-top: var(--badge-gap-top, 0px);
       margin-bottom: var(--badge-gap-bottom, 0px);
-      margin-left: auto;
-      margin-right: auto;
       padding-left: var(--badge-pad, 0px);
       padding-right: var(--badge-pad, 0px);
       box-sizing: border-box;
+      z-index: 5;
+    }
+    /* Overlay mode: section contributes no flow height, banner floats over the
+       next section (hero). Banner is absolutely placed + horizontally centered. */
+    .apgo-cc-badge--overlay {
+      height: 0;
+      margin: 0;
+      overflow: visible;
+      pointer-events: none;   /* let the empty area pass clicks to hero; inner re-enables */
+    }
+    .apgo-cc-badge__inner {
+      max-width: var(--badge-maxw, 100%);
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+    }
+    .apgo-cc-badge--overlay .apgo-cc-badge__inner {
+      position: absolute;
+      top: var(--badge-top, 0px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(var(--badge-maxw, 100%), calc(100% - 2 * var(--badge-pad, 0px)));
+      pointer-events: auto;
     }
     .apgo-cc-badge__track {
       display: flex;
+      width: 100%;
+      aspect-ratio: var(--badge-ar, 3.5);   /* fixed-ratio box → controlled height */
       overflow-x: auto;
+      overflow-y: hidden;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scroll-behavior: smooth;
@@ -143,11 +177,11 @@
       overscroll-behavior-x: contain;
       border-radius: var(--badge-radius, 0px);
       border: var(--badge-border-w, 0px) solid var(--badge-border-color, transparent);
-      overflow-y: hidden;
     }
     .apgo-cc-badge__track::-webkit-scrollbar { display: none; }
     .apgo-cc-badge__slide {
       flex: 0 0 100%;
+      height: 100%;
       scroll-snap-align: center;
       scroll-snap-stop: always;
       display: block;
@@ -155,18 +189,19 @@
     }
     .apgo-cc-badge__img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;       /* fill the fixed-ratio box; designer matches ratio → no crop */
       display: block;
       user-select: none;
       -webkit-user-drag: none;
-      pointer-events: none;   /* clicks pass through to the <a>; drag bubbles to track */
+      pointer-events: none;
     }
     .apgo-cc-badge__dots {
       position: absolute;
       left: 0; right: 0; bottom: 10px;
       display: flex; justify-content: center; align-items: center; gap: 7px;
       z-index: 2;
-      pointer-events: none;   /* wrapper ignores; dots themselves re-enable */
+      pointer-events: none;
     }
     .apgo-cc-badge__dot {
       pointer-events: auto;
@@ -182,6 +217,11 @@
       width: 18px;
       background: #fff;
     }
+    @media (max-width: 749px) {
+      .apgo-cc-badge--overlay .apgo-cc-badge__inner {
+        top: var(--badge-top-mobile, 0px);
+      }
+    }
 {% endstylesheet %}
 
 {% schema %}
@@ -190,16 +230,22 @@
   "tag": "section",
   "class": "apgo-cc-badge-section",
   "settings": [
-    { "type": "paragraph", "content": "新增 1–5 個「Banner」block，每個上傳一張圖。Banner 高度由圖片原始比例決定，請後台確保各張圖尺寸／比例一致。單張時不輪播。" },
+    { "type": "paragraph", "content": "新增 1–5 個「Banner」block，每個上傳一張圖。圖片請依「比例」設定出圖（預設 3.5:1，例 1280×366，retina 出 2x 2560×732），各張同尺寸。單張時不輪播。" },
     { "type": "checkbox", "id": "autoplay", "label": "自動輪播", "default": true },
     { "type": "range", "id": "interval", "label": "輪播間隔（秒）", "min": 2, "max": 8, "step": 1, "default": 4 },
     { "type": "checkbox", "id": "show_dots", "label": "顯示圓點指示器", "default": true },
-    { "type": "header", "content": "版面" },
-    { "type": "range", "id": "max_width", "label": "最大寬度（px，0 = 滿版）", "min": 0, "max": 1600, "step": 20, "default": 0 },
-    { "type": "range", "id": "side_padding", "label": "左右邊距（px）", "min": 0, "max": 40, "step": 2, "default": 0 },
+    { "type": "header", "content": "比例與版面" },
+    { "type": "range", "id": "aspect_ratio", "label": "Banner 比例（寬÷高）", "min": 2, "max": 5, "step": 0.1, "default": 3.5, "info": "3.5 = 扁長條；數字越小越高。請讓設計師依此比例出圖。" },
+    { "type": "range", "id": "max_width", "label": "最大寬度（px，0 = 滿版）", "min": 0, "max": 1600, "step": 20, "default": 1040 },
+    { "type": "range", "id": "side_padding", "label": "左右邊距（px）", "min": 0, "max": 60, "step": 2, "default": 16 },
     { "type": "range", "id": "radius", "label": "圓角（px）", "min": 0, "max": 24, "step": 2, "default": 12 },
-    { "type": "range", "id": "border_width", "label": "邊框寬度（px，0 = 無邊框）", "min": 0, "max": 6, "step": 1, "default": 1 },
+    { "type": "range", "id": "border_width", "label": "邊框寬度（px，0 = 無邊框）", "min": 0, "max": 6, "step": 1, "default": 0 },
     { "type": "color", "id": "border_color", "label": "邊框顏色", "default": "#3d4148" },
+    { "type": "header", "content": "叠加（浮在下方 hero 上）" },
+    { "type": "checkbox", "id": "overlay_on_hero", "label": "浮在下一個區塊上方（叠加模式）", "default": true, "info": "開啟：banner 浮在下方 hero 上，不佔垂直空間。關閉：變回獨立一條。" },
+    { "type": "range", "id": "top_offset", "label": "桌機：距頂偏移（px）", "min": 0, "max": 300, "step": 4, "default": 24, "info": "叠加模式下，banner 從 hero 頂往下多少。拖到不擋住標題與車頭圖。" },
+    { "type": "range", "id": "top_offset_mobile", "label": "手機：距頂偏移（px）", "min": 0, "max": 200, "step": 4, "default": 12 },
+    { "type": "header", "content": "非叠加模式間距" },
     { "type": "range", "id": "gap_top", "label": "上方間距（px）", "min": 0, "max": 40, "step": 2, "default": 0 },
     { "type": "range", "id": "gap_bottom", "label": "下方間距（px）", "min": 0, "max": 40, "step": 2, "default": 0 },
     { "type": "text", "id": "aria_label", "label": "無障礙標籤", "default": "優惠輪播" }
