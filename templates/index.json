@@ -171,6 +171,15 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
+        "banner_xj9FpC": {
+          "type": "banner",
+          "name": "Banner-送撲克牌",
+          "settings": {
+            "image": "shopify://shop_images/1280__2000.png",
+            "link": "shopify://pages/26_june_promo",
+            "alt": ""
+          }
+        },
         "banner_jGTL4Q": {
           "type": "banner",
           "name": "Banner-下單禮",
@@ -182,6 +191,7 @@
         }
       },
       "block_order": [
+        "banner_xj9FpC",
         "banner_jGTL4Q"
       ],
       "settings": {
