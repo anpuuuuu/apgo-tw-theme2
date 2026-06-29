@@ -238,7 +238,7 @@
           "settings": {
             "slot_time": "2026/04/04 12:00",
             "end_time": "2026/04/04 23:59",
-            "product": "apgo-地板清潔劑",
+            "product": "apgo-特效淨白粉",
             "badge_text": "限量 60 組",
             "coupon_code": "FFF88",
             "coupon_hint": "結帳輸入折扣碼享驚喜價",
@@ -818,6 +818,7 @@
         "product_grid_XMR9K3": {
           "type": "product_grid",
           "name": "6/1-6/30超級洗衣精✨滿件最高66折",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "✨無效退費",
@@ -828,11 +829,7 @@
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
             "product_list": [
-              "apgoocean",
-              "apgo-superwash",
-              "apgowhitetea",
-              "apgofreesia",
-              "apgolavender"
+              "apgo-superwash"
             ],
             "card_tag": "TAG",
             "card_layout": "vertical",
@@ -855,6 +852,27 @@
             "banner_spacing_bottom": true,
             "banner_link": "",
             "banner_anchor_id": ""
+          }
+        },
+        "product_grid_j6egnX": {
+          "type": "product_grid",
+          "name": "【老闆生日慶 職人精選福箱】",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "多件優惠",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/11_-02.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "apgo-superwash"
+            ],
+            "card_tag": "最高6.6折",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
           }
         },
         "simple_banner_slot_pxYmgd": {
@@ -1165,6 +1183,7 @@
         "simple_banner_slot_7pebBp",
         "product_grid_XMR9K3",
         "simple_banner_slot_V38Hcr",
+        "product_grid_j6egnX",
         "simple_banner_slot_pxYmgd",
         "product_grid_nrB4HP",
         "product_grid_feF934",
