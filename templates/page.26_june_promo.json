@@ -380,6 +380,7 @@
         "simple_banner_slot_c4GqJF": {
           "type": "simple_banner_slot",
           "name": "人氣下單禮",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "6/27-6/30下單禮",
@@ -409,27 +410,6 @@
             "banner_anchor_id": ""
           }
         },
-        "product_grid_jNQtE7": {
-          "type": "product_grid",
-          "name": "【老闆生日慶 職人精選福箱】",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "狂殺↘24折",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080.png",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "狂殺↘24折-老闆生日慶-職人精選福箱-拆開現賺-11400"
-            ],
-            "card_tag": "現賺$11,400",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
         "product_grid_bY6hrM": {
           "type": "product_grid",
           "name": "【2026周年慶限定】滿漢盛宴",
@@ -446,6 +426,27 @@
               "2026the-manchu-han-imperial-feast"
             ],
             "card_tag": "現賺$13,612",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_jNQtE7": {
+          "type": "product_grid",
+          "name": "【老闆生日慶 職人精選福箱】",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "狂殺↘24折",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080.png",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "狂殺↘24折-老闆生日慶-職人精選福箱-拆開現賺-11400"
+            ],
+            "card_tag": "現賺$11,400",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
@@ -1162,8 +1163,8 @@
         "flash_sale_item_DLfea8",
         "simple_banner_slot_c4GqJF",
         "simple_banner_slot_bky9zY",
-        "product_grid_jNQtE7",
         "product_grid_bY6hrM",
+        "product_grid_jNQtE7",
         "simple_banner_slot_Dip9ED",
         "simple_banner_slot_YxQfUA",
         "simple_banner_slot_Abbmm9",
