@@ -379,7 +379,7 @@
         },
         "simple_banner_slot_Dip9ED": {
           "type": "simple_banner_slot",
-          "name": "滿額送清潔藥劑3罐組",
+          "name": "消費滿$777折$70",
           "settings": {
             "custom_anchor_id": "",
             "section_title": "滿$777折$70",
@@ -391,6 +391,48 @@
             "banner_spacing_bottom": true,
             "banner_link": "",
             "banner_anchor_id": ""
+          }
+        },
+        "product_grid_xtmCe7": {
+          "type": "product_grid",
+          "name": "【2026周年慶限定】滿漢盛宴",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "狂殺↘2折",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/2_5f5599b5-c51f-47f1-9436-48de965ec6b0.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "2026the-manchu-han-imperial-feast"
+            ],
+            "card_tag": "現賺$13,612",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
+        "product_grid_n4MdhM": {
+          "type": "product_grid",
+          "name": "【老闆生日慶 職人精選福箱】",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "狂殺↘24折",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080.png",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "狂殺↘24折-老闆生日慶-職人精選福箱-拆開現賺-11400"
+            ],
+            "card_tag": "現賺$11,400",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
           }
         },
         "simple_banner_slot_mFXA4r": {
@@ -920,6 +962,8 @@
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
         "simple_banner_slot_Dip9ED",
+        "product_grid_xtmCe7",
+        "product_grid_n4MdhM",
         "simple_banner_slot_mFXA4r",
         "product_grid_3BCxpy",
         "product_grid_p7CgbC",
