@@ -174,6 +174,7 @@
         "banner_jGTL4Q": {
           "type": "banner",
           "name": "Banner-下單禮",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/1280__LEAD.png",
             "link": "shopify://pages/26_june_promo",
