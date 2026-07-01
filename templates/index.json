@@ -190,6 +190,15 @@
             "alt": "消費滿$777．現折$70"
           }
         },
+        "banner_cNRtiH": {
+          "type": "banner",
+          "name": "Banner-洗車藥劑指定款 任選三件 85 折",
+          "settings": {
+            "image": "shopify://shop_images/1280__3_75_00c76511-2f3d-4921-9f50-93464d0abe5d.png",
+            "link": "shopify://collections/清潔藥劑全系列",
+            "alt": "洗車藥劑指定款 任選三件 85 折"
+          }
+        },
         "banner_xj9FpC": {
           "type": "banner",
           "name": "Banner-【酷暑出擊滿$899折$79",
@@ -197,15 +206,6 @@
             "image": "shopify://shop_images/1920__899_79_7e97981b-56d4-4522-a23d-c906311b30a8.jpg",
             "link": "shopify://pages/26_july_promo",
             "alt": "酷暑出擊 滿$899折$79"
-          }
-        },
-        "banner_cNRtiH": {
-          "type": "banner",
-          "name": "Banner-運費折抵",
-          "settings": {
-            "image": "shopify://shop_images/1280__50_new._5f2be5a4-7ca2-4c25-88de-be39794a95f5.png",
-            "link": "shopify://pages/26_june_promo",
-            "alt": ""
           }
         },
         "banner_r6gpWn": {
@@ -221,8 +221,8 @@
       "block_order": [
         "banner_jGTL4Q",
         "banner_T8KwPX",
-        "banner_xj9FpC",
         "banner_cNRtiH",
+        "banner_xj9FpC",
         "banner_r6gpWn"
       ],
       "settings": {
