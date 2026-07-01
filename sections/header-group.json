@@ -425,7 +425,6 @@
         },
         "flip_text_bJtk8x": {
           "type": "flip_text",
-          "disabled": true,
           "settings": {
             "text": "洗車藥劑75折起",
             "text_color": "#f08418"
