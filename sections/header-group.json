@@ -449,14 +449,14 @@
         "flip_text_petMdb": {
           "type": "flip_text",
           "settings": {
-            "text": "全館優惠最低５折",
+            "text": "全館優惠最低7折",
             "text_color": "#f08418"
           }
         },
         "flip_text_R9TD7F": {
           "type": "flip_text",
           "settings": {
-            "text": "拒收罰單現折900元！！",
+            "text": "拒收罰單現享75折！！",
             "text_color": "#f08418"
           }
         },
