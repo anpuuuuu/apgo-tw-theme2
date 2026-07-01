@@ -181,21 +181,21 @@
             "alt": ""
           }
         },
+        "banner_T8KwPX": {
+          "type": "banner",
+          "name": "Banner-消費滿$777．現折$70",
+          "settings": {
+            "image": "shopify://shop_images/1280_77_777_70_0701-0707_69c88a27-d549-41ac-9770-0d96392575b0.jpg",
+            "link": "shopify://collections/coating-series",
+            "alt": "消費滿$777．現折$70"
+          }
+        },
         "banner_xj9FpC": {
           "type": "banner",
           "name": "Banner-送撲克牌",
           "settings": {
             "image": "shopify://shop_images/ChatGPT_Image_2026_6_29_07_06_26.png",
             "link": "shopify://pages/26_june_promo",
-            "alt": ""
-          }
-        },
-        "banner_T8KwPX": {
-          "type": "banner",
-          "name": "Banner-鍍膜88折",
-          "settings": {
-            "image": "shopify://shop_images/1280__88.png",
-            "link": "shopify://collections/coating-series",
             "alt": ""
           }
         },
@@ -220,8 +220,8 @@
       },
       "block_order": [
         "banner_jGTL4Q",
-        "banner_xj9FpC",
         "banner_T8KwPX",
+        "banner_xj9FpC",
         "banner_cNRtiH",
         "banner_r6gpWn"
       ],
