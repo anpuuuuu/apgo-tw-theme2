@@ -434,7 +434,7 @@
         "flip_text_BMnDtr": {
           "type": "flip_text",
           "settings": {
-            "text": "全館 $88 起",
+            "text": "全館最高折$359起",
             "text_color": "#f08418"
           }
         },
