@@ -427,7 +427,7 @@
           "type": "flip_text",
           "disabled": true,
           "settings": {
-            "text": "洗車藥劑多件折扣！！",
+            "text": "洗車藥劑75折起",
             "text_color": "#f08418"
           }
         },
@@ -463,7 +463,7 @@
         "flip_text_t4YW3L": {
           "type": "flip_text",
           "settings": {
-            "text": "滿ＮＴ＄999 享免運",
+            "text": "全館滿＄999 享免運",
             "text_color": "#f08418"
           }
         }
