@@ -171,16 +171,6 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
-        "banner_jGTL4Q": {
-          "type": "banner",
-          "name": "Banner-下單禮",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/1280__LEAD.png",
-            "link": "shopify://pages/26_june_promo",
-            "alt": ""
-          }
-        },
         "banner_xj9FpC": {
           "type": "banner",
           "name": "Banner-【酷暑出擊滿$899折$79",
@@ -216,14 +206,23 @@
             "link": "shopify://collections/科技執法測速器",
             "alt": "測速器 G9、G11任選75折"
           }
+        },
+        "banner_jGTL4Q": {
+          "type": "banner",
+          "name": "Banner-洗衣儀式感三部曲",
+          "settings": {
+            "image": "shopify://shop_images/1280__4_2__6_3_c56d4d5b-3e2d-4d81-bc49-d7bd18fda6c5.jpg",
+            "link": "shopify://collections/超級洗衣精系列",
+            "alt": "洗衣儀式感三部曲"
+          }
         }
       },
       "block_order": [
-        "banner_jGTL4Q",
         "banner_xj9FpC",
         "banner_T8KwPX",
         "banner_cNRtiH",
-        "banner_r6gpWn"
+        "banner_r6gpWn",
+        "banner_jGTL4Q"
       ],
       "settings": {
         "autoplay": true,
