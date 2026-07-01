@@ -181,6 +181,15 @@
             "alt": ""
           }
         },
+        "banner_xj9FpC": {
+          "type": "banner",
+          "name": "Banner-【酷暑出擊滿$899折$79",
+          "settings": {
+            "image": "shopify://shop_images/1920__899_79_7e97981b-56d4-4522-a23d-c906311b30a8.jpg",
+            "link": "shopify://collections/科技執法測速器",
+            "alt": "酷暑出擊 滿$899折$79"
+          }
+        },
         "banner_T8KwPX": {
           "type": "banner",
           "name": "Banner-消費滿$777．現折$70",
@@ -199,30 +208,21 @@
             "alt": "洗車藥劑指定款 任選三件 85 折"
           }
         },
-        "banner_xj9FpC": {
-          "type": "banner",
-          "name": "Banner-【酷暑出擊滿$899折$79",
-          "settings": {
-            "image": "shopify://shop_images/1920__899_79_7e97981b-56d4-4522-a23d-c906311b30a8.jpg",
-            "link": "shopify://pages/26_july_promo",
-            "alt": "酷暑出擊 滿$899折$79"
-          }
-        },
         "banner_r6gpWn": {
           "type": "banner",
-          "name": "Banner-洗車用品",
+          "name": "Banner-測速器 G9、G11任選75折",
           "settings": {
-            "image": "shopify://shop_images/1280.png",
+            "image": "shopify://shop_images/1280__75_ce549c1b-5353-4443-8ed0-46de5f3a4007.jpg",
             "link": "shopify://collections/洗車用品",
-            "alt": ""
+            "alt": "測速器 G9、G11任選75折"
           }
         }
       },
       "block_order": [
         "banner_jGTL4Q",
+        "banner_xj9FpC",
         "banner_T8KwPX",
         "banner_cNRtiH",
-        "banner_xj9FpC",
         "banner_r6gpWn"
       ],
       "settings": {
