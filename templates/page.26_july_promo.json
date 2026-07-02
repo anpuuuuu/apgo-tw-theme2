@@ -568,6 +568,27 @@
             "vertical_cards_per_view": "2.5"
           }
         },
+        "product_grid_z9UAFh": {
+          "type": "product_grid",
+          "name": "6/6-6/22【原子琉璃釉豪華組】",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "洗衣儀式感",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1280__4_2__6_3_c56d4d5b-3e2d-4d81-bc49-d7bd18fda6c5.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "apgo-superwash"
+            ],
+            "card_tag": "現折$525",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "product_grid_A6kewb": {
           "type": "product_grid",
           "name": "6/1-6/30鍍膜全系列滿2件9折、3件85折",
@@ -970,6 +991,7 @@
         "product_grid_63pFYA",
         "product_grid_HrcFDb",
         "product_grid_jNQtE7",
+        "product_grid_z9UAFh",
         "product_grid_A6kewb",
         "product_grid_JAm4Qp",
         "product_grid_XMR9K3",
