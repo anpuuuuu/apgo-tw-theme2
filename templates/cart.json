@@ -113,7 +113,7 @@
             "icon_fallback": "🎁",
             "icon_image": "shopify://shop_images/ea434f24e900f249964902afbc2c3077.webp",
             "title": "滿額贈-塑膠保護劑",
-            "reward_subtitle": "滿 $2680 即享（618專屬）",
+            "reward_subtitle": "滿 $2000 即享",
             "locked_text": "下一階段解鎖",
             "unlocked_text": "已達成",
             "better_tier_text": "已享更優",
@@ -157,6 +157,7 @@
         },
         "reward_YwhUQw": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -173,6 +174,7 @@
         },
         "reward_g6J8nJ": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
