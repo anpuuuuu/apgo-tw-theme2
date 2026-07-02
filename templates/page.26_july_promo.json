@@ -570,7 +570,7 @@
         },
         "product_grid_z9UAFh": {
           "type": "product_grid",
-          "name": "6/6-6/22【原子琉璃釉豪華組】",
+          "name": "洗衣精",
           "settings": {
             "custom_anchor_id": "",
             "section_title": "✨洗衣儀式感",
@@ -656,6 +656,7 @@
         "product_grid_XMR9K3": {
           "type": "product_grid",
           "name": "6/1-6/30超級洗衣精✨滿件最高66折",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "無效退費",
