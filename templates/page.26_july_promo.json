@@ -377,6 +377,27 @@
             "success_button_text": "前往結帳，以保有優惠"
           }
         },
+        "product_grid_z9UAFh": {
+          "type": "product_grid",
+          "name": "洗衣精",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨洗衣儀式感",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/50__1280.png",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "apgo-superwash"
+            ],
+            "card_tag": "現折$525",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "simple_banner_slot_Dip9ED": {
           "type": "simple_banner_slot",
           "name": "消費滿$777折$70",
@@ -561,27 +582,6 @@
             "banner_spacing_bottom": false,
             "product_list": [
               "🚗-全能守護組合-亮車-淨衣一次到位"
-            ],
-            "card_tag": "現折$525",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_z9UAFh": {
-          "type": "product_grid",
-          "name": "洗衣精",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨洗衣儀式感",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/50__1280.png",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "apgo-superwash"
             ],
             "card_tag": "現折$525",
             "card_layout": "horizontal",
@@ -983,6 +983,7 @@
         "flash_sale_item_MXr8TC",
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
+        "product_grid_z9UAFh",
         "simple_banner_slot_Dip9ED",
         "product_grid_xtmCe7",
         "product_grid_n4MdhM",
@@ -992,7 +993,6 @@
         "product_grid_63pFYA",
         "product_grid_HrcFDb",
         "product_grid_jNQtE7",
-        "product_grid_z9UAFh",
         "product_grid_A6kewb",
         "product_grid_JAm4Qp",
         "product_grid_XMR9K3",
