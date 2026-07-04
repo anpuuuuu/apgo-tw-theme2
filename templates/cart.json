@@ -107,17 +107,16 @@
         },
         "reward_NCHjbq": {
           "type": "reward",
-          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
-            "icon_image": "shopify://shop_images/ea434f24e900f249964902afbc2c3077.webp",
-            "title": "滿額贈-塑膠保護劑",
-            "reward_subtitle": "滿 $2000 即享",
+            "icon_image": "shopify://shop_images/50d82a4e065231358955e469febca042_3a475be0-513c-411a-9475-24fc8087354d.png",
+            "title": "滿額贈-玻璃雨刷小幫手",
+            "reward_subtitle": "滿 $2200 即享",
             "locked_text": "下一階段解鎖",
             "unlocked_text": "已達成",
             "better_tier_text": "已享更優",
-            "threshold_amount": 2680,
+            "threshold_amount": 2200,
             "reward_description": "",
             "gift_product": "apgo鐵粉去除劑500ml贈品-勿下單"
           }
