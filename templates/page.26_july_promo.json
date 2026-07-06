@@ -549,7 +549,8 @@
         },
         "product_grid_HrcFDb": {
           "type": "product_grid",
-          "name": "6/6-6/22原子極光鍍膜買一送一",
+          "name": "鍍膜前置清潔套組",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "鍍膜前置清潔套組",
