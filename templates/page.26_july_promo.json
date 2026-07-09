@@ -414,6 +414,22 @@
             "banner_anchor_id": ""
           }
         },
+        "simple_banner_slot_UVdfdB": {
+          "type": "simple_banner_slot",
+          "name": "APGO好評募集",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "APGO好評募集",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1280_0.jpg",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "shopify://pages/campaign20260803",
+            "banner_anchor_id": ""
+          }
+        },
         "product_grid_xtmCe7": {
           "type": "product_grid",
           "name": "【2026周年慶限定】滿漢盛宴",
@@ -986,6 +1002,7 @@
         "flash_sale_item_DLfea8",
         "product_grid_z9UAFh",
         "simple_banner_slot_Dip9ED",
+        "simple_banner_slot_UVdfdB",
         "product_grid_xtmCe7",
         "product_grid_n4MdhM",
         "simple_banner_slot_mFXA4r",
