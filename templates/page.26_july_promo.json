@@ -430,30 +430,10 @@
             "banner_anchor_id": ""
           }
         },
-        "product_grid_xtmCe7": {
-          "type": "product_grid",
-          "name": "【2026周年慶限定】滿漢盛宴",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "好評延長↘2折",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/2_5f5599b5-c51f-47f1-9436-48de965ec6b0.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "2026the-manchu-han-imperial-feast"
-            ],
-            "card_tag": "現賺$13,612",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
-          }
-        },
         "product_grid_n4MdhM": {
           "type": "product_grid",
           "name": "【老闆生日慶 職人精選福箱】",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "好評延長↘24折",
@@ -1003,7 +983,6 @@
         "product_grid_z9UAFh",
         "simple_banner_slot_Dip9ED",
         "simple_banner_slot_UVdfdB",
-        "product_grid_xtmCe7",
         "product_grid_n4MdhM",
         "simple_banner_slot_mFXA4r",
         "product_grid_3BCxpy",
