@@ -398,22 +398,6 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "simple_banner_slot_Dip9ED": {
-          "type": "simple_banner_slot",
-          "name": "消費滿$777折$70",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "滿$777折$70",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/ChatGPT_Image_2026_7_7_05_15_46_3.png",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
         "simple_banner_slot_UVdfdB": {
           "type": "simple_banner_slot",
           "name": "APGO好評募集",
@@ -981,7 +965,6 @@
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
         "product_grid_z9UAFh",
-        "simple_banner_slot_Dip9ED",
         "simple_banner_slot_UVdfdB",
         "product_grid_n4MdhM",
         "simple_banner_slot_mFXA4r",
