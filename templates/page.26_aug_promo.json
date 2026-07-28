@@ -530,6 +530,27 @@
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
             "product_list": [
+              "父親節限定禮組-原子極光鍍膜買一送二"
+            ],
+            "card_tag": "現折$2960",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
+        "product_grid_jkcFg7": {
+          "type": "product_grid",
+          "name": "7/31-8/31玻璃去油鍍膜禮組",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "玻璃去油鍍膜禮組",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080_e74e5d9f-f871-40eb-8fe8-b2a007fa930f.png",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
               "aurora-coating"
             ],
             "card_tag": "現折$2960",
@@ -983,6 +1004,7 @@
         "product_grid_3BCxpy",
         "product_grid_p7CgbC",
         "product_grid_63pFYA",
+        "product_grid_jkcFg7",
         "product_grid_HrcFDb",
         "product_grid_jNQtE7",
         "product_grid_A6kewb",
