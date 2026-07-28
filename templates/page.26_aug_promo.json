@@ -806,7 +806,7 @@
         },
         "coupon_slot_QeXKfQ": {
           "type": "coupon_slot",
-          "name": "7.優惠版位標題",
+          "name": "7.盛夏寵車季滿額折",
           "settings": {
             "section_title": "現領折券",
             "section_icon": "fa-ticket",
@@ -817,8 +817,8 @@
           "type": "coupon_item",
           "name": "7.1 滿899折79",
           "settings": {
-            "condition": "滿$899",
-            "discount": "折$79",
+            "condition": "滿$999",
+            "discount": "折$99",
             "theme_color": "#f08418",
             "highlight_discount": false
           }
@@ -827,8 +827,8 @@
           "type": "coupon_item",
           "name": "7.2 滿1599折159",
           "settings": {
-            "condition": "滿$1599",
-            "discount": "折$159",
+            "condition": "滿$1888",
+            "discount": "折$250",
             "theme_color": "#9ca3af",
             "highlight_discount": false
           }
@@ -837,8 +837,8 @@
           "type": "coupon_item",
           "name": "7.3 滿2699折359",
           "settings": {
-            "condition": "滿$2699",
-            "discount": "折$359",
+            "condition": "滿$2999",
+            "discount": "折$500",
             "theme_color": "#f08418",
             "highlight_discount": true
           }
@@ -998,13 +998,13 @@
       "settings": {
         "target_amount": 0,
         "target_reward": "",
-        "hero_image_pc": "shopify://shop_images/335a54f1-2b5f-4afa-890e-96cc0e4ba952.png",
-        "hero_image_mb": "shopify://shop_images/40912d33-eab9-4fb8-9e61-36fba1a65911.png",
+        "hero_image_pc": "shopify://shop_images/1920x800__1999_LEAD.png",
+        "hero_image_mb": "shopify://shop_images/3126x4584__1999_LEAD.png",
         "coupon_sec_icon": "fa-ticket",
-        "coupon_sec_title": "6/1(一)準時開搶折券",
+        "coupon_sec_title": "準時開搶折券",
         "coupon_nav_label": "優惠券版位",
         "nav_mode": "auto",
-        "coupon_banner_img": "shopify://shop_images/fe4927d9451da44055c672231862594c.jpg",
+        "coupon_banner_img": "shopify://shop_images/2501x522.png",
         "coupon_banner_spacing_top": false,
         "coupon_banner_spacing_bottom": true,
         "c1_condition": "條件一",
