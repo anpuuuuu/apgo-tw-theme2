@@ -580,6 +580,25 @@
             "vertical_cards_per_view": "1"
           }
         },
+        "product_grid_jNQtE7": {
+          "type": "product_grid",
+          "name": "7/31-8/31【🥉父親節 超級旗艦款禮盒】",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "父親節 超級旗艦款禮盒",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/8___12-1_0.png",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [],
+            "card_tag": "現折$5130",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "product_grid_HrcFDb": {
           "type": "product_grid",
           "name": "鍍膜前置清潔套組",
@@ -597,27 +616,6 @@
               "🚗-鍍膜前置清潔套組"
             ],
             "card_tag": "現折$558",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_jNQtE7": {
-          "type": "product_grid",
-          "name": "7/1-7/31【亮車、淨衣全能組】",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "亮車、淨衣全能組",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/2499.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "🚗-全能守護組合-亮車-淨衣一次到位"
-            ],
-            "card_tag": "現折$525",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
@@ -1027,8 +1025,8 @@
         "product_grid_63pFYA",
         "product_grid_jkcFg7",
         "product_grid_MJH7qh",
-        "product_grid_HrcFDb",
         "product_grid_jNQtE7",
+        "product_grid_HrcFDb",
         "product_grid_A6kewb",
         "product_grid_JAm4Qp",
         "product_grid_XMR9K3",
