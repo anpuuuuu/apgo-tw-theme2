@@ -519,20 +519,20 @@
         },
         "product_grid_63pFYA": {
           "type": "product_grid",
-          "name": "7/1-7/31原子鍍膜新手全配組",
+          "name": "7/31-8/31原子極光鍍膜買一送二",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "原子鍍膜新手全配組",
+            "section_title": "極光鍍膜平均$493/罐",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/999_633fd9dc-8785-479e-97c2-7b468ed073a5.jpg",
+            "banner_img": "shopify://shop_images/1080__1480.png",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
             "product_list": [
-              "atomic-coating-999"
+              "aurora-coating"
             ],
-            "card_tag": "現折$577",
+            "card_tag": "現折$2960",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "1"
