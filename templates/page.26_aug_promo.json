@@ -377,28 +377,39 @@
             "success_button_text": "前往結帳，以保有優惠"
           }
         },
-        "product_grid_z9UAFh": {
-          "type": "product_grid",
-          "name": "洗衣精",
+        "simple_banner_slot_UVdfdB": {
+          "type": "simple_banner_slot",
+          "name": "滿$6888即享88折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨洗衣儀式感",
+            "section_title": "7/31-8/10領88折券",
             "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/4f3e5c40-0f6b-41de-ae3b-4f0b3e519887.png",
+            "section_icon": "fa-image",
             "show_banner": true,
+            "banner_img": "shopify://shop_images/1280x600_8___1_0.png",
             "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "apgo-superwash"
-            ],
-            "card_tag": "現折$525",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
           }
         },
-        "simple_banner_slot_UVdfdB": {
+        "simple_banner_slot_Q7RCNM": {
+          "type": "simple_banner_slot",
+          "name": "限量500張．免運券",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "7/31-8/10領免運券",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1280x600_8___4.png",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
+        "simple_banner_slot_JhUFNz": {
           "type": "simple_banner_slot",
           "name": "APGO好評募集",
           "settings": {
@@ -964,8 +975,9 @@
         "flash_sale_item_MXr8TC",
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
-        "product_grid_z9UAFh",
         "simple_banner_slot_UVdfdB",
+        "simple_banner_slot_Q7RCNM",
+        "simple_banner_slot_JhUFNz",
         "product_grid_n4MdhM",
         "simple_banner_slot_mFXA4r",
         "product_grid_3BCxpy",
