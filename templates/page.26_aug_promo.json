@@ -559,6 +559,27 @@
             "vertical_cards_per_view": "1"
           }
         },
+        "product_grid_MJH7qh": {
+          "type": "product_grid",
+          "name": "7/31-8/31 G11測速器$1688再贈LEAD車內清潔*1、車內鍍膜*1",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "G11測速器$1688再送贈品",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080_G11_1688_LEAD_1_1.png",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "apgo-g11-plus"
+            ],
+            "card_tag": "現折$188",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
         "product_grid_HrcFDb": {
           "type": "product_grid",
           "name": "鍍膜前置清潔套組",
@@ -1005,6 +1026,7 @@
         "product_grid_p7CgbC",
         "product_grid_63pFYA",
         "product_grid_jkcFg7",
+        "product_grid_MJH7qh",
         "product_grid_HrcFDb",
         "product_grid_jNQtE7",
         "product_grid_A6kewb",
