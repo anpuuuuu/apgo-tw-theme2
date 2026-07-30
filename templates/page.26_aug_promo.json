@@ -637,14 +637,13 @@
         },
         "product_grid_XMR9K3": {
           "type": "product_grid",
-          "name": "6/1-6/30超級洗衣精✨滿件最高66折",
-          "disabled": true,
+          "name": "7/31-8/31超級洗衣精✨滿件最高66折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "無效退費",
+            "section_title": "買越多送越多",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1280__4_2__6_3.jpg",
+            "banner_img": "shopify://shop_images/8___14-2.png",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
