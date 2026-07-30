@@ -533,6 +533,33 @@
             "vertical_cards_per_view": "2.5"
           }
         },
+        "product_grid_XMR9K3": {
+          "type": "product_grid",
+          "name": "7/31-8/31超級洗衣精✨滿件最高66折",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "買越多送越多",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/8___14-2.png",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "apgoocean",
+              "apgocotton",
+              "apgowhitetea",
+              "apgofreesia",
+              "apgolavender",
+              "apgo-superwash",
+              "apgorose"
+            ],
+            "card_tag": "TAG",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "simple_banner_slot_JhUFNz": {
           "type": "simple_banner_slot",
           "name": "APGO好評募集",
@@ -628,33 +655,6 @@
               "apgo-glass-cleaner",
               "apgo-fresh-interior-cleaner",
               "apgo-bug-tar-remover"
-            ],
-            "card_tag": "TAG",
-            "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_XMR9K3": {
-          "type": "product_grid",
-          "name": "7/31-8/31超級洗衣精✨滿件最高66折",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "買越多送越多",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/8___14-2.png",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "apgoocean",
-              "apgocotton",
-              "apgowhitetea",
-              "apgofreesia",
-              "apgolavender",
-              "apgo-superwash",
-              "apgorose"
             ],
             "card_tag": "TAG",
             "card_layout": "vertical",
@@ -972,11 +972,11 @@
         "product_grid_jkcFg7",
         "product_grid_MJH7qh",
         "product_grid_jNQtE7",
+        "product_grid_XMR9K3",
         "simple_banner_slot_JhUFNz",
         "product_grid_HrcFDb",
         "product_grid_A6kewb",
         "product_grid_JAm4Qp",
-        "product_grid_XMR9K3",
         "simple_banner_slot_V38Hcr",
         "simple_banner_slot_pxYmgd",
         "product_grid_nrB4HP",
