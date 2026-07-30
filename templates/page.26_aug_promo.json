@@ -409,22 +409,6 @@
             "banner_anchor_id": ""
           }
         },
-        "simple_banner_slot_JhUFNz": {
-          "type": "simple_banner_slot",
-          "name": "APGO好評募集",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "好評募集送$250",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/1280_0.jpg",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "shopify://pages/campaign20260803",
-            "banner_anchor_id": ""
-          }
-        },
         "product_grid_n4MdhM": {
           "type": "product_grid",
           "name": "【老闆生日慶 職人精選福箱】",
@@ -509,6 +493,7 @@
         "product_grid_MJH7qh": {
           "type": "product_grid",
           "name": "7/31-8/31 G11測速器$1688再贈LEAD車內清潔*1、車內鍍膜*1",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "G11測速器$1688再送贈品",
@@ -544,6 +529,22 @@
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
+          }
+        },
+        "simple_banner_slot_JhUFNz": {
+          "type": "simple_banner_slot",
+          "name": "APGO好評募集",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "好評募集送$250",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1280_0.jpg",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "shopify://pages/campaign20260803",
+            "banner_anchor_id": ""
           }
         },
         "product_grid_HrcFDb": {
@@ -964,13 +965,13 @@
         "flash_sale_item_DLfea8",
         "simple_banner_slot_UVdfdB",
         "simple_banner_slot_Q7RCNM",
-        "simple_banner_slot_JhUFNz",
         "product_grid_n4MdhM",
         "simple_banner_slot_mFXA4r",
         "product_grid_63pFYA",
         "product_grid_jkcFg7",
         "product_grid_MJH7qh",
         "product_grid_jNQtE7",
+        "simple_banner_slot_JhUFNz",
         "product_grid_HrcFDb",
         "product_grid_A6kewb",
         "product_grid_JAm4Qp",
