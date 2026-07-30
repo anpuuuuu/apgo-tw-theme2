@@ -464,59 +464,6 @@
             "banner_anchor_id": ""
           }
         },
-        "product_grid_3BCxpy": {
-          "type": "product_grid",
-          "name": " 洗車藥劑 任選三件8 折",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "任選三件 85 折",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1280__3_75.png",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "extreme-iron-remover",
-              "apgo-fresh-interior-cleaner",
-              "apgo-car-shampoo",
-              "apgo-all-purpose-cleaner",
-              "apgo-anti-scratch-prewash-cleaner",
-              "apgo-wheel-cleaner",
-              "apgo-plastic-protectant",
-              "water-stain-removeer",
-              "apgo-glass-cleaner",
-              "apgo-natural-interior-protectant",
-              "apgo-wiper-fluid"
-            ],
-            "card_tag": "6/6-6/22開搶",
-            "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_p7CgbC": {
-          "type": "product_grid",
-          "name": "測速器任選75折",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "測速器任選75折",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1280__75.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "apgo-g11-plus",
-              "g9-plus"
-            ],
-            "card_tag": "測速器任選↘75折",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
         "product_grid_63pFYA": {
           "type": "product_grid",
           "name": "7/31-8/31原子極光鍍膜買一送二",
@@ -1020,8 +967,6 @@
         "simple_banner_slot_JhUFNz",
         "product_grid_n4MdhM",
         "simple_banner_slot_mFXA4r",
-        "product_grid_3BCxpy",
-        "product_grid_p7CgbC",
         "product_grid_63pFYA",
         "product_grid_jkcFg7",
         "product_grid_MJH7qh",
