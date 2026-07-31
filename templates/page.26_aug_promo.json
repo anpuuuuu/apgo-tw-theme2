@@ -545,12 +545,12 @@
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
             "product_list": [
+              "apgo-superwash",
               "apgoocean",
               "apgocotton",
               "apgowhitetea",
               "apgofreesia",
               "apgolavender",
-              "apgo-superwash",
               "apgorose"
             ],
             "card_tag": "TAG",
