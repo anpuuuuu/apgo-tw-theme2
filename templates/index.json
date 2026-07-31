@@ -180,13 +180,13 @@
             "alt": "APGO評價募集活動"
           }
         },
-        "banner_xj9FpC": {
+        "banner_r6gpWn": {
           "type": "banner",
-          "name": "Banner-盛夏洗衣季💘四送二、買六送三",
+          "name": "Banner-🥉「父親節 超級旗艦款禮盒」",
           "settings": {
-            "image": "shopify://shop_images/1280_6548835b-b6e4-4801-b5b8-13890b360ce4.png",
-            "link": "shopify://collections/超級洗衣精系列",
-            "alt": "盛夏洗衣季💘四送二、買六送三"
+            "image": "shopify://shop_images/8___12-2_0.png",
+            "link": "shopify://products/狂殺↘35折-父親節-超級旗艦款禮盒",
+            "alt": "🥉「父親節 超級旗艦款禮盒」"
           }
         },
         "banner_jGTL4Q": {
@@ -207,22 +207,22 @@
             "alt": "88折券"
           }
         },
-        "banner_r6gpWn": {
+        "banner_xj9FpC": {
           "type": "banner",
-          "name": "Banner-🥉「父親節 超級旗艦款禮盒」",
+          "name": "Banner-盛夏洗衣季💘四送二、買六送三",
           "settings": {
-            "image": "shopify://shop_images/8___12-2_0.png",
-            "link": "shopify://products/狂殺↘35折-父親節-超級旗艦款禮盒",
-            "alt": "🥉「父親節 超級旗艦款禮盒」"
+            "image": "shopify://shop_images/1280_6548835b-b6e4-4801-b5b8-13890b360ce4.png",
+            "link": "shopify://collections/超級洗衣精系列",
+            "alt": "盛夏洗衣季💘四送二、買六送三"
           }
         }
       },
       "block_order": [
         "banner_T8KwPX",
-        "banner_xj9FpC",
+        "banner_r6gpWn",
         "banner_jGTL4Q",
         "banner_cNRtiH",
-        "banner_r6gpWn"
+        "banner_xj9FpC"
       ],
       "settings": {
         "autoplay": true,
