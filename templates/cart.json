@@ -110,13 +110,13 @@
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
-            "icon_image": "shopify://shop_images/0fd8f868f7081c3c87d7445d4670f266.png",
-            "title": "滿額贈-濃縮全效雨刷精",
-            "reward_subtitle": "滿 $2200 即享",
+            "icon_image": "shopify://shop_images/lead_f63dd9f5-2cab-48d4-9fed-da77bc194590.jpg",
+            "title": "滿額贈-防刮傷預洗清潔劑",
+            "reward_subtitle": "滿 $1999 即享",
             "locked_text": "下一階段解鎖",
             "unlocked_text": "已達成",
             "better_tier_text": "已享更優",
-            "threshold_amount": 2200,
+            "threshold_amount": 1999,
             "reward_description": "",
             "gift_product": ""
           }
