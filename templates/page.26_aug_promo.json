@@ -448,6 +448,27 @@
             "banner_anchor_id": ""
           }
         },
+        "product_grid_jNQtE7": {
+          "type": "product_grid",
+          "name": "7/31-8/31【🥉父親節 超級旗艦款禮盒】",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "父親節 超級旗艦款禮盒",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/IMG-9704.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "2688_3888"
+            ],
+            "card_tag": "現折$5130",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "product_grid_63pFYA": {
           "type": "product_grid",
           "name": "7/31-8/31原子極光鍍膜買一送二",
@@ -464,27 +485,6 @@
               "88_aurora_coaing1480"
             ],
             "card_tag": "現折$2960",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
-          }
-        },
-        "product_grid_jkcFg7": {
-          "type": "product_grid",
-          "name": "7/31-8/31玻璃去油鍍膜禮組",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "玻璃去油鍍膜禮組",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_e74e5d9f-f871-40eb-8fe8-b2a007fa930f.png",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "🏍️原子鍍膜機車豪華全配組-預購-副本"
-            ],
-            "card_tag": "現折$188",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "1"
@@ -511,25 +511,25 @@
             "vertical_cards_per_view": "1"
           }
         },
-        "product_grid_jNQtE7": {
+        "product_grid_jkcFg7": {
           "type": "product_grid",
-          "name": "7/31-8/31【🥉父親節 超級旗艦款禮盒】",
+          "name": "7/31-8/31玻璃去油鍍膜禮組",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "父親節 超級旗艦款禮盒",
+            "section_title": "玻璃去油鍍膜禮組",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/IMG-9704.jpg",
+            "banner_img": "shopify://shop_images/1080_e74e5d9f-f871-40eb-8fe8-b2a007fa930f.png",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
             "product_list": [
-              "2688_3888"
+              "🏍️原子鍍膜機車豪華全配組-預購-副本"
             ],
-            "card_tag": "現折$5130",
+            "card_tag": "現折$188",
             "card_layout": "horizontal",
             "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
+            "vertical_cards_per_view": "1"
           }
         },
         "product_grid_XMR9K3": {
@@ -967,10 +967,10 @@
         "simple_banner_slot_Q7RCNM",
         "product_grid_n4MdhM",
         "simple_banner_slot_mFXA4r",
-        "product_grid_63pFYA",
-        "product_grid_jkcFg7",
-        "product_grid_MJH7qh",
         "product_grid_jNQtE7",
+        "product_grid_63pFYA",
+        "product_grid_MJH7qh",
+        "product_grid_jkcFg7",
         "product_grid_XMR9K3",
         "simple_banner_slot_JhUFNz",
         "product_grid_HrcFDb",
