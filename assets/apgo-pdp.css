@@ -1173,6 +1173,43 @@ body.template-suffix-apgo-v1s-plus [id^="shopify-section-apgo_tactical_hub"] {
    APGO · Feature card under the ship card (mobile + desktop)
    Content sourced from product.description.
    ========================================================================== */
+/* Subscription CTA button — sits above the price (both desktop + mobile layouts) */
+.apgo-subscribe-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin: 0 0 14px;
+  padding: 13px 20px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--apgo-sage-light, #8BA089), var(--apgo-sage, #5E6F5D));
+  color: #fff;
+  font-family: var(--apgo-serif, Georgia, serif);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border: 0;
+  box-shadow: 0 6px 18px rgba(94, 111, 93, 0.28);
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+.apgo-subscribe-btn:hover,
+.apgo-subscribe-btn:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+  box-shadow: 0 10px 24px rgba(94, 111, 93, 0.34);
+  color: #fff;
+}
+.apgo-subscribe-btn::after {
+  content: "→";
+  font-size: 16px;
+  line-height: 1;
+}
+@media (max-width: 749px) {
+  .apgo-subscribe-btn { font-size: 14px; padding: 12px 18px; margin-bottom: 12px; }
+}
+
 .apgo-mpdp-feature-card {
   margin: 16px 16px 28px;
   padding: 16px 18px;

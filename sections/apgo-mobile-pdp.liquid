@@ -117,6 +117,12 @@
               </div>
             {%- endif -%}
 
+            {%- if section.settings.subscribe_url != blank -%}
+              <a class="apgo-subscribe-btn" href="{{ section.settings.subscribe_url }}"{% if section.settings.subscribe_new_tab %} target="_blank" rel="noopener"{% endif %}>
+                <span>{{ section.settings.subscribe_label | default: '訂閱制方案 · 每月自動配送' | escape }}</span>
+              </a>
+            {%- endif -%}
+
             <div class="apgo-price-row">
               <span class="apgo-serif apgo-price" data-apgo-price>{{ v.price | money }}</span>
               {%- if has_compare -%}
@@ -340,6 +346,12 @@
           <strong>{{ section.settings.rating_score }}</strong>
           <span class="apgo-muted">· {{ section.settings.rating_count }} 則評價</span>
         </div>
+      {%- endif -%}
+
+      {%- if section.settings.subscribe_url != blank -%}
+        <a class="apgo-subscribe-btn" href="{{ section.settings.subscribe_url }}"{% if section.settings.subscribe_new_tab %} target="_blank" rel="noopener"{% endif %}>
+          <span>{{ section.settings.subscribe_label | default: '訂閱制方案 · 每月自動配送' | escape }}</span>
+        </a>
       {%- endif -%}
 
       <div class="apgo-mpdp-price-row">
@@ -947,6 +959,12 @@
     { "type": "image_picker", "id": "video_poster",   "label": "影片封面（選填）" },
     { "type": "text",         "id": "video_label",    "label": "影片標籤", "default": "產品實測影片 · 60s" },
     { "type": "checkbox",     "id": "show_thumb_rail", "label": "顯示主圖下方縮圖列", "default": true },
+
+    { "type": "header", "content": "訂閱制按鈕（價格上方）" },
+    { "type": "paragraph", "content": "填了「訂閱網址」才會顯示按鈕；留空則不顯示。" },
+    { "type": "url",      "id": "subscribe_url",     "label": "訂閱網址（例：https://sub.apgo.tw）" },
+    { "type": "text",     "id": "subscribe_label",   "label": "按鈕文字", "default": "訂閱制方案 · 每月自動配送" },
+    { "type": "checkbox", "id": "subscribe_new_tab", "label": "在新分頁開啟", "default": false },
 
     { "type": "header", "content": "基本資訊" },
     { "type": "text",     "id": "kicker",       "label": "英文副標", "default": "AROMA AESTHETICS" },
