@@ -850,13 +850,45 @@ body.apgo-cc-skin .apgo-cc-pdp {
   letter-spacing: .06em;
   border-radius: var(--cc-r5);
 }
+.apgo-cc-pdp__gallery-thumbs-wrap {
+  position: relative;
+  margin-top: 10px;
+}
 .apgo-cc-pdp__gallery-thumbs {
   display: flex; gap: 6px;
-  margin-top: 10px;
   overflow-x: auto;
   scrollbar-width: none;
+  scroll-behavior: smooth;
 }
 .apgo-cc-pdp__gallery-thumbs::-webkit-scrollbar { display: none; }
+
+/* Scroll-more arrow — shown only when >5 thumbnails (media overflows). Auto
+   hides via JS when the strip is scrolled to the end. */
+.apgo-cc-pdp__thumbs-arrow {
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 30px; height: 30px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--cc-divider);
+  border-radius: 999px;
+  background: rgba(20, 22, 26, 0.92);
+  color: var(--cc-fg);
+  font-size: 18px; line-height: 1;
+  cursor: pointer;
+  box-shadow: -8px 0 12px rgba(0, 0, 0, 0.35);
+  transition: opacity .2s ease, background .2s ease, border-color .2s ease;
+}
+.apgo-cc-pdp__thumbs-arrow:hover {
+  border-color: var(--cc-orange);
+  color: var(--cc-orange);
+}
+.apgo-cc-pdp__thumbs-arrow--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
 .apgo-cc-pdp__gallery-thumb {
   flex: 0 0 calc((100% - 24px) / 5);
   aspect-ratio: 1/1;

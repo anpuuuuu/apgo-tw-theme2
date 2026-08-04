@@ -124,22 +124,27 @@
         and CSS hides it at ≤749px (dots above take over).
       {%- endcomment -%}
       {%- if product.media.size > 1 -%}
-        <div class="apgo-cc-pdp__gallery-thumbs{% unless section.settings.show_thumbs %} apgo-cc-pdp__gallery-thumbs--hide-mobile{% endunless %}">
-          {%- for m in product.media -%}
-            <button
-              type="button"
-              class="apgo-cc-pdp__gallery-thumb {% if forloop.first %}is-active{% endif %}"
-              data-apgo-cc-thumb
-              data-apgo-cc-media-id="{{ m.id }}"
-              aria-label="顯示第 {{ forloop.index }} 張圖"
-            >
-              <img
-                src="{{ m | image_url: width: 200 }}"
-                alt="{{ m.alt | default: product.title }}"
-                loading="lazy"
+        <div class="apgo-cc-pdp__gallery-thumbs-wrap{% unless section.settings.show_thumbs %} apgo-cc-pdp__gallery-thumbs--hide-mobile{% endunless %}">
+          <div class="apgo-cc-pdp__gallery-thumbs" data-apgo-cc-thumbs>
+            {%- for m in product.media -%}
+              <button
+                type="button"
+                class="apgo-cc-pdp__gallery-thumb {% if forloop.first %}is-active{% endif %}"
+                data-apgo-cc-thumb
+                data-apgo-cc-media-id="{{ m.id }}"
+                aria-label="顯示第 {{ forloop.index }} 張圖"
               >
-            </button>
-          {%- endfor -%}
+                <img
+                  src="{{ m | image_url: width: 200 }}"
+                  alt="{{ m.alt | default: product.title }}"
+                  loading="lazy"
+                >
+              </button>
+            {%- endfor -%}
+          </div>
+          {%- if product.media.size > 5 -%}
+            <button type="button" class="apgo-cc-pdp__thumbs-arrow" data-apgo-cc-thumbs-arrow aria-label="顯示更多圖片">›</button>
+          {%- endif -%}
         </div>
       {%- endif -%}
     </div>
