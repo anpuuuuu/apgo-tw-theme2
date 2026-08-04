@@ -383,31 +383,33 @@
       if (slide) scrollToSlide(slide, false);
     });
 
-    // ---------------- Thumbnail strip "more" arrow ----------------
-    // Shows a right-edge arrow when the thumbnail strip overflows (>5 media);
-    // click scrolls it right (wraps to start at the end); auto-hides at end.
+    // ---------------- Thumbnail strip prev/next arrows ----------------
+    // Shown only when the thumbnail strip overflows (>5 media). Each arrow
+    // scrolls the strip ~one viewport; prev hides at the start, next at the end.
     var thumbsWrap = root.querySelector('.apgo-cc-pdp__gallery-thumbs-wrap');
     var thumbsStrip = thumbsWrap && thumbsWrap.querySelector('[data-apgo-cc-thumbs]');
-    var thumbsArrow = thumbsWrap && thumbsWrap.querySelector('[data-apgo-cc-thumbs-arrow]');
-    if (thumbsStrip && thumbsArrow) {
-      var updateThumbsArrow = function () {
+    var thumbsPrev = thumbsWrap && thumbsWrap.querySelector('[data-apgo-cc-thumbs-prev]');
+    var thumbsNext = thumbsWrap && thumbsWrap.querySelector('[data-apgo-cc-thumbs-next]');
+    if (thumbsStrip && (thumbsPrev || thumbsNext)) {
+      var updateThumbsArrows = function () {
         var maxScroll = thumbsStrip.scrollWidth - thumbsStrip.clientWidth;
+        var noOverflow = maxScroll <= 4;
+        var atStart = thumbsStrip.scrollLeft <= 4;
         var atEnd = thumbsStrip.scrollLeft >= maxScroll - 4;
-        thumbsArrow.classList.toggle('apgo-cc-pdp__thumbs-arrow--hidden', maxScroll <= 4 || atEnd);
+        if (thumbsPrev) thumbsPrev.classList.toggle('apgo-cc-pdp__thumbs-arrow--hidden', noOverflow || atStart);
+        if (thumbsNext) thumbsNext.classList.toggle('apgo-cc-pdp__thumbs-arrow--hidden', noOverflow || atEnd);
       };
-      thumbsArrow.addEventListener('click', function () {
-        var maxScroll = thumbsStrip.scrollWidth - thumbsStrip.clientWidth;
-        if (thumbsStrip.scrollLeft >= maxScroll - 4) {
-          thumbsStrip.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          thumbsStrip.scrollBy({ left: thumbsStrip.clientWidth * 0.9, behavior: 'smooth' });
-        }
+      if (thumbsPrev) thumbsPrev.addEventListener('click', function () {
+        thumbsStrip.scrollBy({ left: -thumbsStrip.clientWidth * 0.9, behavior: 'smooth' });
+      });
+      if (thumbsNext) thumbsNext.addEventListener('click', function () {
+        thumbsStrip.scrollBy({ left: thumbsStrip.clientWidth * 0.9, behavior: 'smooth' });
       });
       thumbsStrip.addEventListener('scroll', function () {
-        window.requestAnimationFrame(updateThumbsArrow);
+        window.requestAnimationFrame(updateThumbsArrows);
       }, { passive: true });
-      window.addEventListener('resize', updateThumbsArrow);
-      requestAnimationFrame(updateThumbsArrow);
+      window.addEventListener('resize', updateThumbsArrows);
+      requestAnimationFrame(updateThumbsArrows);
     }
 
     // ---------------- Toast (reuse .apgo-cc-toast CSS from quick-add) ----------------

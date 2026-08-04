@@ -125,6 +125,9 @@
       {%- endcomment -%}
       {%- if product.media.size > 1 -%}
         <div class="apgo-cc-pdp__gallery-thumbs-wrap{% unless section.settings.show_thumbs %} apgo-cc-pdp__gallery-thumbs--hide-mobile{% endunless %}">
+          {%- if product.media.size > 5 -%}
+            <button type="button" class="apgo-cc-pdp__thumbs-arrow apgo-cc-pdp__thumbs-arrow--left apgo-cc-pdp__thumbs-arrow--hidden" data-apgo-cc-thumbs-prev aria-label="上一批圖片">‹</button>
+          {%- endif -%}
           <div class="apgo-cc-pdp__gallery-thumbs" data-apgo-cc-thumbs>
             {%- for m in product.media -%}
               <button
@@ -143,7 +146,7 @@
             {%- endfor -%}
           </div>
           {%- if product.media.size > 5 -%}
-            <button type="button" class="apgo-cc-pdp__thumbs-arrow" data-apgo-cc-thumbs-arrow aria-label="顯示更多圖片">›</button>
+            <button type="button" class="apgo-cc-pdp__thumbs-arrow apgo-cc-pdp__thumbs-arrow--right" data-apgo-cc-thumbs-next aria-label="下一批圖片">›</button>
           {%- endif -%}
         </div>
       {%- endif -%}
