@@ -450,6 +450,33 @@
             "banner_anchor_id": ""
           }
         },
+        "product_grid_XMR9K3": {
+          "type": "product_grid",
+          "name": "7/31-8/31超級洗衣精✨滿件最高66折",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "買越多送越多",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1280_6548835b-b6e4-4801-b5b8-13890b360ce4.png",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "apgo-superwash",
+              "apgoocean",
+              "apgocotton",
+              "apgowhitetea",
+              "apgofreesia",
+              "apgolavender",
+              "apgorose"
+            ],
+            "card_tag": "TAG",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "product_grid_jNQtE7": {
           "type": "product_grid",
           "name": "7/31-8/31【🥉父親節 超級旗艦款禮盒】",
@@ -532,33 +559,6 @@
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "1"
-          }
-        },
-        "product_grid_XMR9K3": {
-          "type": "product_grid",
-          "name": "7/31-8/31超級洗衣精✨滿件最高66折",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "買越多送越多",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1280_6548835b-b6e4-4801-b5b8-13890b360ce4.png",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "apgo-superwash",
-              "apgoocean",
-              "apgocotton",
-              "apgowhitetea",
-              "apgofreesia",
-              "apgolavender",
-              "apgorose"
-            ],
-            "card_tag": "TAG",
-            "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
           }
         },
         "simple_banner_slot_JhUFNz": {
@@ -969,11 +969,11 @@
         "simple_banner_slot_Q7RCNM",
         "product_grid_n4MdhM",
         "simple_banner_slot_mFXA4r",
+        "product_grid_XMR9K3",
         "product_grid_jNQtE7",
         "product_grid_63pFYA",
         "product_grid_MJH7qh",
         "product_grid_jkcFg7",
-        "product_grid_XMR9K3",
         "simple_banner_slot_JhUFNz",
         "product_grid_HrcFDb",
         "product_grid_A6kewb",
