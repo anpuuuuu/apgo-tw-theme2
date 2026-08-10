@@ -201,6 +201,7 @@
         "banner_cNRtiH": {
           "type": "banner",
           "name": "Banner-88折券",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/1280x600_8___1_0_3934dd50-884c-4a3f-ad95-eb8460012be8.png",
             "link": "shopify://pages/26_aug_promo",
