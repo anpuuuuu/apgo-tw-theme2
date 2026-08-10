@@ -380,6 +380,7 @@
         "simple_banner_slot_UVdfdB": {
           "type": "simple_banner_slot",
           "name": "滿$6888即享88折",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "7/31-8/10領88折券",
@@ -396,6 +397,7 @@
         "simple_banner_slot_Q7RCNM": {
           "type": "simple_banner_slot",
           "name": "限量500張．免運券",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "7/31-8/10領免運券",
