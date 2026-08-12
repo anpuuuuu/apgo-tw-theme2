@@ -199,8 +199,9 @@
         },
         "popup_tab_tRnpdb": {
           "type": "popup_tab",
+          "name": "超級洗衣精系列",
           "settings": {
-            "label": "超級洗衣精系列",
+            "label": "超人氣洗衣精",
             "collection": "超級洗衣精系列",
             "show_in_popup": true
           }
