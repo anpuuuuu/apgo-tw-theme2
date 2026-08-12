@@ -197,6 +197,14 @@
             "show_in_popup": true
           }
         },
+        "popup_tab_tRnpdb": {
+          "type": "popup_tab",
+          "settings": {
+            "label": "超級洗衣精系列",
+            "collection": "超級洗衣精系列",
+            "show_in_popup": true
+          }
+        },
         "popup_tab_all": {
           "type": "popup_tab",
           "name": "熱銷排行",
@@ -234,6 +242,7 @@
         "reward_YwhUQw",
         "reward_g6J8nJ",
         "popup_tab_LxfNGk",
+        "popup_tab_tRnpdb",
         "popup_tab_all",
         "popup_tab_coating",
         "popup_tab_XXDtqB"
