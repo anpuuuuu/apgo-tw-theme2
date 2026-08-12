@@ -217,6 +217,7 @@
         },
         "popup_tab_coating": {
           "type": "popup_tab",
+          "name": "暢銷組合",
           "settings": {
             "label": "暢銷組合",
             "collection": "暢銷優惠禮組",
@@ -225,6 +226,7 @@
         },
         "popup_tab_XXDtqB": {
           "type": "popup_tab",
+          "name": "鍍膜全系列",
           "settings": {
             "label": "鍍膜全系列",
             "collection": "coating-series",
