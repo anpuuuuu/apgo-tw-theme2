@@ -100,7 +100,7 @@
       "type": "apgo-related",
       "settings": {
         "heading": "您可能也喜歡",
-        "collection": "所有產品",
+        "collection": "home-clean",
         "columns": 5,
         "limit": 5
       }
