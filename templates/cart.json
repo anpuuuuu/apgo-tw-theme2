@@ -232,6 +232,15 @@
             "collection": "coating-series",
             "show_in_popup": true
           }
+        },
+        "popup_tab_9FmfJM": {
+          "type": "popup_tab",
+          "name": "鍍膜全系列",
+          "settings": {
+            "label": "居家系列",
+            "collection": "homecleaning",
+            "show_in_popup": true
+          }
         }
       },
       "block_order": [
@@ -248,7 +257,8 @@
         "popup_tab_tRnpdb",
         "popup_tab_all",
         "popup_tab_coating",
-        "popup_tab_XXDtqB"
+        "popup_tab_XXDtqB",
+        "popup_tab_9FmfJM"
       ],
       "name": "Cart Shell V2",
       "settings": {
