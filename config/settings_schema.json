@@ -2279,6 +2279,68 @@
     ]
   },
   {
+    "name": "APGO US Amazon Landing",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Hidden preview defaults: Amazon buttons stay disabled and the page remains noindex until both links are verified and Public mode is enabled."
+      },
+      {
+        "type": "checkbox",
+        "id": "apgo_us_amazon_public",
+        "label": "Public mode / allow indexing",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "apgo_us_support_email",
+        "label": "US support email"
+      },
+      {
+        "type": "header",
+        "content": "D204"
+      },
+      {
+        "type": "url",
+        "id": "apgo_us_d204_amazon_url",
+        "label": "D204 Amazon Attribution URL"
+      },
+      {
+        "type": "checkbox",
+        "id": "apgo_us_d204_link_ready",
+        "label": "D204 link verified",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "apgo_us_d204_video_ready",
+        "label": "D204 video approved",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "D215"
+      },
+      {
+        "type": "url",
+        "id": "apgo_us_d215_amazon_url",
+        "label": "D215 Amazon Attribution URL"
+      },
+      {
+        "type": "checkbox",
+        "id": "apgo_us_d215_link_ready",
+        "label": "D215 link verified",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "apgo_us_d215_video_ready",
+        "label": "D215 video approved",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "t:names.variant_pickers",
     "settings": [
       {
