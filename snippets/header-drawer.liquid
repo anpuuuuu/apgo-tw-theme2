@@ -128,8 +128,8 @@
                         class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element focus-inset"
                       >
                         <span class="menu-drawer__menu-item-text">{{ link.title | escape }}</span>
-                        <span class="svg-wrapper icon-plus">
-                          {{- 'icon-plus.svg' | inline_asset_content -}}
+                        <span class="svg-wrapper icon-caret icon-caret--accordion">
+                          {{- 'icon-caret.svg' | inline_asset_content -}}
                         </span>
                       </summary>
                       {% liquid
@@ -375,8 +375,8 @@
                                         class="menu-drawer__menu-item menu-drawer__menu-item--parent focus-inset"
                                       >
                                         <span class="menu-drawer__menu-item-text">{{ childlink.title | escape }}</span>
-                                        <span class="svg-wrapper icon-plus">
-                                          {{- 'icon-plus.svg' | inline_asset_content -}}
+                                        <span class="svg-wrapper icon-caret icon-caret--accordion">
+                                          {{- 'icon-caret.svg' | inline_asset_content -}}
                                         </span>
                                       </summary>
                                       {% liquid
@@ -1068,6 +1068,10 @@
   .menu-drawer svg {
     width: var(--icon-size-xs);
     height: var(--icon-size-xs);
+  }
+
+  .menu-drawer details[open] > summary .icon-caret--accordion svg {
+    transform: rotate(180deg);
   }
 
   .menu-drawer__submenu {

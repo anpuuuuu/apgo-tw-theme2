@@ -326,7 +326,7 @@
             "type_case_tertiary_link": "uppercase",
             "navigation_bar": false,
             "color_scheme_navigation_bar": "scheme-a27d2d12-7174-40fe-a01c-a128174b4c26",
-            "drawer_accordion": false,
+            "drawer_accordion": true,
             "drawer_accordion_expand_first": false,
             "drawer_dividers": false
           },
