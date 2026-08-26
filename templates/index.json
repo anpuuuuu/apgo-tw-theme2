@@ -32,178 +32,6 @@
         "promo_link": "shopify://pages/11-11"
       }
     },
-    "coating_products_section_hPmGEa": {
-      "type": "coating-products-section",
-      "blocks": {
-        "product_xW9yzK": {
-          "type": "product",
-          "settings": {
-            "name": "原子琉璃釉",
-            "description": "超越頂規，立即成膜的特性讓它不需等待，加速形成保護。",
-            "badge": "頂規",
-            "effect": "titanium-product",
-            "image": "shopify://shop_images/3fbabc4ea9f2db5a377a8aab6c84f734_29a9d8c8-2833-4c7c-9aa2-9d9fa5765922.png",
-            "duration": "180天",
-            "duration_fill": "100%",
-            "hydrophobic": "99%",
-            "hydrophobic_fill": "99%",
-            "wash": "30+次",
-            "wash_fill": "100%",
-            "gloss": "99%",
-            "gloss_fill": "99%",
-            "product_key": "apgo-atomic-colored-glaze"
-          }
-        },
-        "product_iqTe6R": {
-          "type": "product",
-          "settings": {
-            "name": "鈦晶鍍膜",
-            "description": "高硬度鈦晶結構，極致防護與持久光澤。",
-            "badge": "頂規",
-            "effect": "titanium-product",
-            "image": "shopify://shop_images/0_895dd8bc-acff-4324-859d-5d3466502d8a.png",
-            "duration": "180天",
-            "duration_fill": "100%",
-            "hydrophobic": "95%",
-            "hydrophobic_fill": "95%",
-            "wash": "30+次",
-            "wash_fill": "100%",
-            "gloss": "98%",
-            "gloss_fill": "98%",
-            "product_key": "titanium-coating"
-          }
-        },
-        "product_4JzCxF": {
-          "type": "product",
-          "settings": {
-            "name": "原子極光鍍膜",
-            "description": "極光般亮澤，強化表面防護，提升美觀。",
-            "badge": "光澤加倍",
-            "effect": "aurora-product",
-            "image": "shopify://shop_images/2025_cdc39dda-830a-479d-a08b-deed0ab961bb.png",
-            "duration": "150天",
-            "duration_fill": "83%",
-            "hydrophobic": "80%",
-            "hydrophobic_fill": "80%",
-            "wash": "20+次",
-            "wash_fill": "70%",
-            "gloss": "80分",
-            "gloss_fill": "80%",
-            "product_key": "atomic-aurora"
-          }
-        },
-        "product_Rga9Wg": {
-          "type": "product",
-          "settings": {
-            "name": "原子釉鍍膜",
-            "description": "釉面質感，提升表面滑順與抗污能力。",
-            "badge": "暢銷冠軍",
-            "effect": "glaze-product",
-            "image": "shopify://shop_images/2025_399e6e50-f314-4caf-8167-8bc47cb4d5c3.png",
-            "duration": "120天",
-            "duration_fill": "66%",
-            "hydrophobic": "80%",
-            "hydrophobic_fill": "80%",
-            "wash": "20+次",
-            "wash_fill": "66%",
-            "gloss": "80分",
-            "gloss_fill": "80%",
-            "product_key": "atomic-glaze"
-          }
-        },
-        "product_D7AReT": {
-          "type": "product",
-          "settings": {
-            "name": "琺瑯晶鍍膜",
-            "description": "極致滑順度，結合微晶的疏水及封體的抗洗。",
-            "badge": "雙層感受",
-            "effect": "aurora-product",
-            "image": "shopify://shop_images/5323f490d763f84e4586a4d5768ca674_df4dbfef-b604-45f0-8739-aec97be423c8.png",
-            "duration": "80天",
-            "duration_fill": "55%",
-            "hydrophobic": "70%",
-            "hydrophobic_fill": "70%",
-            "wash": "15+次",
-            "wash_fill": "50%",
-            "gloss": "80",
-            "gloss_fill": "80%",
-            "product_key": ""
-          }
-        },
-        "product_DKAfeq": {
-          "type": "product",
-          "settings": {
-            "name": "原子微晶鍍膜",
-            "description": "微晶結構，細緻保護，提升表面細膩度。",
-            "badge": "滑順加倍",
-            "effect": "microcrystal-product",
-            "image": "shopify://shop_images/2025_85789309-20dc-44b5-8868-69d7965afdde.png",
-            "duration": "70天",
-            "duration_fill": "38%",
-            "hydrophobic": "70%",
-            "hydrophobic_fill": "70%",
-            "wash": "15+次",
-            "wash_fill": "50%",
-            "gloss": "70分",
-            "gloss_fill": "70%",
-            "product_key": "atomic-microcrystal"
-          }
-        },
-        "product_YBVpGB": {
-          "type": "product",
-          "settings": {
-            "name": "原子封體鍍膜",
-            "description": "封體技術，長效保護車漆，防止氧化。",
-            "badge": "光澤加倍",
-            "effect": "sealant-product",
-            "image": "shopify://shop_images/2025_a5234699-4b41-4e23-a775-81a1eac7e89d.png",
-            "duration": "70天",
-            "duration_fill": "38%",
-            "hydrophobic": "65%",
-            "hydrophobic_fill": "65%",
-            "wash": "10+次",
-            "wash_fill": "33%",
-            "gloss": "80分",
-            "gloss_fill": "80%",
-            "product_key": "atomic-sealant"
-          }
-        },
-        "product_JUrjLP": {
-          "type": "product",
-          "settings": {
-            "name": "原子鍍膜",
-            "description": "經典原子鍍膜，基礎防護與亮澤效果。",
-            "badge": "經典",
-            "effect": "basic-product",
-            "image": "shopify://shop_images/2025_0a5839d0-8eed-42e4-b4bd-0b01b0344828.png",
-            "duration": "30天",
-            "duration_fill": "16%",
-            "hydrophobic": "40%",
-            "hydrophobic_fill": "40%",
-            "wash": "8+次",
-            "wash_fill": "26%",
-            "gloss": "60分",
-            "gloss_fill": "60%",
-            "product_key": "atomic-basic"
-          }
-        }
-      },
-      "block_order": [
-        "product_xW9yzK",
-        "product_iqTe6R",
-        "product_4JzCxF",
-        "product_Rga9Wg",
-        "product_D7AReT",
-        "product_DKAfeq",
-        "product_YBVpGB",
-        "product_JUrjLP"
-      ],
-      "name": "APGO 鍍膜產品展示",
-      "settings": {
-        "title": "專業鍍膜產品系列",
-        "subtitle": "APGO研發的鍍膜皆不分任何車色、不分任何材質，開始挑選專屬自己的鍍膜吧"
-      }
-    },
     "marquee_p8YTpL": {
       "type": "marquee",
       "name": "t:names.marquee_section",
@@ -425,6 +253,178 @@
         "cta_link": "shopify://collections/coating-series",
         "show_scroll_indicator": true,
         "scroll_text": "探索更多"
+      }
+    },
+    "coating_products_section_hPmGEa": {
+      "type": "coating-products-section",
+      "blocks": {
+        "product_xW9yzK": {
+          "type": "product",
+          "settings": {
+            "name": "原子琉璃釉",
+            "description": "超越頂規，立即成膜的特性讓它不需等待，加速形成保護。",
+            "badge": "頂規",
+            "effect": "titanium-product",
+            "image": "shopify://shop_images/3fbabc4ea9f2db5a377a8aab6c84f734_29a9d8c8-2833-4c7c-9aa2-9d9fa5765922.png",
+            "duration": "180天",
+            "duration_fill": "100%",
+            "hydrophobic": "99%",
+            "hydrophobic_fill": "99%",
+            "wash": "30+次",
+            "wash_fill": "100%",
+            "gloss": "99%",
+            "gloss_fill": "99%",
+            "product_key": "48845759643899"
+          }
+        },
+        "product_iqTe6R": {
+          "type": "product",
+          "settings": {
+            "name": "鈦晶鍍膜",
+            "description": "高硬度鈦晶結構，極致防護與持久光澤。",
+            "badge": "頂規",
+            "effect": "titanium-product",
+            "image": "shopify://shop_images/0_895dd8bc-acff-4324-859d-5d3466502d8a.png",
+            "duration": "180天",
+            "duration_fill": "100%",
+            "hydrophobic": "95%",
+            "hydrophobic_fill": "95%",
+            "wash": "30+次",
+            "wash_fill": "100%",
+            "gloss": "98%",
+            "gloss_fill": "98%",
+            "product_key": "titanium-coating"
+          }
+        },
+        "product_4JzCxF": {
+          "type": "product",
+          "settings": {
+            "name": "原子極光鍍膜",
+            "description": "極光般亮澤，強化表面防護，提升美觀。",
+            "badge": "光澤加倍",
+            "effect": "aurora-product",
+            "image": "shopify://shop_images/2025_cdc39dda-830a-479d-a08b-deed0ab961bb.png",
+            "duration": "150天",
+            "duration_fill": "83%",
+            "hydrophobic": "80%",
+            "hydrophobic_fill": "80%",
+            "wash": "20+次",
+            "wash_fill": "70%",
+            "gloss": "80分",
+            "gloss_fill": "80%",
+            "product_key": "atomic-aurora"
+          }
+        },
+        "product_Rga9Wg": {
+          "type": "product",
+          "settings": {
+            "name": "原子釉鍍膜",
+            "description": "釉面質感，提升表面滑順與抗污能力。",
+            "badge": "暢銷冠軍",
+            "effect": "glaze-product",
+            "image": "shopify://shop_images/2025_399e6e50-f314-4caf-8167-8bc47cb4d5c3.png",
+            "duration": "120天",
+            "duration_fill": "66%",
+            "hydrophobic": "80%",
+            "hydrophobic_fill": "80%",
+            "wash": "20+次",
+            "wash_fill": "66%",
+            "gloss": "80分",
+            "gloss_fill": "80%",
+            "product_key": "atomic-glaze"
+          }
+        },
+        "product_D7AReT": {
+          "type": "product",
+          "settings": {
+            "name": "琺瑯晶鍍膜",
+            "description": "極致滑順度，結合微晶的疏水及封體的抗洗。",
+            "badge": "雙層感受",
+            "effect": "aurora-product",
+            "image": "shopify://shop_images/5323f490d763f84e4586a4d5768ca674_df4dbfef-b604-45f0-8739-aec97be423c8.png",
+            "duration": "80天",
+            "duration_fill": "55%",
+            "hydrophobic": "70%",
+            "hydrophobic_fill": "70%",
+            "wash": "15+次",
+            "wash_fill": "50%",
+            "gloss": "80",
+            "gloss_fill": "80%",
+            "product_key": ""
+          }
+        },
+        "product_DKAfeq": {
+          "type": "product",
+          "settings": {
+            "name": "原子微晶鍍膜",
+            "description": "微晶結構，細緻保護，提升表面細膩度。",
+            "badge": "滑順加倍",
+            "effect": "microcrystal-product",
+            "image": "shopify://shop_images/2025_85789309-20dc-44b5-8868-69d7965afdde.png",
+            "duration": "70天",
+            "duration_fill": "38%",
+            "hydrophobic": "70%",
+            "hydrophobic_fill": "70%",
+            "wash": "15+次",
+            "wash_fill": "50%",
+            "gloss": "70分",
+            "gloss_fill": "70%",
+            "product_key": "atomic-microcrystal"
+          }
+        },
+        "product_YBVpGB": {
+          "type": "product",
+          "settings": {
+            "name": "原子封體鍍膜",
+            "description": "封體技術，長效保護車漆，防止氧化。",
+            "badge": "光澤加倍",
+            "effect": "sealant-product",
+            "image": "shopify://shop_images/2025_a5234699-4b41-4e23-a775-81a1eac7e89d.png",
+            "duration": "70天",
+            "duration_fill": "38%",
+            "hydrophobic": "65%",
+            "hydrophobic_fill": "65%",
+            "wash": "10+次",
+            "wash_fill": "33%",
+            "gloss": "80分",
+            "gloss_fill": "80%",
+            "product_key": "atomic-sealant"
+          }
+        },
+        "product_JUrjLP": {
+          "type": "product",
+          "settings": {
+            "name": "原子鍍膜",
+            "description": "經典原子鍍膜，基礎防護與亮澤效果。",
+            "badge": "經典",
+            "effect": "basic-product",
+            "image": "shopify://shop_images/2025_0a5839d0-8eed-42e4-b4bd-0b01b0344828.png",
+            "duration": "30天",
+            "duration_fill": "16%",
+            "hydrophobic": "40%",
+            "hydrophobic_fill": "40%",
+            "wash": "8+次",
+            "wash_fill": "26%",
+            "gloss": "60分",
+            "gloss_fill": "60%",
+            "product_key": "atomic-basic"
+          }
+        }
+      },
+      "block_order": [
+        "product_xW9yzK",
+        "product_iqTe6R",
+        "product_4JzCxF",
+        "product_Rga9Wg",
+        "product_D7AReT",
+        "product_DKAfeq",
+        "product_YBVpGB",
+        "product_JUrjLP"
+      ],
+      "name": "APGO 鍍膜產品展示",
+      "settings": {
+        "title": "專業鍍膜產品系列",
+        "subtitle": "APGO研發的鍍膜皆不分任何車色、不分任何材質，開始挑選專屬自己的鍍膜吧"
       }
     },
     "cinematic_video_section_biatzJ": {
