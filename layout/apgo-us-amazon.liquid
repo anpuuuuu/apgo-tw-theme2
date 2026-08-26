@@ -10,6 +10,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#080a0c">
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
+      >
+    {%- endif -%}
     <meta
       name="robots"
       content="{% if apgo_us_indexable %}index,follow{% else %}noindex,nofollow{% endif %}"
