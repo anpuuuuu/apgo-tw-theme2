@@ -21,6 +21,13 @@
   elsif block_settings.menu_style == 'featured_products'
     assign ratio = block_settings.featured_products_aspect_ratio
   endif
+
+  # Compact dropdown submenus only make sense for text-only menus; richer
+  # menu styles (images, products) need the full-width mega menu layout.
+  assign use_dropdown_submenu = false
+  if block_settings.desktop_submenu_style == 'dropdown' and menu_content_type == 'text'
+    assign use_dropdown_submenu = true
+  endif
 %}
 
 {% capture children %}
@@ -84,7 +91,7 @@
 
 <nav header-menu>
   <div
-    class="menu-list"
+    class="menu-list{% if use_dropdown_submenu %} menu-list--dropdown{% endif %}"
     style="{% render 'menu-font-styles', settings: block_settings %}"
   >
     {% assign class = 'overflow-menu' | append: color_scheme_classes %}

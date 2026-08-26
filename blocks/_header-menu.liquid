@@ -610,6 +610,58 @@
     /* preserves the inherited grid layout when this submenu wrapper is used */
     display: contents;
   }
+
+  /** compact dropdown submenus (desktop_submenu_style: dropdown, text menus only) **/
+  .menu-list--dropdown .menu-list__list-item:where(:not([slot='overflow'])) {
+    position: relative;
+  }
+
+  /* The full-width animated backdrop is not needed; the dropdown panel has its own background */
+  .menu-list--dropdown .overflow-menu::after {
+    display: none;
+  }
+
+  .menu-list--dropdown .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__submenu {
+    width: max-content;
+    min-width: 10rem;
+    max-width: min(24rem, 50vw);
+    top: calc(100% + var(--padding-2xs));
+    padding-inline: 0;
+    border-radius: var(--style-border-radius-popover);
+    box-shadow: var(--shadow-popover);
+    white-space: normal;
+  }
+
+  .menu-list--dropdown .menu-list__list-item:where(:not([slot='overflow'])) .menu-list__submenu-inner {
+    display: block;
+    padding: var(--padding-md) var(--padding-lg);
+  }
+
+  .menu-list--dropdown .menu-list__list-item:where(:not([slot='overflow'])) .mega-menu {
+    display: block;
+    padding: 0;
+  }
+
+  .menu-list--dropdown .menu-list__list-item:where(:not([slot='overflow'])) .mega-menu > .mega-menu__grid {
+    display: block;
+    width: 100%;
+    padding: 0;
+  }
+
+  .menu-list--dropdown .menu-list__list-item:where(:not([slot='overflow'])) .mega-menu__list {
+    display: block;
+  }
+
+  .menu-list--dropdown .menu-list__list-item:where(:not([slot='overflow'])) .mega-menu__list ul {
+    /* Overrides the inline column-count style; a compact dropdown is always a single column */
+    column-count: auto !important;
+  }
+
+  .menu-list--dropdown .menu-list__list-item:where(:not([slot='overflow'])) .mega-menu__link {
+    display: flex;
+    width: 100%;
+    padding-block: var(--padding-2xs);
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -646,6 +698,23 @@
         }
       ],
       "default": "collection_images"
+    },
+    {
+      "type": "select",
+      "id": "desktop_submenu_style",
+      "label": "電腦版子選單樣式",
+      "options": [
+        {
+          "value": "mega",
+          "label": "全寬 Mega Menu"
+        },
+        {
+          "value": "dropdown",
+          "label": "小型下拉選單"
+        }
+      ],
+      "default": "mega",
+      "visible_if": "{{ block.settings.menu_style == 'text' }}"
     },
     {
       "type": "select",
