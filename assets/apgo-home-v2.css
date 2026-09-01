@@ -1,0 +1,292 @@
+.apgo-home-module,
+.apgo-home-module * {
+  box-sizing: border-box;
+}
+
+.apgo-home-module {
+  background: #050506;
+  color: #fff;
+  padding: var(--apgo-home-padding-top, 11px) 16px var(--apgo-home-padding-bottom, 11px);
+}
+
+.apgo-home-v2__inner {
+  width: min(100%, var(--apgo-home-max, 1440px));
+  margin: 0 auto;
+}
+
+.apgo-home-panel {
+  background: #0d0d10;
+  border: 1px solid #25262c;
+  border-radius: 22px;
+  padding: 28px;
+  overflow: hidden;
+}
+
+.apgo-home-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.apgo-home-heading h2,
+.apgo-home-heading h3 {
+  color: #fff;
+  margin: 0;
+  font-size: clamp(1.35rem, 2vw, 2rem);
+  line-height: 1.2;
+}
+
+.apgo-home-heading__eyebrow {
+  margin: 0 0 7px;
+  color: var(--apgo-home-accent);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .18em;
+}
+
+.apgo-home-heading > a {
+  color: var(--apgo-home-accent);
+  font-weight: 750;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.apgo-home-empty {
+  color: #9c9ca6;
+  margin: 0;
+  padding: 20px;
+  border: 1px dashed #34343b;
+  border-radius: 14px;
+}
+
+.apgo-home-scroller-wrap {
+  position: relative;
+}
+
+.apgo-home-product-row {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--apgo-home-accent) #292a30;
+  padding-bottom: 16px;
+}
+
+.apgo-home-product-row__item {
+  flex: 0 0 min(270px, 24%);
+  min-width: 220px;
+  scroll-snap-align: start;
+}
+
+.apgo-home-scroll-button {
+  position: absolute;
+  top: 44%;
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #4a4b52;
+  border-radius: 50%;
+  background: rgba(5, 5, 6, .9);
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.apgo-home-scroll-button--prev { left: -18px; }
+.apgo-home-scroll-button--next { right: -18px; }
+
+.apgo-home-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #191a1f;
+  border: 1px solid #2c2d34;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.apgo-home-card__link {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  color: inherit;
+  text-decoration: none;
+}
+
+.apgo-home-card__media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(145deg, #24252c, #17181d);
+  overflow: hidden;
+}
+
+.apgo-home-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform .3s ease;
+}
+
+.apgo-home-card:hover .apgo-home-card__image { transform: scale(1.035); }
+
+.apgo-home-card__badge {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  left: 12px;
+  padding: 4px 9px;
+  border-radius: 5px;
+  background: var(--apgo-home-accent);
+  color: #080808;
+  font-size: .7rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+}
+
+.apgo-home-card__content { padding: 15px 14px 12px; }
+.apgo-home-card__title { margin: 0 0 10px; color: #fff; font-size: .95rem; line-height: 1.4; }
+.apgo-home-card__price { display: flex; align-items: center; gap: 8px; color: var(--apgo-home-accent); font-weight: 850; }
+.apgo-home-card__price s { color: #767781; font-size: .8rem; font-weight: 500; }
+.apgo-home-card__form { padding: 0 14px 14px; }
+
+.apgo-home-card__add {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--apgo-home-accent);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--apgo-home-accent);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.apgo-home-card__add:hover { background: var(--apgo-home-accent); color: #090909; }
+.apgo-home-card__add:disabled { border-color: #555; color: #777; cursor: not-allowed; }
+
+.apgo-home-category-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.apgo-home-category {
+  min-height: 150px;
+  padding: 18px 10px;
+  border: 1px solid #2b2c32;
+  border-radius: 13px;
+  background: #17181d;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: border-color .2s, transform .2s;
+}
+
+.apgo-home-category:hover { border-color: var(--apgo-home-accent); transform: translateY(-2px); }
+.apgo-home-category__icon { color: var(--apgo-home-accent); font-size: 2rem; line-height: 1; margin-bottom: 12px; }
+.apgo-home-category__title { font-weight: 760; line-height: 1.25; }
+.apgo-home-category__count { color: #858690; font-size: .74rem; margin-top: 7px; }
+
+.apgo-home-new__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(360px, 1fr);
+  gap: 16px;
+}
+
+.apgo-home-new__feature {
+  position: relative;
+  min-height: 610px;
+  border: 1px solid #2c2d34;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #191a1f;
+}
+
+.apgo-home-new__feature-link {
+  height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  color: #fff;
+  text-decoration: none;
+}
+
+.apgo-home-new__feature-media { min-height: 400px; background: linear-gradient(145deg, #24252c, #17181d); }
+.apgo-home-new__feature-image { width: 100%; height: 100%; max-height: 470px; object-fit: contain; }
+.apgo-home-new__feature-content { padding: 24px; background: #131419; }
+.apgo-home-new__feature-content h3 { margin: 0 0 8px; color: #fff; font-size: 1.35rem; }
+.apgo-home-new__feature-content p { color: #aaaab2; margin: 0 0 20px; max-width: 54ch; }
+.apgo-home-new__cta { display: inline-flex; padding: 10px 22px; border-radius: 7px; background: var(--apgo-home-accent); color: #080808; font-weight: 850; }
+.apgo-home-new__secondary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.apgo-home-new__secondary-card { min-width: 0; }
+.apgo-home-new__secondary .apgo-home-card__title { font-size: .85rem; }
+
+.apgo-home-shelves { display: grid; gap: 22px; }
+.apgo-home-heading--shelf { align-items: center; }
+.apgo-home-heading--shelf > div { display: flex; align-items: baseline; gap: 14px; }
+.apgo-home-heading--shelf p { color: #9899a2; margin: 0; }
+.apgo-home-shelf__row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.apgo-home-shelf__item { min-width: 0; }
+
+@media (max-width: 989px) {
+  .apgo-home-category-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .apgo-home-new__grid { grid-template-columns: 1fr; }
+  .apgo-home-new__feature { min-height: 0; }
+  .apgo-home-new__feature-media { min-height: 0; aspect-ratio: 3 / 2; }
+}
+
+@media (max-width: 749px) {
+  .apgo-home-module {
+    padding-top: var(--apgo-home-padding-top-mobile, var(--apgo-home-padding-top, 7px));
+    padding-right: 12px;
+    padding-bottom: var(--apgo-home-padding-bottom-mobile, var(--apgo-home-padding-bottom, 7px));
+    padding-left: 12px;
+  }
+
+  .apgo-home-panel { border-radius: 18px; padding: 20px 14px; }
+  .apgo-home-heading { margin-bottom: 18px; align-items: center; }
+  .apgo-home-heading__eyebrow { display: none; }
+  .apgo-home-heading > a { font-size: .82rem; }
+  .apgo-home-scroll-button { display: none; }
+  .apgo-home-product-row { margin-right: -14px; padding-right: 14px; gap: 12px; }
+  .apgo-home-product-row__item { flex-basis: 43%; min-width: 156px; }
+  .apgo-home-card__content { padding: 12px 10px 10px; }
+  .apgo-home-card__title { font-size: .82rem; }
+  .apgo-home-card__form { padding: 0 10px 10px; }
+  .apgo-home-card__add { min-height: 38px; font-size: .78rem; }
+  .apgo-home-category-grid { gap: 8px; }
+  .apgo-home-category { min-height: 112px; padding: 12px 5px; }
+  .apgo-home-category__icon { font-size: 1.55rem; margin-bottom: 8px; }
+  .apgo-home-category__title { font-size: .76rem; }
+  .apgo-home-category__count { font-size: .65rem; }
+  .apgo-home-new__feature-link { grid-template-rows: auto auto; }
+  .apgo-home-new__feature-media { aspect-ratio: 3 / 2; }
+  .apgo-home-new__feature-content { padding: 18px 14px; }
+  .apgo-home-new__secondary { gap: 10px; }
+  .apgo-home-new__secondary .apgo-home-card__content { min-height: 82px; }
+  .apgo-home-heading--shelf > div { display: block; }
+  .apgo-home-heading--shelf p { margin-top: 4px; font-size: .78rem; }
+
+  .apgo-home-shelf__row {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--apgo-home-accent) #292a30;
+    margin-right: -14px;
+    padding: 0 14px 12px 0;
+  }
+
+  .apgo-home-shelf__item {
+    flex: 0 0 43%;
+    min-width: 156px;
+    scroll-snap-align: start;
+  }
+
+  .apgo-home-shelf .apgo-home-card__form-component { display: none; }
+}
