@@ -182,9 +182,9 @@
       parcel.innerHTML = [
         '<svg viewBox="0 0 48 48" focusable="false">',
         '  <circle cx="24" cy="24" r="22" fill="#ff6b1a"/>',
-        '  <path d="M14.5 17.5 24 12l9.5 5.5v13L24 36l-9.5-5.5z" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/>',
-        '  <path d="m14.8 17.8 9.2 5.4 9.2-5.4M24 23.2V36" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/>',
-        '  <path d="m19.4 16.1 9.3 5.4" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>',
+        '  <path d="M14 23h20v13H14z" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/>',
+        '  <path d="M11.5 18.5h25V24h-25zM24 18.5V36" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/>',
+        '  <path d="M24 18.5c-3.4 0-7.5-.7-7.5-4 0-1.7 1.3-3 3-3 2.8 0 4.5 3.2 4.5 7Zm0 0c3.4 0 7.5-.7 7.5-4 0-1.7-1.3-3-3-3-2.8 0-4.5 3.2-4.5 7Z" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>',
         '</svg>'
       ].join('');
       document.body.appendChild(parcel);
