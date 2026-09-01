@@ -81,3 +81,30 @@
 - 桌機與手機皆可瀏覽導覽層級。
 - 商品可加入購物車、修改數量、進入結帳。
 - 缺少後台內容時以空狀態或自動隱藏處理，不輸出破版卡片。
+
+## 2026-09-01 執行記錄
+
+- Git 分支：`feature/main-navigation-v2-preview`
+- Shopify Draft Theme：`APGO Main Navigation v2 Preview 20260901`（ID `162094055675`）
+- Preview URL：<https://a9x0eh-ws.myshopify.com?preview_theme_id=162094055675>
+- Theme Editor：<https://a9x0eh-ws.myshopify.com/admin/themes/162094055675/editor>
+- 正式主題未發布、未覆寫。
+
+### 上線前修正
+
+1. 將首頁 `product` / `collection` 選擇器從 URL 格式改為 Shopify 可解析的 handle，解決首頁導購區沒有內容的問題。
+2. 將桌機選單的 click handler 綁到實際的連結與「更多」按鈕，解決點擊「所有產品」直接跳頁、未開啟下拉選單的問題。
+
+### 冒煙測試結果
+
+- [x] 桌機「所有產品」點擊後留在首頁並展開下拉；再次點擊及 `Esc` 均會關閉。
+- [x] 手機 390px：選單鍵在左、Logo 置中；抽屜包含首頁、所有產品、訂閱制、活動與品牌故事。
+- [x] 首頁 Banner 左右箭頭、熱銷商品、品類導覽、新品區與七個分類商品列均有輸出。
+- [x] `/pages/brand-story` 正常開啟，非 404。
+- [x] 首頁快速加購成功；測試時購物車可見數量由 4 更新為 5。
+- [x] 購物車頁可見新增商品、正確總數與結帳入口；測試未進入結帳。
+- [x] Draft Theme 維持 `unpublished`。
+
+### 非阻斷診斷
+
+- 商品加入完成後，既有 `product-form.js` 的 Performance 計時會記錄一次缺少起始 mark 的 console warning。實際加購、購物車數量、金額與結帳入口均正常；此項不是本次主導覽／首頁改造造成的功能中斷，可另開技術債任務處理。
