@@ -333,25 +333,23 @@
         }).then(function (r) { return r.json(); });
       })
       .then(function (cart) {
-        // Dispatch the same cart events apgo-pdp.js dispatches so the rest
-        // of the theme stays in sync.
-        document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: cart } }));
+        // Keep Horizon and legacy APGO cart listeners in sync with one event.
+        // Horizon reads detail.data.itemCount; legacy sections read detail.cart.
+        document.dispatchEvent(new CustomEvent('cart:update', {
+          bubbles: true,
+          detail: {
+            resource: cart,
+            sourceId: 'apgo-bundle',
+            cart: cart,
+            data: {
+              itemCount: cart.item_count,
+              source: 'apgo-bundle',
+              sections: {}
+            }
+          }
+        }));
         document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart: cart } }));
-        document.dispatchEvent(new CustomEvent('cart:updated'));
-
-        // Optional: try to fire Horizon's @theme/events. Ignore if absent.
-        try {
-          import('@theme/events').then(function (mod) {
-            if (mod && mod.CartUpdateEvent) {
-              document.dispatchEvent(new mod.CartUpdateEvent(cart, 'apgo-bundle', {
-                itemCount: cart.item_count, source: 'apgo-bundle', sections: {}
-              }));
-            }
-            if (mod && mod.CartAddEvent) {
-              document.dispatchEvent(new mod.CartAddEvent({}, 'apgo-bundle', { source: 'apgo-bundle' }));
-            }
-          }).catch(function () {});
-        } catch (_) {}
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: cart } }));
 
         if (redirectToCart) {
           // 立即購買 → land on /cart so user can verify the bundle discount

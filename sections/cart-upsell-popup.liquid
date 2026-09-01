@@ -323,7 +323,19 @@
             return response.json();
           })
           .then(function(cart) {
-            document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: cart } }));
+            document.dispatchEvent(new CustomEvent('cart:update', {
+              bubbles: true,
+              detail: {
+                resource: cart,
+                sourceId: 'cart-upsell-popup',
+                cart: cart,
+                data: {
+                  itemCount: cart.item_count,
+                  source: 'cart-upsell-popup',
+                  sections: {}
+                }
+              }
+            }));
             document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: cart } }));
           })
           .catch(function() {})

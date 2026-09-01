@@ -336,23 +336,23 @@
         .then(function (result) {
           showApgoCartToast('✓ 已加入購物車');
 
-          // Legacy + Horizon-style cart events. The Horizon CartUpdateEvent
-          // module is optional; ignore the dynamic-import error on themes
-          // that don't ship @theme/events.
-          document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart: result.cart } }));
+          // Keep Horizon and legacy APGO cart listeners in sync with one event.
+          // Horizon reads detail.data.itemCount; legacy sections read detail.cart.
+          document.dispatchEvent(new CustomEvent('cart:update', {
+            bubbles: true,
+            detail: {
+              resource: result.cart,
+              sourceId: 'apgo-pdp',
+              cart: result.cart,
+              data: {
+                itemCount: result.cart.item_count,
+                source: 'apgo-pdp',
+                sections: {}
+              }
+            }
+          }));
           document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart: result.cart } }));
-          try {
-            import('@theme/events').then(function (mod) {
-              if (mod && mod.CartUpdateEvent) {
-                document.dispatchEvent(new mod.CartUpdateEvent(result.cart, 'apgo-pdp', {
-                  itemCount: result.cart.item_count, source: 'apgo-pdp', sections: {}
-                }));
-              }
-              if (mod && mod.CartAddEvent) {
-                document.dispatchEvent(new mod.CartAddEvent({}, 'apgo-pdp', { source: 'apgo-pdp' }));
-              }
-            }).catch(function () { /* theme without @theme/events — toast alone is fine */ });
-          } catch (_) { /* older browsers without dynamic import */ }
+          document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: result.cart } }));
 
           // If a cart drawer is in the DOM, ask it to open
           var drawer = document.querySelector('cart-drawer-component, cart-drawer, [data-apgo-cart-drawer]');

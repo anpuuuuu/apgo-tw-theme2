@@ -42,8 +42,16 @@ class CartIcon extends Component {
    * @param {CartUpdateEvent} event - The cart update event.
    */
   onCartUpdate = async (event) => {
-    const itemCount = event.detail.data?.itemCount ?? 0;
-    const comingFromProductForm = event.detail.data?.source === 'product-form-component';
+    const detail = event.detail ?? {};
+    const rawItemCount =
+      detail.data?.itemCount ?? detail.cart?.item_count ?? detail.resource?.item_count ?? detail.data?.item_count;
+    const itemCount = Number(rawItemCount);
+
+    // Some legacy integrations use cart:update as a refresh signal without a
+    // cart payload. An unknown count must never be interpreted as an empty cart.
+    if (!Number.isFinite(itemCount) || itemCount < 0) return;
+
+    const comingFromProductForm = detail.data?.source === 'product-form-component';
 
     this.renderCartBubble(itemCount, comingFromProductForm);
   };

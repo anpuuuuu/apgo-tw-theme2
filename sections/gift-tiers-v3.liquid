@@ -567,39 +567,62 @@
     }
 
     function emitCartUpdate(detail = {}) {
-      const payload = {
-        data: null,
-        source: 'gift-tiers',
-        timestamp: Date.now(),
-        ...detail,
+      const source = detail.source || 'gift-tiers';
+      const suppliedCart = detail.cart
+        || detail.resource
+        || (detail.data && Number.isFinite(Number(detail.data.item_count)) ? detail.data : null);
+
+      const dispatch = (cart) => {
+        if (!cart || !Number.isFinite(Number(cart.item_count))) return;
+
+        const sections = detail.sections || {};
+        const sectionsToRender = detail.sectionsToRender || [];
+        const payload = {
+          ...detail,
+          resource: cart,
+          sourceId: 'gift-tiers',
+          cart,
+          source,
+          timestamp: Date.now(),
+          sections,
+          sectionsToRender,
+          data: {
+            itemCount: Number(cart.item_count),
+            source,
+            sections,
+            sectionsToRender
+          }
+        };
+
+        let event;
+        try {
+          event = new CustomEvent('cart:update', { bubbles: true, detail: payload });
+        } catch (error) {
+          try {
+            event = document.createEvent('CustomEvent');
+            event.initCustomEvent('cart:update', true, false, payload);
+          } catch (_) {
+            return;
+          }
+        }
+        document.dispatchEvent(event);
       };
-      if (payload.cart === undefined) {
-        payload.cart = payload.data;
-      }
-      if (payload.sections === undefined) {
-        payload.sections = {};
-      }
-      if (payload.sectionsToRender === undefined) {
-        payload.sectionsToRender = [];
+
+      if (suppliedCart) {
+        dispatch(suppliedCart);
+        return;
       }
 
-      let event;
-      try {
-        event = new CustomEvent('cart:update', { detail: payload });
-      } catch (error) {
-        try {
-          event = document.createEvent('CustomEvent');
-          event.initCustomEvent('cart:update', true, false, payload);
-        } catch (_) {
-          event = new Event('cart:update');
-        }
-      }
-      try {
-        event.detail = payload;
-      } catch (_) {
-        event.detail = payload;
-      }
-      document.dispatchEvent(event);
+      // Intercepted cart requests sometimes only provide a refresh signal.
+      // Resolve the real cart total before notifying the header and cart sections.
+      const root = window.Shopify?.routes?.root || '/';
+      fetch(root + 'cart.js', { headers: { Accept: 'application/json' } })
+        .then((response) => {
+          if (!response.ok) throw new Error('Unable to read cart');
+          return response.json();
+        })
+        .then(dispatch)
+        .catch(() => {});
     }
 
     function collectTierSnapshot() {

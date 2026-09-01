@@ -246,15 +246,20 @@
           .then(function (cart) {
             document.dispatchEvent(new CustomEvent('cart:update', {
               bubbles: true,
-              detail: { data: { itemCount: cart.item_count, source: 'cart-discount-input-only' } }
+              detail: {
+                resource: cart,
+                sourceId: 'cart-discount-input-only',
+                cart: cart,
+                data: {
+                  itemCount: cart.item_count,
+                  source: 'cart-discount-input-only',
+                  sections: {}
+                }
+              }
             }));
           })
           .catch(function () {
-            /* 退而求其次,只 dispatch 空 detail.data,避免 listener 讀 detail.data 報錯 */
-            document.dispatchEvent(new CustomEvent('cart:update', {
-              bubbles: true,
-              detail: { data: { itemCount: 0, source: 'cart-discount-input-only' } }
-            }));
+            /* 無法讀取購物車時保留目前徽章，不要誤報為 0。 */
           });
       }
       if (typeof afterDone === 'function') afterDone();

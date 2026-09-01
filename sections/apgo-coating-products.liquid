@@ -2348,7 +2348,27 @@ parseTiers(blocks) {
           this.addEventListener('loadend', () => {
             try {
               if (typeof url === 'string' && (/\/cart\/(add|change|update|clear)/.test(url))) {
-                setTimeout(() => document.dispatchEvent(new Event('cart:update')), 200);
+                setTimeout(() => {
+                  const root = window.Shopify?.routes?.root || '/';
+                  originalFetch.call(window, root + 'cart.js', { headers: { Accept: 'application/json' } })
+                    .then(response => response.json())
+                    .then(cart => {
+                      document.dispatchEvent(new CustomEvent('cart:update', {
+                        bubbles: true,
+                        detail: {
+                          resource: cart,
+                          sourceId: 'coating-products-xhr',
+                          cart,
+                          data: {
+                            itemCount: cart.item_count,
+                            source: 'coating-products-xhr',
+                            sections: {}
+                          }
+                        }
+                      }));
+                    })
+                    .catch(() => {});
+                }, 200);
               }
             } catch(_) {}
           });
@@ -3118,8 +3138,7 @@ parseTiers(blocks) {
         fetch(`/cart.js?_=${Date.now()}`, { cache: 'no-store' })
           .then(res => res.json())
           .then(cart => {
-            
-            document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart } }));
+            document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
             
             const event = new CartUpdateEvent(cart, 'manual-trigger', {
               itemCount: cart.item_count,
@@ -3159,7 +3178,20 @@ parseTiers(blocks) {
         fetch(`/cart.js?_=${Date.now()}`, { cache: 'no-store' })
           .then(res => res.json())
           .then(cart => {
-            document.dispatchEvent(new CustomEvent('cart:update', { detail: { cart } }));
+            document.dispatchEvent(new CustomEvent('cart:update', {
+              bubbles: true,
+              detail: {
+                resource: cart,
+                sourceId: 'combined-offer-block',
+                cart,
+                data: {
+                  itemCount: cart.item_count,
+                  source: 'combined-offer-block',
+                  sections: {}
+                }
+              }
+            }));
+            document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
             
             document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
               bubbles: true,
