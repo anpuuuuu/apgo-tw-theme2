@@ -184,6 +184,15 @@
     white-space: nowrap;
   }
 
+  .menu-list__list-item--desktop-hidden-home {
+    display: none;
+  }
+
+  .menu-list__list-item--accent > .menu-list__link {
+    color: #f58220;
+    font-weight: 800;
+  }
+
   .menu-list__list-item[aria-hidden='true'] {
     visibility: hidden;
   }
@@ -622,6 +631,13 @@
       "id": "menu",
       "label": "t:settings.menu",
       "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "accent_link_title",
+      "label": "品牌色選單名稱",
+      "default": "洗衣精訂閱制",
+      "info": "與此文字完全相同的第一層選單會顯示為 APGO 橘色。"
     },
     {
       "type": "select",

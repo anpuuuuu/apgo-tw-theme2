@@ -25,9 +25,11 @@ class HeaderMenu extends Component {
   connectedCallback() {
     super.connectedCallback();
 
-    this.overflowMenu?.addEventListener('pointerleave', () => this.#debouncedDeactivate(), {
+    document.addEventListener('click', this.#handleDocumentClick, {
+      capture: true,
       signal: this.#abortController.signal,
     });
+    document.addEventListener('keydown', this.#handleKeydown, { signal: this.#abortController.signal });
 
     onDocumentLoaded(this.#preloadImages);
   }
@@ -80,6 +82,34 @@ class HeaderMenu extends Component {
   };
 
   /**
+   * Toggle a first-level submenu from an explicit click. Links without children
+   * retain their normal navigation behaviour.
+   * @param {MouseEvent} event
+   */
+  toggle = (event) => {
+    if (!(event.target instanceof Element)) return;
+
+    const sourceItem = event.target.closest('.menu-list__list-item');
+    const item = findMenuItem(event.target);
+    if (!sourceItem || !item || !item.hasAttribute('aria-haspopup')) return;
+
+    const clickedTrigger = event.target.closest('[ref="menuitem"]');
+    if (clickedTrigger !== item && !sourceItem.matches('[slot="more"]')) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    this.#debouncedDeactivate.cancel();
+    this.#debouncedActivateHandler.cancel();
+
+    if (item === this.#state.activeItem) {
+      this.#deactivate(item, true);
+      return;
+    }
+
+    this.#activateHandler(event);
+  };
+
+  /**
    * Activate the selected menu item with a delay
    * @param {PointerEvent | FocusEvent} event
    */
@@ -96,7 +126,8 @@ class HeaderMenu extends Component {
 
     if (!item || item == this.#state.activeItem) return;
 
-    const isDefaultSlot = event.target.slot === '';
+    const sourceItem = event.target.closest('.menu-list__list-item');
+    const isDefaultSlot = !sourceItem?.matches('[slot="more"]') && !item.closest('[slot="overflow"]');
 
     this.dataset.overflowExpanded = (!isDefaultSlot).toString();
 
@@ -147,9 +178,9 @@ class HeaderMenu extends Component {
    * Deactivate the active item immediately
    * @param {HTMLElement | null} [item]
    */
-  #deactivate = (item = this.#state.activeItem) => {
+  #deactivate = (item = this.#state.activeItem, force = false) => {
     if (!item || item != this.#state.activeItem) return;
-    if (this.overflowHovered) return;
+    if (!force && this.overflowHovered) return;
 
     this.style.setProperty('--submenu-height', '0px');
     this.style.setProperty('--submenu-opacity', '0');
@@ -170,6 +201,19 @@ class HeaderMenu extends Component {
    * @param {PointerEvent | FocusEvent} event
    */
   #debouncedDeactivate = debounce(this.#deactivate, DEACTIVATE_DELAY);
+
+  #handleDocumentClick = (event) => {
+    if (!this.#state.activeItem) return;
+    if (event.target instanceof Node && this.contains(event.target)) return;
+    this.#deactivate(this.#state.activeItem, true);
+  };
+
+  #handleKeydown = (event) => {
+    if (event.key !== 'Escape' || !this.#state.activeItem) return;
+    const activeItem = this.#state.activeItem;
+    this.#deactivate(activeItem, true);
+    activeItem.focus();
+  };
 
   /**
    * Preload images that are set to load lazily.
@@ -192,12 +236,15 @@ if (!customElements.get('header-menu')) {
 function findMenuItem(element) {
   if (!(element instanceof Element)) return null;
 
-  if (element?.matches('[slot="more"')) {
+  const listItem = element.closest('.menu-list__list-item');
+  if (!listItem) return null;
+
+  if (listItem.matches('[slot="more"]')) {
     // Select the first overflowing menu item when hovering over the "More" item
-    return findMenuItem(element.parentElement?.querySelector('[slot="overflow"]'));
+    return findMenuItem(listItem.parentElement?.querySelector('[slot="overflow"]'));
   }
 
-  return element?.querySelector('[ref="menuitem"]');
+  return listItem.querySelector(':scope > [ref="menuitem"]');
 }
 
 /**

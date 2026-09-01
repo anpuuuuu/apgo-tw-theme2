@@ -25,13 +25,20 @@
 
 {% capture children %}
   {% for link in block_settings.menu.links %}
+    {% liquid
+      assign is_mobile_only_home = false
+      if link.url == routes.root_url
+        assign is_mobile_only_home = true
+      endif
+      assign is_accent_link = false
+      if block_settings.accent_link_title != blank and link.title == block_settings.accent_link_title
+        assign is_accent_link = true
+      endif
+    %}
     <li
       role="presentation"
-      class="menu-list__list-item"
-      on:focus="/activate"
-      on:blur="/deactivate"
-      on:pointerenter="/activate"
-      on:pointerleave="/deactivate"
+      class="menu-list__list-item{% if is_mobile_only_home %} menu-list__list-item--desktop-hidden-home{% endif %}{% if is_accent_link %} menu-list__list-item--accent{% endif %}"
+      on:click="/toggle"
     >
       <a
         href="{{ link.url }}"
@@ -71,12 +78,15 @@
     class="menu-list__list-item"
     role="presentation"
     slot="more"
-    on:focus="/activate"
-    on:blur="/deactivate"
-    on:pointerenter="/activate"
-    on:pointerleave="/deactivate"
+    on:click="/toggle"
   >
-    <button role="menuitem" class="button menu-list__link button-unstyled">
+    <button
+      role="menuitem"
+      class="button menu-list__link button-unstyled"
+      aria-haspopup="true"
+      aria-expanded="false"
+      ref="menuitem"
+    >
       <span class="menu-list__link-title">{{ 'actions.more' | t }}</span>
     </button>
   </li>

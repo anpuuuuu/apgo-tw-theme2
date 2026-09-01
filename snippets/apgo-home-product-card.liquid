@@ -1,0 +1,68 @@
+{%- comment -%}
+  APGO 首頁 v2 共用商品卡。
+  product: Shopify product object
+  show_add: 是否顯示加入購物車
+  badge: 選填角標
+  card_class: 選填額外 class
+{%- endcomment -%}
+
+{%- if product != blank -%}
+  {%- liquid
+    assign variant = product.selected_or_first_available_variant
+    assign form_id = 'ApgoHomeQuickAdd-' | append: section.id | append: '-' | append: product.id
+  -%}
+  <article class="apgo-home-card {{ card_class }}" data-product-id="{{ product.id }}">
+    <a class="apgo-home-card__link" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+      <div class="apgo-home-card__media">
+        {%- if badge != blank -%}<span class="apgo-home-card__badge">{{ badge }}</span>{%- endif -%}
+        {%- if product.featured_image != blank -%}
+          {{ product.featured_image
+            | image_url: width: 720
+            | image_tag:
+              class: 'apgo-home-card__image',
+              widths: '240,360,480,720',
+              sizes: '(min-width: 990px) 25vw, 44vw',
+              loading: 'lazy',
+              alt: product.featured_image.alt | default: product.title
+          }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'apgo-home-card__image apgo-home-card__placeholder' }}
+        {%- endif -%}
+      </div>
+      <div class="apgo-home-card__content">
+        <h3 class="apgo-home-card__title">{{ product.title }}</h3>
+        <div class="apgo-home-card__price">
+          <span>{{ product.price | money }}</span>
+          {%- if product.compare_at_price > product.price -%}
+            <s>{{ product.compare_at_price | money }}</s>
+          {%- endif -%}
+        </div>
+      </div>
+    </a>
+
+    {%- if show_add -%}
+      <product-form-component
+        class="apgo-home-card__form-component"
+        data-section-id="{{ section.id }}"
+        data-product-id="{{ product.id }}"
+        on:submit="/handleSubmit"
+      >
+        <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
+        {%- form 'product', product, id: form_id, class: 'apgo-home-card__form', data-type: 'add-to-cart-form' -%}
+          <input type="hidden" name="id" ref="variantId" value="{{ variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button
+            class="apgo-home-card__add"
+            type="submit"
+            name="add"
+            {% unless variant.available %}disabled{% endunless %}
+          >
+            <span class="add-to-cart-text">
+              {%- if variant.available -%}加入購物車{%- else -%}已售完{%- endif -%}
+            </span>
+          </button>
+        {%- endform -%}
+      </product-form-component>
+    {%- endif -%}
+  </article>
+{%- endif -%}
