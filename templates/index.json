@@ -171,6 +171,25 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
+        "banner_cNRtiH": {
+          "type": "banner",
+          "name": "Banner-洗衣精買三送一、六送三",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/03_0_8e8f9901-22db-49d1-ac06-a8036115daf8.jpg",
+            "link": "shopify://collections/超級洗衣精系列",
+            "alt": "洗衣精買三送一、六送三"
+          }
+        },
+        "banner_xj9FpC": {
+          "type": "banner",
+          "name": "Banner-【🦬金牛獎尊榮 22件組🏆】",
+          "settings": {
+            "image": "shopify://shop_images/03_0_d90ab2ba-0cd5-4b9a-b7c6-40256bc4dd55.jpg",
+            "link": "shopify://products/初秋人氣禮組-金牛獎尊榮-22件組🏆-狂殺↘32折",
+            "alt": "【🦬金牛獎尊榮 22件組🏆】"
+          }
+        },
         "banner_r6gpWn": {
           "type": "banner",
           "name": "google五星好評",
@@ -197,33 +216,14 @@
             "link": "shopify://pages/campaign20260803",
             "alt": "APGO評價募集活動"
           }
-        },
-        "banner_cNRtiH": {
-          "type": "banner",
-          "name": "Banner-88折券",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/1280x600_8___1_0_3934dd50-884c-4a3f-ad95-eb8460012be8.png",
-            "link": "shopify://pages/26_aug_promo",
-            "alt": "88折券"
-          }
-        },
-        "banner_xj9FpC": {
-          "type": "banner",
-          "name": "Banner-盛夏洗衣季💘四送二、買六送三",
-          "settings": {
-            "image": "shopify://shop_images/c63a5d95fd697386a9904726f02dc1d6.png",
-            "link": "shopify://collections/超級洗衣精系列",
-            "alt": "盛夏洗衣季💘四送二、買六送三"
-          }
         }
       },
       "block_order": [
+        "banner_cNRtiH",
+        "banner_xj9FpC",
         "banner_r6gpWn",
         "banner_jGTL4Q",
-        "banner_T8KwPX",
-        "banner_cNRtiH",
-        "banner_xj9FpC"
+        "banner_T8KwPX"
       ],
       "settings": {
         "autoplay": true,
