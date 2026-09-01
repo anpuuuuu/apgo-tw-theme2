@@ -1,6 +1,6 @@
 {%- comment -%}
   APGO · Badge 輪播
-  内容區頂部的自動輪播 banner 帶。1-5 張圖，橫向 slide 自動輪播。
+  内容區頂部的自動輪播 banner 帶。支援多張圖，橫向 slide 自動輪播。
   圖片高度「不限制」（height:auto，由圖片決定）。
 
   叠加模式（overlay）：banner 以絕對定位浮在下一個區塊（hero）上方，
@@ -233,7 +233,7 @@
   "tag": "section",
   "class": "apgo-cc-badge-section",
   "settings": [
-    { "type": "paragraph", "content": "新增 1–5 個「Banner」block，每個上傳一張圖。圖片高度不限制（由圖片決定）。叠加模式下，banner 底邊固定在「底部基準線」，圖片越高就往上長、不會壓到下方文字。" },
+    { "type": "paragraph", "content": "可持續新增「Banner」block，每個上傳一張圖。圖片高度不限制（由圖片決定）。叠加模式下，banner 底邊固定在「底部基準線」，圖片越高就往上長、不會壓到下方文字。" },
     { "type": "checkbox", "id": "autoplay", "label": "自動輪播", "default": true },
     { "type": "range", "id": "interval", "label": "輪播間隔（秒）", "min": 2, "max": 8, "step": 1, "default": 4 },
     { "type": "checkbox", "id": "show_dots", "label": "顯示圓點指示器", "default": true },
@@ -256,7 +256,6 @@
     {
       "type": "banner",
       "name": "Banner",
-      "limit": 5,
       "settings": [
         { "type": "image_picker", "id": "image", "label": "圖片" },
         { "type": "url", "id": "link", "label": "連結（選填，點擊跳轉）" },
@@ -264,7 +263,6 @@
       ]
     }
   ],
-  "max_blocks": 5,
   "presets": [
     {
       "name": "APGO · Badge 輪播",
