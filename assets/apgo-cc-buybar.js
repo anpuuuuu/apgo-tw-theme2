@@ -40,6 +40,22 @@
   var subtotalEl   = bar.querySelector('[data-apgo-cc-buybar-subtotal]');
   var addBtn       = bar.querySelector('[data-apgo-cc-buybar-add]');
   var checkoutBtn  = bar.querySelector('[data-apgo-cc-buybar-checkout]');
+  var soldOutBtn   = bar.querySelector('[data-apgo-cc-buybar-soldout]');
+
+  var variants = [];
+  var variantsEl = document.querySelector('[data-apgo-cc-variants]');
+  if (variantsEl) {
+    try { variants = JSON.parse(variantsEl.textContent); } catch (e) {}
+  }
+
+  function currentVariant() {
+    var idInput = form.querySelector('[data-apgo-cc-variant-id]');
+    var id = idInput && String(idInput.value);
+    for (var i = 0; i < variants.length; i++) {
+      if (String(variants[i].id) === id) return variants[i];
+    }
+    return null;
+  }
 
   // ---------- Money formatter (TWD, no decimals) ----------
   // /cart.js returns prices in cents (multiplied by 100 for currencies that
@@ -257,6 +273,28 @@
   var purchaseImg       = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-img]');
   var purchaseAddCta    = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-cta="add"]');
   var purchaseBuyCta    = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-cta="buy"]');
+  var purchaseSoldOutCta = purchaseRoot && purchaseRoot.querySelector('[data-apgo-cc-purchase-cta="soldout"]');
+
+  function setAvailability(available) {
+    var canBuy = !!available;
+    [addBtn, checkoutBtn].forEach(function (btn) {
+      if (!btn) return;
+      btn.hidden = !canBuy;
+      btn.disabled = !canBuy;
+    });
+    if (soldOutBtn) soldOutBtn.hidden = canBuy;
+
+    [purchaseAddCta, purchaseBuyCta].forEach(function (btn) {
+      if (!btn) return;
+      btn.hidden = !canBuy;
+      btn.disabled = !canBuy;
+    });
+    if (purchaseSoldOutCta) purchaseSoldOutCta.hidden = canBuy;
+  }
+
+  document.addEventListener('apgo:cc:variant-change', function (event) {
+    setAvailability(event && event.detail && event.detail.available);
+  });
 
   // Mirror the in-panel form's currently checked option radios onto the
   // modal's own chip radios. Without this, the modal always shows the
@@ -287,6 +325,8 @@
 
   function openPurchase(mode) {
     if (!purchaseRoot) return;
+    var selectedVariant = currentVariant();
+    setAvailability(selectedVariant && selectedVariant.available);
     var m = (mode === 'buy' || mode === 'both') ? mode : 'add';
     purchaseRoot.setAttribute('data-mode', m);
     // Hidden screen-reader label for the active intent (best effort)
@@ -325,6 +365,7 @@
   // Buybar 立即購買 → open modal in 'buy' mode (single CTA)
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', function () {
+      if (checkoutBtn.disabled || checkoutBtn.hidden) return;
       openPurchase('buy');
     });
   }
@@ -414,6 +455,12 @@
   // cart is updated (toast+close OR redirect /cart).
   function purchaseSubmit(triggerBtn, onSuccess) {
     if (!form || !triggerBtn) return;
+    var selectedVariant = currentVariant();
+    if (!selectedVariant || !selectedVariant.available) {
+      showToast('此規格已售完', false);
+      setAvailability(false);
+      return;
+    }
     var orig = triggerBtn.textContent;
     triggerBtn.disabled = true;
     triggerBtn.textContent = '加入中…';
@@ -481,4 +528,7 @@
       });
     });
   }
+
+  var initialVariant = currentVariant();
+  setAvailability(initialVariant && initialVariant.available);
 })();

@@ -38,7 +38,11 @@
     }
     var variantIdInput = $('[data-apgo-cc-variant-id]', root);
     var priceEl = $('[data-apgo-cc-price]', root);
-    var submitBtn = $('button[type="submit"]', root);
+    var submitBtn = $('[data-apgo-cc-add]', root);
+    var buyNow = $('[data-apgo-cc-buy-now]', root);
+    var soldOutBtn = $('[data-apgo-cc-soldout]', root);
+    var shippingStock = $('[data-apgo-cc-shipping-stock]', root);
+    var currentVariantAvailable = false;
 
     function readSelectedOptions() {
       var values = [];
@@ -78,6 +82,7 @@
 
       var v = findVariant(readSelectedOptions());
       if (!v) return;
+      currentVariantAvailable = !!v.available;
       if (variantIdInput) variantIdInput.value = v.id;
       if (priceEl) priceEl.textContent = formatMoney(v.price);
       // Scroll the gallery track to the variant's featured_media slide so
@@ -105,15 +110,23 @@
           el.classList.toggle('is-active', el.getAttribute('data-apgo-cc-media-id') === activeMediaId);
         });
       }
-      if (submitBtn) {
-        if (v.available) {
-          submitBtn.removeAttribute('disabled');
-          submitBtn.textContent = '加入購物車';
-        } else {
-          submitBtn.setAttribute('disabled', 'disabled');
-          submitBtn.textContent = '已售完';
-        }
+      if (shippingStock) {
+        shippingStock.textContent = v.available ? '● 現貨' : '● 缺貨';
+        shippingStock.classList.toggle('apgo-cc-pdp__shipping-stock--out', !v.available);
       }
+      if (submitBtn) {
+        submitBtn.hidden = !v.available;
+        submitBtn.disabled = !v.available;
+      }
+      if (buyNow) {
+        buyNow.hidden = !v.available;
+        buyNow.disabled = !v.available;
+      }
+      if (soldOutBtn) soldOutBtn.hidden = !!v.available;
+
+      document.dispatchEvent(new CustomEvent('apgo:cc:variant-change', {
+        detail: { id: v.id, available: !!v.available }
+      }));
     }
 
     $$('input[data-apgo-cc-option-input]', root).forEach(function (i) {
@@ -459,6 +472,11 @@
 
     function ajaxAdd(triggerBtn, onSuccess) {
       if (!form) return;
+      if (!currentVariantAvailable) {
+        showToast('此規格已售完', true);
+        updateUI();
+        return;
+      }
       var fd = new FormData(form);
       var orig = triggerBtn && triggerBtn.textContent;
       if (triggerBtn) { triggerBtn.disabled = true; triggerBtn.textContent = '加入中…'; }
@@ -483,14 +501,16 @@
         })
         .then(function (cart) {
           dispatchCartEvents(cart);
-          if (triggerBtn) { triggerBtn.disabled = false; triggerBtn.textContent = orig; }
+          if (triggerBtn) triggerBtn.textContent = orig;
+          updateUI();
           if (typeof onSuccess === 'function') onSuccess(cart);
         })
         .catch(function (err) {
           console.error('[apgo-cc-pdp] cart add failed:', err);
           var msg = (err && err.description) || (err && err.message) || '加入失敗，請稍後再試';
           showToast(msg, true);
-          if (triggerBtn) { triggerBtn.disabled = false; triggerBtn.textContent = orig; }
+          if (triggerBtn) triggerBtn.textContent = orig;
+          updateUI();
         });
     }
 
@@ -508,9 +528,9 @@
 
     // 立即購買 → AJAX add + redirect to /cart (so shopper can verify cart
     // with any auto-discounts before committing). Note: NOT /checkout.
-    var buyNow = $('[data-apgo-cc-buy-now]', root);
     if (buyNow && form) {
       buyNow.addEventListener('click', function () {
+        if (buyNow.disabled || buyNow.hidden) return;
         ajaxAdd(buyNow, function () {
           window.location.href = '/cart';
         });

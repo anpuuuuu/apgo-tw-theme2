@@ -189,6 +189,7 @@
 .apgo-qty input::-webkit-outer-spin-button, .apgo-qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
 .apgo-cta-group { display: flex; flex-direction: column; gap: 10px; margin: 12px 0 24px; }
+.apgo-mpdp [hidden] { display: none !important; }
 .apgo-cta-primary {
   width: 100%; padding: 18px; background: var(--apgo-ink); color: var(--apgo-bg);
   font-size: 15px; letter-spacing: 0.15em; font-weight: 500; border: none; border-radius: 999px;
@@ -202,6 +203,13 @@
   border-radius: 999px; cursor: pointer; transition: all .2s;
 }
 .apgo-cta-secondary:hover { background: var(--apgo-ink); color: var(--apgo-bg); }
+.apgo-cta-soldout[disabled] {
+  width: 100%;
+  opacity: 1;
+  background: var(--apgo-muted);
+  color: var(--apgo-bg-alt);
+  cursor: not-allowed;
+}
 .apgo-wishlist-link {
   align-self: center; background: none; border: none; font-size: 13px;
   letter-spacing: 0.1em; color: var(--apgo-muted); margin-top: 4px; cursor: pointer;
@@ -693,6 +701,14 @@
   cursor: pointer;
 }
 .apgo-mpdp-cta-primary[disabled] { opacity: 0.5; cursor: not-allowed; }
+.apgo-mpdp-cta-soldout[disabled] {
+  flex: 1 1 100%;
+  width: 100%;
+  opacity: 1;
+  background: var(--apgo-muted);
+  color: var(--apgo-bg-alt);
+  cursor: not-allowed;
+}
 
 /* =====================================================================
    FREE IMAGE BLOCKS — render inside desc panel after the ritual section

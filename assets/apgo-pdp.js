@@ -112,15 +112,25 @@
         n.textContent = '分 3 期 0 利率 · 每期 ' + formatMoney(Math.round(price / 3));
       });
 
-      // Availability → disable add button
+      // Availability → show the two purchase actions only for an available
+      // variant. Sold-out variants collapse to one full-width disabled button.
       $$('[data-apgo-add]', form).forEach(function (btn) {
         if (variant.available) {
           btn.removeAttribute('disabled');
           btn.classList.remove('is-soldout');
+          btn.hidden = false;
         } else {
           btn.setAttribute('disabled', 'disabled');
           btn.classList.add('is-soldout');
+          btn.hidden = true;
         }
+      });
+      $$('[data-apgo-buy-now]', form).forEach(function (btn) {
+        btn.hidden = !variant.available;
+        btn.disabled = !variant.available;
+      });
+      $$('[data-apgo-soldout]', form).forEach(function (btn) {
+        btn.hidden = !!variant.available;
       });
     }
 
@@ -265,14 +275,25 @@
     $$('[data-apgo-buy-now]', form).forEach(function (btn) {
       btn.addEventListener('click', function (e) {
         e.preventDefault();
+        var current = findVariant(readSelectedOptions());
+        if (btn.disabled || btn.hidden || !current || !current.available) {
+          showApgoCartToast('此規格已售完', true);
+          if (current) updatePriceUI(current);
+          return;
+        }
         var fd = new FormData(form);
         fetch('/cart/add.js', {
           method: 'POST',
           headers: { 'Accept': 'application/json' },
           body: fd
-        }).then(function (r) { return r.json(); })
+        }).then(function (r) {
+          return r.json().then(function (json) { return r.ok ? json : Promise.reject(json); });
+        })
           .then(function () { window.location.href = '/checkout'; })
-          .catch(function () { form.submit(); });
+          .catch(function (err) {
+            var msg = (err && err.description) || (err && err.message) || '立即購買失敗，請再試一次';
+            showApgoCartToast(msg, true);
+          });
       });
     });
 
@@ -286,6 +307,13 @@
       // Don't intercept if user explicitly opted out (rare, e.g. legacy gift form)
       if (form.hasAttribute('data-apgo-no-ajax')) return;
       e.preventDefault();
+
+      var selectedVariant = findVariant(readSelectedOptions());
+      if (!selectedVariant || !selectedVariant.available) {
+        showApgoCartToast('此規格已售完', true);
+        if (selectedVariant) updatePriceUI(selectedVariant);
+        return;
+      }
 
       var addBtns = $$('[data-apgo-add]', form);
       addBtns.forEach(function (b) { b.setAttribute('disabled', 'disabled'); b.classList.add('is-loading'); });

@@ -31,6 +31,7 @@
 {%- if has_sale_tag and product.compare_at_price > product.price -%}
   {%- assign is_on_sale = true -%}
 {%- endif -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
 
 <section class="apgo-cc-pdp" data-apgo-cc-pdp data-section-id="{{ section.id }}">
 
@@ -292,15 +293,17 @@
 
         {%- comment -%}
           §1.8 運送資訊 — "2–3 個工作日 · ● 現貨/缺貨".
-          Stock indicator follows product.available (covers both
-          inventory-tracked and continue-when-out-of-stock cases).
+          Stock indicator follows the currently selected variant.
         {%- endcomment -%}
         {%- if section.settings.show_shipping -%}
           <div class="apgo-cc-pdp__shipping">
             <span class="apgo-cc-pdp__shipping-label">{{ section.settings.shipping_label | default: '2–3 個工作日' }}</span>
             <span class="apgo-cc-pdp__shipping-sep" aria-hidden="true">·</span>
-            <span class="apgo-cc-pdp__shipping-stock{% unless product.available %} apgo-cc-pdp__shipping-stock--out{% endunless %}">
-              {%- if product.available -%}● 現貨{%- else -%}● 缺貨{%- endif -%}
+            <span
+              class="apgo-cc-pdp__shipping-stock{% unless current_variant.available %} apgo-cc-pdp__shipping-stock--out{% endunless %}"
+              data-apgo-cc-shipping-stock
+            >
+              {%- if current_variant.available -%}● 現貨{%- else -%}● 缺貨{%- endif -%}
             </span>
           </div>
         {%- endif -%}
@@ -311,19 +314,34 @@
             立即購買   = primary   (solid orange)
           Form submit stays on the 加入購物車 button regardless of style.
         {%- endcomment -%}
-        <div class="apgo-cc-pdp__cta-row">
+        <div class="apgo-cc-pdp__cta-row" data-apgo-cc-cta-row>
           <button
             type="submit"
             class="apgo-cc-pdp__cta apgo-cc-pdp__cta--secondary"
-            {% if product.available == false %}disabled{% endif %}
+            data-apgo-cc-add
+            {% unless current_variant.available %}disabled hidden{% endunless %}
           >
-            {%- if product.available -%}加入購物車{%- else -%}已售完{%- endif -%}
+            加入購物車
           </button>
           {%- if section.settings.show_buy_now -%}
-            <button type="button" class="apgo-cc-pdp__cta apgo-cc-pdp__cta--primary" data-apgo-cc-buy-now>
+            <button
+              type="button"
+              class="apgo-cc-pdp__cta apgo-cc-pdp__cta--primary"
+              data-apgo-cc-buy-now
+              {% unless current_variant.available %}disabled hidden{% endunless %}
+            >
               立即購買
             </button>
           {%- endif -%}
+          <button
+            type="button"
+            class="apgo-cc-pdp__cta apgo-cc-pdp__cta--soldout"
+            data-apgo-cc-soldout
+            disabled
+            {% if current_variant.available %}hidden{% endif %}
+          >
+            已售完
+          </button>
         </div>
       </form>
 

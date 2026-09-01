@@ -25,6 +25,8 @@
     - handle rotates / hides visually
 {%- endcomment -%}
 
+{%- assign v = product.selected_or_first_available_variant -%}
+
 <aside class="apgo-cc-buybar" data-apgo-cc-buybar aria-label="加入購物車">
   <div class="apgo-cc-buybar__backdrop" data-apgo-cc-buybar-backdrop aria-hidden="true"></div>
 
@@ -87,13 +89,21 @@
         <button type="button"
                 class="apgo-cc-buybar__btn apgo-cc-buybar__btn--add"
                 data-apgo-cc-buybar-add
-                {% if product.available == false %}disabled{% endif %}>
-          {%- if product.available -%}加入購物車{%- else -%}已售完{%- endif -%}
+                {% unless v.available %}disabled hidden{% endunless %}>
+          加入購物車
         </button>
         <button type="button"
                 class="apgo-cc-buybar__btn apgo-cc-buybar__btn--buy"
-                data-apgo-cc-buybar-checkout>
+                data-apgo-cc-buybar-checkout
+                {% unless v.available %}disabled hidden{% endunless %}>
           立即購買
+        </button>
+        <button type="button"
+                class="apgo-cc-buybar__btn apgo-cc-buybar__btn--soldout"
+                data-apgo-cc-buybar-soldout
+                disabled
+                {% if v.available %}hidden{% endif %}>
+          已售完
         </button>
       </div>
     </div>
@@ -212,13 +222,22 @@
     <footer class="apgo-cc-purchase__footer">
       <button type="button"
               class="apgo-cc-buybar__btn apgo-cc-buybar__btn--add apgo-cc-purchase__cta"
-              data-apgo-cc-purchase-cta="add">
+              data-apgo-cc-purchase-cta="add"
+              {% unless v.available %}disabled hidden{% endunless %}>
         加入購物車
       </button>
       <button type="button"
               class="apgo-cc-buybar__btn apgo-cc-buybar__btn--buy apgo-cc-purchase__cta"
-              data-apgo-cc-purchase-cta="buy">
+              data-apgo-cc-purchase-cta="buy"
+              {% unless v.available %}disabled hidden{% endunless %}>
         立即購買
+      </button>
+      <button type="button"
+              class="apgo-cc-buybar__btn apgo-cc-buybar__btn--soldout apgo-cc-purchase__cta"
+              data-apgo-cc-purchase-cta="soldout"
+              disabled
+              {% if v.available %}hidden{% endif %}>
+        已售完
       </button>
     </footer>
   </div>

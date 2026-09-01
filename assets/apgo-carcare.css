@@ -1294,6 +1294,11 @@ body.apgo-cc-skin .apgo-cc-pdp {
   display: flex; gap: 8px;
   margin-top: 12px;
 }
+.apgo-cc-pdp [hidden],
+.apgo-cc-buybar [hidden],
+.apgo-cc-purchase [hidden] {
+  display: none !important;
+}
 
 /* Hide the in-panel CTA row + qty row on mobile — the sticky bottom
    buybar (and its purchase modal) take over there. In-panel variant
@@ -1445,6 +1450,13 @@ body.apgo-cc-skin .product-recommendations .product-grid__item .price {
 }
 .apgo-cc-pdp__cta--secondary:disabled {
   border-color: var(--cc-divider);
+  color: var(--cc-fg-dim);
+  cursor: not-allowed;
+}
+.apgo-cc-pdp__cta--soldout {
+  flex: 1 1 100%;
+  width: 100%;
+  background: var(--cc-divider);
   color: var(--cc-fg-dim);
   cursor: not-allowed;
 }
@@ -2732,6 +2744,14 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   cursor: not-allowed;
   border-color: var(--cc-divider, #2a2e35);
   color: var(--cc-fg-dim, #8a857b);
+}
+.apgo-cc-buybar__btn--soldout {
+  flex: 1 1 100%;
+  width: 100%;
+  background: var(--cc-divider, #2a2e35);
+  color: var(--cc-fg-dim, #8a857b);
+  border: 1px solid var(--cc-divider, #2a2e35);
+  cursor: not-allowed;
 }
 
 /* Solid primary — 前往結帳 */

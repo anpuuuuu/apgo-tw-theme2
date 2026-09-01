@@ -219,23 +219,28 @@
             </div>
 
             {%- comment -%} CTAs {%- endcomment -%}
-            <div class="apgo-cta-group">
+            <div class="apgo-cta-group" data-apgo-availability-group>
               <button type="submit" name="add"
                       class="apgo-cta-primary"
                       data-apgo-add
-                      {% unless v.available %}disabled{% endunless %}>
-                {%- if v.available -%}
-                  加入購物車 · <span data-apgo-total>{{ v.price | money }}</span>
-                {%- else -%}
-                  補貨中
-                {%- endif -%}
+                      {% unless v.available %}disabled hidden{% endunless %}>
+                加入購物車 · <span data-apgo-total>{{ v.price | money }}</span>
               </button>
 
               {%- if section.settings.show_buy_now -%}
-                <button type="button" class="apgo-cta-secondary" data-apgo-buy-now>
+                <button type="button" class="apgo-cta-secondary" data-apgo-buy-now {% unless v.available %}disabled hidden{% endunless %}>
                   立即購買 · 快速結帳
                 </button>
               {%- endif -%}
+              <button
+                type="button"
+                class="apgo-cta-primary apgo-cta-soldout"
+                data-apgo-soldout
+                disabled
+                {% if v.available %}hidden{% endif %}
+              >
+                已售完
+              </button>
             </div>
 
             {%- endif -%}{%- comment -%} end of apgo.bundle_enabled if/else (desktop) {%- endcomment -%}
@@ -934,12 +939,21 @@
         </div>
       </div>
     {%- else -%}
-      <div class="apgo-mpdp-sticky">
-        <button type="submit" name="add" class="apgo-mpdp-cta-secondary" data-apgo-add {% unless v.available %}disabled{% endunless %}>
-          {% if v.available %}加入購物車{% else %}補貨中{% endif %}
+      <div class="apgo-mpdp-sticky" data-apgo-availability-group>
+        <button type="submit" name="add" class="apgo-mpdp-cta-secondary" data-apgo-add {% unless v.available %}disabled hidden{% endunless %}>
+          加入購物車
         </button>
-        <button type="button" class="apgo-mpdp-cta-primary" data-apgo-buy-now {% unless v.available %}disabled{% endunless %}>
+        <button type="button" class="apgo-mpdp-cta-primary" data-apgo-buy-now {% unless v.available %}disabled hidden{% endunless %}>
           立即購買 <span data-apgo-total>{{ v.price | money }}</span>
+        </button>
+        <button
+          type="button"
+          class="apgo-mpdp-cta-primary apgo-mpdp-cta-soldout"
+          data-apgo-soldout
+          disabled
+          {% if v.available %}hidden{% endif %}
+        >
+          已售完
         </button>
       </div>
     {%- endif -%}
