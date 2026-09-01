@@ -221,7 +221,7 @@
           "name": "暢銷組合",
           "settings": {
             "label": "暢銷組合",
-            "collection": "暢銷優惠禮組",
+            "collection": "bestselling-discount-gift-set",
             "show_in_popup": true
           }
         },
