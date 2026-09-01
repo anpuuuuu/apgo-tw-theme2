@@ -121,7 +121,7 @@
           "清潔藥劑全系列",
           "洗車用品",
           "科技執法測速器",
-          "暢銷優惠禮組",
+          "bestselling-discount-gift-set",
           "損傷修復",
           "homecleaning"
         ],
@@ -212,7 +212,7 @@
         "tile_7": {
           "type": "tile",
           "settings": {
-            "collection": "暢銷優惠禮組",
+            "collection": "bestselling-discount-gift-set",
             "url_override": "",
             "label_override": "暢銷優惠禮組"
           }
