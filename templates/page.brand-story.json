@@ -490,6 +490,59 @@
         "title": "APGO 品牌故事",
         "subtitle": "從電子代工龍頭到鍍膜領導品牌，17年創新之路"
       }
+    },
+    "apgo_global_socials": {
+      "type": "apgo-global-socials",
+      "blocks": {
+        "region_taiwan": {
+          "type": "region",
+          "settings": {
+            "flag": "🇹🇼",
+            "title": "台灣",
+            "description": "產品教學、品牌直播與台灣最新活動。",
+            "facebook_label": "Facebook",
+            "facebook_url": "https://www.facebook.com/APGO1080",
+            "instagram_label": "Instagram",
+            "instagram_url": "https://www.instagram.com/apgo_tw",
+            "tiktok_label": "TikTok",
+            "tiktok_url": "https://www.tiktok.com/@apgotw",
+            "youtube_label": "YouTube",
+            "youtube_url": "https://www.youtube.com/@apgo"
+          }
+        },
+        "region_sg_my": {
+          "type": "region",
+          "settings": {
+            "flag": "🇲🇾 🇸🇬",
+            "title": "馬來西亞・新加坡",
+            "description": "新馬官方資訊、直播內容與在地團隊動態。",
+            "facebook_label": "Facebook",
+            "facebook_url": "https://www.facebook.com/apgomy888",
+            "instagram_label": "Instagram",
+            "instagram_url": "https://www.instagram.com/apgomy.official/",
+            "tiktok_label": "TikTok",
+            "tiktok_url": "https://www.tiktok.com/@apgomy",
+            "youtube_label": "YouTube",
+            "youtube_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "region_taiwan",
+        "region_sg_my"
+      ],
+      "name": "APGO · 各國社群媒體",
+      "settings": {
+        "eyebrow": "APGO AROUND THE WORLD",
+        "title": "與各地 APGO 保持連結",
+        "subtitle": "追蹤官方社群，掌握新品、教學、直播與各地活動。",
+        "all_label": "查看所有社群",
+        "all_link": "/pages/social-media",
+        "max_width": 1440,
+        "accent_color": "#f58220",
+        "padding_top": 80,
+        "padding_bottom": 96
+      }
     }
   },
   "order": [
@@ -500,6 +553,7 @@
     "comparison_section_6jd76U",
     "guide_section_L3LyjL",
     "why_apgo_section_JTqLUw",
-    "brand_story_section_axtbQR"
+    "brand_story_section_axtbQR",
+    "apgo_global_socials"
   ]
 }

@@ -1,0 +1,98 @@
+{{ 'apgo-brand-about.css' | asset_url | stylesheet_tag }}
+
+{%- capture icon_facebook -%}<svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V4.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.3V14h2.8v8h3.4Z"/></svg>{%- endcapture -%}
+{%- capture icon_instagram -%}<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>{%- endcapture -%}
+{%- capture icon_tiktok -%}<svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M15.6 3c.3 2.1 1.5 3.4 3.4 3.6v3.1c-1.3 0-2.5-.4-3.4-1v6.2a6.1 6.1 0 1 1-5.3-6v3.2a3 3 0 1 0 2.2 2.9V3h3.1Z"/></svg>{%- endcapture -%}
+{%- capture icon_youtube -%}<svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.1a2.8 2.8 0 0 0-2-2C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.6.5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2 12a29 29 0 0 0 .4 4.9 2.8 2.8 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.8 2.8 0 0 0 2-2A29 29 0 0 0 22 12a29 29 0 0 0-.4-4.9ZM10 15.2V8.8l5.5 3.2-5.5 3.2Z"/></svg>{%- endcapture -%}
+
+<section
+  class="apgo-global-socials"
+  style="--apgo-about-accent: {{ section.settings.accent_color }}; --apgo-about-max: {{ section.settings.max_width }}px; --apgo-about-padding-top: {{ section.settings.padding_top }}px; --apgo-about-padding-bottom: {{ section.settings.padding_bottom }}px;"
+  aria-labelledby="ApgoGlobalSocials-{{ section.id }}"
+>
+  <div class="apgo-global-socials__inner">
+    <header class="apgo-global-socials__header">
+      <div class="apgo-global-socials__intro">
+        {%- if section.settings.eyebrow != blank -%}<p class="apgo-global-socials__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 id="ApgoGlobalSocials-{{ section.id }}">{{ section.settings.title }}</h2>
+        {%- if section.settings.subtitle != blank -%}<p>{{ section.settings.subtitle }}</p>{%- endif -%}
+      </div>
+      {%- if section.settings.all_label != blank and section.settings.all_link != blank -%}
+        <a class="apgo-global-socials__all" href="{{ section.settings.all_link }}">
+          <span>{{ section.settings.all_label }}</span><span aria-hidden="true">→</span>
+        </a>
+      {%- endif -%}
+    </header>
+
+    <div class="apgo-global-socials__grid">
+      {%- for block in section.blocks -%}
+        <article class="apgo-global-socials__region" {{ block.shopify_attributes }}>
+          <div class="apgo-global-socials__region-heading">
+            {%- if block.settings.flag != blank -%}<span class="apgo-global-socials__flag" aria-hidden="true">{{ block.settings.flag }}</span>{%- endif -%}
+            <h3>{{ block.settings.title }}</h3>
+          </div>
+          {%- if block.settings.description != blank -%}<p class="apgo-global-socials__description">{{ block.settings.description }}</p>{%- endif -%}
+          <div class="apgo-global-socials__links">
+            {%- if block.settings.facebook_url != blank -%}
+              <a class="apgo-global-socials__link" href="{{ block.settings.facebook_url }}" target="_blank" rel="noopener noreferrer">{{ icon_facebook }}<span>{{ block.settings.facebook_label | default: 'Facebook' }}</span></a>
+            {%- endif -%}
+            {%- if block.settings.instagram_url != blank -%}
+              <a class="apgo-global-socials__link" href="{{ block.settings.instagram_url }}" target="_blank" rel="noopener noreferrer">{{ icon_instagram }}<span>{{ block.settings.instagram_label | default: 'Instagram' }}</span></a>
+            {%- endif -%}
+            {%- if block.settings.tiktok_url != blank -%}
+              <a class="apgo-global-socials__link" href="{{ block.settings.tiktok_url }}" target="_blank" rel="noopener noreferrer">{{ icon_tiktok }}<span>{{ block.settings.tiktok_label | default: 'TikTok' }}</span></a>
+            {%- endif -%}
+            {%- if block.settings.youtube_url != blank -%}
+              <a class="apgo-global-socials__link" href="{{ block.settings.youtube_url }}" target="_blank" rel="noopener noreferrer">{{ icon_youtube }}<span>{{ block.settings.youtube_label | default: 'YouTube' }}</span></a>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "APGO · 各國社群媒體",
+  "tag": "section",
+  "class": "apgo-global-socials-section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "小標", "default": "APGO AROUND THE WORLD" },
+    { "type": "text", "id": "title", "label": "標題", "default": "與各地 APGO 保持連結" },
+    { "type": "textarea", "id": "subtitle", "label": "說明", "default": "追蹤官方社群，掌握新品、教學、直播與各地活動。" },
+    { "type": "text", "id": "all_label", "label": "完整名單按鈕", "default": "查看所有社群" },
+    { "type": "url", "id": "all_link", "label": "完整名單連結" },
+    { "type": "range", "id": "max_width", "label": "內容最大寬度", "min": 1000, "max": 1800, "step": 20, "unit": "px", "default": 1440 },
+    { "type": "color", "id": "accent_color", "label": "品牌強調色", "default": "#f58220" },
+    { "type": "range", "id": "padding_top", "label": "上方留白", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "下方留白", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "region",
+      "name": "國家／地區",
+      "settings": [
+        { "type": "text", "id": "flag", "label": "國旗 Emoji", "default": "🌏" },
+        { "type": "text", "id": "title", "label": "國家／地區名稱", "default": "台灣" },
+        { "type": "textarea", "id": "description", "label": "說明", "default": "APGO 官方品牌與教學社群。" },
+        { "type": "header", "content": "Facebook" },
+        { "type": "text", "id": "facebook_label", "label": "顯示名稱", "default": "Facebook" },
+        { "type": "url", "id": "facebook_url", "label": "連結" },
+        { "type": "header", "content": "Instagram" },
+        { "type": "text", "id": "instagram_label", "label": "顯示名稱", "default": "Instagram" },
+        { "type": "url", "id": "instagram_url", "label": "連結" },
+        { "type": "header", "content": "TikTok" },
+        { "type": "text", "id": "tiktok_label", "label": "顯示名稱", "default": "TikTok" },
+        { "type": "url", "id": "tiktok_url", "label": "連結" },
+        { "type": "header", "content": "YouTube" },
+        { "type": "text", "id": "youtube_label", "label": "顯示名稱", "default": "YouTube" },
+        { "type": "url", "id": "youtube_url", "label": "連結" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "APGO · 各國社群媒體", "blocks": [{ "type": "region" }, { "type": "region" }] }],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

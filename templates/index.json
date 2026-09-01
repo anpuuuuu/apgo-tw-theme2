@@ -323,6 +323,21 @@
         "max_width": 1440,
         "accent_color": "#f58220",
         "padding_top": 12,
+        "padding_bottom": 24
+      }
+    },
+    "apgo_home_about_v2": {
+      "type": "apgo-home-about-v2",
+      "name": "APGO · 首頁關於入口",
+      "settings": {
+        "eyebrow": "ABOUT APGO",
+        "title": "從台灣研發，走向國際",
+        "description": "<p>認識 APGO 的品牌歷程、工廠與研發背景，以及我們在各地經營的官方社群。</p>",
+        "button_label": "關於 APGO",
+        "button_link": "/pages/brand-story",
+        "max_width": 1440,
+        "accent_color": "#f58220",
+        "padding_top": 20,
         "padding_bottom": 72
       }
     }
@@ -336,6 +351,7 @@
     "apgo_home_bestsellers_v2",
     "apgo_home_categories_v2",
     "apgo_home_new_v2",
-    "apgo_home_shelves_v2"
+    "apgo_home_shelves_v2",
+    "apgo_home_about_v2"
   ]
 }

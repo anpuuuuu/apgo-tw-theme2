@@ -1,0 +1,49 @@
+{{ 'apgo-brand-about.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="apgo-home-about"
+  style="--apgo-about-accent: {{ section.settings.accent_color }}; --apgo-about-max: {{ section.settings.max_width }}px; --apgo-about-padding-top: {{ section.settings.padding_top }}px; --apgo-about-padding-bottom: {{ section.settings.padding_bottom }}px;"
+  aria-labelledby="ApgoHomeAbout-{{ section.id }}"
+>
+  <div class="apgo-home-about__inner">
+    <div class="apgo-home-about__panel">
+      <div class="apgo-home-about__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="apgo-home-about__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2 id="ApgoHomeAbout-{{ section.id }}">{{ section.settings.title }}</h2>
+        {%- if section.settings.description != blank -%}
+          <div class="apgo-home-about__copy rte">{{ section.settings.description }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+        <a class="apgo-home-about__button" href="{{ section.settings.button_link }}">
+          <span>{{ section.settings.button_label }}</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "APGO · 首頁關於入口",
+  "tag": "section",
+  "class": "apgo-home-about-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "小標", "default": "ABOUT APGO" },
+    { "type": "text", "id": "title", "label": "標題", "default": "從台灣研發，走向國際" },
+    { "type": "richtext", "id": "description", "label": "說明", "default": "<p>認識 APGO 的品牌歷程、工廠與研發背景，以及我們在各地經營的官方社群。</p>" },
+    { "type": "text", "id": "button_label", "label": "按鈕文字", "default": "關於 APGO" },
+    { "type": "url", "id": "button_link", "label": "按鈕連結" },
+    { "type": "range", "id": "max_width", "label": "內容最大寬度", "min": 1000, "max": 1800, "step": 20, "unit": "px", "default": 1440 },
+    { "type": "color", "id": "accent_color", "label": "品牌強調色", "default": "#f58220" },
+    { "type": "range", "id": "padding_top", "label": "上方留白", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 20 },
+    { "type": "range", "id": "padding_bottom", "label": "下方留白", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "presets": [{ "name": "APGO · 首頁關於入口" }],
+  "enabled_on": { "templates": ["index"] }
+}
+{% endschema %}
