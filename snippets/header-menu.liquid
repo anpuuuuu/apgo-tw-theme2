@@ -38,10 +38,10 @@
     <li
       role="presentation"
       class="menu-list__list-item{% if is_mobile_only_home %} menu-list__list-item--desktop-hidden-home{% endif %}{% if is_accent_link %} menu-list__list-item--accent{% endif %}"
-      on:click="/toggle"
     >
       <a
         href="{{ link.url }}"
+        on:click="/toggle"
         data-skip-node-update="true"
         class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
         {%- if link.links != blank -%}
@@ -78,11 +78,11 @@
     class="menu-list__list-item"
     role="presentation"
     slot="more"
-    on:click="/toggle"
   >
     <button
       role="menuitem"
       class="button menu-list__link button-unstyled"
+      on:click="/toggle"
       aria-haspopup="true"
       aria-expanded="false"
       ref="menuitem"
