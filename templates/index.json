@@ -171,6 +171,34 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
+        "banner_cNRtiH": {
+          "type": "banner",
+          "name": "Banner-洗衣精買三送一、六送三",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/03_0_8e8f9901-22db-49d1-ac06-a8036115daf8.jpg",
+            "link": "shopify://collections/超級洗衣精系列",
+            "alt": "洗衣精買三送一、六送三"
+          }
+        },
+        "banner_xj9FpC": {
+          "type": "banner",
+          "name": "Banner-【🦬金牛獎尊榮 22件組🏆】",
+          "settings": {
+            "image": "shopify://shop_images/03_0_d90ab2ba-0cd5-4b9a-b7c6-40256bc4dd55.jpg",
+            "link": "shopify://products/初秋人氣禮組-金牛獎尊榮-22件組🏆-狂殺↘32折",
+            "alt": "【🦬金牛獎尊榮 22件組🏆】"
+          }
+        },
+        "banner_r6gpWn": {
+          "type": "banner",
+          "name": "🏆🛵原子鍍膜機車尊榮全配組🏆 NT$1499",
+          "settings": {
+            "image": "shopify://shop_images/06_4109c7ba-42f5-4c8e-975b-1c088fce591d.jpg",
+            "link": "shopify://products/原子鍍膜機車尊榮全配組-🏆",
+            "alt": "🏆🛵原子鍍膜機車尊榮全配組🏆 NT$1499"
+          }
+        },
         "banner_jGTL4Q": {
           "type": "banner",
           "name": "Banner-洗衣精訂閱制活動",
@@ -182,48 +210,20 @@
         },
         "banner_T8KwPX": {
           "type": "banner",
-          "name": "Banner-消費滿$777．現折$70",
+          "name": "Banner-APGO好評回饋$250",
           "settings": {
             "image": "shopify://shop_images/1920_0.jpg",
             "link": "shopify://pages/campaign20260803",
             "alt": "APGO評價募集活動"
           }
-        },
-        "banner_r6gpWn": {
-          "type": "banner",
-          "name": "Banner-🥉「父親節 超級旗艦款禮盒」",
-          "settings": {
-            "image": "shopify://shop_images/8___12-2_0.png",
-            "link": "shopify://products/2688_3888",
-            "alt": "🥉「父親節 超級旗艦款禮盒」"
-          }
-        },
-        "banner_cNRtiH": {
-          "type": "banner",
-          "name": "Banner-88折券",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/1280x600_8___1_0_3934dd50-884c-4a3f-ad95-eb8460012be8.png",
-            "link": "shopify://pages/26_aug_promo",
-            "alt": "88折券"
-          }
-        },
-        "banner_xj9FpC": {
-          "type": "banner",
-          "name": "Banner-盛夏洗衣季💘四送二、買六送三",
-          "settings": {
-            "image": "shopify://shop_images/c63a5d95fd697386a9904726f02dc1d6.png",
-            "link": "shopify://collections/超級洗衣精系列",
-            "alt": "盛夏洗衣季💘四送二、買六送三"
-          }
         }
       },
       "block_order": [
-        "banner_jGTL4Q",
-        "banner_T8KwPX",
-        "banner_r6gpWn",
         "banner_cNRtiH",
-        "banner_xj9FpC"
+        "banner_xj9FpC",
+        "banner_r6gpWn",
+        "banner_jGTL4Q",
+        "banner_T8KwPX"
       ],
       "settings": {
         "autoplay": true,
@@ -255,109 +255,6 @@
         "scroll_text": "探索更多"
       }
     },
-    "cinematic_video_section_biatzJ": {
-      "type": "cinematic-video-section",
-      "name": "APGO 品牌影片",
-      "settings": {
-        "video_url": ""
-      }
-    },
-    "livestream_stats_section_yja9KV": {
-      "type": "livestream-stats-section",
-      "name": "APGO 直播實力數據 區塊",
-      "settings": {
-        "title": "",
-        "subtitle": "",
-        "video_taiwan": "",
-        "video_sgmy": "",
-        "stat_sales": "",
-        "stat_years": "",
-        "stat_hosts": "",
-        "cta_text": "了解更多",
-        "cta_link": ""
-      }
-    },
-    "comparison_section_6jd76U": {
-      "type": "comparison-section",
-      "blocks": {
-        "feature_UXAB8q": {
-          "type": "feature",
-          "settings": {
-            "label": "施作時間",
-            "wax_value": "3小時",
-            "wax_bar": "20%",
-            "coating_value": "30-60 分鐘",
-            "coating_bar": "90%"
-          }
-        },
-        "feature_HUJidP": {
-          "type": "feature",
-          "settings": {
-            "label": "持久度",
-            "wax_value": "1-2 個月",
-            "wax_bar": "15%",
-            "coating_value": "2-3 年",
-            "coating_bar": "95%"
-          }
-        },
-        "feature_zYXdmR": {
-          "type": "feature",
-          "settings": {
-            "label": "耐高溫",
-            "wax_value": "60°C",
-            "wax_bar": "30%",
-            "coating_value": "200°C+",
-            "coating_bar": "98%"
-          }
-        },
-        "feature_3hdU3a": {
-          "type": "feature",
-          "settings": {
-            "label": "耐洗次數",
-            "wax_value": "5-10 次",
-            "wax_bar": "10%",
-            "coating_value": "300+ 次",
-            "coating_bar": "95%"
-          }
-        },
-        "feature_6nMbLG": {
-          "type": "feature",
-          "settings": {
-            "label": "疏水效果",
-            "wax_value": "一般",
-            "wax_bar": "40%",
-            "coating_value": "極佳",
-            "coating_bar": "98%"
-          }
-        },
-        "feature_j8L6AX": {
-          "type": "feature",
-          "settings": {
-            "label": "光澤度",
-            "wax_value": "85%",
-            "wax_bar": "85%",
-            "coating_value": "98%",
-            "coating_bar": "98%"
-          }
-        }
-      },
-      "block_order": [
-        "feature_UXAB8q",
-        "feature_HUJidP",
-        "feature_zYXdmR",
-        "feature_3hdU3a",
-        "feature_6nMbLG",
-        "feature_j8L6AX"
-      ],
-      "name": "APGO 鍍膜 vs 打蠟對比",
-      "settings": {
-        "title": "",
-        "subtitle": "",
-        "cta_text": "",
-        "cta_button": "",
-        "cta_link": ""
-      }
-    },
     "coating_products_section_hPmGEa": {
       "type": "coating-products-section",
       "blocks": {
@@ -377,7 +274,7 @@
             "wash_fill": "100%",
             "gloss": "99%",
             "gloss_fill": "99%",
-            "product_key": "apgo-atomic-colored-glaze"
+            "product_key": "48845759643899"
           }
         },
         "product_iqTe6R": {
@@ -528,6 +425,109 @@
       "settings": {
         "title": "專業鍍膜產品系列",
         "subtitle": "APGO研發的鍍膜皆不分任何車色、不分任何材質，開始挑選專屬自己的鍍膜吧"
+      }
+    },
+    "cinematic_video_section_biatzJ": {
+      "type": "cinematic-video-section",
+      "name": "APGO 品牌影片",
+      "settings": {
+        "video_url": ""
+      }
+    },
+    "livestream_stats_section_yja9KV": {
+      "type": "livestream-stats-section",
+      "name": "APGO 直播實力數據 區塊",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "video_taiwan": "",
+        "video_sgmy": "",
+        "stat_sales": "",
+        "stat_years": "",
+        "stat_hosts": "",
+        "cta_text": "了解更多",
+        "cta_link": ""
+      }
+    },
+    "comparison_section_6jd76U": {
+      "type": "comparison-section",
+      "blocks": {
+        "feature_UXAB8q": {
+          "type": "feature",
+          "settings": {
+            "label": "施作時間",
+            "wax_value": "3小時",
+            "wax_bar": "20%",
+            "coating_value": "30-60 分鐘",
+            "coating_bar": "90%"
+          }
+        },
+        "feature_HUJidP": {
+          "type": "feature",
+          "settings": {
+            "label": "持久度",
+            "wax_value": "1-2 個月",
+            "wax_bar": "15%",
+            "coating_value": "2-3 年",
+            "coating_bar": "95%"
+          }
+        },
+        "feature_zYXdmR": {
+          "type": "feature",
+          "settings": {
+            "label": "耐高溫",
+            "wax_value": "60°C",
+            "wax_bar": "30%",
+            "coating_value": "200°C+",
+            "coating_bar": "98%"
+          }
+        },
+        "feature_3hdU3a": {
+          "type": "feature",
+          "settings": {
+            "label": "耐洗次數",
+            "wax_value": "5-10 次",
+            "wax_bar": "10%",
+            "coating_value": "300+ 次",
+            "coating_bar": "95%"
+          }
+        },
+        "feature_6nMbLG": {
+          "type": "feature",
+          "settings": {
+            "label": "疏水效果",
+            "wax_value": "一般",
+            "wax_bar": "40%",
+            "coating_value": "極佳",
+            "coating_bar": "98%"
+          }
+        },
+        "feature_j8L6AX": {
+          "type": "feature",
+          "settings": {
+            "label": "光澤度",
+            "wax_value": "85%",
+            "wax_bar": "85%",
+            "coating_value": "98%",
+            "coating_bar": "98%"
+          }
+        }
+      },
+      "block_order": [
+        "feature_UXAB8q",
+        "feature_HUJidP",
+        "feature_zYXdmR",
+        "feature_3hdU3a",
+        "feature_6nMbLG",
+        "feature_j8L6AX"
+      ],
+      "name": "APGO 鍍膜 vs 打蠟對比",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "cta_text": "",
+        "cta_button": "",
+        "cta_link": ""
       }
     },
     "guide_section_L3LyjL": {
@@ -741,10 +741,10 @@
     "section_NcGDMK",
     "apgo_cc_badge_carousel",
     "hero_section_Rwem9W",
+    "coating_products_section_hPmGEa",
     "cinematic_video_section_biatzJ",
     "livestream_stats_section_yja9KV",
     "comparison_section_6jd76U",
-    "coating_products_section_hPmGEa",
     "guide_section_L3LyjL",
     "why_apgo_section_JTqLUw",
     "brand_story_section_axtbQR"

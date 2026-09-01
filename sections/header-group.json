@@ -432,6 +432,7 @@
         },
         "flip_text_BMnDtr": {
           "type": "flip_text",
+          "disabled": true,
           "settings": {
             "text": "全館最高折$359起",
             "text_color": "#f08418"
@@ -477,6 +478,7 @@
         "flip_text_R9TD7F",
         "flip_text_t4YW3L"
       ],
+      "disabled": true,
       "name": "APGO 戰術廣播條",
       "settings": {
         "homepage_only": false,
