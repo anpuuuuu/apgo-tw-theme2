@@ -1,0 +1,58 @@
+{%- liquid
+  assign apgo_us_indexable = false
+  if settings.apgo_us_amazon_public and settings.apgo_us_d204_link_ready and settings.apgo_us_d215_link_ready and settings.apgo_us_d204_amazon_url != blank and settings.apgo_us_d215_amazon_url != blank
+    assign apgo_us_indexable = true
+  endif
+-%}
+<!doctype html>
+<html lang="en-US" data-preview="{% if apgo_us_indexable %}false{% else %}true{% endif %}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#080a0c">
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
+      >
+    {%- endif -%}
+    <meta
+      name="robots"
+      content="{% if apgo_us_indexable %}index,follow{% else %}noindex,nofollow{% endif %}"
+    >
+    <meta
+      name="description"
+      content="Compare APGO D204 for clean, dry automotive paint with D215 for wet-surface application, then continue to Amazon.com."
+    >
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="APGO">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:title" content="APGO Finish Care | D204 Dry &amp; D215 Wet Application">
+    <meta
+      property="og:description"
+      content="Two APGO finish-care products, organized around the way you wash and dry your vehicle."
+    >
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="APGO Finish Care | D204 Dry &amp; D215 Wet Application">
+    <meta
+      name="twitter:description"
+      content="Two APGO finish-care products, organized around the way you wash and dry your vehicle."
+    >
+    <title>APGO Finish Care | D204 Dry &amp; D215 Wet Application</title>
+    <link rel="canonical" href="{{ canonical_url }}">
+    {{ content_for_header }}
+    {{ 'apgo-us-amazon.css' | asset_url | stylesheet_tag }}
+  </head>
+  <body
+    class="apgo-us-amazon-page"
+    data-selected-sku="d204"
+    style="
+      --apgo-us-hero-background: url('{{ 'apgo-us-hero-studio-bg.webp' | asset_url }}');
+      --apgo-us-d204-context-background: url('{{ 'apgo-us-d204-context-bg.webp' | asset_url }}');
+      --apgo-us-d215-context-background: url('{{ 'apgo-us-d215-context-bg.webp' | asset_url }}');
+    "
+  >
+    {{ content_for_layout }}
+  </body>
+</html>

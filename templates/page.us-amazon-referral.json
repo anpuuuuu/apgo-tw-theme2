@@ -1,0 +1,10 @@
+{
+  "layout": "apgo-us-amazon",
+  "sections": {
+    "main": {
+      "type": "apgo-us-amazon-landing",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}
