@@ -2123,7 +2123,12 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   flex-direction: column;
   gap: 12px;
 }
-.apgo-cc-qa-modal__opt-group { margin-bottom: 0; }
+.apgo-cc-qa-modal__opt-group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
 .apgo-cc-qa-modal__opt-name {
   font-size: 12px;
   color: #b8b3a8;
@@ -2246,6 +2251,33 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   color: #e74c3c;
   border-color: rgba(231, 76, 60, .55);
   box-shadow: 0 10px 30px rgba(0, 0, 0, .55), 0 0 0 4px rgba(231, 76, 60, .1);
+}
+
+.apgo-cc-qa-modal__eyebrow {
+  margin: 0 0 8px;
+  color: #ff6b1a;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.apgo-quick-add-fly {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1300;
+  display: block;
+  width: 44px;
+  height: 44px;
+  pointer-events: none;
+  transform-origin: center;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 7px 12px rgba(0, 0, 0, .45));
+}
+.apgo-quick-add-fly svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 /* ---- Tile base ------------------------------------------------------------- */
