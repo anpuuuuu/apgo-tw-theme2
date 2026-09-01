@@ -33,7 +33,7 @@
     <style>
       #shopify-section-{{ section.id }} {
         position: relative;
-        z-index: 10;
+        z-index: var(--layer-raised);
         margin-bottom: -{{ section.settings.overlap }}px;
       }
       @media (max-width: 749px) {
@@ -178,7 +178,7 @@
       padding-left: var(--badge-pad, 0px);
       padding-right: var(--badge-pad, 0px);
       box-sizing: border-box;
-      z-index: 10;
+      z-index: var(--layer-raised);
     }
     .apgo-cc-badge__inner {
       max-width: var(--badge-maxw, 100%);

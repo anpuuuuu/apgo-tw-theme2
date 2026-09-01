@@ -573,11 +573,13 @@
     transition: opacity var(--animation-speed) var(--animation-easing);
   }
 
-  /* 主導覽 v2：提高搜尋、會員與購物車辨識度。按鈕觸控範圍維持不變，
-     僅將圖示本體放大，避免破壞 header 網格。 */
-  #header-component .header-actions__action svg {
-    width: calc(var(--icon-size-md) * 2);
-    height: calc(var(--icon-size-md) * 2);
+  /* 主導覽 v2：僅在桌機提高搜尋、會員與購物車辨識度。
+     手機維持原始圖示尺寸與既有 header 排版。 */
+  @media screen and (min-width: 750px) {
+    #header-component .header-actions__action svg {
+      width: calc(var(--icon-size-md) * 2);
+      height: calc(var(--icon-size-md) * 2);
+    }
   }
 
   /* Extend hover area through padding to prevent flickering on actual menu items */
