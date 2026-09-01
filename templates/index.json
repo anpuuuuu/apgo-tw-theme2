@@ -240,55 +240,55 @@
         "bestseller_01": {
           "type": "bestseller",
           "settings": {
-            "product": "shopify://products/apgo-atomic-colored-glaze"
+            "product": "apgo-atomic-colored-glaze"
           }
         },
         "bestseller_02": {
           "type": "bestseller",
           "settings": {
-            "product": "shopify://products/apgo-enamel-crystal-coating"
+            "product": "apgo-enamel-crystal-coating"
           }
         },
         "bestseller_03": {
           "type": "bestseller",
           "settings": {
-            "product": "shopify://products/glass-coating"
+            "product": "glass-coating"
           }
         },
         "bestseller_04": {
           "type": "bestseller",
           "settings": {
-            "product": "shopify://products/apgo-g11-plus"
+            "product": "apgo-g11-plus"
           }
         },
         "bestseller_05": {
           "type": "bestseller",
           "settings": {
-            "product": "shopify://products/apgo-pressure-foam-sprayer"
+            "product": "apgo-pressure-foam-sprayer"
           }
         },
         "bestseller_06": {
           "type": "bestseller",
           "settings": {
-            "product": "shopify://products/apgo-headlight-restorer"
+            "product": "apgo-headlight-restorer"
           }
         },
         "bestseller_07": {
           "type": "bestseller",
           "settings": {
-            "product": "shopify://products/apgo-tire-shine-high-gloss"
+            "product": "apgo-tire-shine-high-gloss"
           }
         },
         "bestseller_08": {
           "type": "bestseller",
           "settings": {
-            "product": "shopify://products/apgo-car-wash-mitt"
+            "product": "apgo-car-wash-mitt"
           }
         },
         "category_01": {
           "type": "category",
           "settings": {
-            "collection": "shopify://collections/超級洗衣精系列",
+            "collection": "超級洗衣精系列",
             "title": "居家清潔",
             "icon": "▣"
           }
@@ -296,7 +296,7 @@
         "category_02": {
           "type": "category",
           "settings": {
-            "collection": "shopify://collections/coating-series",
+            "collection": "coating-series",
             "title": "鍍膜全系列",
             "icon": "◉"
           }
@@ -304,7 +304,7 @@
         "category_03": {
           "type": "category",
           "settings": {
-            "collection": "shopify://collections/all",
+            "collection": "all",
             "title": "暢銷優惠禮組",
             "icon": "♢"
           }
@@ -312,7 +312,7 @@
         "category_04": {
           "type": "category",
           "settings": {
-            "collection": "shopify://collections/清潔藥劑全系列",
+            "collection": "清潔藥劑全系列",
             "title": "清潔藥劑",
             "icon": "⚗"
           }
@@ -320,7 +320,7 @@
         "category_05": {
           "type": "category",
           "settings": {
-            "collection": "shopify://collections/洗車用品",
+            "collection": "洗車用品",
             "title": "洗車用品",
             "icon": "▤"
           }
@@ -328,7 +328,7 @@
         "category_06": {
           "type": "category",
           "settings": {
-            "collection": "shopify://collections/損傷修復",
+            "collection": "損傷修復",
             "title": "損傷修復",
             "icon": "◎"
           }
@@ -336,7 +336,7 @@
         "category_07": {
           "type": "category",
           "settings": {
-            "collection": "shopify://collections/科技執法測速器",
+            "collection": "科技執法測速器",
             "title": "科技執法測速器",
             "icon": "▱"
           }
@@ -344,7 +344,7 @@
         "shelf_01": {
           "type": "shelf",
           "settings": {
-            "collection": "shopify://collections/超級洗衣精系列",
+            "collection": "超級洗衣精系列",
             "title": "居家清潔",
             "subtitle": "洗得乾淨，也對家人溫和"
           }
@@ -352,7 +352,7 @@
         "shelf_02": {
           "type": "shelf",
           "settings": {
-            "collection": "shopify://collections/coating-series",
+            "collection": "coating-series",
             "title": "鍍膜全系列",
             "subtitle": "比打蠟更輕鬆、更持久"
           }
@@ -360,7 +360,7 @@
         "shelf_03": {
           "type": "shelf",
           "settings": {
-            "collection": "shopify://collections/all",
+            "collection": "all",
             "title": "暢銷優惠禮組",
             "subtitle": "一次備齊人氣組合"
           }
@@ -368,7 +368,7 @@
         "shelf_04": {
           "type": "shelf",
           "settings": {
-            "collection": "shopify://collections/清潔藥劑全系列",
+            "collection": "清潔藥劑全系列",
             "title": "清潔藥劑",
             "subtitle": "對症下藥，一瓶解決一種髒"
           }
@@ -376,7 +376,7 @@
         "shelf_05": {
           "type": "shelf",
           "settings": {
-            "collection": "shopify://collections/洗車用品",
+            "collection": "洗車用品",
             "title": "洗車用品",
             "subtitle": "洗車工具與日常保養"
           }
@@ -384,7 +384,7 @@
         "shelf_06": {
           "type": "shelf",
           "settings": {
-            "collection": "shopify://collections/損傷修復",
+            "collection": "損傷修復",
             "title": "損傷修復",
             "subtitle": "刮痕、水痕與表面修復"
           }
@@ -392,7 +392,7 @@
         "shelf_07": {
           "type": "shelf",
           "settings": {
-            "collection": "shopify://collections/科技執法測速器",
+            "collection": "科技執法測速器",
             "title": "科技執法測速器",
             "subtitle": "行車安全與測速提醒"
           }
@@ -432,8 +432,8 @@
         "bestseller_link": "shopify://collections/all",
         "category_title": "品類導覽",
         "new_title": "主打新品・新上市",
-        "featured_new_product": "shopify://products/apgo-enamel-crystal-coating",
-        "new_collection": "shopify://collections/coating-series",
+        "featured_new_product": "apgo-enamel-crystal-coating",
+        "new_collection": "coating-series",
         "new_feature_copy": "硬度提升，撥水效果延長至十二個月。",
         "new_link": "shopify://collections/coating-series",
         "learn_more_label": "看更多",
