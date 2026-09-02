@@ -1,7 +1,13 @@
+{% liquid
+  assign page_color_scheme = section.settings.color_scheme
 
+  if page.handle == 'campaign20260803'
+    assign page_color_scheme = 'scheme-2'
+  endif
+%}
 
-<div class="section-background color-{{ section.settings.color_scheme }}"></div>
-<div class="section page-width-content color-{{ section.settings.color_scheme }}">
+<div class="section-background color-{{ page_color_scheme }}"></div>
+<div class="section page-width-content color-{{ page_color_scheme }}">
   <div
     class="
       spacing-style
