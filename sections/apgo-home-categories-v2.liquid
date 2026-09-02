@@ -22,7 +22,7 @@
             <p class="apgo-home-heading__eyebrow">SHOP BY CATEGORY</p>
             <h2 id="ApgoCategories-{{ section.id }}">{{ section.settings.title }}</h2>
           </div>
-          <a href="{{ section.settings.link | default: routes.collections_url }}">{{ section.settings.view_all_label }}</a>
+          <a href="{{ section.settings.link | default: routes.all_products_collection_url }}">{{ section.settings.view_all_label }}</a>
         </header>
 
         {%- if category_count > 0 -%}
@@ -31,7 +31,9 @@
               {%- if block.settings.collection == blank -%}{%- continue -%}{%- endif -%}
               {%- assign selected_collection = block.settings.collection -%}
               <a class="apgo-home-category" href="{{ selected_collection.url }}" {{ block.shopify_attributes }}>
-                <span class="apgo-home-category__icon" aria-hidden="true">{{ block.settings.icon | default: '◇' }}</span>
+                <span class="apgo-home-category__icon" aria-hidden="true">
+                  {% render 'apgo-category-icon', icon: block.settings.icon %}
+                </span>
                 <span class="apgo-home-category__title">{{ block.settings.title | default: selected_collection.title }}</span>
                 <span class="apgo-home-category__count">{{ selected_collection.products_count }} 件</span>
               </a>
@@ -67,7 +69,21 @@
       "settings": [
         { "type": "collection", "id": "collection", "label": "商品系列" },
         { "type": "text", "id": "title", "label": "顯示名稱（留空用系列名稱）" },
-        { "type": "text", "id": "icon", "label": "圖示字元", "default": "◇", "info": "可輸入一個 emoji 或符號。" }
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "SVG 圖示",
+          "options": [
+            { "value": "home_cleaning", "label": "居家清潔" },
+            { "value": "coating", "label": "鍍膜" },
+            { "value": "gift", "label": "優惠禮組" },
+            { "value": "cleaning_chemical", "label": "清潔藥劑" },
+            { "value": "car_wash", "label": "洗車用品" },
+            { "value": "repair", "label": "損傷修復" },
+            { "value": "speed_camera", "label": "科技執法測速器" }
+          ],
+          "default": "home_cleaning"
+        }
       ]
     }
   ],

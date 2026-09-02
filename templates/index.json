@@ -264,13 +264,13 @@
     "apgo_home_categories_v2": {
       "type": "apgo-home-categories-v2",
       "blocks": {
-        "category_01": { "type": "category", "settings": { "collection": "homecleaning", "title": "居家清潔", "icon": "▣" } },
-        "category_02": { "type": "category", "settings": { "collection": "coating-series", "title": "鍍膜全系列", "icon": "◉" } },
-        "category_03": { "type": "category", "settings": { "collection": "all", "title": "暢銷優惠禮組", "icon": "♢" } },
-        "category_04": { "type": "category", "settings": { "collection": "清潔藥劑全系列", "title": "清潔藥劑", "icon": "⚗" } },
-        "category_05": { "type": "category", "settings": { "collection": "洗車用品", "title": "洗車用品", "icon": "▤" } },
-        "category_06": { "type": "category", "settings": { "collection": "損傷修復", "title": "損傷修復", "icon": "◎" } },
-        "category_07": { "type": "category", "settings": { "collection": "科技執法測速器", "title": "科技執法測速器", "icon": "▱" } }
+        "category_01": { "type": "category", "settings": { "collection": "homecleaning", "title": "居家清潔", "icon": "home_cleaning" } },
+        "category_02": { "type": "category", "settings": { "collection": "coating-series", "title": "鍍膜全系列", "icon": "coating" } },
+        "category_03": { "type": "category", "settings": { "collection": "all", "title": "暢銷優惠禮組", "icon": "gift" } },
+        "category_04": { "type": "category", "settings": { "collection": "清潔藥劑全系列", "title": "清潔藥劑", "icon": "cleaning_chemical" } },
+        "category_05": { "type": "category", "settings": { "collection": "洗車用品", "title": "洗車用品", "icon": "car_wash" } },
+        "category_06": { "type": "category", "settings": { "collection": "損傷修復", "title": "損傷修復", "icon": "repair" } },
+        "category_07": { "type": "category", "settings": { "collection": "科技執法測速器", "title": "科技執法測速器", "icon": "speed_camera" } }
       },
       "block_order": [
         "category_01", "category_02", "category_03", "category_04",
@@ -279,6 +279,7 @@
       "name": "APGO · 品類導覽 v2",
       "settings": {
         "title": "品類導覽",
+        "link": "shopify://collections/all",
         "view_all_label": "查看全部商品",
         "max_width": 1440,
         "accent_color": "#f58220",
