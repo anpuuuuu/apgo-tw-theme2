@@ -174,7 +174,6 @@
         "banner_cNRtiH": {
           "type": "banner",
           "name": "Banner-洗衣精買三送一、六送三",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/03_0_8e8f9901-22db-49d1-ac06-a8036115daf8.jpg",
             "link": "shopify://collections/超級洗衣精系列",
@@ -208,6 +207,15 @@
             "alt": "洗衣精訂閱制活動"
           }
         },
+        "banner_CXPEDn": {
+          "type": "banner",
+          "name": "google&fb五星好評",
+          "settings": {
+            "image": "shopify://shop_images/bf5e68b4-ef94-4a01-9a2e-d413dd6beeb3.png",
+            "link": "shopify://pages/google-review",
+            "alt": "google&fb五星好評"
+          }
+        },
         "banner_T8KwPX": {
           "type": "banner",
           "name": "Banner-APGO好評回饋$250",
@@ -223,6 +231,7 @@
         "banner_xj9FpC",
         "banner_r6gpWn",
         "banner_jGTL4Q",
+        "banner_CXPEDn",
         "banner_T8KwPX"
       ],
       "settings": {
