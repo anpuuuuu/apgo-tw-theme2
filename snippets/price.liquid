@@ -20,7 +20,13 @@
   endif
 
   assign show_compare_price = false
-  if compare_at_price > price
+  assign show_compare_price_range = false
+  if show_price_range and product_resource.compare_at_price_max > product_resource.price_min
+    assign show_compare_price = true
+    if product_resource.compare_at_price_min != product_resource.compare_at_price_max
+      assign show_compare_price_range = true
+    endif
+  elsif compare_at_price > price
     assign show_compare_price = true
   endif
 
@@ -32,7 +38,19 @@
   # and if the currency code is enabled for product pages
   if product.handle == closest.product.handle and settings.currency_code_enabled_product_pages
     assign price = price | money_with_currency
-    assign compare_at_price = compare_at_price | money_with_currency
+    if show_compare_price_range
+      assign compare_at_price_min = product_resource.compare_at_price_min | money_with_currency
+      assign compare_at_price_max = product_resource.compare_at_price_max | money_with_currency
+      capture compare_at_price
+        echo compare_at_price_min
+        echo ' ~ '
+        echo compare_at_price_max
+      endcapture
+    elsif show_price_range and show_compare_price
+      assign compare_at_price = product_resource.compare_at_price_min | money_with_currency
+    else
+      assign compare_at_price = compare_at_price | money_with_currency
+    endif
 
     # Checks if product handle does not match the closest product's handle (i.e. product card)
     # and if the currency code is enabled for product cards
@@ -62,7 +80,19 @@
     else
       assign price = price | money
     endif
-    assign compare_at_price = compare_at_price | money
+    if show_compare_price_range
+      assign compare_at_price_min = product_resource.compare_at_price_min | money
+      assign compare_at_price_max = product_resource.compare_at_price_max | money
+      capture compare_at_price
+        echo compare_at_price_min
+        echo ' ~ '
+        echo compare_at_price_max
+      endcapture
+    elsif show_price_range and show_compare_price
+      assign compare_at_price = product_resource.compare_at_price_min | money
+    else
+      assign compare_at_price = compare_at_price | money
+    endif
   endif
 -%}
 
