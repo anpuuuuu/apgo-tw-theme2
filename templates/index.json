@@ -264,7 +264,7 @@
     "apgo_home_categories_v2": {
       "type": "apgo-home-categories-v2",
       "blocks": {
-        "category_01": { "type": "category", "settings": { "collection": "超級洗衣精系列", "title": "居家清潔", "icon": "▣" } },
+        "category_01": { "type": "category", "settings": { "collection": "homecleaning", "title": "居家清潔", "icon": "▣" } },
         "category_02": { "type": "category", "settings": { "collection": "coating-series", "title": "鍍膜全系列", "icon": "◉" } },
         "category_03": { "type": "category", "settings": { "collection": "all", "title": "暢銷優惠禮組", "icon": "♢" } },
         "category_04": { "type": "category", "settings": { "collection": "清潔藥劑全系列", "title": "清潔藥劑", "icon": "⚗" } },
@@ -306,7 +306,7 @@
     "apgo_home_shelves_v2": {
       "type": "apgo-home-shelves-v2",
       "blocks": {
-        "shelf_01": { "type": "shelf", "settings": { "collection": "超級洗衣精系列", "title": "居家清潔", "subtitle": "洗得乾淨，也對家人溫和" } },
+        "shelf_01": { "type": "shelf", "settings": { "collection": "homecleaning", "title": "居家清潔", "subtitle": "洗得乾淨，也對家人溫和" } },
         "shelf_02": { "type": "shelf", "settings": { "collection": "coating-series", "title": "鍍膜全系列", "subtitle": "比打蠟更輕鬆、更持久" } },
         "shelf_03": { "type": "shelf", "settings": { "collection": "all", "title": "暢銷優惠禮組", "subtitle": "一次備齊人氣組合" } },
         "shelf_04": { "type": "shelf", "settings": { "collection": "清潔藥劑全系列", "title": "清潔藥劑", "subtitle": "對症下藥，一瓶解決一種髒" } },
