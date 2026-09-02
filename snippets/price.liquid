@@ -13,6 +13,11 @@
   assign selected_variant = product_resource.selected_or_first_available_variant
   assign price = selected_variant.price
   assign compare_at_price = selected_variant.compare_at_price
+  assign show_price_range = false
+
+  if product_resource.price_varies and product.handle != closest.product.handle
+    assign show_price_range = true
+  endif
 
   assign show_compare_price = false
   if compare_at_price > price
@@ -32,11 +37,31 @@
     # Checks if product handle does not match the closest product's handle (i.e. product card)
     # and if the currency code is enabled for product cards
   elsif product.handle != closest.product.handle and settings.currency_code_enabled_product_cards
-    assign price = price | money_with_currency
+    if show_price_range
+      assign price_min = product_resource.price_min | money_with_currency
+      assign price_max = product_resource.price_max | money_with_currency
+      capture price
+        echo price_min
+        echo ' ~ '
+        echo price_max
+      endcapture
+    else
+      assign price = price | money_with_currency
+    endif
     assign compare_at_price = compare_at_price | money_with_currency
 
   else
-    assign price = price | money
+    if show_price_range
+      assign price_min = product_resource.price_min | money
+      assign price_max = product_resource.price_max | money
+      capture price
+        echo price_min
+        echo ' ~ '
+        echo price_max
+      endcapture
+    else
+      assign price = price | money
+    endif
     assign compare_at_price = compare_at_price | money
   endif
 -%}
