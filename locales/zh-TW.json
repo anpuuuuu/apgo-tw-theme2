@@ -143,6 +143,7 @@
     "price_regular": "定價",
     "price_compare_at": "比較售價",
     "price_sale": "促銷價",
+    "partial_variant_sale": "部分規格優惠",
     "duties_and_taxes_included": "已包含關稅和稅額。",
     "duties_included": "已包含關稅。",
     "shipping_policy_html": "結帳時計算<a href=\"{{ link }}\">運費</a>。",

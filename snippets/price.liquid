@@ -14,19 +14,46 @@
   assign price = selected_variant.price
   assign compare_at_price = selected_variant.compare_at_price
   assign show_price_range = false
+  assign is_product_card = false
 
   if product_resource.price_varies and product.handle != closest.product.handle
     assign show_price_range = true
   endif
 
+  if product.handle != closest.product.handle
+    assign is_product_card = true
+  endif
+
+  assign variant_count = product_resource.variants | size
+  assign discounted_variant_count = 0
+  assign all_variants_discounted = false
+  assign show_partial_sale_label = false
+
+  if is_product_card
+    for variant in product_resource.variants
+      if variant.compare_at_price > variant.price
+        assign discounted_variant_count = discounted_variant_count | plus: 1
+      endif
+    endfor
+
+    if discounted_variant_count > 0
+      if discounted_variant_count == variant_count
+        assign all_variants_discounted = true
+      else
+        assign show_partial_sale_label = true
+      endif
+    endif
+  endif
+
   assign show_compare_price = false
   assign show_compare_price_range = false
-  if show_price_range and product_resource.compare_at_price_max > product_resource.price_min
+
+  if is_product_card and all_variants_discounted
     assign show_compare_price = true
     if product_resource.compare_at_price_min != product_resource.compare_at_price_max
       assign show_compare_price_range = true
     endif
-  elsif compare_at_price > price
+  elsif is_product_card == false and compare_at_price > price
     assign show_compare_price = true
   endif
 
@@ -66,7 +93,17 @@
     else
       assign price = price | money_with_currency
     endif
-    assign compare_at_price = compare_at_price | money_with_currency
+    if show_compare_price_range
+      assign compare_at_price_min = product_resource.compare_at_price_min | money_with_currency
+      assign compare_at_price_max = product_resource.compare_at_price_max | money_with_currency
+      capture compare_at_price
+        echo compare_at_price_min
+        echo ' ~ '
+        echo compare_at_price_max
+      endcapture
+    elsif show_compare_price
+      assign compare_at_price = product_resource.compare_at_price_min | money_with_currency
+    endif
 
   else
     if show_price_range
@@ -90,6 +127,8 @@
       endcapture
     elsif show_price_range and show_compare_price
       assign compare_at_price = product_resource.compare_at_price_min | money
+    elsif is_product_card and show_compare_price
+      assign compare_at_price = product_resource.compare_at_price_min | money
     else
       assign compare_at_price = compare_at_price | money
     endif
@@ -111,6 +150,10 @@
     </span>
   {% else %}
     <span class="price">{{ price | default: '&nbsp;' }}</span>
+  {% endif %}
+
+  {% if show_partial_sale_label %}
+    <span class="partial-sale-label">{{ 'content.partial_variant_sale' | t }}</span>
   {% endif %}
 
   {% if show_sale_price_first == true and show_compare_price %}

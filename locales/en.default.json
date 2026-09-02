@@ -196,6 +196,7 @@
     "price_from": "From {{ price }}",
     "price_regular": "Regular price",
     "price_sale": "Sale price",
+    "partial_variant_sale": "Selected variants on sale",
     "price_filter_html": "The highest price is {{ price }}",
     "product_image": "Product image",
     "product_information": "Product information",
