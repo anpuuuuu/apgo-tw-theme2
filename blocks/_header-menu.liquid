@@ -188,11 +188,6 @@
     display: none;
   }
 
-  .menu-list__list-item--accent > .menu-list__link {
-    color: #f58220;
-    font-weight: 800;
-  }
-
   .menu-list__list-item[aria-hidden='true'] {
     visibility: hidden;
   }
@@ -238,6 +233,11 @@
   .menu-list .menu-list__list-item:where(:hover, :focus-within) .menu-list__link,
   .menu-list .menu-list__list-item[slot='overflow'] .menu-list__link[aria-expanded='true'] {
     color: var(--menu-top-level-font-color);
+  }
+
+  .menu-list .menu-list__list-item--accent > .menu-list__link {
+    color: #f58220;
+    font-weight: var(--menu-top-level-font-weight);
   }
 
   .overflow-menu::part(list) {
