@@ -2112,6 +2112,21 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
   text-decoration-thickness: 1.5px;
 }
 
+.partial-sale-label {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-inline-start: 0.45em;
+  padding: 0.15em 0.55em;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  color: var(--color-primary);
+  font-size: 0.72em;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
 .card-gallery {
   position: relative;
 }

@@ -261,6 +261,20 @@ body.apgo-cc-skin .product-grid__item [ref="priceContainer"]:has(.compare-at-pri
   color: var(--cc-orange) !important;
 }
 
+body.apgo-cc-skin .product-card [ref="priceContainer"]:has(.partial-sale-label) .price,
+body.apgo-cc-skin .product-card [ref="priceContainer"]:has(.partial-sale-label) .price *,
+body.apgo-cc-skin .product-grid__item [ref="priceContainer"]:has(.partial-sale-label) .price,
+body.apgo-cc-skin .product-grid__item [ref="priceContainer"]:has(.partial-sale-label) .price * {
+  color: var(--cc-orange) !important;
+}
+
+body.apgo-cc-skin .product-card .partial-sale-label,
+body.apgo-cc-skin .product-grid__item .partial-sale-label {
+  margin-inline-start: 0;
+  border-color: var(--cc-orange-dim);
+  color: var(--cc-orange);
+}
+
 /* Compare-at strikethrough — smaller, sits on top of the sale price.
    Color is left to whatever Horizon's default theme tokens choose so it
    matches the rest of the storefront's strikethrough conventions. */
