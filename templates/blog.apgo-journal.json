@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "apgo-journal-blog",
+      "settings": { "hub_page": "apgo-journal" }
+    }
+  },
+  "order": ["main"]
+}

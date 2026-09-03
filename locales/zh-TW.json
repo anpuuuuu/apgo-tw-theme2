@@ -8,6 +8,21 @@
  * ------------------------------------------------------------
  */
 {
+  "journal": {
+    "eyebrow": "APGO JOURNAL",
+    "categories": "生活誌文章分類",
+    "read_article": "閱讀文章",
+    "view_all": "查看全部",
+    "view_category": "查看全部{{ title }}文章",
+    "empty": "文章準備中",
+    "select_blog": "請為此分類選擇 Blog。",
+    "back_to_hub": "APGO生活誌總覽",
+    "category_intro": "產品教學、選購指南與實用保養知識。",
+    "pagination": "文章分頁",
+    "previous": "上一頁",
+    "next": "下一頁",
+    "page_number": "第 {{ number }} 頁"
+  },
   "blocks": {
     "load_video": "載入影片：{{ description }}",
     "sold_out": "售罄",

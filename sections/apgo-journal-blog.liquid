@@ -1,0 +1,49 @@
+{% render 'apgo-journal-styles' %}
+<section class="apgo-journal" aria-labelledby="JournalBlogTitle-{{ section.id }}" data-journal-listing>
+  <div class="apgo-journal__inner">
+    {%- if section.settings.hub_page != blank -%}
+      <a class="apgo-journal__back" href="{{ section.settings.hub_page.url }}"><span aria-hidden="true">←</span> {{ 'journal.back_to_hub' | t }}</a>
+    {%- endif -%}
+    <header>
+      <p class="apgo-journal__eyebrow">{{ 'journal.eyebrow' | t }}</p>
+      <h1 id="JournalBlogTitle-{{ section.id }}">{{ blog.title | escape }}</h1>
+      <div class="apgo-journal__intro">{{ 'journal.category_intro' | t }}</div>
+    </header>
+    {%- if blog.articles_count > 0 -%}
+      {%- paginate blog.articles by 12 -%}
+        <div class="apgo-journal__grid apgo-journal__grid--listing">
+          {%- for article in blog.articles -%}
+            {% render 'apgo-journal-card', article: article, heading_tag: 'h2' %}
+          {%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}
+          <nav class="apgo-journal__pagination" aria-label="{{ 'journal.pagination' | t }}">
+            {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" rel="prev">{{ 'journal.previous' | t }}</a>{%- endif -%}
+            {%- for part in paginate.parts -%}
+              {%- assign part_number = part.title | plus: 0 -%}
+              {%- if part.is_link -%}
+                <a href="{{ part.url }}" aria-label="{{ 'journal.page_number' | t: number: part.title }}">{{ part.title }}</a>
+              {%- elsif part_number == paginate.current_page -%}
+                <span aria-current="page">{{ part.title }}</span>
+              {%- else -%}
+                <span>{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}<a href="{{ paginate.next.url }}" rel="next">{{ 'journal.next' | t }}</a>{%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- else -%}
+      <div class="apgo-journal__group"><p class="apgo-journal__empty">{{ 'journal.empty' | t }}</p></div>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "APGO · 生活誌分類",
+  "settings": [
+    { "type": "page", "id": "hub_page", "label": "生活誌總覽頁" }
+  ],
+  "enabled_on": { "templates": ["blog"] }
+}
+{% endschema %}
