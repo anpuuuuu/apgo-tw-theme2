@@ -2,6 +2,10 @@
 
 {%- assign featured_product = section.settings.featured_product -%}
 {%- assign new_collection = section.settings.collection -%}
+{%- assign secondary_products = section.settings.secondary_products -%}
+{%- if secondary_products == blank -%}
+  {%- assign secondary_products = new_collection.products -%}
+{%- endif -%}
 
 {%- if featured_product != blank or new_collection != blank or request.design_mode -%}
   <section
@@ -48,8 +52,8 @@
 
             <div class="apgo-home-new__secondary">
               {%- assign secondary_count = 0 -%}
-              {%- if new_collection != blank -%}
-                {%- for product in new_collection.products -%}
+              {%- if secondary_products != blank -%}
+                {%- for product in secondary_products -%}
                   {%- if product.id == featured_product.id -%}{%- continue -%}{%- endif -%}
                   {%- if secondary_count >= 4 -%}{%- break -%}{%- endif -%}
                   <div class="apgo-home-new__secondary-card">
@@ -79,7 +83,8 @@
   "settings": [
     { "type": "text", "id": "title", "label": "標題", "default": "主打新品・新上市" },
     { "type": "product", "id": "featured_product", "label": "主打新品" },
-    { "type": "collection", "id": "collection", "label": "新品系列（副卡取前四件）" },
+    { "type": "product_list", "id": "secondary_products", "label": "副卡商品（最多 4 件）", "limit": 4, "info": "可自由選品並調整順序，不限於下方系列。選取後優先使用此清單；與主打新品相同的商品會跳過，不自動補入其他商品。留空則使用下方系列。" },
+    { "type": "collection", "id": "collection", "label": "新品系列（未手選副卡時取前四件）" },
     { "type": "textarea", "id": "feature_copy", "label": "主打新品短文", "default": "新品特色一句話說明，建議手機版控制在二十字以內。" },
     { "type": "url", "id": "link", "label": "查看全部連結（選填）" },
     { "type": "text", "id": "view_all_label", "label": "查看全部文字", "default": "查看全部" },

@@ -1,10 +1,10 @@
-{%- comment -%}
-  APGO 首頁 v2 共用商品卡。
-  product: Shopify product object
-  show_add: 是否顯示加入購物車
-  badge: 選填角標
-  card_class: 選填額外 class
-{%- endcomment -%}
+{%- doc -%}
+  Renders a product card shared by the APGO homepage sections.
+  @param {product} product - Product to display
+  @param {boolean} [show_add] - Show the quick-add button
+  @param {string} [badge] - Optional badge text
+  @param {string} [card_class] - Optional additional CSS class
+{%- enddoc -%}
 
 {%- if product != blank -%}
   <article
@@ -32,10 +32,7 @@
       <div class="apgo-home-card__content">
         <h3 class="apgo-home-card__title">{{ product.title }}</h3>
         <div class="apgo-home-card__price">
-          <span>{{ product.price | money }}</span>
-          {%- if product.compare_at_price > product.price -%}
-            <s>{{ product.compare_at_price | money }}</s>
-          {%- endif -%}
+          {% render 'price', product_resource: product, is_product_card: true, show_sale_price_first: true %}
         </div>
       </div>
     </a>

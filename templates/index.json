@@ -266,7 +266,7 @@
       "blocks": {
         "category_01": { "type": "category", "settings": { "collection": "homecleaning", "title": "居家清潔", "icon": "home_cleaning" } },
         "category_02": { "type": "category", "settings": { "collection": "coating-series", "title": "鍍膜全系列", "icon": "coating" } },
-        "category_03": { "type": "category", "settings": { "collection": "all", "title": "暢銷優惠禮組", "icon": "gift" } },
+        "category_03": { "type": "category", "settings": { "collection": "bestselling-discount-gift-set", "title": "暢銷優惠禮組", "icon": "gift" } },
         "category_04": { "type": "category", "settings": { "collection": "清潔藥劑全系列", "title": "清潔藥劑", "icon": "cleaning_chemical" } },
         "category_05": { "type": "category", "settings": { "collection": "洗車用品", "title": "洗車用品", "icon": "car_wash" } },
         "category_06": { "type": "category", "settings": { "collection": "損傷修復", "title": "損傷修復", "icon": "repair" } },
@@ -294,7 +294,7 @@
         "title": "主打新品・新上市",
         "featured_product": "apgo-enamel-crystal-coating",
         "collection": "coating-series",
-        "feature_copy": "硬度提升，撥水效果延長至十二個月。",
+        "feature_copy": "高階滑順款鍍膜，輕鬆打造光亮保護膜。",
         "link": "shopify://collections/coating-series",
         "view_all_label": "查看全部",
         "learn_more_label": "看更多",
@@ -309,7 +309,7 @@
       "blocks": {
         "shelf_01": { "type": "shelf", "settings": { "collection": "homecleaning", "title": "居家清潔", "subtitle": "洗得乾淨，也對家人溫和" } },
         "shelf_02": { "type": "shelf", "settings": { "collection": "coating-series", "title": "鍍膜全系列", "subtitle": "比打蠟更輕鬆、更持久" } },
-        "shelf_03": { "type": "shelf", "settings": { "collection": "all", "title": "暢銷優惠禮組", "subtitle": "一次備齊人氣組合" } },
+        "shelf_03": { "type": "shelf", "settings": { "collection": "bestselling-discount-gift-set", "title": "暢銷優惠禮組", "subtitle": "一次備齊人氣組合" } },
         "shelf_04": { "type": "shelf", "settings": { "collection": "清潔藥劑全系列", "title": "清潔藥劑", "subtitle": "對症下藥，一瓶解決一種髒" } },
         "shelf_05": { "type": "shelf", "settings": { "collection": "洗車用品", "title": "洗車用品", "subtitle": "洗車工具與日常保養" } },
         "shelf_06": { "type": "shelf", "settings": { "collection": "損傷修復", "title": "損傷修復", "subtitle": "刮痕、水痕與表面修復" } },
