@@ -17,10 +17,12 @@ class CartIcon extends Component {
 
   /** @type {number} */
   get currentCartCount() {
-    return parseInt(this.refs.cartBubbleCount.textContent ?? '0', 10);
+    return Number(this.dataset.cartCount ?? this.refs.cartBubbleCount.textContent ?? 0);
   }
 
   set currentCartCount(value) {
+    // Keep the exact total even when the visual bubble becomes a dot at 100+.
+    this.dataset.cartCount = String(value);
     this.refs.cartBubbleCount.textContent = value < 100 ? String(value) : '';
   }
 
@@ -28,6 +30,7 @@ class CartIcon extends Component {
     super.connectedCallback();
 
     document.addEventListener(ThemeEvents.cartUpdate, this.onCartUpdate);
+    document.addEventListener('cart:updated', this.onCartUpdate);
     this.ensureCartBubbleIsCorrect();
   }
 
@@ -35,11 +38,12 @@ class CartIcon extends Component {
     super.disconnectedCallback();
 
     document.removeEventListener(ThemeEvents.cartUpdate, this.onCartUpdate);
+    document.removeEventListener('cart:updated', this.onCartUpdate);
   }
 
   /**
    * Handles the cart update event.
-   * @param {CartUpdateEvent} event - The cart update event.
+   * @param {CartUpdateEvent | CustomEvent} event - The cart update event.
    */
   onCartUpdate = async (event) => {
     const detail = event.detail ?? {};
@@ -49,7 +53,12 @@ class CartIcon extends Component {
 
     // Some legacy integrations use cart:update as a refresh signal without a
     // cart payload. An unknown count must never be interpreted as an empty cart.
-    if (!Number.isFinite(itemCount) || itemCount < 0) return;
+    if (
+      (typeof rawItemCount !== 'number' && typeof rawItemCount !== 'string') ||
+      String(rawItemCount).trim() === '' ||
+      !Number.isSafeInteger(itemCount) ||
+      itemCount < 0
+    ) return;
 
     const comingFromProductForm = detail.data?.source === 'product-form-component';
 
@@ -62,15 +71,28 @@ class CartIcon extends Component {
    * @param {boolean} comingFromProductForm - Whether the cart update is coming from the product form.
    */
   renderCartBubble = async (itemCount, comingFromProductForm, animate = true) => {
-    // If the cart update is coming from the product form, we add to the current cart count, otherwise we set the new cart count
+    // Product forms send a delta; cart pages and other integrations send an absolute total.
+    // Consume both contracts here without redispatching a refresh event.
+    const nextCount = comingFromProductForm ? this.currentCartCount + itemCount : itemCount;
 
-    this.refs.cartBubbleCount.classList.toggle('hidden', itemCount === 0);
-    this.refs.cartBubble.classList.toggle('visually-hidden', itemCount === 0);
-    this.refs.cartBubble.classList.toggle('cart-bubble--animating', itemCount > 0 && animate);
+    this.refs.cartBubbleCount.classList.toggle('hidden', nextCount === 0);
+    this.refs.cartBubble.classList.toggle('visually-hidden', nextCount === 0);
+    this.refs.cartBubble.classList.toggle('cart-bubble--animating', nextCount > 0 && animate);
 
-    this.currentCartCount = comingFromProductForm ? this.currentCartCount + itemCount : itemCount;
+    this.currentCartCount = nextCount;
 
-    this.classList.toggle('header-actions__cart-icon--has-cart', itemCount > 0);
+    this.classList.toggle('header-actions__cart-icon--has-cart', nextCount > 0);
+
+    const countText = this.querySelector('[data-cart-count-text]');
+    if (countText && this.dataset.cartCountLabel) {
+      countText.textContent = `${this.dataset.cartCountLabel}: ${nextCount}`;
+    }
+    const action = this.closest('a[aria-label], button[aria-label]');
+    const actionLabel = action?.getAttribute('aria-label');
+    if (actionLabel) {
+      // Preserve the translated action name (cart link or drawer trigger).
+      action.setAttribute('aria-label', actionLabel.replace(/\d+\s*$/, String(nextCount)));
+    }
 
     sessionStorage.setItem(
       'cart-count',

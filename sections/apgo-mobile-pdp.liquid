@@ -904,9 +904,9 @@
             {%- for p in rcol.products limit: 8 -%}
               {%- unless p.id == product.id -%}
                 <a class="apgo-mpdp-related-item" href="{{ p.url }}">
-                  <img src="{{ p.featured_image | image_url: width: 280 }}" alt="{{ p.title }}" loading="lazy">
+                  <img src="{{ p.featured_image | image_url: width: 280 }}" alt="{{ p.title }}" width="280" height="280" loading="lazy">
                   <div class="apgo-serif">{{ p.title }}</div>
-                  <div>{{ p.price | money }}</div>
+                  {% render 'apgo-related-price', product_resource: p %}
                 </a>
               {%- endunless -%}
             {%- endfor -%}
