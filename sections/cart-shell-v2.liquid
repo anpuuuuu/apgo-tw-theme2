@@ -1114,7 +1114,9 @@
         const nextRoot = doc.querySelector(ROOT_SELECTOR);
 
         if (nextRoot) {
+          window.APGOGiftCard?.preserveForm(root, nextRoot);
           root.replaceWith(nextRoot);
+          window.APGOGiftCard?.paint();
           initRoot(nextRoot);
           if (typeof window.__apgoV2HydrateShippingSelects === 'function') {
             window.__apgoV2HydrateShippingSelects();
@@ -1172,6 +1174,7 @@
     async function executeCartAction(action, payload, root) {
       const state = getRootState(root);
       let cartData = null;
+      window.APGOGiftCard?.nativeStart();
 
       try {
         if (action === 'add') {
@@ -1193,6 +1196,8 @@
         await refreshCartSection(root, state, cartData);
       } catch (error) {
         throw error;
+      } finally {
+        window.APGOGiftCard?.nativeEnd();
       }
     }
 
@@ -1434,6 +1439,7 @@
 
       // 3. 結帳與會員攔截邏輯
       const proceedToCheckout = async function (root) {
+        if (window.__apgoCheckoutPending) return;
         // --- 工具函式 ---
         function _digitsOnly(v) { return (v || '').toString().replace(/\D+/g, ''); }
         function _normPhone(v) {
@@ -1543,14 +1549,26 @@
           _set('attributes[' + ik + ']', invResult.attributes[ik]);
         });
 
+        window.__apgoCheckoutPending = true;
+        root.inert = true;
         try {
-          await fetch(getCartUrl('/cart/update.js'), {
+          var attributesResponse = await fetch(getCartUrl('/cart/update.js'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
             body: JSON.stringify({ attributes: cartAttrPayload })
           });
+          if (!attributesResponse.ok) throw new Error('attributes_error');
+          var giftCheckoutURL = await window.APGOGiftCard?.checkout(qp);
+          if (giftCheckoutURL) {
+            window.location.assign(giftCheckoutURL);
+            return;
+          }
         } catch (e) {
-          console.warn('[cart-shell-v2] cart attributes before checkout', e);
+          showNotice(root, window.APGOGiftCard?.message(e.message) || {{ 'apgo_gift.network' | t | json }});
+          return;
+        } finally {
+          root.inert = false;
+          window.__apgoCheckoutPending = false;
         }
 
         var path = getCartUrl('/checkout');

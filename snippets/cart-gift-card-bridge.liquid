@@ -1,0 +1,271 @@
+{% doc %}
+  One-card Storefront checkout bridge for cart-shell-v2. No gift card code is persisted.
+{% enddoc %}
+<script>
+(function (scope) {
+  'use strict';
+  const fields = `id checkoutUrl totalQuantity note attributes { key value }
+    discountCodes { code applicable } appliedGiftCards { id lastCharacters amountUsed { amount currencyCode } }
+    cost { totalAmount { amount currencyCode } }
+    lines(first: 250) { pageInfo { hasNextPage } nodes { id quantity attributes { key value }
+      merchandise { ... on ProductVariant { id } } ... on CartLine { sellingPlanAllocation { sellingPlan { id } } }
+    } }`;
+  const operations = {
+    read: `query GiftBridgeCart($id: ID!) { cart(id: $id) { ${fields} } }`,
+    create: `mutation GiftBridgeCreate($input: CartInput!) { cartCreate(input: $input) { cart { ${fields} } userErrors { code } warnings { code } } }`,
+    add: `mutation GiftBridgeAdd($id: ID!, $lines: [CartLineInput!]!) { cartLinesAdd(cartId: $id, lines: $lines) { cart { ${fields} } userErrors { code } warnings { code } } }`,
+    update: `mutation GiftBridgeUpdate($id: ID!, $lines: [CartLineUpdateInput!]!) { cartLinesUpdate(cartId: $id, lines: $lines) { cart { ${fields} } userErrors { code } warnings { code } } }`,
+    remove: `mutation GiftBridgeRemove($id: ID!, $lines: [ID!]!) { cartLinesRemove(cartId: $id, lineIds: $lines) { cart { ${fields} } userErrors { code } warnings { code } } }`,
+    attributes: `mutation GiftBridgeAttributes($id: ID!, $attributes: [AttributeInput!]!) { cartAttributesUpdate(cartId: $id, attributes: $attributes) { cart { ${fields} } userErrors { code } warnings { code } } }`,
+    note: `mutation GiftBridgeNote($id: ID!, $note: String!) { cartNoteUpdate(cartId: $id, note: $note) { cart { ${fields} } userErrors { code } warnings { code } } }`,
+    discount: `mutation GiftBridgeDiscount($id: ID!, $codes: [String!]!) { cartDiscountCodesUpdate(cartId: $id, discountCodes: $codes) { cart { ${fields} } userErrors { code } warnings { code } } }`,
+    gift: `mutation GiftBridgeGift($id: ID!, $codes: [String!]!) { cartGiftCardCodesUpdate(cartId: $id, giftCardCodes: $codes) { cart { ${fields} } userErrors { code } warnings { code } } }`
+  };
+  const fail = key => { throw new Error(key); };
+  const cents = amount => Math.round(Number(amount) * 100);
+  const attributes = object => Object.entries(object || {}).map(([key, value]) => ({ key, value: String(value ?? '') })).sort((a, b) => a.key.localeCompare(b.key));
+  const normalize = values => (values || []).map(a => ({ key: a.key, value: a.value })).sort((a, b) => a.key.localeCompare(b.key));
+  const identity = line => JSON.stringify([line.merchandiseId || line.merchandise?.id, line.sellingPlanId || line.sellingPlanAllocation?.sellingPlan.id || null, normalize(line.attributes)]);
+  const codes = cart => (cart.discount_codes || []).filter(d => d.applicable).map(d => d.code).sort();
+  function linesFrom(cart) {
+    if (!cart.items?.length || cart.items.length > 250) fail('unsupported');
+    return cart.items.map(item => {
+      if (item.item_components?.length || item.parent_relationship || !Number.isSafeInteger(item.quantity) || item.quantity < 1) fail('unsupported');
+      const line = { merchandiseId: 'gid://shopify/ProductVariant/' + item.variant_id, quantity: item.quantity, attributes: attributes(item.properties) };
+      if (line.attributes.length > 250) fail('unsupported');
+      if (item.selling_plan_allocation) line.sellingPlanId = 'gid://shopify/SellingPlan/' + item.selling_plan_allocation.selling_plan.id;
+      return line;
+    });
+  }
+  function fingerprint(cart) {
+    return JSON.stringify([cart.token, cart.currency, cart.total_price, linesFrom(cart), codes(cart), attributes(cart.attributes), cart.note || '']);
+  }
+  function lineTotals(lines) {
+    const totals = new Map();
+    for (const line of lines) totals.set(identity(line), (totals.get(identity(line)) || 0) + line.quantity);
+    return JSON.stringify([...totals].sort((a, b) => a[0].localeCompare(b[0])));
+  }
+  function assertParity(native, remote) {
+    if (!remote || remote.lines.pageInfo.hasNextPage || lineTotals(linesFrom(native)) !== lineTotals(remote.lines.nodes)) fail('mismatch');
+    if (remote.cost.totalAmount.currencyCode !== native.currency) fail('mismatch');
+    const gifts = remote.appliedGiftCards || [];
+    if (gifts.some(g => g.amountUsed.currencyCode !== native.currency)) fail('mismatch');
+    const used = gifts.reduce((sum, g) => sum + cents(g.amountUsed.amount), 0);
+    if (cents(remote.cost.totalAmount.amount) + used !== native.total_price) fail('mismatch');
+    const applicable = remote.discountCodes.filter(d => d.applicable).map(d => d.code.toUpperCase()).sort();
+    if (JSON.stringify(applicable) !== JSON.stringify(codes(native).map(c => c.toUpperCase()).sort())) fail('mismatch');
+    if (JSON.stringify(normalize(remote.attributes)) !== JSON.stringify(attributes(native.attributes)) || (remote.note || '') !== (native.note || '')) fail('mismatch');
+    return { used, due: native.total_price - used, currency: native.currency };
+  }
+  function checkoutURL(remoteURL, params, config) {
+    const url = new URL(remoteURL);
+    if (url.protocol !== 'https:' || ![config.domain, config.host].includes(url.hostname) || !/^\/cart\/c\//.test(url.pathname)) fail('mismatch');
+    params.forEach((value, key) => {
+      if (/^checkout\[(shipping_address|billing_address)\]\[(first_name|last_name|phone|country|city|province|address1|address2|zip)\]$/.test(key) || key === 'checkout[phone]' || key === 'preview_theme_id') url.searchParams.set(key, value);
+    });
+    return url.toString();
+  }
+  function createBridge(deps) {
+    let state = deps.restore() || null;
+    let remote = null;
+    let busy = false;
+    let error = '';
+    let estimate = null;
+    let queue = Promise.resolve();
+    const config = deps.config;
+    const persist = () => deps.save(state && { id: state.id, owner: state.owner, expires: state.expires, last4: state.last4 });
+    const emit = () => deps.change({ active: !!state, last4: state?.last4, busy, error, estimate });
+    async function request(name, variables) {
+      const result = await deps.graphql(operations[name], variables);
+      if (result.errors?.length || !result.data) fail('network');
+      const payload = Object.values(result.data)[0];
+      if (name === 'read') return payload || fail('expired');
+      if (!payload?.cart || payload.userErrors?.length || payload.warnings?.length) fail(name === 'gift' ? 'invalid' : 'mismatch');
+      return payload.cart;
+    }
+    function enqueue(fn) {
+      const task = queue.then(async () => {
+        busy = true; error = ''; estimate = null; emit();
+        try { return await fn(); }
+        catch (e) { error = ['invalid', 'mismatch', 'expired', 'unsupported', 'changed', 'remove_first'].includes(e.message) ? e.message : 'network'; throw new Error(error); }
+        finally { busy = false; emit(); }
+      });
+      queue = task.catch(() => {});
+      return task;
+    }
+    async function readNative() {
+      const cart = await deps.native();
+      linesFrom(cart);
+      if (cart.currency !== 'TWD' || config.country !== 'TW') fail('unsupported');
+      if (attributes(cart.attributes).length > 250) fail('unsupported');
+      return cart;
+    }
+    async function owner(cart) { return deps.hash([cart.token, config.customer, config.country, cart.currency].join('|')); }
+    async function sync(native) {
+      if (!state || state.expires < deps.now() || state.owner !== await owner(native)) fail('expired');
+      remote = await request('read', { id: state.id });
+      if (remote.lines.pageInfo.hasNextPage) fail('unsupported');
+      const wanted = linesFrom(native);
+      const remaining = [...remote.lines.nodes];
+      const added = [], updated = [];
+      wanted.forEach(line => {
+        const index = remaining.findIndex(old => identity(old) === identity(line));
+        if (index < 0) added.push(line);
+        else {
+          const [old] = remaining.splice(index, 1);
+          if (old.quantity !== line.quantity) updated.push({ id: old.id, quantity: line.quantity });
+        }
+      });
+      if (added.length) remote = await request('add', { id: state.id, lines: added });
+      if (remaining.length) remote = await request('remove', { id: state.id, lines: remaining.map(l => l.id) });
+      if (updated.length) remote = await request('update', { id: state.id, lines: updated });
+      if (JSON.stringify(normalize(remote.attributes)) !== JSON.stringify(attributes(native.attributes))) remote = await request('attributes', { id: state.id, attributes: attributes(native.attributes) });
+      if ((remote.note || '') !== (native.note || '')) remote = await request('note', { id: state.id, note: native.note || '' });
+      remote = await request('discount', { id: state.id, codes: codes(native) });
+      if (remote.appliedGiftCards.length !== 1 || remote.appliedGiftCards[0].lastCharacters !== state.last4 || cents(remote.appliedGiftCards[0].amountUsed.amount) <= 0) fail('invalid');
+      estimate = assertParity(native, remote);
+      if (fingerprint(await readNative()) !== fingerprint(native)) fail('changed');
+      return remote;
+    }
+    return {
+      active: () => !!state,
+      busy: () => busy,
+      async apply(code) {
+        if (busy) return;
+        return enqueue(async () => {
+          if (state) fail('remove_first');
+          const native = await readNative();
+          remote = await request('create', { input: { lines: linesFrom(native), attributes: attributes(native.attributes), note: native.note || '', discountCodes: codes(native), buyerIdentity: { countryCode: config.country } } });
+          assertParity(native, remote);
+          remote = await request('gift', { id: remote.id, codes: [code] });
+          code = '';
+          const gift = remote.appliedGiftCards[0];
+          if (remote.appliedGiftCards.length !== 1 || cents(gift.amountUsed.amount) <= 0) fail('invalid');
+          const nextEstimate = assertParity(native, remote);
+          if (fingerprint(await readNative()) !== fingerprint(native)) fail('changed');
+          state = { id: remote.id, owner: await owner(native), expires: deps.now() + 30 * 60 * 1000, last4: gift.lastCharacters };
+          persist(); estimate = nextEstimate;
+        }).finally(() => { code = ''; });
+      },
+      refresh() { return enqueue(async () => { if (state) await sync(await readNative()); }); },
+      remove() { return enqueue(async () => {
+        if (state) {
+          try { await request('gift', { id: state.id, codes: [] }); } catch (_) {}
+        }
+        state = null; remote = null; estimate = null; persist();
+      }); },
+      checkout(params) { return enqueue(async () => {
+        if (!state) return null;
+        const cart = await sync(await readNative());
+        return checkoutURL(cart.checkoutUrl, params, config);
+      }); },
+      invalidate() { estimate = null; emit(); },
+      paint: emit
+    };
+  }
+  if (typeof module !== 'undefined' && module.exports) { module.exports = { createBridge, operations, linesFrom, fingerprint, assertParity, checkoutURL }; return; }
+  if (scope.APGOGiftCard) return;
+  const doc = scope.document;
+  const configNode = doc.querySelector('[data-gift-config]');
+  if (!configNode) return;
+  const config = JSON.parse(configNode.textContent);
+  const storageKey = 'apgo-gift-bridge-v1-' + config.theme;
+  const rootURL = (scope.Shopify?.routes?.root || '/').replace(/\/$/, '');
+  const ui = () => doc.querySelector('[data-gift-ui]');
+  let mode = 'discount';
+  let timer;
+  let nativePending = 0;
+  const fetchJSON = async (url, options = {}) => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    try {
+      const response = await fetch(url, { ...options, signal: controller.signal, cache: 'no-store' });
+      if (!response.ok) fail('network');
+      return await response.json();
+    } finally { clearTimeout(timeout); }
+  };
+  const bridge = createBridge({
+    config, now: () => Date.now(),
+    native: () => fetchJSON(rootURL + '/cart.js', { credentials: 'same-origin' }),
+    graphql: (query, variables) => fetchJSON('https://' + config.domain + '/api/2026-07/graphql.json', {
+      method: 'POST', credentials: 'omit', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query, variables })
+    }),
+    hash: async text => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)))).map(b => b.toString(16).padStart(2, '0')).join(''),
+    restore: () => { try { const saved = JSON.parse(sessionStorage.getItem(storageKey)); return saved?.id && saved.owner && saved.expires && saved.last4 ? saved : null; } catch (_) { return null; } },
+    save: state => { try { if (state) sessionStorage.setItem(storageKey, JSON.stringify(state)); else sessionStorage.removeItem(storageKey); } catch (_) {} },
+    change: status => {
+      const el = ui(); if (!el) return;
+      el.dataset.codeMode = mode;
+      el.querySelectorAll('[data-code-mode]').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.codeMode === mode)); b.disabled = status.busy; });
+      const input = el.querySelector('.cdi-input');
+      input.type = mode === 'gift' ? 'password' : 'text';
+      input.placeholder = config.text[mode]; input.setAttribute('aria-label', config.text[mode]);
+      input.disabled = status.busy || nativePending > 0 || (mode === 'gift' && status.active);
+      el.querySelector('[type="submit"]').disabled = input.disabled;
+      const panel = el.querySelector('[data-gift-status]');
+      panel.hidden = !status.active && !status.error && !status.busy;
+      panel.dataset.error = String(!!status.error);
+      el.querySelector('[data-gift-remove]').hidden = !status.active;
+      el.querySelector('[data-gift-remove]').disabled = status.busy;
+      el.querySelector('[data-gift-retry]').hidden = !status.active || !status.error;
+      el.querySelector('[data-gift-retry]').disabled = status.busy;
+      let text = status.active ? config.text.applied + ' •••• ' + status.last4 : '';
+      if (status.busy) text += ' ' + config.text.loading;
+      else if (status.error) text += ' ' + config.text[status.error];
+      else if (status.estimate) {
+        const money = value => new Intl.NumberFormat(config.locale, { style: 'currency', currency: status.estimate.currency }).format(value / 100);
+        text += '\n' + config.text.deduction + ' −' + money(status.estimate.used) + '\n' + config.text.due + ' ' + money(status.estimate.due);
+      }
+      el.querySelector('[data-gift-message]').textContent = text.trim();
+    }
+  });
+  const refresh = () => { bridge.invalidate(); clearTimeout(timer); timer = setTimeout(() => { if (bridge.active() && !nativePending) bridge.refresh().catch(() => {}); else bridge.paint(); }, 450); };
+  scope.APGOGiftCard = {
+    ...bridge,
+    message: key => config.text[key] || config.text.network,
+    nativeStart: () => { nativePending++; bridge.invalidate(); },
+    nativeEnd: () => { nativePending = Math.max(0, nativePending - 1); refresh(); },
+    checkout: async params => { clearTimeout(timer); if (nativePending) fail('changed'); return bridge.checkout(params); },
+    preserveForm: (oldRoot, nextRoot) => ['shipping', 'invoice'].forEach(block => {
+      const selector = '[data-block="' + block + '"]';
+      const old = oldRoot.querySelector(selector), next = nextRoot.querySelector(selector);
+      if (old && next) next.replaceWith(old);
+    })
+  };
+  doc.addEventListener('click', event => {
+    const button = event.target.closest('button[data-code-mode], button[data-gift-remove], button[data-gift-retry]');
+    if (!button || !ui()?.contains(button) || bridge.busy()) return;
+    if (button.dataset.codeMode) {
+      mode = button.dataset.codeMode;
+      ui().querySelector('.cdi-input').value = '';
+      ui().dataset.codeMode = mode;
+      bridge.paint(); ui().querySelector('.cdi-input').focus();
+    } else if (button.hasAttribute('data-gift-remove')) bridge.remove().catch(() => {});
+    else bridge.refresh().catch(() => {});
+  });
+  doc.addEventListener('submit', event => {
+    const el = ui();
+    if (!el?.contains(event.target) || mode !== 'gift') return;
+    event.preventDefault(); event.stopImmediatePropagation();
+    const input = el.querySelector('.cdi-input');
+    const code = input.value.replace(/\s/g, ''); input.value = '';
+    if (code && !nativePending) bridge.apply(code).catch(() => {});
+  }, true);
+  ['cart:update', 'cart:updated', 'shopify:section:load'].forEach(name => doc.addEventListener(name, refresh));
+  scope.addEventListener('pageshow', refresh);
+  doc.addEventListener('visibilitychange', () => { if (!doc.hidden) refresh(); });
+  if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', refresh); else refresh();
+})(globalThis);
+</script>
+{% stylesheet %}
+  .cdi-code-modes { display: flex; gap: 18px; margin-block: 0 12px; }
+  .cdi-code-modes button { color: #aaa; border: 0; border-bottom: 2px solid transparent; background: none; padding: 8px 0; font: inherit; cursor: pointer; }
+  .cdi-code-modes button[aria-pressed='true'] { color: #ff8a15; border-bottom-color: currentColor; }
+  .cdi-gift-status { margin-top: 12px; color: #c9efd8; font-size: 13px; line-height: 1.7; }
+  .cdi-gift-status [data-gift-message] { white-space: pre-line; overflow-wrap: anywhere; }
+  .cdi-gift-status[data-error='true'] [data-gift-message] { color: #ffbd8c; }
+  .cdi-gift-status button { margin: 6px 16px 0 0; padding: 4px 0; color: #ff8a15; background: none; border: 0; text-decoration: underline; cursor: pointer; }
+  .cdi-gift-help { color: #aaa; font-size: 12px; line-height: 1.6; margin-top: 8px; }
+  .cdi-wrap button:focus-visible { outline: 2px solid #ff8a15; outline-offset: 3px; }
+  .cdi-wrap [hidden] { display: none !important; }
+{% endstylesheet %}

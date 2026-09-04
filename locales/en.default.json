@@ -8,6 +8,26 @@
  * ------------------------------------------------------------
  */
 {
+  "apgo_gift": {
+    "code_type": "Code type",
+    "discount": "Discount code",
+    "gift": "Gift card",
+    "remove": "Remove gift card",
+    "retry": "Check again",
+    "help": "One gift card at a time. Estimated credit only; shipping and the final amount are calculated at checkout. Gift cards do not reduce the gift / free shipping qualifying amount.",
+    "applied": "Gift card applied",
+    "loading": "Checking…",
+    "deduction": "Estimated gift card credit",
+    "due": "Estimated merchandise amount due",
+    "invalid": "This gift card cannot be applied. Check the code or remove it and enter a different card.",
+    "mismatch": "The cart's items or discounts could not be carried over exactly. Please retry, or remove the gift card here and enter it at the standard checkout.",
+    "expired": "The gift card session expired or the customer/cart changed. Remove the card and enter it again.",
+    "unsupported": "Pre-applying gift cards is currently available for supported Taiwan / TWD carts only. Remove it here and enter it at the standard checkout.",
+    "changed": "The cart is changing. Please wait and check again before checkout.",
+    "remove_first": "Only one gift card can be applied. Remove the current card before entering another.",
+    "network": "Could not verify the gift card or cart. Please retry; you have not been charged.",
+    "attributes_error": "Contact or invoice details could not be saved. Please retry before checkout."
+  },
   "accessibility": {
     "account": "Open account menu",
     "cart": "Cart",
