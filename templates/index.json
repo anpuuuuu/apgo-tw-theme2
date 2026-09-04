@@ -275,16 +275,16 @@
     "apgo_home_bestsellers_v2": {
       "type": "apgo-home-bestsellers-v2",
       "blocks": {
-        "bestseller_01": {
+        "product_jzaqEn": {
           "type": "product",
           "settings": {
-            "product": "apgo-atomic-colored-glaze"
+            "product": "apgo-superwash"
           }
         },
-        "bestseller_02": {
+        "product_WqygLp": {
           "type": "product",
           "settings": {
-            "product": "apgo-enamel-crystal-coating"
+            "product": "atomic_coating_motoset"
           }
         },
         "bestseller_03": {
@@ -299,40 +299,54 @@
             "product": "apgo-g11-plus"
           }
         },
-        "bestseller_05": {
+        "product_BtwRD9": {
           "type": "product",
           "settings": {
-            "product": "apgo-pressure-foam-sprayer"
+            "product": "新手鍍膜入門組-原子鍍膜-2-加厚洗車巾-1-鍍膜布-2"
           }
         },
-        "bestseller_06": {
+        "product_6qtanB": {
           "type": "product",
           "settings": {
-            "product": "apgo-headlight-restorer"
+            "product": "初秋人氣禮組-金牛獎尊榮-22件組🏆-狂殺↘32折"
           }
         },
-        "bestseller_07": {
+        "product_QW4bEt": {
           "type": "product",
           "settings": {
-            "product": "apgo-tire-shine-high-gloss"
+            "product": "g9-plus"
           }
         },
-        "bestseller_08": {
+        "product_DLggdh": {
           "type": "product",
           "settings": {
-            "product": "apgo-car-wash-mitt"
+            "product": "aurora-coating"
+          }
+        },
+        "product_FLgd4N": {
+          "type": "product",
+          "settings": {
+            "product": "ti-coating"
+          }
+        },
+        "bestseller_01": {
+          "type": "product",
+          "settings": {
+            "product": "apgo珊瑚絨毛巾"
           }
         }
       },
       "block_order": [
-        "bestseller_01",
-        "bestseller_02",
+        "product_jzaqEn",
+        "product_WqygLp",
         "bestseller_03",
         "bestseller_04",
-        "bestseller_05",
-        "bestseller_06",
-        "bestseller_07",
-        "bestseller_08"
+        "product_BtwRD9",
+        "product_6qtanB",
+        "product_QW4bEt",
+        "product_DLggdh",
+        "product_FLgd4N",
+        "bestseller_01"
       ],
       "name": "APGO · 熱銷商品 v2",
       "settings": {
