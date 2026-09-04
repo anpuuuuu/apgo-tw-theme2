@@ -171,6 +171,15 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
+        "banner_7D3VN4": {
+          "type": "banner",
+          "name": "超級洗衣精滿6包 再送2罐地板清潔劑",
+          "settings": {
+            "image": "shopify://shop_images/99___6_1_1920x1080_0.png",
+            "link": "shopify://collections/超級洗衣精系列",
+            "alt": "超級洗衣精滿6包 再送2罐地板清潔劑"
+          }
+        },
         "banner_cNRtiH": {
           "type": "banner",
           "name": "Banner-洗衣精買三送一、六送三",
@@ -227,6 +236,7 @@
         }
       },
       "block_order": [
+        "banner_7D3VN4",
         "banner_cNRtiH",
         "banner_xj9FpC",
         "banner_r6gpWn",
