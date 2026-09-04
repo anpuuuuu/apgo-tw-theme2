@@ -280,6 +280,7 @@
   .apgo-home-shelf__row {
     display: flex;
     overflow-x: auto;
+    contain: layout paint;
     scroll-snap-type: x mandatory;
     scrollbar-width: thin;
     scrollbar-color: var(--apgo-home-accent) #292a30;
