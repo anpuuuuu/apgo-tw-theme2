@@ -83,7 +83,6 @@
     {{ 'apgo-carcare.css' | asset_url | stylesheet_tag }}
     {%- if template.suffix == 'apgo-v2' -%}
       <script src="{{ 'apgo-cc-pdp.js' | asset_url }}" defer></script>
-      <script src="{{ 'apgo-cc-buybar.js' | asset_url }}" defer></script>
     {%- endif -%}
     {%- if template.name == 'collection' or template.name == 'search' -%}
       <script src="{{ 'apgo-cc-quick-add.js' | asset_url }}" defer></script>
@@ -163,6 +162,10 @@
     {%- if product.metafields.apgo.bundle_enabled -%}
       <script src="{{ 'apgo-bundle.js' | asset_url }}" defer></script>
     {%- endif -%}
+  {%- endif -%}
+  {%- if template.suffix == 'apgo-v2' or template.suffix == 'apgo-v1s-plus' -%}
+    {{ 'apgo-mobile-buybar.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'apgo-cc-buybar.js' | asset_url }}" defer></script>
   {%- endif -%}
 </head>
 

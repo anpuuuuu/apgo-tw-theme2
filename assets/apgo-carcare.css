@@ -2587,6 +2587,21 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   transform: rotate(180deg);
 }
 
+.apgo-cc-buybar__cart-link {
+  color: var(--cc-orange, #ff6b1a);
+  font-family: var(--cc-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-decoration: none;
+}
+
+.apgo-cc-buybar__cart-link:hover,
+.apgo-cc-buybar__cart-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* Chip pill — count + total. Translucent orange background with orange
    text (uses the cc-orange-soft-hi token already defined for hover/active
    highlights elsewhere in the skin). */

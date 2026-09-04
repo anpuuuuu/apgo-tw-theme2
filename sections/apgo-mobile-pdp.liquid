@@ -915,48 +915,7 @@
       {%- endif -%}
     {%- endif -%}
 
-    {%- comment -%} Sticky bottom CTA bar — two render paths {%- endcomment -%}
-    {%- if product.metafields.apgo.bundle_enabled -%}
-      {%- comment -%}
-        Bundle mode: disabled state initially shown as a single full-width
-        button. Phase B JS will swap to the enabled (add + buy) state once
-        the scent counter is filled.
-      {%- endcomment -%}
-      <div class="apgo-mpdp-sticky apgo-mpdp-sticky--bundle">
-        <button type="button"
-                class="apgo-mpdp-cta-bundle-disabled"
-                data-apgo-bundle-cta-disabled
-                disabled>
-          請先選滿香氛 · 還差 <span data-apgo-bundle-remaining>3</span> 包
-        </button>
-        <div class="apgo-mpdp-cta-bundle-enabled"
-             data-apgo-bundle-cta-enabled
-             style="display:none;">
-          <button type="button" class="apgo-mpdp-cta-secondary" data-apgo-bundle-add>加入購物車</button>
-          <button type="button" class="apgo-mpdp-cta-primary" data-apgo-bundle-buy-now>
-            立即購買 <span data-apgo-bundle-total>{{ 0 | money }}</span>
-          </button>
-        </div>
-      </div>
-    {%- else -%}
-      <div class="apgo-mpdp-sticky" data-apgo-availability-group>
-        <button type="submit" name="add" class="apgo-mpdp-cta-secondary" data-apgo-add {% unless v.available %}disabled hidden{% endunless %}>
-          加入購物車
-        </button>
-        <button type="button" class="apgo-mpdp-cta-primary" data-apgo-buy-now {% unless v.available %}disabled hidden{% endunless %}>
-          立即購買 <span data-apgo-total>{{ v.price | money }}</span>
-        </button>
-        <button
-          type="button"
-          class="apgo-mpdp-cta-primary apgo-mpdp-cta-soldout"
-          data-apgo-soldout
-          disabled
-          {% if v.available %}hidden{% endif %}
-        >
-          已售完
-        </button>
-      </div>
-    {%- endif -%}
+    {% render 'apgo-cc-mobile-buybar', product: product, is_on_sale: has_compare, mode: 'laundry', show_buy_now: section.settings.show_buy_now %}
 
     <script type="application/json" data-apgo-variants>{{ product.variants | json }}</script>
   {% endform %}

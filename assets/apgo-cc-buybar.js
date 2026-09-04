@@ -8,7 +8,7 @@
  *   - Fetch /cart.js on boot + after every add + on cart:updated event;
  *     render line items (thumb, name, qty, price), chip count + subtotal
  *
- * Loaded only on template.suffix == 'apgo-v2' via layout/theme.liquid.
+ * Loaded on product templates that render the shared APGO mobile buy bar.
  */
 (function () {
   'use strict';
@@ -22,8 +22,10 @@
   var bar = document.querySelector('[data-apgo-cc-buybar]');
   if (!bar) return;
 
-  var form = document.querySelector('.apgo-cc-pdp__form');
-  if (!form) return;
+  var mode = bar.getAttribute('data-apgo-cc-buybar-mode') || 'carcare';
+  var form = mode === 'laundry'
+    ? document.querySelector('form.apgo-product-form')
+    : document.querySelector('.apgo-cc-pdp__form');
 
   // ---------- Element refs ----------
   // Some elements appear twice (bar + sheet head) — collect them via
@@ -43,13 +45,15 @@
   var soldOutBtn   = bar.querySelector('[data-apgo-cc-buybar-soldout]');
 
   var variants = [];
-  var variantsEl = document.querySelector('[data-apgo-cc-variants]');
+  var variantsEl = document.querySelector(mode === 'laundry' ? '[data-apgo-variants]' : '[data-apgo-cc-variants]');
   if (variantsEl) {
     try { variants = JSON.parse(variantsEl.textContent); } catch (e) {}
   }
 
   function currentVariant() {
+    if (!form) return null;
     var idInput = form.querySelector('[data-apgo-cc-variant-id]');
+    if (!idInput) idInput = form.querySelector('[data-apgo-variant-id]');
     var id = idInput && String(idInput.value);
     for (var i = 0; i < variants.length; i++) {
       if (String(variants[i].id) === id) return variants[i];

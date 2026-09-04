@@ -10,7 +10,7 @@
       .apgo-cc-buybar__backdrop           — full-screen dim overlay (open state)
       .apgo-cc-buybar__panel              — slide-up container
         .apgo-cc-buybar__sheet            — expandable mini cart (max-height: 0 → auto)
-          .apgo-cc-buybar__sheet-head     — 下拉收起 (left) + chip (right)
+          .apgo-cc-buybar__sheet-head     — 下拉收起 (left) + 前往購物車 (right)
           .apgo-cc-buybar__cart-title     — 「購物車」label
           .apgo-cc-buybar__items          — JS-populated cart line list
           .apgo-cc-buybar__subtotal-row   — 小計 (含運)
@@ -26,8 +26,9 @@
 {%- endcomment -%}
 
 {%- assign v = product.selected_or_first_available_variant -%}
+{%- assign buybar_mode = mode | default: 'carcare' -%}
 
-<aside class="apgo-cc-buybar" data-apgo-cc-buybar aria-label="加入購物車">
+<aside class="apgo-cc-buybar apgo-cc-buybar--{{ buybar_mode | handle }}" data-apgo-cc-buybar data-apgo-cc-buybar-mode="{{ buybar_mode | escape }}" aria-label="加入購物車">
   <div class="apgo-cc-buybar__backdrop" data-apgo-cc-buybar-backdrop aria-hidden="true"></div>
 
   <div class="apgo-cc-buybar__panel">
@@ -43,11 +44,9 @@
           </svg>
           <span>下拉收起</span>
         </button>
-        <span class="apgo-cc-buybar__chip" data-apgo-cc-buybar-chip>
-          <span><span data-apgo-cc-buybar-count>0</span> 件</span>
-          <span class="apgo-cc-buybar__chip-sep" aria-hidden="true">·</span>
-          <span data-apgo-cc-buybar-chip-total>NT$ 0</span>
-        </span>
+        <a class="apgo-cc-buybar__cart-link" href="{{ routes.cart_url }}">
+          {{ 'product.go_to_cart' | t }}
+        </a>
       </div>
 
       <div class="apgo-cc-buybar__cart-title">購物車</div>
@@ -86,6 +85,53 @@
         </span>
       </button>
       <div class="apgo-cc-buybar__actions">
+        {%- if buybar_mode == 'laundry' -%}
+          {%- if product.metafields.apgo.bundle_enabled -%}
+            <button type="button"
+                    class="apgo-cc-buybar__btn apgo-cc-buybar__btn--soldout apgo-cc-buybar__bundle-disabled"
+                    data-apgo-bundle-cta-disabled
+                    disabled>
+              請先選滿香氛 · 還差 <span data-apgo-bundle-remaining>3</span> 包
+            </button>
+            <div class="apgo-cc-buybar__bundle-enabled"
+                 data-apgo-bundle-cta-enabled
+                 style="display:none;">
+              <button type="button"
+                      class="apgo-cc-buybar__btn apgo-cc-buybar__btn--add"
+                      data-apgo-bundle-add>
+                加入購物車
+              </button>
+              <button type="button"
+                      class="apgo-cc-buybar__btn apgo-cc-buybar__btn--buy"
+                      data-apgo-bundle-buy-now>
+                立即購買 <span data-apgo-bundle-total>{{ 0 | money }}</span>
+              </button>
+            </div>
+          {%- else -%}
+            <button type="submit"
+                    name="add"
+                    class="apgo-cc-buybar__btn apgo-cc-buybar__btn--add"
+                    data-apgo-add
+                    {% unless v.available %}disabled hidden{% endunless %}>
+              加入購物車
+            </button>
+            {%- if show_buy_now -%}
+              <button type="button"
+                      class="apgo-cc-buybar__btn apgo-cc-buybar__btn--buy"
+                      data-apgo-buy-now
+                      {% unless v.available %}disabled hidden{% endunless %}>
+                立即購買 <span data-apgo-total>{{ v.price | money }}</span>
+              </button>
+            {%- endif -%}
+            <button type="button"
+                    class="apgo-cc-buybar__btn apgo-cc-buybar__btn--soldout"
+                    data-apgo-soldout
+                    disabled
+                    {% if v.available %}hidden{% endif %}>
+              已售完
+            </button>
+          {%- endif -%}
+        {%- else -%}
         <button type="button"
                 class="apgo-cc-buybar__btn apgo-cc-buybar__btn--add"
                 data-apgo-cc-buybar-add
@@ -105,6 +151,7 @@
                 {% if v.available %}hidden{% endif %}>
           已售完
         </button>
+        {%- endif -%}
       </div>
     </div>
   </div>
@@ -129,6 +176,7 @@
   with the in-panel display.
   Hidden on desktop via CSS — buybar itself is hidden on desktop already.
 {%- endcomment -%}
+{%- unless buybar_mode == 'laundry' -%}
 <div class="apgo-cc-purchase" data-apgo-cc-purchase aria-hidden="true">
   <div class="apgo-cc-purchase__backdrop" data-apgo-cc-purchase-close></div>
   <div class="apgo-cc-purchase__sheet" role="dialog" aria-modal="true" aria-label="商品選擇">
@@ -242,3 +290,4 @@
     </footer>
   </div>
 </div>
+{%- endunless -%}
