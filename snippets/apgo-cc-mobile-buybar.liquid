@@ -10,7 +10,7 @@
       .apgo-cc-buybar__backdrop           — full-screen dim overlay (open state)
       .apgo-cc-buybar__panel              — slide-up container
         .apgo-cc-buybar__sheet            — expandable mini cart (max-height: 0 → auto)
-          .apgo-cc-buybar__sheet-head     — 下拉收起 (left) + 前往購物車 (right)
+          .apgo-cc-buybar__sheet-head     — 下拉收起
           .apgo-cc-buybar__cart-title     — 「購物車」label
           .apgo-cc-buybar__items          — JS-populated cart line list
           .apgo-cc-buybar__subtotal-row   — 小計 (含運)
@@ -44,9 +44,6 @@
           </svg>
           <span>下拉收起</span>
         </button>
-        <a class="apgo-cc-buybar__cart-link" href="{{ routes.cart_url }}">
-          {{ 'product.go_to_cart' | t }}
-        </a>
       </div>
 
       <div class="apgo-cc-buybar__cart-title">購物車</div>
@@ -71,19 +68,24 @@
       is wired in JS on the same element.
     {%- endcomment -%}
     <div class="apgo-cc-buybar__bar">
-      <button type="button"
-              class="apgo-cc-buybar__top"
-              data-apgo-cc-buybar-handle
-              aria-label="展開購物車預覽">
-        <span class="apgo-cc-buybar__top-hint" data-apgo-cc-buybar-hint>
-          上滑查看購物車
-        </span>
-        <span class="apgo-cc-buybar__chip" data-apgo-cc-buybar-chip>
-          <span><span data-apgo-cc-buybar-count>0</span> 件</span>
-          <span class="apgo-cc-buybar__chip-sep" aria-hidden="true">·</span>
-          <span data-apgo-cc-buybar-chip-total>{{ 0 | money }}</span>
-        </span>
-      </button>
+      <div class="apgo-cc-buybar__summary-actions">
+        <a class="apgo-cc-buybar__cart-link" href="{{ routes.cart_url }}">
+          {{ 'product.go_to_checkout' | t }}
+        </a>
+        <button type="button"
+                class="apgo-cc-buybar__top"
+                data-apgo-cc-buybar-handle
+                aria-label="展開購物車預覽">
+          <span class="apgo-cc-buybar__top-hint" data-apgo-cc-buybar-hint>
+            上滑查看購物車
+          </span>
+          <span class="apgo-cc-buybar__chip" data-apgo-cc-buybar-chip>
+            <span><span data-apgo-cc-buybar-count>0</span> 件</span>
+            <span class="apgo-cc-buybar__chip-sep" aria-hidden="true">·</span>
+            <span data-apgo-cc-buybar-chip-total>{{ 0 | money }}</span>
+          </span>
+        </button>
+      </div>
       <div class="apgo-cc-buybar__actions">
         {%- if buybar_mode == 'laundry' -%}
           {%- if product.metafields.apgo.bundle_enabled -%}

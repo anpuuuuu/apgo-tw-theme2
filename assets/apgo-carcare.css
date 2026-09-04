@@ -2588,12 +2588,19 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 }
 
 .apgo-cc-buybar__cart-link {
+  display: none;
+  align-items: center;
+  padding: 4px 0;
   color: var(--cc-orange, #ff6b1a);
   font-family: var(--cc-font-body);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   letter-spacing: .04em;
   text-decoration: none;
+}
+
+.apgo-cc-buybar.is-open .apgo-cc-buybar__cart-link {
+  display: inline-flex;
 }
 
 .apgo-cc-buybar__cart-link:hover,
@@ -2756,8 +2763,16 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 /* Top row of the bar — hint on the left + cart-status chip on the right.
    This whole element is the swipe/tap target for opening the sheet
    (referenced in JS as data-apgo-cc-buybar-handle). */
+.apgo-cc-buybar__summary-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .apgo-cc-buybar__top {
   display: flex;
+  flex: 1 1 auto;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
@@ -2780,7 +2795,13 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   transition: opacity .2s ease;
 }
 .apgo-cc-buybar.is-open .apgo-cc-buybar__top-hint {
-  opacity: 0;
+  display: none;
+}
+.apgo-cc-buybar.is-open .apgo-cc-buybar__top {
+  flex: 0 0 auto;
+  width: auto;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .apgo-cc-buybar__btn {
