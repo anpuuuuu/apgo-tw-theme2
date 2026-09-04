@@ -493,20 +493,20 @@
             "subtitle": "對症下藥，一瓶解決一種髒"
           }
         },
-        "shelf_05": {
-          "type": "shelf",
-          "settings": {
-            "collection": "洗車用品",
-            "title": "洗車用品",
-            "subtitle": "洗車工具與日常保養"
-          }
-        },
         "shelf_06": {
           "type": "shelf",
           "settings": {
             "collection": "損傷修復",
             "title": "損傷修復",
             "subtitle": "刮痕、水痕與表面修復"
+          }
+        },
+        "shelf_05": {
+          "type": "shelf",
+          "settings": {
+            "collection": "洗車用品",
+            "title": "洗車用品",
+            "subtitle": "洗車工具與日常保養"
           }
         },
         "shelf_07": {
@@ -523,8 +523,8 @@
         "shelf_02",
         "shelf_03",
         "shelf_04",
-        "shelf_05",
         "shelf_06",
+        "shelf_05",
         "shelf_07"
       ],
       "name": "APGO · 分類商品列 v2",
