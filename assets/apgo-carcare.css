@@ -1414,6 +1414,13 @@ body.apgo-cc-skin .product-recommendations h3 * {
   color: var(--cc-fg) !important;
 }
 
+@media (max-width: 749px) {
+  body.apgo-cc-skin .product-recommendations .section-resource-list__content > .text-block > h3 {
+    font-size: 1.35rem !important;
+    line-height: 1.2 !important;
+  }
+}
+
 /* Make the recommendation product cards visually smaller — reduce inner
    padding and shrink the typography one notch. The grid layout itself
    (4 cols desktop / 2 cols mobile) stays per the JSON section settings. */
