@@ -216,15 +216,6 @@
             "alt": "🏆🛵原子鍍膜機車尊榮全配組🏆 NT$1499"
           }
         },
-        "banner_jGTL4Q": {
-          "type": "banner",
-          "name": "Banner-洗衣精訂閱制活動",
-          "settings": {
-            "image": "shopify://shop_images/BN-1920-3.png",
-            "link": "https://sub.apgo.tw/",
-            "alt": "洗衣精訂閱制活動"
-          }
-        },
         "banner_CXPEDn": {
           "type": "banner",
           "name": "google&fb五星好評",
@@ -242,6 +233,15 @@
             "link": "shopify://pages/campaign20260803",
             "alt": "APGO評價募集活動"
           }
+        },
+        "banner_jGTL4Q": {
+          "type": "banner",
+          "name": "Banner-洗衣精訂閱制活動",
+          "settings": {
+            "image": "shopify://shop_images/BN-1920-3.png",
+            "link": "https://sub.apgo.tw/",
+            "alt": "洗衣精訂閱制活動"
+          }
         }
       },
       "block_order": [
@@ -250,9 +250,9 @@
         "banner_cNRtiH",
         "banner_xj9FpC",
         "banner_r6gpWn",
-        "banner_jGTL4Q",
         "banner_CXPEDn",
-        "banner_T8KwPX"
+        "banner_T8KwPX",
+        "banner_jGTL4Q"
       ],
       "settings": {
         "autoplay": true,
