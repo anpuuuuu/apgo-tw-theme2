@@ -7,28 +7,55 @@
   @param {string} section_id - The parent section ID (cart-shell-v2)
 {%- enddoc -%}
 
-{%- assign _sid = section_id | default: section.id -%}
-
-<div class="cdi-wrap" id="CartDiscountInline-{{ _sid }}">
-  <form class="cart-discount__form cdi-form" id="CartDiscountForm-{{ _sid }}" onsubmit="return false;">
+<div class="cdi-wrap" id="CartDiscountInline-{{ section_id }}" data-gift-ui data-code-mode="discount">
+  <div class="cdi-code-modes" role="group" aria-label="{{ 'apgo_gift.code_type' | t | escape }}">
+    <button type="button" data-code-mode="discount" aria-pressed="true">{{ 'apgo_gift.discount' | t }}</button>
+    <button type="button" data-code-mode="gift" aria-pressed="false">{{ 'apgo_gift.gift' | t }}</button>
+  </div>
+  <form class="cart-discount__form cdi-form" id="CartDiscountForm-{{ section_id }}" onsubmit="return false;">
     <input
-      id="cdi-input-{{ _sid }}"
-      class="cart-discount__input cdi-input"
+      id="cdi-input-{{ section_id }}"
+      class="cart-discount__input cdi-input fs-mask"
+      data-private data-hj-suppress
       type="text"
       placeholder="{{ 'content.discount_code' | t | default: '套用折扣代碼' }}"
       autocomplete="off"
+      spellcheck="false"
       aria-label="{{ 'accessibility.discount' | t | default: '折扣碼' }}"
     >
     <button type="submit" class="button button--primary cart-discount__button cdi-btn">
       {{ 'actions.apply' | t | default: '套用' }}
     </button>
   </form>
-  <div class="cdi-msg hidden" id="CartDiscountMsg-{{ _sid }}" role="alert" aria-live="polite"></div>
+  <div class="cdi-msg hidden" id="CartDiscountMsg-{{ section_id }}" role="alert" aria-live="polite"></div>
+  <div class="cdi-gift-status" data-gift-status hidden>
+    <div data-gift-message role="status" aria-live="polite"></div>
+    <button type="button" data-gift-remove hidden>{{ 'apgo_gift.remove' | t }}</button>
+    <button type="button" data-gift-retry hidden>{{ 'apgo_gift.retry' | t }}</button>
+  </div>
+  <div class="cdi-gift-help">{{ 'apgo_gift.help' | t }}</div>
+  <script type="application/json" data-gift-config>
+    {
+      "domain": {{ shop.permanent_domain | json }}, "host": {{ request.host | json }},
+      "theme": {{ theme.id | json }}, "customer": {{ customer.id | default: 'guest' | json }},
+      "country": {{ localization.country.iso_code | json }}, "locale": {{ request.locale.iso_code | json }},
+      "text": {
+        "discount": {{ 'apgo_gift.discount' | t | json }}, "gift": {{ 'apgo_gift.gift' | t | json }},
+        "applied": {{ 'apgo_gift.applied' | t | json }}, "loading": {{ 'apgo_gift.loading' | t | json }},
+        "deduction": {{ 'apgo_gift.deduction' | t | json }}, "due": {{ 'apgo_gift.due' | t | json }},
+        "invalid": {{ 'apgo_gift.invalid' | t | json }}, "mismatch": {{ 'apgo_gift.mismatch' | t | json }},
+        "expired": {{ 'apgo_gift.expired' | t | json }}, "unsupported": {{ 'apgo_gift.unsupported' | t | json }},
+        "changed": {{ 'apgo_gift.changed' | t | json }}, "remove_first": {{ 'apgo_gift.remove_first' | t | json }},
+        "network": {{ 'apgo_gift.network' | t | json }}, "attributes_error": {{ 'apgo_gift.attributes_error' | t | json }}
+      }
+    }
+  </script>
 </div>
+{% render 'cart-gift-card-bridge' %}
 
 <script>
 (function () {
-  var sid      = {{ _sid | json }};
+  var sid      = {{ section_id | json }};
   var moneyFmt = {{ shop.money_format | json }};
   var root     = (window.Shopify && Shopify.routes && Shopify.routes.root
                    ? Shopify.routes.root.replace(/\/$/, '') : '');
@@ -224,11 +251,20 @@
     if (!btn) return;
     btn.disabled    = on;
     btn.textContent = on ? '驗證中…' : BTN_LABEL;
+    if (on && !window['__cdiPending_' + sid]) {
+      window['__cdiPending_' + sid] = true;
+      window.APGOGiftCard?.nativeStart();
+    } else if (!on && window['__cdiPending_' + sid]) {
+      window['__cdiPending_' + sid] = false;
+      window.APGOGiftCard?.nativeEnd();
+    }
   }
 
   /* ── section 重繪（不呼叫 reExecScripts）──────────────────────── */
   function morphCartSection(afterDone) {
-    fetch(root + '/cart?sections=' + encodeURIComponent(sid), {
+    var sectionURL = new URL(window.location.href);
+    sectionURL.searchParams.set('sections', sid);
+    fetch(sectionURL.toString(), {
       headers: { 'X-Requested-With': 'XMLHttpRequest' }
     })
     .then(function (r) { return r.json(); })
@@ -239,7 +275,9 @@
       var fresh   = doc.getElementById('shopify-section-' + sid);
       var current = document.getElementById('shopify-section-' + sid);
       if (fresh && current) {
+        window.APGOGiftCard?.preserveForm(current, fresh);
         current.replaceWith(fresh);
+        window.APGOGiftCard?.paint();
         /* dispatch cart:update with detail.data (cart-icon.js 等 listener 需要這個結構) */
         fetch(root + '/cart.js', { headers: { Accept: 'application/json' } })
           .then(function (r) { return r.json(); })
@@ -269,6 +307,8 @@
 
   /* ── 核心 submit 處理 ─────────────────────────────────────────── */
   function handleSubmit() {
+    if ($form()?.closest('[data-gift-ui]')?.dataset.codeMode === 'gift') return;
+    if (window['__cdiPending_' + sid] || window.APGOGiftCard?.busy()) return;
     var inp  = $input();
     var code = inp ? inp.value.trim() : '';
     if (!code) return;
