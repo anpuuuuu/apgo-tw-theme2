@@ -182,9 +182,14 @@
       var panels = $$('[data-apgo-cc-panel]', tabsRoot);
       if (panels.length) {
         function updateActiveFromScroll() {
-          // ~tab-bar height + 1px buffer so the first panel still wins
-          // when scrolled exactly to its top
-          var threshold = 60 + 1;
+          // Include the responsive sticky header and tab bar heights so
+          // scroll-spy changes at the same point where content is visible.
+          var headerHeight = parseFloat(
+            getComputedStyle(document.body).getPropertyValue('--header-height')
+          ) || 0;
+          var tabBar = $('.apgo-cc-pdp__tab-bar', tabsRoot);
+          var tabBarHeight = tabBar ? tabBar.getBoundingClientRect().height : 60;
+          var threshold = headerHeight + tabBarHeight + 1;
           var activeKey = panels[0].getAttribute('data-apgo-cc-panel');
           for (var i = 0; i < panels.length; i++) {
             var top = panels[i].getBoundingClientRect().top;

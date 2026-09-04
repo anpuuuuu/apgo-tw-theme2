@@ -1700,17 +1700,15 @@ body.apgo-cc-skin .product-recommendations .product-grid__item .price {
 }
 
 /* ---- Sticky tab bar (simple) ----
-   This theme's header is not sticky, so the tab bar just pins to
-   top: 0 of the viewport once scrolled past. Parent .apgo-cc-pdp__tabs
-   needs overflow: visible for sticky to work (was overflow: hidden on
-   desktop for rounded-corner clipping; the slight corner artifact
-   when not stuck is an acceptable trade-off). */
+   Keep the product tab bar below the global sticky header. The header
+   component maintains --header-height as its responsive height changes.
+   Parent .apgo-cc-pdp__tabs needs overflow: visible for sticky to work. */
 body.apgo-cc-skin .apgo-cc-pdp__tabs {
   overflow: visible;
 }
 body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
   position: sticky;
-  top: 0;
+  top: var(--header-height, 0px);
   z-index: 50; /* above page content, below the mobile buybar (z:90) */
   background: var(--cc-bg);
   border-bottom: 1px solid var(--cc-divider);
@@ -1730,7 +1728,7 @@ body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
   color: var(--cc-fg-mid);
   font-size: 13px;
   line-height: 1.8;
-  scroll-margin-top: 60px;
+  scroll-margin-top: calc(var(--header-height, 0px) + 60px);
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 .apgo-cc-pdp__tab-panel:first-of-type { border-top: none; }
