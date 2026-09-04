@@ -87,6 +87,22 @@
             "link_text": "聯絡客服",
             "link_url": "shopify://pages/contact"
           }
+        },
+        "about_link_brandStoryV2": {
+          "type": "about_link",
+          "name": "品牌故事",
+          "settings": {
+            "link_text": "品牌故事",
+            "link_url": "/pages/brand-story"
+          }
+        },
+        "about_link_socialMediaV2": {
+          "type": "about_link",
+          "name": "各國社群媒體",
+          "settings": {
+            "link_text": "各國社群媒體",
+            "link_url": "/pages/short-videos"
+          }
         }
       },
       "block_order": [
@@ -97,7 +113,9 @@
         "product_link_ftqhqw",
         "product_link_Fz7Dwj",
         "service_link_kFxpRY",
-        "service_link_PfUErR"
+        "service_link_PfUErR",
+        "about_link_brandStoryV2",
+        "about_link_socialMediaV2"
       ],
       "name": "APGO Footer",
       "settings": {

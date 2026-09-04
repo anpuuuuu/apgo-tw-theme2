@@ -1,5 +1,7 @@
 {%- doc -%}
   Renders the cart icon, which displays the number of items in the cart via a bubble.
+
+  @param {string} [test_id] - Optional test identifier passed to the cart bubble.
 {%- enddoc -%}
 <cart-icon
   class="
@@ -7,6 +9,8 @@
     {% unless cart == empty %} header-actions__cart-icon--has-cart{% endunless %}
   "
   data-testid="cart-icon"
+  data-cart-count="{{ cart.item_count }}"
+  data-cart-count-label="{{ 'accessibility.cart_count' | t | escape }}"
 >
   <span
     class="svg-wrapper"

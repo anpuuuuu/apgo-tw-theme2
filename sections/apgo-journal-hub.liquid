@@ -1,0 +1,65 @@
+{% render 'apgo-journal-styles' %}
+<section class="apgo-journal" aria-labelledby="JournalTitle-{{ section.id }}" data-journal-hub>
+  <div class="apgo-journal__inner">
+    <header>
+      <p class="apgo-journal__eyebrow">{{ 'journal.eyebrow' | t }}</p>
+      <h1 id="JournalTitle-{{ section.id }}">{{ section.settings.title | default: page.title | escape }}</h1>
+      {%- if section.settings.intro != blank -%}<div class="apgo-journal__intro">{{ section.settings.intro }}</div>{%- endif -%}
+    </header>
+    <nav class="apgo-journal__categories" aria-label="{{ 'journal.categories' | t }}">
+      {%- for block in section.blocks -%}
+        {%- assign category_blog = block.settings.blog -%}
+        {%- if category_blog != blank -%}
+          <a class="apgo-journal__category" href="{{ category_blog.url }}" {{ block.shopify_attributes }}>
+            <span aria-hidden="true">0{{ forloop.index }} /</span>
+            <strong>{{ category_blog.title | escape }}</strong>
+            {%- if block.settings.description != blank -%}<small>{{ block.settings.description | escape }}</small>{%- endif -%}
+          </a>
+        {%- elsif request.design_mode -%}
+          <div class="apgo-journal__empty" {{ block.shopify_attributes }}>{{ 'journal.select_blog' | t }}</div>
+        {%- endif -%}
+      {%- endfor -%}
+    </nav>
+    {%- for block in section.blocks -%}
+      {%- assign category_blog = block.settings.blog -%}
+      {%- if category_blog == blank -%}{%- continue -%}{%- endif -%}
+      <section class="apgo-journal__group" aria-labelledby="JournalCategory-{{ section.id }}-{{ block.id }}" data-journal-blog="{{ category_blog.handle | escape }}">
+        <header class="apgo-journal__group-heading">
+          <h2 id="JournalCategory-{{ section.id }}-{{ block.id }}">{{ category_blog.title | escape }}</h2>
+          <a href="{{ category_blog.url }}" aria-label="{{ 'journal.view_category' | t: title: category_blog.title | escape }}">{{ 'journal.view_all' | t }} <span aria-hidden="true">→</span></a>
+        </header>
+        {%- if category_blog.articles_count > 0 -%}
+          <div class="apgo-journal__grid">
+            {%- for article in category_blog.articles limit: 2 -%}
+              {% render 'apgo-journal-card', article: article %}
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <p class="apgo-journal__empty">{{ 'journal.empty' | t }}</p>
+        {%- endif -%}
+      </section>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "APGO · 生活誌總覽",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "text", "id": "title", "label": "標題", "default": "APGO生活誌" },
+    { "type": "richtext", "id": "intro", "label": "簡介", "default": "<p>從居家清潔到愛車保養，探索產品教學、選購指南與實用知識。</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "文章分類",
+      "settings": [
+        { "type": "blog", "id": "blog", "label": "Blog", "info": "顯示此 Blog 最新兩篇已發布文章，不依標籤篩選。" },
+        { "type": "text", "id": "description", "label": "分類簡介" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "APGO · 生活誌總覽", "blocks": [{ "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" }] }],
+  "enabled_on": { "templates": ["page"] }
+}
+{% endschema %}

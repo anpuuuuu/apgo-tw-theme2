@@ -5,6 +5,7 @@
   @param {product} product_resource - The product to render
   @param {boolean} [show_unit_price] - Whether to show the unit price
   @param {boolean} [show_sale_price_first] - Whether to show the sale price first
+  @param {boolean} [is_product_card] - Use aggregate variant pricing instead of the selected variant
 {%- enddoc -%}
 
 {%- liquid
@@ -14,14 +15,15 @@
   assign price = selected_variant.price
   assign compare_at_price = selected_variant.compare_at_price
   assign show_price_range = false
-  assign is_product_card = false
-
-  if product_resource.price_varies and product.handle != closest.product.handle
-    assign show_price_range = true
+  if is_product_card == nil
+    assign is_product_card = false
+    if product.handle != closest.product.handle
+      assign is_product_card = true
+    endif
   endif
 
-  if product.handle != closest.product.handle
-    assign is_product_card = true
+  if product_resource.price_varies and is_product_card
+    assign show_price_range = true
   endif
 
   assign variant_count = product_resource.variants | size
@@ -61,9 +63,7 @@
     assign price = 1999
   endif
 
-  # Checks if product handle matches the closest product's handle (i.e. product page)
-  # and if the currency code is enabled for product pages
-  if product.handle == closest.product.handle and settings.currency_code_enabled_product_pages
+  if is_product_card == false and settings.currency_code_enabled_product_pages
     assign price = price | money_with_currency
     if show_compare_price_range
       assign compare_at_price_min = product_resource.compare_at_price_min | money_with_currency
@@ -79,9 +79,7 @@
       assign compare_at_price = compare_at_price | money_with_currency
     endif
 
-    # Checks if product handle does not match the closest product's handle (i.e. product card)
-    # and if the currency code is enabled for product cards
-  elsif product.handle != closest.product.handle and settings.currency_code_enabled_product_cards
+  elsif is_product_card and settings.currency_code_enabled_product_cards
     if show_price_range
       assign price_min = product_resource.price_min | money_with_currency
       assign price_max = product_resource.price_max | money_with_currency
@@ -164,9 +162,9 @@
   {% endif %}
   {%- if selected_variant.unit_price and show_unit_price %}
     {%- liquid
-      if product.handle == closest.product.handle and settings.currency_code_enabled_product_pages
+      if is_product_card == false and settings.currency_code_enabled_product_pages
         assign unit_price = selected_variant.unit_price | money_with_currency
-      elsif product.handle != closest.product.handle and settings.currency_code_enabled_product_cards
+      elsif is_product_card and settings.currency_code_enabled_product_cards
         assign unit_price = selected_variant.unit_price | money_with_currency
       else
         assign unit_price = selected_variant.unit_price | money

@@ -1,0 +1,377 @@
+{%- comment -%}
+  APGO 首頁 v2：熱銷商品、品類導覽、新品上市、各類商品區。
+  所有商品與分類都由 Theme Editor 選擇；沒有可用內容時自動隱藏。
+{%- endcomment -%}
+
+{%- liquid
+  assign bestseller_count = 0
+  assign category_count = 0
+  assign shelf_count = 0
+  for block in section.blocks
+    case block.type
+      when 'bestseller'
+        if block.settings.product != blank and block.settings.product.available
+          assign bestseller_count = bestseller_count | plus: 1
+        endif
+      when 'category'
+        if block.settings.collection != blank
+          assign category_count = category_count | plus: 1
+        endif
+      when 'shelf'
+        if block.settings.collection != blank
+          assign shelf_count = shelf_count | plus: 1
+        endif
+    endcase
+  endfor
+-%}
+
+<section
+  class="apgo-home-v2"
+  data-apgo-home-v2
+  style="--apgo-home-accent: {{ section.settings.accent_color }}; --apgo-home-max: {{ section.settings.max_width }}px;"
+>
+  <div class="apgo-home-v2__inner">
+    {%- if bestseller_count > 0 or request.design_mode -%}
+      <section class="apgo-home-panel apgo-home-bestsellers" aria-labelledby="ApgoBestsellers-{{ section.id }}">
+        <header class="apgo-home-heading">
+          <div>
+            <p class="apgo-home-heading__eyebrow">BEST SELLERS</p>
+            <h2 id="ApgoBestsellers-{{ section.id }}">{{ section.settings.bestseller_title }}</h2>
+          </div>
+          {%- if section.settings.bestseller_link != blank -%}
+            <a href="{{ section.settings.bestseller_link }}">{{ section.settings.view_all_label }}</a>
+          {%- endif -%}
+        </header>
+
+        {%- if bestseller_count > 0 -%}
+          <div class="apgo-home-scroller-wrap">
+            <button class="apgo-home-scroll-button apgo-home-scroll-button--prev" type="button" data-apgo-scroll-prev aria-label="往左瀏覽">‹</button>
+            <div class="apgo-home-product-row" data-apgo-scroll>
+              {%- for block in section.blocks -%}
+                {%- if block.type != 'bestseller' -%}{%- continue -%}{%- endif -%}
+                {%- assign selected_product = block.settings.product -%}
+                {%- if selected_product == blank or selected_product.available == false -%}{%- continue -%}{%- endif -%}
+                <div class="apgo-home-product-row__item" {{ block.shopify_attributes }}>
+                  {% render 'apgo-home-product-card', product: selected_product, show_add: true %}
+                </div>
+              {%- endfor -%}
+            </div>
+            <button class="apgo-home-scroll-button apgo-home-scroll-button--next" type="button" data-apgo-scroll-next aria-label="往右瀏覽">›</button>
+          </div>
+        {%- else -%}
+          <p class="apgo-home-empty">請新增「熱銷商品」區塊並選擇商品；缺貨商品會自動隱藏。</p>
+        {%- endif -%}
+      </section>
+    {%- endif -%}
+
+    {%- if category_count > 0 or request.design_mode -%}
+      <section class="apgo-home-panel apgo-home-categories" aria-labelledby="ApgoCategories-{{ section.id }}">
+        <header class="apgo-home-heading">
+          <div>
+            <p class="apgo-home-heading__eyebrow">SHOP BY CATEGORY</p>
+            <h2 id="ApgoCategories-{{ section.id }}">{{ section.settings.category_title }}</h2>
+          </div>
+          <a href="{{ routes.collections_url }}">{{ section.settings.view_all_products_label }}</a>
+        </header>
+        {%- if category_count > 0 -%}
+          <div class="apgo-home-category-grid">
+            {%- for block in section.blocks -%}
+              {%- if block.type != 'category' or block.settings.collection == blank -%}{%- continue -%}{%- endif -%}
+              {%- assign selected_collection = block.settings.collection -%}
+              <a class="apgo-home-category" href="{{ selected_collection.url }}" {{ block.shopify_attributes }}>
+                <span class="apgo-home-category__icon" aria-hidden="true">{{ block.settings.icon | default: '◇' }}</span>
+                <span class="apgo-home-category__title">{{ block.settings.title | default: selected_collection.title }}</span>
+                <span class="apgo-home-category__count">{{ selected_collection.products_count }} 件</span>
+              </a>
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <p class="apgo-home-empty">請新增「品類入口」區塊並選擇商品系列。</p>
+        {%- endif -%}
+      </section>
+    {%- endif -%}
+
+    {%- assign featured_new_product = section.settings.featured_new_product -%}
+    {%- assign new_collection = section.settings.new_collection -%}
+    {%- if featured_new_product != blank or new_collection != blank or request.design_mode -%}
+      <section class="apgo-home-panel apgo-home-new" aria-labelledby="ApgoNew-{{ section.id }}">
+        <header class="apgo-home-heading">
+          <div>
+            <p class="apgo-home-heading__eyebrow">NEW ARRIVALS</p>
+            <h2 id="ApgoNew-{{ section.id }}">{{ section.settings.new_title }}</h2>
+          </div>
+          {%- if section.settings.new_link != blank -%}
+            <a href="{{ section.settings.new_link }}">{{ section.settings.view_all_label }}</a>
+          {%- elsif new_collection != blank -%}
+            <a href="{{ new_collection.url }}">{{ section.settings.view_all_label }}</a>
+          {%- endif -%}
+        </header>
+
+        {%- if featured_new_product != blank -%}
+          <div class="apgo-home-new__grid">
+            <article class="apgo-home-new__feature">
+              <a href="{{ featured_new_product.url }}" class="apgo-home-new__feature-link">
+                <span class="apgo-home-card__badge">NEW</span>
+                <div class="apgo-home-new__feature-media">
+                  {%- if featured_new_product.featured_image != blank -%}
+                    {{ featured_new_product.featured_image
+                      | image_url: width: 1100
+                      | image_tag: class: 'apgo-home-new__feature-image', widths: '480,720,960,1100', sizes: '(min-width: 750px) 55vw, 100vw', loading: 'lazy'
+                    }}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'apgo-home-new__feature-image apgo-home-card__placeholder' }}
+                  {%- endif -%}
+                </div>
+                <div class="apgo-home-new__feature-content">
+                  <h3>{{ featured_new_product.title }}</h3>
+                  {%- if section.settings.new_feature_copy != blank -%}<p>{{ section.settings.new_feature_copy }}</p>{%- endif -%}
+                  <span class="apgo-home-new__cta">{{ section.settings.learn_more_label }}</span>
+                </div>
+              </a>
+            </article>
+
+            <div class="apgo-home-new__secondary">
+              {%- assign secondary_count = 0 -%}
+              {%- if new_collection != blank -%}
+                {%- for product in new_collection.products -%}
+                  {%- if product.id == featured_new_product.id -%}{%- continue -%}{%- endif -%}
+                  {%- if secondary_count >= 4 -%}{%- break -%}{%- endif -%}
+                  <div class="apgo-home-new__secondary-card">
+                    {% render 'apgo-home-product-card', product: product, show_add: false, badge: 'NEW' %}
+                  </div>
+                  {%- assign secondary_count = secondary_count | plus: 1 -%}
+                {%- endfor -%}
+              {%- endif -%}
+              {%- if secondary_count == 0 and request.design_mode -%}
+                <p class="apgo-home-empty">選擇新品系列後，這裡會顯示四件副卡商品。</p>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- elsif request.design_mode -%}
+          <p class="apgo-home-empty">請選擇一件「主打新品」。</p>
+        {%- endif -%}
+      </section>
+    {%- endif -%}
+
+    {%- if shelf_count > 0 or request.design_mode -%}
+      <section class="apgo-home-shelves" aria-labelledby="ApgoShelves-{{ section.id }}">
+        <h2 id="ApgoShelves-{{ section.id }}" class="visually-hidden">{{ section.settings.shelves_title }}</h2>
+        {%- for block in section.blocks -%}
+          {%- if block.type != 'shelf' or block.settings.collection == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign shelf_collection = block.settings.collection -%}
+          <section class="apgo-home-panel apgo-home-shelf" {{ block.shopify_attributes }}>
+            <header class="apgo-home-heading apgo-home-heading--shelf">
+              <div>
+                <h3>{{ block.settings.title | default: shelf_collection.title }}</h3>
+                {%- if block.settings.subtitle != blank -%}<p>{{ block.settings.subtitle }}</p>{%- endif -%}
+              </div>
+              <a href="{{ shelf_collection.url }}">查看全部 {{ shelf_collection.products_count }} 件</a>
+            </header>
+            <div class="apgo-home-shelf__row" data-apgo-scroll>
+              {%- for product in shelf_collection.products limit: 4 -%}
+                <div class="apgo-home-shelf__item">
+                  {% render 'apgo-home-product-card', product: product, show_add: false %}
+                </div>
+              {%- endfor -%}
+            </div>
+          </section>
+        {%- endfor -%}
+        {%- if shelf_count == 0 -%}<p class="apgo-home-empty">請新增「分類商品列」區塊。</p>{%- endif -%}
+      </section>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+  (() => {
+    const init = (root) => {
+      if (!root || root.dataset.apgoHomeReady) return;
+      root.dataset.apgoHomeReady = 'true';
+      root.querySelectorAll('.apgo-home-scroller-wrap').forEach((wrap) => {
+        const scroller = wrap.querySelector('[data-apgo-scroll]');
+        if (!scroller) return;
+        wrap.querySelector('[data-apgo-scroll-prev]')?.addEventListener('click', () => {
+          scroller.scrollBy({ left: -Math.max(scroller.clientWidth * 0.75, 280), behavior: 'smooth' });
+        });
+        wrap.querySelector('[data-apgo-scroll-next]')?.addEventListener('click', () => {
+          scroller.scrollBy({ left: Math.max(scroller.clientWidth * 0.75, 280), behavior: 'smooth' });
+        });
+      });
+    };
+    document.querySelectorAll('[data-apgo-home-v2]').forEach(init);
+    document.addEventListener('shopify:section:load', (event) => init(event.target.querySelector('[data-apgo-home-v2]')));
+  })();
+</script>
+
+{% stylesheet %}
+  .apgo-home-v2,
+  .apgo-home-v2 * { box-sizing: border-box; }
+  .apgo-home-v2 { background: #050506; color: #fff; padding: 48px 16px 72px; }
+  .apgo-home-v2__inner { width: min(100%, var(--apgo-home-max, 1440px)); margin: 0 auto; display: grid; gap: 22px; }
+  .apgo-home-panel { background: #0d0d10; border: 1px solid #25262c; border-radius: 22px; padding: 28px; overflow: hidden; }
+  .apgo-home-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 24px; }
+  .apgo-home-heading h2,
+  .apgo-home-heading h3 { color: #fff; margin: 0; font-size: clamp(1.35rem, 2vw, 2rem); line-height: 1.2; }
+  .apgo-home-heading__eyebrow { margin: 0 0 7px; color: var(--apgo-home-accent); font-size: .72rem; font-weight: 800; letter-spacing: .18em; }
+  .apgo-home-heading > a { color: var(--apgo-home-accent); font-weight: 750; text-decoration: none; white-space: nowrap; }
+  .apgo-home-empty { color: #9c9ca6; margin: 0; padding: 20px; border: 1px dashed #34343b; border-radius: 14px; }
+
+  .apgo-home-scroller-wrap { position: relative; }
+  .apgo-home-product-row { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--apgo-home-accent) #292a30; padding-bottom: 16px; }
+  .apgo-home-product-row__item { flex: 0 0 min(270px, 24%); min-width: 220px; scroll-snap-align: start; }
+  .apgo-home-scroll-button { position: absolute; top: 44%; z-index: 2; width: 42px; height: 42px; border: 1px solid #4a4b52; border-radius: 50%; background: rgba(5,5,6,.9); color: #fff; font-size: 1.8rem; cursor: pointer; }
+  .apgo-home-scroll-button--prev { left: -18px; }
+  .apgo-home-scroll-button--next { right: -18px; }
+
+  .apgo-home-card { height: 100%; display: flex; flex-direction: column; background: #191a1f; border: 1px solid #2c2d34; border-radius: 15px; overflow: hidden; }
+  .apgo-home-card__link { display: flex; flex-direction: column; flex: 1; color: inherit; text-decoration: none; }
+  .apgo-home-card__media { position: relative; aspect-ratio: 1 / 1; background: linear-gradient(145deg,#24252c,#17181d); overflow: hidden; }
+  .apgo-home-card__image { width: 100%; height: 100%; object-fit: contain; transition: transform .3s ease; }
+  .apgo-home-card:hover .apgo-home-card__image { transform: scale(1.035); }
+  .apgo-home-card__badge { position: absolute; z-index: 1; top: 12px; left: 12px; padding: 4px 9px; border-radius: 5px; background: var(--apgo-home-accent); color: #080808; font-size: .7rem; font-weight: 900; letter-spacing: .06em; }
+  .apgo-home-card__content { padding: 15px 14px 12px; }
+  .apgo-home-card__title { margin: 0 0 10px; color: #fff; font-size: .95rem; line-height: 1.4; }
+  .apgo-home-card__price { display: flex; align-items: center; gap: 8px; color: var(--apgo-home-accent); font-weight: 850; }
+  .apgo-home-card__price s { color: #767781; font-size: .8rem; font-weight: 500; }
+  .apgo-home-card__form { padding: 0 14px 14px; }
+  .apgo-home-card__add { width: 100%; min-height: 42px; border: 1px solid var(--apgo-home-accent); border-radius: 8px; background: transparent; color: var(--apgo-home-accent); font-weight: 800; cursor: pointer; }
+  .apgo-home-card__add:hover { background: var(--apgo-home-accent); color: #090909; }
+  .apgo-home-card__add:disabled { border-color: #555; color: #777; cursor: not-allowed; }
+
+  .apgo-home-category-grid { display: grid; grid-template-columns: repeat(7,minmax(0,1fr)); gap: 12px; }
+  .apgo-home-category { min-height: 150px; padding: 18px 10px; border: 1px solid #2b2c32; border-radius: 13px; background: #17181d; color: #fff; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: border-color .2s, transform .2s; }
+  .apgo-home-category:hover { border-color: var(--apgo-home-accent); transform: translateY(-2px); }
+  .apgo-home-category__icon { color: var(--apgo-home-accent); font-size: 2rem; line-height: 1; margin-bottom: 12px; }
+  .apgo-home-category__title { font-weight: 760; line-height: 1.25; }
+  .apgo-home-category__count { color: #858690; font-size: .74rem; margin-top: 7px; }
+
+  .apgo-home-new__grid { display: grid; grid-template-columns: minmax(0,1.65fr) minmax(360px,1fr); gap: 16px; }
+  .apgo-home-new__feature { position: relative; min-height: 610px; border: 1px solid #2c2d34; border-radius: 15px; overflow: hidden; background: #191a1f; }
+  .apgo-home-new__feature-link { height: 100%; display: grid; grid-template-rows: minmax(0,1fr) auto; color: #fff; text-decoration: none; }
+  .apgo-home-new__feature-media { min-height: 400px; background: linear-gradient(145deg,#24252c,#17181d); }
+  .apgo-home-new__feature-image { width: 100%; height: 100%; max-height: 470px; object-fit: contain; }
+  .apgo-home-new__feature-content { padding: 24px; background: #131419; }
+  .apgo-home-new__feature-content h3 { margin: 0 0 8px; color: #fff; font-size: 1.35rem; }
+  .apgo-home-new__feature-content p { color: #aaaab2; margin: 0 0 20px; max-width: 54ch; }
+  .apgo-home-new__cta { display: inline-flex; padding: 10px 22px; border-radius: 7px; background: var(--apgo-home-accent); color: #080808; font-weight: 850; }
+  .apgo-home-new__secondary { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+  .apgo-home-new__secondary-card { min-width: 0; }
+  .apgo-home-new__secondary .apgo-home-card__title { font-size: .85rem; }
+
+  .apgo-home-shelves { display: grid; gap: 22px; }
+  .apgo-home-heading--shelf { align-items: center; }
+  .apgo-home-heading--shelf > div { display: flex; align-items: baseline; gap: 14px; }
+  .apgo-home-heading--shelf p { color: #9899a2; margin: 0; }
+  .apgo-home-shelf__row { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; }
+  .apgo-home-shelf__item { min-width: 0; }
+
+  @media (max-width: 989px) {
+    .apgo-home-category-grid { grid-template-columns: repeat(4,minmax(0,1fr)); }
+    .apgo-home-new__grid { grid-template-columns: 1fr; }
+    .apgo-home-new__feature { min-height: 0; }
+    .apgo-home-new__feature-media { min-height: 0; aspect-ratio: 3 / 2; }
+  }
+
+  @media (max-width: 749px) {
+    .apgo-home-v2 { padding: 28px 12px 48px; }
+    .apgo-home-v2__inner { gap: 14px; }
+    .apgo-home-panel { border-radius: 18px; padding: 20px 14px; }
+    .apgo-home-heading { margin-bottom: 18px; align-items: center; }
+    .apgo-home-heading__eyebrow { display: none; }
+    .apgo-home-heading > a { font-size: .82rem; }
+    .apgo-home-scroll-button { display: none; }
+    .apgo-home-product-row { margin-right: -14px; padding-right: 14px; gap: 12px; }
+    .apgo-home-product-row__item { flex-basis: 43%; min-width: 156px; }
+    .apgo-home-card__content { padding: 12px 10px 10px; }
+    .apgo-home-card__title { font-size: .82rem; }
+    .apgo-home-card__form { padding: 0 10px 10px; }
+    .apgo-home-card__add { min-height: 38px; font-size: .78rem; }
+    .apgo-home-category-grid { gap: 8px; }
+    .apgo-home-category { min-height: 112px; padding: 12px 5px; }
+    .apgo-home-category__icon { font-size: 1.55rem; margin-bottom: 8px; }
+    .apgo-home-category__title { font-size: .76rem; }
+    .apgo-home-category__count { font-size: .65rem; }
+    .apgo-home-new__feature-link { grid-template-rows: auto auto; }
+    .apgo-home-new__feature-media { aspect-ratio: 3 / 2; }
+    .apgo-home-new__feature-content { padding: 18px 14px; }
+    .apgo-home-new__secondary { gap: 10px; }
+    .apgo-home-new__secondary .apgo-home-card__content { min-height: 82px; }
+    .apgo-home-heading--shelf > div { display: block; }
+    .apgo-home-heading--shelf p { margin-top: 4px; font-size: .78rem; }
+    .apgo-home-shelf__row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--apgo-home-accent) #292a30; margin-right: -14px; padding: 0 14px 12px 0; }
+    .apgo-home-shelf__item { flex: 0 0 43%; min-width: 156px; scroll-snap-align: start; }
+    .apgo-home-shelf .apgo-home-card__form-component { display: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "APGO · 首頁導購 v2",
+  "tag": "section",
+  "class": "apgo-home-v2-section",
+  "max_blocks": 30,
+  "settings": [
+    { "type": "range", "id": "max_width", "label": "內容最大寬度", "min": 1000, "max": 1800, "step": 20, "unit": "px", "default": 1440 },
+    { "type": "color", "id": "accent_color", "label": "品牌強調色", "default": "#f58220" },
+    { "type": "text", "id": "view_all_label", "label": "查看全部文字", "default": "查看全部" },
+    { "type": "text", "id": "view_all_products_label", "label": "查看所有產品文字", "default": "查看全部商品" },
+    { "type": "header", "content": "熱銷商品" },
+    { "type": "text", "id": "bestseller_title", "label": "標題", "default": "熱銷商品" },
+    { "type": "url", "id": "bestseller_link", "label": "查看全部連結" },
+    { "type": "header", "content": "品類導覽" },
+    { "type": "text", "id": "category_title", "label": "標題", "default": "品類導覽" },
+    { "type": "header", "content": "新品上市" },
+    { "type": "text", "id": "new_title", "label": "標題", "default": "主打新品・新上市" },
+    { "type": "product", "id": "featured_new_product", "label": "主打新品" },
+    { "type": "collection", "id": "new_collection", "label": "新品系列（副卡取前四件）" },
+    { "type": "textarea", "id": "new_feature_copy", "label": "主打新品短文", "default": "新品特色一句話說明，建議手機版控制在二十字以內。" },
+    { "type": "url", "id": "new_link", "label": "查看全部連結（選填）" },
+    { "type": "text", "id": "learn_more_label", "label": "主卡按鈕文字", "default": "看更多" },
+    { "type": "header", "content": "各類商品區" },
+    { "type": "text", "id": "shelves_title", "label": "無障礙標題", "default": "各類商品" }
+  ],
+  "blocks": [
+    {
+      "type": "bestseller",
+      "name": "熱銷商品",
+      "limit": 10,
+      "settings": [
+        { "type": "product", "id": "product", "label": "商品", "info": "缺貨或下架時會自動隱藏。" }
+      ]
+    },
+    {
+      "type": "category",
+      "name": "品類入口",
+      "limit": 7,
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "商品系列" },
+        { "type": "text", "id": "title", "label": "顯示名稱（留空用系列名稱）" },
+        { "type": "text", "id": "icon", "label": "圖示字元", "default": "◇", "info": "可輸入一個 emoji 或符號。" }
+      ]
+    },
+    {
+      "type": "shelf",
+      "name": "分類商品列",
+      "limit": 7,
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "商品系列" },
+        { "type": "text", "id": "title", "label": "標題（留空用系列名稱）" },
+        { "type": "text", "id": "subtitle", "label": "副標題" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO · 首頁導購 v2",
+      "blocks": [
+        { "type": "bestseller" }, { "type": "bestseller" }, { "type": "bestseller" }, { "type": "bestseller" },
+        { "type": "bestseller" }, { "type": "bestseller" }, { "type": "bestseller" }, { "type": "bestseller" },
+        { "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" },
+        { "type": "category" }, { "type": "category" }, { "type": "category" },
+        { "type": "shelf" }, { "type": "shelf" }, { "type": "shelf" }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["index"] }
+}
+{% endschema %}

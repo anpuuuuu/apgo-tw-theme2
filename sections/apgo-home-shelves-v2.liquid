@@ -1,0 +1,79 @@
+{{ 'apgo-home-v2.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign shelf_count = 0
+  for block in section.blocks
+    if block.settings.collection != blank
+      assign shelf_count = shelf_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if shelf_count > 0 or request.design_mode -%}
+  <section
+    class="apgo-home-module"
+    style="--apgo-home-accent: {{ section.settings.accent_color }}; --apgo-home-max: {{ section.settings.max_width }}px; --apgo-home-padding-top: {{ section.settings.padding_top }}px; --apgo-home-padding-bottom: {{ section.settings.padding_bottom }}px;"
+    aria-labelledby="ApgoShelves-{{ section.id }}"
+  >
+    <div class="apgo-home-v2__inner">
+      <div class="apgo-home-shelves">
+        <h2 id="ApgoShelves-{{ section.id }}" class="visually-hidden">{{ section.settings.title }}</h2>
+        {%- for block in section.blocks -%}
+          {%- if block.settings.collection == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign shelf_collection = block.settings.collection -%}
+          <section class="apgo-home-panel apgo-home-shelf" {{ block.shopify_attributes }}>
+            <header class="apgo-home-heading apgo-home-heading--shelf">
+              <div>
+                <h3>{{ block.settings.title | default: shelf_collection.title }}</h3>
+                {%- if block.settings.subtitle != blank -%}<p>{{ block.settings.subtitle }}</p>{%- endif -%}
+              </div>
+              <a href="{{ shelf_collection.url }}">查看全部 {{ shelf_collection.products_count }} 件</a>
+            </header>
+            <div class="apgo-home-shelf__row">
+              {%- for product in shelf_collection.products limit: 4 -%}
+                <div class="apgo-home-shelf__item">
+                  {% render 'apgo-home-product-card', product: product, show_add: false %}
+                </div>
+              {%- endfor -%}
+            </div>
+          </section>
+        {%- endfor -%}
+        {%- if shelf_count == 0 -%}<p class="apgo-home-empty">請新增分類商品列區塊。</p>{%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "APGO · 分類商品列 v2",
+  "tag": "section",
+  "class": "apgo-home-shelves-section",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "title", "label": "無障礙標題", "default": "各類商品" },
+    { "type": "range", "id": "max_width", "label": "內容最大寬度", "min": 1000, "max": 1800, "step": 20, "unit": "px", "default": 1440 },
+    { "type": "color", "id": "accent_color", "label": "品牌強調色", "default": "#f58220" },
+    { "type": "range", "id": "padding_top", "label": "上方留白", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding_bottom", "label": "下方留白", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "shelf",
+      "name": "分類商品列",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "商品系列" },
+        { "type": "text", "id": "title", "label": "標題（留空用系列名稱）" },
+        { "type": "text", "id": "subtitle", "label": "副標題" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO · 分類商品列 v2",
+      "blocks": [{ "type": "shelf" }, { "type": "shelf" }, { "type": "shelf" }]
+    }
+  ],
+  "enabled_on": { "templates": ["index"] }
+}
+{% endschema %}

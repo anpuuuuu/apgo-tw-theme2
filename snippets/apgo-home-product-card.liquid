@@ -1,0 +1,60 @@
+{%- doc -%}
+  Renders a product card shared by the APGO homepage sections.
+  @param {product} product - Product to display
+  @param {boolean} [show_add] - Show the quick-add button
+  @param {string} [badge] - Optional badge text
+  @param {string} [card_class] - Optional additional CSS class
+{%- enddoc -%}
+
+{%- if product != blank -%}
+  <article
+    class="apgo-home-card {{ card_class }}"
+    data-product-id="{{ product.id }}"
+    data-product-url="{{ product.url }}"
+  >
+    <a class="apgo-home-card__link" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+      <div class="apgo-home-card__media">
+        {%- if badge != blank -%}<span class="apgo-home-card__badge">{{ badge }}</span>{%- endif -%}
+        {%- if product.featured_image != blank -%}
+          {{ product.featured_image
+            | image_url: width: 720
+            | image_tag:
+              class: 'apgo-home-card__image',
+              widths: '240,360,480,720',
+              sizes: '(min-width: 990px) 25vw, 44vw',
+              loading: 'lazy',
+              alt: product.featured_image.alt | default: product.title
+          }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'apgo-home-card__image apgo-home-card__placeholder' }}
+        {%- endif -%}
+      </div>
+      <div class="apgo-home-card__content">
+        <h3 class="apgo-home-card__title">{{ product.title }}</h3>
+        <div class="apgo-home-card__price">
+          {% render 'price', product_resource: product, is_product_card: true, show_sale_price_first: true %}
+        </div>
+      </div>
+    </a>
+
+    {%- if show_add -%}
+      <div class="apgo-home-card__form">
+        <button
+          class="apgo-home-card__add"
+          type="button"
+          data-apgo-quick-add-trigger
+          data-product-url="{{ product.url }}"
+          data-product-title="{{ product.title | escape }}"
+          {% unless product.available %}disabled{% endunless %}
+        >
+          <span class="add-to-cart-text">
+            {%- if product.available -%}加入購物車{%- else -%}已售完{%- endif -%}
+          </span>
+        </button>
+        <noscript>
+          <a class="apgo-home-card__noscript" href="{{ product.url }}">選擇商品規格</a>
+        </noscript>
+      </div>
+    {%- endif -%}
+  </article>
+{%- endif -%}

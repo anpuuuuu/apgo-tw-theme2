@@ -1,0 +1,66 @@
+{% doc %}
+  Shared scoped presentation for the journal hub and category templates.
+{% enddoc %}
+{% stylesheet %}
+  .apgo-journal {
+    --journal-accent: #f58220;
+    color: #f5f5f5;
+    background: #08090b;
+    padding: 56px 24px 72px;
+  }
+  .apgo-journal__inner { max-width: 1320px; margin-inline: auto; }
+  .apgo-journal a { color: inherit; text-decoration: none; }
+  .apgo-journal a:focus-visible { outline: 2px solid var(--journal-accent); outline-offset: 5px; }
+  .apgo-journal__eyebrow { margin: 0 0 14px; font-size: .75rem; letter-spacing: .16em; font-weight: 800; color: var(--journal-accent); }
+  .apgo-journal h1 { margin: 0 0 18px; font-size: clamp(2rem, 4vw, 3.4rem); color: #fff; line-height: 1.2; }
+  .apgo-journal__intro { max-width: 720px; color: #b8bbc3; line-height: 1.8; }
+  .apgo-journal__intro p { margin: 0; }
+  .apgo-journal__categories { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-block: 32px 48px; }
+  .apgo-journal__category { border: 1px solid #2b2d33; background: #14161a; border-radius: 12px; padding: 22px 18px; transition: border-color .2s, background .2s; }
+  .apgo-journal__category:hover { border-color: var(--journal-accent); background: #1c1916; }
+  .apgo-journal__category span { display: block; font-size: .72rem; letter-spacing: .1em; color: var(--journal-accent); margin-bottom: 12px; }
+  .apgo-journal__category strong { font-size: 1.1rem; }
+  .apgo-journal__category small { display: block; margin-top: 9px; color: #a7aab3; line-height: 1.6; }
+  .apgo-journal__group { border-top: 1px solid #2b2d33; padding-top: 28px; margin-top: 36px; }
+  .apgo-journal__group-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 20px; }
+  .apgo-journal__group-heading h2 { margin: 0; color: #fff; font-size: 1.5rem; }
+  .apgo-journal__group-heading a,
+  .apgo-journal__back { color: var(--journal-accent) !important; font-size: .9rem; font-weight: 750; }
+  .apgo-journal__group-heading a { white-space: nowrap; }
+  .apgo-journal__back { display: inline-flex; margin-bottom: 24px; gap: 8px; align-items: center; }
+  .apgo-journal__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .apgo-journal__grid--listing { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 32px; }
+  .apgo-journal-card { min-width: 0; border: 1px solid #2b2d33; border-radius: 14px; overflow: hidden; background: #14161a; }
+  .apgo-journal-card:hover { border-color: var(--journal-accent); }
+  .apgo-journal-card__link { display: flex; flex-direction: column; height: 100%; }
+  .apgo-journal-card__media { aspect-ratio: 16 / 9; background: #202228; overflow: hidden; }
+  .apgo-journal-card__media img { width: 100%; height: 100%; object-fit: cover; }
+  .apgo-journal-card__body { padding: 24px; display: flex; flex-direction: column; flex: 1; }
+  .apgo-journal-card time { color: #a7aab3; font-size: .8rem; }
+  .apgo-journal-card h2,
+  .apgo-journal-card h3 { font-size: 1.2rem; line-height: 1.5; color: #fff; margin: 10px 0 12px; overflow-wrap: anywhere; }
+  .apgo-journal-card p { color: #b8bbc3; line-height: 1.75; font-size: .92rem; margin: 0 0 20px; overflow-wrap: anywhere; }
+  .apgo-journal-card__more { color: var(--journal-accent); font-size: .85rem; font-weight: 750; margin-top: auto; }
+  .apgo-journal__empty { padding: 28px; background: #111317; border: 1px dashed #34363d; border-radius: 12px; color: #afb2bb; line-height: 1.8; margin: 0; }
+  .apgo-journal__pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 36px; }
+  .apgo-journal__pagination a,
+  .apgo-journal__pagination span { min-width: 42px; min-height: 42px; display: inline-flex; align-items: center; justify-content: center; padding: 8px 12px; border-radius: 8px; }
+  .apgo-journal__pagination a { border: 1px solid #34363d; }
+  .apgo-journal__pagination [aria-current] { background: var(--journal-accent); color: #090909; font-weight: 800; }
+  @media (max-width: 989px) {
+    .apgo-journal__categories { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .apgo-journal__grid--listing { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 749px) {
+    .apgo-journal { padding: 32px 18px 48px; }
+    .apgo-journal__categories { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-block: 24px 32px; }
+    .apgo-journal__category { padding: 18px 14px; }
+    .apgo-journal__grid,
+    .apgo-journal__grid--listing { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .apgo-journal-card__body { padding: 20px; }
+    .apgo-journal__group-heading h2 { font-size: 1.3rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apgo-journal__category { transition: none; }
+  }
+{% endstylesheet %}

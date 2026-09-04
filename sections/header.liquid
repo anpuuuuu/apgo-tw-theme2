@@ -573,6 +573,56 @@
     transition: opacity var(--animation-speed) var(--animation-easing);
   }
 
+  /* 主導覽 v2：桌機功能鍵採一致的 42px 控制區，不直接放大 SVG。
+     手機維持原始圖示尺寸與既有 header 排版。 */
+  @media screen and (min-width: 750px) {
+    #header-component .header__column--right header-actions {
+      gap: 6px;
+      margin-inline-start: 0;
+    }
+
+    #header-component .header-actions__action {
+      width: 42px;
+      min-width: 42px;
+      height: 42px;
+      padding: 0;
+      align-items: center;
+      border: 0;
+      border-radius: 12px;
+      background: rgb(var(--color-foreground-rgb) / 0.045);
+      color: var(--color-foreground);
+      opacity: 1;
+      transition:
+        color 160ms ease,
+        border-color 160ms ease,
+        background-color 160ms ease,
+        transform 160ms ease;
+    }
+
+    #header-component .header-actions__action .svg-wrapper {
+      width: 42px;
+      height: 42px;
+    }
+
+    #header-component .header-actions__action svg {
+      width: calc(var(--icon-size-md) * 1.5);
+      height: calc(var(--icon-size-md) * 1.5);
+    }
+
+    #header-component .header-actions__action:focus-visible {
+      outline: 2px solid var(--color-foreground);
+      outline-offset: 2px;
+    }
+
+    @media (hover: hover) {
+      #header-component .header-actions__action:hover {
+        background: rgb(245 130 32 / 0.14);
+        color: #f58220;
+        transform: translateY(-1px);
+      }
+    }
+  }
+
   /* Extend hover area through padding to prevent flickering on actual menu items */
   .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__link[aria-haspopup],
   .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__link,

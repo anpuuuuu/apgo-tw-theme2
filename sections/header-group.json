@@ -308,7 +308,8 @@
           "type": "_header-menu",
           "static": true,
           "settings": {
-            "menu": "main-menu",
+            "menu": "main-menu-v2",
+            "accent_link_title": "洗衣精訂閱制",
             "menu_style": "text",
             "featured_products_aspect_ratio": "1 / 1",
             "featured_collections_aspect_ratio": "adapt",
@@ -326,7 +327,7 @@
             "type_case_tertiary_link": "uppercase",
             "navigation_bar": false,
             "color_scheme_navigation_bar": "scheme-a27d2d12-7174-40fe-a01c-a128174b4c26",
-            "drawer_accordion": false,
+            "drawer_accordion": true,
             "drawer_accordion_expand_first": false,
             "drawer_dividers": false
           },
@@ -350,7 +351,7 @@
         "localization_row": "top",
         "section_width": "full-width",
         "section_height": "standard",
-        "enable_sticky_header": "never",
+        "enable_sticky_header": "always",
         "divider_width": 0,
         "divider_size": "page-width",
         "border_width": 0,

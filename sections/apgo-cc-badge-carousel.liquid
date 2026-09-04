@@ -33,7 +33,7 @@
     <style>
       #shopify-section-{{ section.id }} {
         position: relative;
-        z-index: 10;
+        z-index: var(--layer-raised);
         margin-bottom: -{{ section.settings.overlap }}px;
       }
       @media (max-width: 749px) {
@@ -86,6 +86,11 @@
         {%- endfor -%}
       </div>
 
+      {%- if shown > 1 and section.settings.show_arrows -%}
+        <button type="button" class="apgo-cc-badge__arrow apgo-cc-badge__arrow--prev" data-badge-prev aria-label="上一張 Banner">‹</button>
+        <button type="button" class="apgo-cc-badge__arrow apgo-cc-badge__arrow--next" data-badge-next aria-label="下一張 Banner">›</button>
+      {%- endif -%}
+
       {%- if shown > 1 and section.settings.show_dots -%}
         <div class="apgo-cc-badge__dots" data-apgo-cc-badge-dots>
           {%- for i in (1..shown) -%}
@@ -102,39 +107,115 @@
       if (!root || root.dataset.badgeReady) return;
       root.dataset.badgeReady = '1';
       var track = root.querySelector('[data-apgo-cc-badge-track]');
-      var slides = root.querySelectorAll('[data-badge-slide]');
+      var slides = Array.prototype.slice.call(root.querySelectorAll('[data-badge-slide]'));
       var dots = root.querySelectorAll('[data-badge-dot]');
-      if (!track) return;
+      var prev = root.querySelector('[data-badge-prev]');
+      var nextButton = root.querySelector('[data-badge-next]');
+      if (!track || slides.length === 0) return;
+
+      var slideCount = slides.length;
+      var activeIndex = 0;
       var raf = 0;
-      function current() { return track.clientWidth ? Math.round(track.scrollLeft / track.clientWidth) : 0; }
-      function goTo(i) { track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' }); }
-      function updateDots() {
-        var i = current();
-        for (var d = 0; d < dots.length; d++) dots[d].classList.toggle('is-active', d === i);
+      var settleTimer = null;
+
+      function markClone(clone) {
+        clone.setAttribute('data-badge-clone', '');
+        clone.setAttribute('aria-hidden', 'true');
+        clone.setAttribute('inert', '');
+        clone.removeAttribute('data-shopify-editor-block');
+        clone.querySelectorAll('[data-shopify-editor-block]').forEach(function (node) {
+          node.removeAttribute('data-shopify-editor-block');
+        });
+        clone.querySelectorAll('a, button, input, select, textarea, [tabindex]').forEach(function (node) {
+          node.setAttribute('tabindex', '-1');
+        });
+        return clone;
       }
+
+      if (slideCount > 1) {
+        var lastClone = markClone(slides[slideCount - 1].cloneNode(true));
+        var firstClone = markClone(slides[0].cloneNode(true));
+        track.insertBefore(lastClone, slides[0]);
+        track.appendChild(firstClone);
+      }
+
+      function width() { return track.clientWidth; }
+      function currentPhysical() { return width() ? Math.round(track.scrollLeft / width()) : 0; }
+      function logicalFromPhysical(physical) {
+        if (physical <= 0) return slideCount - 1;
+        if (physical >= slideCount + 1) return 0;
+        return physical - 1;
+      }
+      function jumpToPhysical(physical) {
+        track.style.scrollBehavior = 'auto';
+        track.scrollTo({ left: physical * width(), behavior: 'auto' });
+        track.offsetWidth;
+        track.style.scrollBehavior = '';
+      }
+      function goToPhysical(physical) {
+        track.scrollTo({ left: physical * width(), behavior: 'smooth' });
+      }
+      function goToLogical(logical) {
+        activeIndex = (logical + slideCount) % slideCount;
+        goToPhysical(activeIndex + 1);
+      }
+      function updateDots() {
+        activeIndex = logicalFromPhysical(currentPhysical());
+        for (var d = 0; d < dots.length; d++) dots[d].classList.toggle('is-active', d === activeIndex);
+      }
+      function settleLoop() {
+        var physical = currentPhysical();
+        if (physical <= 0) {
+          jumpToPhysical(slideCount);
+        } else if (physical >= slideCount + 1) {
+          jumpToPhysical(1);
+        }
+        updateDots();
+      }
+
+      if (slideCount > 1) jumpToPhysical(1);
+      updateDots();
+
       track.addEventListener('scroll', function () {
         if (!raf) raf = requestAnimationFrame(function () { raf = 0; updateDots(); });
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(settleLoop, 120);
       }, { passive: true });
       for (var d = 0; d < dots.length; d++) {
         (function (dot) {
           dot.addEventListener('click', function () {
-            goTo(parseInt(dot.getAttribute('data-badge-dot'), 10) || 0);
+            goToLogical(parseInt(dot.getAttribute('data-badge-dot'), 10) || 0);
             restart();
           });
         })(dots[d]);
       }
-      window.addEventListener('resize', function () { goTo(current()); });
+      if (prev) prev.addEventListener('click', function () {
+        var physical = currentPhysical();
+        if (physical <= 0) { jumpToPhysical(slideCount); physical = slideCount; }
+        goToPhysical(physical - 1);
+        restart();
+      });
+      if (nextButton) nextButton.addEventListener('click', function () {
+        var physical = currentPhysical();
+        if (physical >= slideCount + 1) { jumpToPhysical(1); physical = 1; }
+        goToPhysical(physical + 1);
+        restart();
+      });
+      window.addEventListener('resize', function () {
+        requestAnimationFrame(function () { jumpToPhysical(activeIndex + 1); });
+      });
 
       var autoplay = root.getAttribute('data-autoplay') === 'true';
       var interval = parseInt(root.getAttribute('data-interval') || '4000', 10);
       if (interval < 1500) interval = 1500;
       var timer = null, paused = false;
       function next() {
-        if (slides.length < 2) return;
-        var i = current();
-        goTo((i + 1) % slides.length);
+        if (slideCount < 2) return;
+        var physical = currentPhysical();
+        if (physical >= slideCount + 1) { jumpToPhysical(1); physical = 1; }
+        goToPhysical(physical + 1);
       }
-      function start() { if (autoplay && slides.length > 1 && !timer) timer = setInterval(function () { if (!paused) next(); }, interval); }
+      function start() { if (autoplay && slideCount > 1 && !timer) timer = setInterval(function () { if (!paused) next(); }, interval); }
       function stop() { if (timer) { clearInterval(timer); timer = null; } }
       function restart() { stop(); start(); }
       root.addEventListener('pointerenter', function () { paused = true; });
@@ -163,7 +244,7 @@
       padding-left: var(--badge-pad, 0px);
       padding-right: var(--badge-pad, 0px);
       box-sizing: border-box;
-      z-index: 10;
+      z-index: var(--layer-raised);
     }
     .apgo-cc-badge__inner {
       max-width: var(--badge-maxw, 100%);
@@ -211,6 +292,32 @@
       z-index: 2;
       pointer-events: none;
     }
+    .apgo-cc-badge__arrow {
+      position: absolute;
+      top: 50%;
+      z-index: 3;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: 50%;
+      background: rgba(0,0,0,.55);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      padding: 0 0 4px;
+      font-size: 2rem;
+      line-height: 1;
+      cursor: pointer;
+      transform: translateY(-50%);
+      transition: background .2s ease, border-color .2s ease, transform .2s ease;
+    }
+    .apgo-cc-badge__arrow:hover {
+      background: rgba(240,132,24,.95);
+      border-color: #f08418;
+      transform: translateY(-50%) scale(1.05);
+    }
+    .apgo-cc-badge__arrow--prev { left: 18px; }
+    .apgo-cc-badge__arrow--next { right: 18px; }
     .apgo-cc-badge__dot {
       pointer-events: auto;
       width: 7px; height: 7px;
@@ -225,6 +332,32 @@
       width: 18px;
       background: #fff;
     }
+    @media (max-width: 749px) {
+      .apgo-cc-badge__arrow {
+        width: 34px;
+        height: 52px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        font-size: 1.7rem;
+        opacity: .68;
+        text-shadow: 0 1px 5px rgba(0,0,0,.9);
+        transition: color .15s ease, opacity .15s ease, transform .15s ease;
+      }
+      .apgo-cc-badge__arrow:hover {
+        border-color: transparent;
+        background: transparent;
+        color: #fff;
+        transform: translateY(-50%);
+      }
+      .apgo-cc-badge__arrow:active {
+        color: #f08418;
+        opacity: 1;
+        transform: translateY(-50%) scale(.94);
+      }
+      .apgo-cc-badge__arrow--prev { left: 2px; }
+      .apgo-cc-badge__arrow--next { right: 2px; }
+    }
 {% endstylesheet %}
 
 {% schema %}
@@ -237,6 +370,7 @@
     { "type": "checkbox", "id": "autoplay", "label": "自動輪播", "default": true },
     { "type": "range", "id": "interval", "label": "輪播間隔（秒）", "min": 2, "max": 8, "step": 1, "default": 4 },
     { "type": "checkbox", "id": "show_dots", "label": "顯示圓點指示器", "default": true },
+    { "type": "checkbox", "id": "show_arrows", "label": "顯示左右切換箭頭", "default": true },
     { "type": "header", "content": "版面" },
     { "type": "range", "id": "max_width", "label": "最大寬度（px，0 = 滿版）", "min": 0, "max": 1600, "step": 20, "default": 1040 },
     { "type": "range", "id": "side_padding", "label": "左右邊距（px）", "min": 0, "max": 60, "step": 2, "default": 16 },

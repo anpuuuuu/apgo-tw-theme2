@@ -1,0 +1,68 @@
+{% doc %}
+  Renders an APGO category icon.
+
+  @param {string} icon - Category icon identifier.
+
+  @example
+  {% render 'apgo-category-icon', icon: 'home_cleaning' %}
+{% enddoc %}
+
+{% case icon %}
+  {% when 'home_cleaning' %}
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M11 10h10v3.2l2 2.6V27H9V15.8l2-2.6V10Z"/>
+      <path d="M12 10V6h7l3 2h4"/>
+      <path d="M12 18h9"/>
+      <circle cx="25.5" cy="14" r="1.5"/>
+      <circle cx="27" cy="19" r="1"/>
+    </svg>
+  {% when 'coating' %}
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M16 4.5s-6.5 7.4-6.5 12.2a6.5 6.5 0 0 0 13 0C22.5 11.9 16 4.5 16 4.5Z"/>
+      <path d="M12.5 17.3a3.6 3.6 0 0 0 3.6 3.6"/>
+      <path d="M6 27h20M9 23.5h14"/>
+      <path d="m24 5 .7 1.8L26.5 7.5l-1.8.7L24 10l-.7-1.8-1.8-.7 1.8-.7L24 5Z"/>
+    </svg>
+  {% when 'gift' %}
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M5 12h22v5H5zM7 17h18v11H7zM16 12v16"/>
+      <path d="M16 12H11.5a3 3 0 1 1 3-3c0 1.8 1.5 3 1.5 3Z"/>
+      <path d="M16 12h4.5a3 3 0 1 0-3-3c0 1.8-1.5 3-1.5 3Z"/>
+    </svg>
+  {% when 'cleaning_chemical' %}
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 10h8l2 4v14H10V14l2-4Z"/>
+      <path d="M13 10V6h6v4M19 6h5l2 2M24 8h3"/>
+      <path d="M13 17h6"/>
+      <path d="m26 13 .6 1.4 1.4.6-1.4.6L26 17l-.6-1.4L24 15l1.4-.6L26 13Z"/>
+    </svg>
+  {% when 'car_wash' %}
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M8 12h16l-2 15H10L8 12Z"/>
+      <path d="M11 12a5 5 0 0 1 10 0"/>
+      <circle cx="25.5" cy="8" r="1.7"/>
+      <circle cx="27" cy="13" r="1"/>
+      <path d="M10 17h12"/>
+    </svg>
+  {% when 'repair' %}
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="16" cy="17" r="8"/>
+      <circle cx="16" cy="17" r="4"/>
+      <path d="M16 5V2M4 17H1M28 17h3"/>
+      <path d="m24.5 5 .7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8Z"/>
+      <path d="m21.7 11.3 4.8-4.8"/>
+    </svg>
+  {% when 'speed_camera' %}
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="5" y="10" width="18" height="12" rx="3"/>
+      <circle cx="16" cy="16" r="3.2"/>
+      <path d="M23 13h3l2 3-2 3h-3"/>
+      <path d="M27 10c2 1.4 3 3.4 3 6s-1 4.6-3 6"/>
+      <path d="M8 13h2"/>
+    </svg>
+  {% else %}
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M5 8h10l12 12-7 7L8 15V8Z"/>
+      <circle cx="11" cy="11" r="1.5"/>
+    </svg>
+{% endcase %}

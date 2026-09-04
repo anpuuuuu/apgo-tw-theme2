@@ -1,0 +1,517 @@
+{
+  "menus": {
+    "nodes": [
+      {
+        "id": "gid://shopify/Menu/240273555707",
+        "handle": "main-menu",
+        "title": "主選單",
+        "items": [
+          {
+            "id": "gid://shopify/MenuItem/578479096059",
+            "title": "首頁",
+            "type": "FRONTPAGE",
+            "url": "/en",
+            "resourceId": null,
+            "tags": [],
+            "items": []
+          },
+          {
+            "id": "gid://shopify/MenuItem/578479128827",
+            "title": "所有產品",
+            "type": "CATALOG",
+            "url": "/en/collections/all",
+            "resourceId": null,
+            "tags": [],
+            "items": []
+          },
+          {
+            "id": "gid://shopify/MenuItem/632800739579",
+            "title": "洗衣精訂閱制",
+            "type": "HTTP",
+            "url": "https://sub.apgo.tw",
+            "resourceId": null,
+            "tags": [],
+            "items": []
+          },
+          {
+            "id": "gid://shopify/MenuItem/587635753211",
+            "title": "各國社群媒體",
+            "type": "PAGE",
+            "url": "/en/pages/short-videos",
+            "resourceId": "gid://shopify/Page/123282260219",
+            "tags": [],
+            "items": []
+          },
+          {
+            "id": "gid://shopify/MenuItem/629048738043",
+            "title": "寫好評送購物金",
+            "type": "HTTP",
+            "url": "https://apgo.tw/pages/campaign20260803",
+            "resourceId": null,
+            "tags": [],
+            "items": []
+          },
+          {
+            "id": "gid://shopify/MenuItem/636603367675",
+            "title": "APGO專欄",
+            "type": "BLOG",
+            "url": "/en/blogs/%E5%B1%85%E5%AE%B6%E6%B8%85%E6%BD%94",
+            "resourceId": "gid://shopify/Blog/105615655163",
+            "tags": [],
+            "items": [
+              {
+                "id": "gid://shopify/MenuItem/636712976635",
+                "title": "居家清潔",
+                "type": "BLOG",
+                "url": "/en/blogs/%E5%B1%85%E5%AE%B6%E6%B8%85%E6%BD%94",
+                "resourceId": "gid://shopify/Blog/105615655163",
+                "tags": [],
+                "items": []
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/MenuItem/608785793275",
+            "title": "訂單查詢",
+            "type": "HTTP",
+            "url": "https://apgo.tw/account/login",
+            "resourceId": null,
+            "tags": [],
+            "items": []
+          },
+          {
+            "id": "gid://shopify/MenuItem/578479161595",
+            "title": "聯絡我們",
+            "type": "PAGE",
+            "url": "/en/pages/contact",
+            "resourceId": "gid://shopify/Page/120708038907",
+            "tags": [],
+            "items": []
+          }
+        ]
+      },
+      {
+        "id": "gid://shopify/Menu/240273588475",
+        "handle": "footer",
+        "title": "頁尾選單",
+        "items": [
+          {
+            "id": "gid://shopify/MenuItem/578479194363",
+            "title": "搜尋",
+            "type": "SEARCH",
+            "url": "/en/search",
+            "resourceId": null,
+            "tags": [],
+            "items": []
+          },
+          {
+            "id": "gid://shopify/MenuItem/594766233851",
+            "title": "Your Privacy Choices",
+            "type": "PAGE",
+            "url": "/en/pages/data-sharing-opt-out",
+            "resourceId": "gid://shopify/Page/125803069691",
+            "tags": [],
+            "items": []
+          }
+        ]
+      },
+      {
+        "id": "gid://shopify/Menu/240273621243",
+        "handle": "customer-account-main-menu",
+        "title": "顧客帳號主選單",
+        "items": [
+          {
+            "id": "gid://shopify/MenuItem/578479259899",
+            "title": "訂單",
+            "type": "CUSTOMER_ACCOUNT_PAGE",
+            "url": "https://account.apgo.tw/orders",
+            "resourceId": "gid://shopify/CustomerAccountPage/77271826683",
+            "tags": [],
+            "items": []
+          },
+          {
+            "id": "gid://shopify/MenuItem/608084984059",
+            "title": "個人檔案",
+            "type": "CUSTOMER_ACCOUNT_PAGE",
+            "url": "https://account.apgo.tw/profile",
+            "resourceId": "gid://shopify/CustomerAccountPage/77271859451",
+            "tags": [],
+            "items": []
+          }
+        ]
+      },
+      {
+        "id": "gid://shopify/Menu/244001145083",
+        "handle": "apgo",
+        "title": "APGO風格選單",
+        "items": []
+      },
+      {
+        "id": "gid://shopify/Menu/262517489915",
+        "handle": "main-menu-v2",
+        "title": "主導覽 v2",
+        "items": [
+          {
+            "id": "gid://shopify/MenuItem/637653713147",
+            "title": "首頁",
+            "type": "FRONTPAGE",
+            "url": "/en",
+            "resourceId": null,
+            "tags": [],
+            "items": []
+          },
+          {
+            "id": "gid://shopify/MenuItem/637653745915",
+            "title": "所有產品",
+            "type": "CATALOG",
+            "url": "/en/collections/all",
+            "resourceId": null,
+            "tags": [],
+            "items": [
+              {
+                "id": "gid://shopify/MenuItem/637653778683",
+                "title": "居家清潔",
+                "type": "HTTP",
+                "url": "https://apgo.tw/collections/homecleaning",
+                "resourceId": null,
+                "tags": [],
+                "items": [
+                  {
+                    "id": "gid://shopify/MenuItem/637653811451",
+                    "title": "洗衣精",
+                    "type": "HTTP",
+                    "url": "https://apgo.tw/collections/%E8%B6%85%E7%B4%9A%E6%B4%97%E8%A1%A3%E7%B2%BE%E7%B3%BB%E5%88%97",
+                    "resourceId": null,
+                    "tags": []
+                  },
+                  {
+                    "id": "gid://shopify/MenuItem/637653844219",
+                    "title": "全部居家清潔",
+                    "type": "HTTP",
+                    "url": "https://apgo.tw/collections/homecleaning",
+                    "resourceId": null,
+                    "tags": []
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/MenuItem/637653876987",
+                "title": "汽車鍍膜",
+                "type": "HTTP",
+                "url": "https://apgo.tw/collections/coating-series",
+                "resourceId": null,
+                "tags": [],
+                "items": [
+                  {
+                    "id": "gid://shopify/MenuItem/637653909755",
+                    "title": "鍍膜全系列",
+                    "type": "HTTP",
+                    "url": "https://apgo.tw/collections/coating-series",
+                    "resourceId": null,
+                    "tags": []
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/MenuItem/637653942523",
+                "title": "清潔藥劑",
+                "type": "HTTP",
+                "url": "https://apgo.tw/collections/%E6%B8%85%E6%BD%94%E8%97%A5%E5%8A%91%E5%85%A8%E7%B3%BB%E5%88%97",
+                "resourceId": null,
+                "tags": [],
+                "items": [
+                  {
+                    "id": "gid://shopify/MenuItem/637653975291",
+                    "title": "清潔藥劑",
+                    "type": "HTTP",
+                    "url": "https://apgo.tw/collections/%E6%B8%85%E6%BD%94%E8%97%A5%E5%8A%91%E5%85%A8%E7%B3%BB%E5%88%97",
+                    "resourceId": null,
+                    "tags": []
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/MenuItem/637654008059",
+                "title": "洗車用品",
+                "type": "HTTP",
+                "url": "https://apgo.tw/collections/%E6%B4%97%E8%BB%8A%E7%94%A8%E5%93%81",
+                "resourceId": null,
+                "tags": [],
+                "items": [
+                  {
+                    "id": "gid://shopify/MenuItem/637654040827",
+                    "title": "洗車工具",
+                    "type": "HTTP",
+                    "url": "https://apgo.tw/collections/%E6%B4%97%E8%BB%8A%E7%94%A8%E5%93%81",
+                    "resourceId": null,
+                    "tags": []
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/MenuItem/637654073595",
+                "title": "科技執法測速器",
+                "type": "HTTP",
+                "url": "https://apgo.tw/collections/%E7%A7%91%E6%8A%80%E5%9F%B7%E6%B3%95%E6%B8%AC%E9%80%9F%E5%99%A8",
+                "resourceId": null,
+                "tags": [],
+                "items": [
+                  {
+                    "id": "gid://shopify/MenuItem/637654106363",
+                    "title": "科技執法測速器",
+                    "type": "HTTP",
+                    "url": "https://apgo.tw/collections/%E7%A7%91%E6%8A%80%E5%9F%B7%E6%B3%95%E6%B8%AC%E9%80%9F%E5%99%A8",
+                    "resourceId": null,
+                    "tags": []
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/MenuItem/637654139131",
+                "title": "暢銷優惠禮組",
+                "type": "HTTP",
+                "url": "https://apgo.tw/collections/all",
+                "resourceId": null,
+                "tags": [],
+                "items": [
+                  {
+                    "id": "gid://shopify/MenuItem/637654171899",
+                    "title": "禮組",
+                    "type": "HTTP",
+                    "url": "https://apgo.tw/collections/all",
+                    "resourceId": null,
+                    "tags": []
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/MenuItem/637654204667",
+                "title": "損傷修復",
+                "type": "HTTP",
+                "url": "https://apgo.tw/collections/%E6%90%8D%E5%82%B7%E4%BF%AE%E5%BE%A9",
+                "resourceId": null,
+                "tags": [],
+                "items": [
+                  {
+                    "id": "gid://shopify/MenuItem/637654237435",
+                    "title": "損傷修復用品",
+                    "type": "HTTP",
+                    "url": "https://apgo.tw/collections/%E6%90%8D%E5%82%B7%E4%BF%AE%E5%BE%A9",
+                    "resourceId": null,
+                    "tags": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/MenuItem/637654270203",
+            "title": "洗衣精訂閱制",
+            "type": "HTTP",
+            "url": "https://sub.apgo.tw",
+            "resourceId": null,
+            "tags": [],
+            "items": []
+          },
+          {
+            "id": "gid://shopify/MenuItem/637654302971",
+            "title": "最新活動",
+            "type": "HTTP",
+            "url": "https://apgo.tw/pages/google-review",
+            "resourceId": null,
+            "tags": [],
+            "items": [
+              {
+                "id": "gid://shopify/MenuItem/637654335739",
+                "title": "GOOGLE、FB五星好評活動",
+                "type": "HTTP",
+                "url": "https://apgo.tw/pages/google-review",
+                "resourceId": null,
+                "tags": [],
+                "items": []
+              },
+              {
+                "id": "gid://shopify/MenuItem/637654368507",
+                "title": "APGO好評回饋送購物金$250",
+                "type": "HTTP",
+                "url": "https://apgo.tw/pages/campaign20260803",
+                "resourceId": null,
+                "tags": [],
+                "items": []
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/MenuItem/637654401275",
+            "title": "APGO生活誌",
+            "type": "PAGE",
+            "url": "/en/pages/apgo-journal",
+            "resourceId": "gid://shopify/Page/135253098747",
+            "tags": [],
+            "items": [
+              {
+                "id": "gid://shopify/MenuItem/637900718331",
+                "title": "生活誌總覽",
+                "type": "PAGE",
+                "url": "/en/pages/apgo-journal",
+                "resourceId": "gid://shopify/Page/135253098747",
+                "tags": [],
+                "items": []
+              },
+              {
+                "id": "gid://shopify/MenuItem/637654434043",
+                "title": "居家清潔",
+                "type": "BLOG",
+                "url": "/en/blogs/%E5%B1%85%E5%AE%B6%E6%B8%85%E6%BD%94",
+                "resourceId": "gid://shopify/Blog/105615655163",
+                "tags": [],
+                "items": []
+              },
+              {
+                "id": "gid://shopify/MenuItem/637654466811",
+                "title": "鍍膜知識",
+                "type": "BLOG",
+                "url": "/en/blogs/%E9%8D%8D%E8%86%9C%E7%9F%A5%E8%AD%98",
+                "resourceId": "gid://shopify/Blog/105750888699",
+                "tags": [],
+                "items": []
+              },
+              {
+                "id": "gid://shopify/MenuItem/637654499579",
+                "title": "洗車教學",
+                "type": "BLOG",
+                "url": "/en/blogs/%E6%B4%97%E8%BB%8A%E6%95%99%E5%AD%B8",
+                "resourceId": "gid://shopify/Blog/105750921467",
+                "tags": [],
+                "items": []
+              },
+              {
+                "id": "gid://shopify/MenuItem/637654532347",
+                "title": "損傷處理",
+                "type": "BLOG",
+                "url": "/en/blogs/%E6%90%8D%E5%82%B7%E8%99%95%E7%90%86",
+                "resourceId": "gid://shopify/Blog/105750954235",
+                "tags": [],
+                "items": []
+              },
+              {
+                "id": "gid://shopify/MenuItem/637654565115",
+                "title": "行車安全",
+                "type": "BLOG",
+                "url": "/en/blogs/%E8%A1%8C%E8%BB%8A%E5%AE%89%E5%85%A8",
+                "resourceId": "gid://shopify/Blog/105750987003",
+                "tags": [],
+                "items": []
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": "eyJsYXN0X2lkIjoyNjI1MTc0ODk5MTUsImxhc3RfdmFsdWUiOjI2MjUxNzQ4OTkxNX0="
+    }
+  },
+  "collections": {
+    "nodes": [
+      {
+        "id": "gid://shopify/Collection/452627497211",
+        "handle": "bestselling-discount-gift-set",
+        "title": "暢銷優惠禮組"
+      }
+    ],
+    "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": "eyJsYXN0X2lkIjo0NTI2Mjc0OTcyMTEsImxhc3RfdmFsdWUiOiI0NTI2Mjc0OTcyMTEifQ=="
+    }
+  },
+  "themes": {
+    "nodes": [
+      {
+        "id": "gid://shopify/OnlineStoreTheme/155081179387",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/157968859387",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/158202921211",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/158213931259",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/158214095099",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/158214258939",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/158324228347",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/158351786235",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/158355980539",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/158569267451",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/158591222011",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/158931615995",
+        "role": "MAIN"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/158997348603",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/159059837179",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/159336300795",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/159449350395",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/159449481467",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/159452496123",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/161937621243",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/162094055675",
+        "role": "UNPUBLISHED"
+      }
+    ],
+    "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": "eyJsYXN0X2lkIjoxNjIwOTQwNTU2NzUsImxhc3RfdmFsdWUiOjE2MjA5NDA1NTY3NX0="
+    }
+  }
+}

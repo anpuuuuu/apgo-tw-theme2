@@ -1,0 +1,23 @@
+{%- doc -%}
+  Renders a journal article card.
+  @param {article} article - Published article from a blog's storefront articles
+  @param {string} [heading_tag] - Heading level used by the containing section
+{%- enddoc -%}
+{%- assign heading_tag = heading_tag | default: 'h3' -%}
+{%- assign summary = article.excerpt_or_content | strip_html | strip | truncate: 120 -%}
+<article class="apgo-journal-card" data-journal-article="{{ article.id }}">
+  <a class="apgo-journal-card__link" href="{{ article.url }}">
+    {%- if article.image != blank -%}
+      {%- assign image_alt = article.image.alt | default: article.title -%}
+      <div class="apgo-journal-card__media">
+        {{ article.image | image_url: width: 960 | image_tag: widths: '320,480,720,960', sizes: '(min-width: 990px) 40vw, 100vw', loading: 'lazy', alt: image_alt }}
+      </div>
+    {%- endif -%}
+    <div class="apgo-journal-card__body">
+      <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%Y.%m.%d' }}</time>
+      <{{ heading_tag }}>{{ article.title | escape }}</{{ heading_tag }}>
+      {%- if summary != blank -%}<p>{{ summary | escape }}</p>{%- endif -%}
+      <span class="apgo-journal-card__more">{{ 'journal.read_article' | t }} <span aria-hidden="true">→</span></span>
+    </div>
+  </a>
+</article>

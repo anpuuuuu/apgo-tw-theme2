@@ -28,6 +28,21 @@
     "network": "Could not verify the gift card or cart. Please retry; you have not been charged.",
     "attributes_error": "Contact or invoice details could not be saved. Please retry before checkout."
   },
+  "journal": {
+    "eyebrow": "APGO JOURNAL",
+    "categories": "Journal categories",
+    "read_article": "Read article",
+    "view_all": "View all",
+    "view_category": "View all {{ title }} articles",
+    "empty": "Articles coming soon",
+    "select_blog": "Select a blog for this category.",
+    "back_to_hub": "APGO Journal overview",
+    "category_intro": "Product tutorials, buying guides and practical care tips.",
+    "pagination": "Article pages",
+    "previous": "Previous",
+    "next": "Next",
+    "page_number": "Page {{ number }}"
+  },
   "accessibility": {
     "account": "Open account menu",
     "cart": "Cart",

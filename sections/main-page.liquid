@@ -1,7 +1,18 @@
+{% liquid
+  assign page_color_scheme = section.settings.color_scheme
+  assign page_background_class = ''
 
+  if page.handle == 'campaign20260803' or page.handle == 'google-review'
+    assign page_color_scheme = 'scheme-2'
+  endif
 
-<div class="section-background color-{{ section.settings.color_scheme }}"></div>
-<div class="section page-width-content color-{{ section.settings.color_scheme }}">
+  if page.handle == 'google-review'
+    assign page_background_class = 'apgo-page-background--cream'
+  endif
+%}
+
+<div class="section-background color-{{ page_color_scheme }} {{ page_background_class }}"></div>
+<div class="section page-width-content color-{{ page_color_scheme }} {{ page_background_class }}">
   <div
     class="
       spacing-style
@@ -18,6 +29,13 @@
     {% content_for 'blocks' %}
   </div>
 </div>
+
+{% stylesheet %}
+  .apgo-page-background--cream {
+    --color-background: #fdf3e7;
+    --color-background-rgb: 253, 243, 231;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {

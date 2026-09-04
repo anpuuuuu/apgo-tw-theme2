@@ -184,6 +184,10 @@
     white-space: nowrap;
   }
 
+  .menu-list__list-item--desktop-hidden-home {
+    display: none;
+  }
+
   .menu-list__list-item[aria-hidden='true'] {
     visibility: hidden;
   }
@@ -191,7 +195,7 @@
   .menu-list__link {
     font-family: var(--menu-top-level-font-family);
     font-style: var(--menu-top-level-font-style);
-    font-weight: var(--menu-top-level-font-weight);
+    font-weight: 800;
     font-size: var(--menu-top-level-font-size);
     line-height: var(--menu-top-level-font-line-height);
     text-transform: var(--menu-top-level-font-case);
@@ -229,6 +233,10 @@
   .menu-list .menu-list__list-item:where(:hover, :focus-within) .menu-list__link,
   .menu-list .menu-list__list-item[slot='overflow'] .menu-list__link[aria-expanded='true'] {
     color: var(--menu-top-level-font-color);
+  }
+
+  .menu-list .menu-list__list-item--accent > .menu-list__link {
+    color: #f58220;
   }
 
   .overflow-menu::part(list) {
@@ -622,6 +630,13 @@
       "id": "menu",
       "label": "t:settings.menu",
       "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "accent_link_title",
+      "label": "品牌色選單名稱",
+      "default": "洗衣精訂閱制",
+      "info": "與此文字完全相同的第一層選單會顯示為 APGO 橘色。"
     },
     {
       "type": "select",

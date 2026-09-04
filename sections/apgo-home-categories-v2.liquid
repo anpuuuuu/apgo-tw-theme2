@@ -1,0 +1,100 @@
+{{ 'apgo-home-v2.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign category_count = 0
+  for block in section.blocks
+    if block.settings.collection != blank
+      assign category_count = category_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if category_count > 0 or request.design_mode -%}
+  <section
+    class="apgo-home-module apgo-home-categories"
+    style="--apgo-home-accent: {{ section.settings.accent_color }}; --apgo-home-max: {{ section.settings.max_width }}px; --apgo-home-padding-top: {{ section.settings.padding_top }}px; --apgo-home-padding-bottom: {{ section.settings.padding_bottom }}px;"
+    aria-labelledby="ApgoCategories-{{ section.id }}"
+  >
+    <div class="apgo-home-v2__inner">
+      <div class="apgo-home-panel">
+        <header class="apgo-home-heading">
+          <div>
+            <p class="apgo-home-heading__eyebrow">SHOP BY CATEGORY</p>
+            <h2 id="ApgoCategories-{{ section.id }}">{{ section.settings.title }}</h2>
+          </div>
+          <a href="{{ section.settings.link | default: routes.all_products_collection_url }}">{{ section.settings.view_all_label }}</a>
+        </header>
+
+        {%- if category_count > 0 -%}
+          <div class="apgo-home-category-grid">
+            {%- for block in section.blocks -%}
+              {%- if block.settings.collection == blank -%}{%- continue -%}{%- endif -%}
+              {%- assign selected_collection = block.settings.collection -%}
+              <a class="apgo-home-category" href="{{ selected_collection.url }}" {{ block.shopify_attributes }}>
+                <span class="apgo-home-category__icon" aria-hidden="true">
+                  {% render 'apgo-category-icon', icon: block.settings.icon %}
+                </span>
+                <span class="apgo-home-category__title">{{ block.settings.title | default: selected_collection.title }}</span>
+                <span class="apgo-home-category__count">{{ selected_collection.products_count }} 件</span>
+              </a>
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <p class="apgo-home-empty">請新增品類區塊並選擇商品系列。</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "APGO · 品類導覽 v2",
+  "tag": "section",
+  "class": "apgo-home-categories-section",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "title", "label": "標題", "default": "品類導覽" },
+    { "type": "url", "id": "link", "label": "查看全部連結" },
+    { "type": "text", "id": "view_all_label", "label": "查看全部文字", "default": "查看全部商品" },
+    { "type": "range", "id": "max_width", "label": "內容最大寬度", "min": 1000, "max": 1800, "step": 20, "unit": "px", "default": 1440 },
+    { "type": "color", "id": "accent_color", "label": "品牌強調色", "default": "#f58220" },
+    { "type": "range", "id": "padding_top", "label": "上方留白", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding_bottom", "label": "下方留白", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 12 }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "品類入口",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "商品系列" },
+        { "type": "text", "id": "title", "label": "顯示名稱（留空用系列名稱）" },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "SVG 圖示",
+          "options": [
+            { "value": "home_cleaning", "label": "居家清潔" },
+            { "value": "coating", "label": "鍍膜" },
+            { "value": "gift", "label": "優惠禮組" },
+            { "value": "cleaning_chemical", "label": "清潔藥劑" },
+            { "value": "car_wash", "label": "洗車用品" },
+            { "value": "repair", "label": "損傷修復" },
+            { "value": "speed_camera", "label": "科技執法測速器" }
+          ],
+          "default": "home_cleaning"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO · 品類導覽 v2",
+      "blocks": [
+        { "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["index"] }
+}
+{% endschema %}

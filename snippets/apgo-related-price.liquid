@@ -1,0 +1,33 @@
+{%- doc -%}
+  @param {product} product_resource - The recommended product
+{%- enddoc -%}
+
+<div class="apgo-related-card-price">
+  {% render 'price', product_resource: product_resource, is_product_card: true %}
+</div>
+
+{% stylesheet %}
+  .apgo-related-card-price {
+    min-width: 0;
+    line-height: 1.5;
+  }
+
+  .apgo-related-card-price [ref='priceContainer'] {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  .apgo-related-card-price .price,
+  .apgo-related-card-price .compare-at-price {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .apgo-related-card-price .partial-sale-label {
+    margin-inline-start: 0;
+    color: inherit;
+    font-size: 0.85em;
+  }
+{% endstylesheet %}
