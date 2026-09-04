@@ -1,20 +1,71 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "apgo-journal-hub",
+      "blocks": {
+        "home": {
+          "type": "category",
+          "settings": {
+            "blog": "居家清潔",
+            "description": "洗衣、除蟎與成分說明"
+          }
+        },
+        "coating": {
+          "type": "category",
+          "disabled": true,
+          "settings": {
+            "blog": "鍍膜知識",
+            "description": "鍍膜原理、施工教學與常見問題"
+          }
+        },
+        "washing": {
+          "type": "category",
+          "disabled": true,
+          "settings": {
+            "blog": "洗車教學",
+            "description": "洗車流程、工具挑選與季節保養"
+          }
+        },
+        "repair": {
+          "type": "category",
+          "disabled": true,
+          "settings": {
+            "blog": "損傷處理",
+            "description": "刮痕、水痕與鐵粉問題排除"
+          }
+        },
+        "safety": {
+          "type": "category",
+          "disabled": true,
+          "settings": {
+            "blog": "行車安全",
+            "description": "行車記錄器與測速器選購、使用"
+          }
+        }
+      },
+      "block_order": [
+        "home",
+        "coating",
+        "washing",
+        "repair",
+        "safety"
+      ],
       "settings": {
         "title": "APGO生活誌",
         "intro": "<p>從居家清潔到愛車保養，探索產品教學、選購指南與實用知識。</p>"
-      },
-      "blocks": {
-        "home": { "type": "category", "settings": { "blog": "居家清潔", "description": "洗衣、除蟎與成分說明" } },
-        "coating": { "type": "category", "settings": { "blog": "鍍膜知識", "description": "鍍膜原理、施工教學與常見問題" } },
-        "washing": { "type": "category", "settings": { "blog": "洗車教學", "description": "洗車流程、工具挑選與季節保養" } },
-        "repair": { "type": "category", "settings": { "blog": "損傷處理", "description": "刮痕、水痕與鐵粉問題排除" } },
-        "safety": { "type": "category", "settings": { "blog": "行車安全", "description": "行車記錄器與測速器選購、使用" } }
-      },
-      "block_order": ["home", "coating", "washing", "repair", "safety"]
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }

@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "apgo_cc_newsletter_popup": {
@@ -249,6 +258,7 @@
         "autoplay": true,
         "interval": 4,
         "show_dots": true,
+        "show_arrows": true,
         "max_width": 1600,
         "side_padding": 16,
         "radius": 14,
@@ -259,25 +269,70 @@
         "overlap_mobile": 160,
         "gap_top": 0,
         "gap_bottom": 18,
-        "aria_label": "優惠輪播",
-        "show_arrows": true
+        "aria_label": "優惠輪播"
       }
     },
     "apgo_home_bestsellers_v2": {
       "type": "apgo-home-bestsellers-v2",
       "blocks": {
-        "bestseller_01": { "type": "product", "settings": { "product": "apgo-atomic-colored-glaze" } },
-        "bestseller_02": { "type": "product", "settings": { "product": "apgo-enamel-crystal-coating" } },
-        "bestseller_03": { "type": "product", "settings": { "product": "glass-coating" } },
-        "bestseller_04": { "type": "product", "settings": { "product": "apgo-g11-plus" } },
-        "bestseller_05": { "type": "product", "settings": { "product": "apgo-pressure-foam-sprayer" } },
-        "bestseller_06": { "type": "product", "settings": { "product": "apgo-headlight-restorer" } },
-        "bestseller_07": { "type": "product", "settings": { "product": "apgo-tire-shine-high-gloss" } },
-        "bestseller_08": { "type": "product", "settings": { "product": "apgo-car-wash-mitt" } }
+        "bestseller_01": {
+          "type": "product",
+          "settings": {
+            "product": "apgo-atomic-colored-glaze"
+          }
+        },
+        "bestseller_02": {
+          "type": "product",
+          "settings": {
+            "product": "apgo-enamel-crystal-coating"
+          }
+        },
+        "bestseller_03": {
+          "type": "product",
+          "settings": {
+            "product": "glass-coating"
+          }
+        },
+        "bestseller_04": {
+          "type": "product",
+          "settings": {
+            "product": "apgo-g11-plus"
+          }
+        },
+        "bestseller_05": {
+          "type": "product",
+          "settings": {
+            "product": "apgo-pressure-foam-sprayer"
+          }
+        },
+        "bestseller_06": {
+          "type": "product",
+          "settings": {
+            "product": "apgo-headlight-restorer"
+          }
+        },
+        "bestseller_07": {
+          "type": "product",
+          "settings": {
+            "product": "apgo-tire-shine-high-gloss"
+          }
+        },
+        "bestseller_08": {
+          "type": "product",
+          "settings": {
+            "product": "apgo-car-wash-mitt"
+          }
+        }
       },
       "block_order": [
-        "bestseller_01", "bestseller_02", "bestseller_03", "bestseller_04",
-        "bestseller_05", "bestseller_06", "bestseller_07", "bestseller_08"
+        "bestseller_01",
+        "bestseller_02",
+        "bestseller_03",
+        "bestseller_04",
+        "bestseller_05",
+        "bestseller_06",
+        "bestseller_07",
+        "bestseller_08"
       ],
       "name": "APGO · 熱銷商品 v2",
       "settings": {
@@ -293,17 +348,71 @@
     "apgo_home_categories_v2": {
       "type": "apgo-home-categories-v2",
       "blocks": {
-        "category_01": { "type": "category", "settings": { "collection": "homecleaning", "title": "居家清潔", "icon": "home_cleaning" } },
-        "category_02": { "type": "category", "settings": { "collection": "coating-series", "title": "鍍膜全系列", "icon": "coating" } },
-        "category_03": { "type": "category", "settings": { "collection": "bestselling-discount-gift-set", "title": "暢銷優惠禮組", "icon": "gift" } },
-        "category_04": { "type": "category", "settings": { "collection": "清潔藥劑全系列", "title": "清潔藥劑", "icon": "cleaning_chemical" } },
-        "category_05": { "type": "category", "settings": { "collection": "洗車用品", "title": "洗車用品", "icon": "car_wash" } },
-        "category_06": { "type": "category", "settings": { "collection": "損傷修復", "title": "損傷修復", "icon": "repair" } },
-        "category_07": { "type": "category", "settings": { "collection": "科技執法測速器", "title": "科技執法測速器", "icon": "speed_camera" } }
+        "category_01": {
+          "type": "category",
+          "settings": {
+            "collection": "homecleaning",
+            "title": "居家清潔",
+            "icon": "home_cleaning"
+          }
+        },
+        "category_02": {
+          "type": "category",
+          "settings": {
+            "collection": "coating-series",
+            "title": "鍍膜全系列",
+            "icon": "coating"
+          }
+        },
+        "category_03": {
+          "type": "category",
+          "settings": {
+            "collection": "bestselling-discount-gift-set",
+            "title": "暢銷優惠禮組",
+            "icon": "gift"
+          }
+        },
+        "category_04": {
+          "type": "category",
+          "settings": {
+            "collection": "清潔藥劑全系列",
+            "title": "清潔藥劑",
+            "icon": "cleaning_chemical"
+          }
+        },
+        "category_05": {
+          "type": "category",
+          "settings": {
+            "collection": "洗車用品",
+            "title": "洗車用品",
+            "icon": "car_wash"
+          }
+        },
+        "category_06": {
+          "type": "category",
+          "settings": {
+            "collection": "損傷修復",
+            "title": "損傷修復",
+            "icon": "repair"
+          }
+        },
+        "category_07": {
+          "type": "category",
+          "settings": {
+            "collection": "科技執法測速器",
+            "title": "科技執法測速器",
+            "icon": "speed_camera"
+          }
+        }
       },
       "block_order": [
-        "category_01", "category_02", "category_03", "category_04",
-        "category_05", "category_06", "category_07"
+        "category_01",
+        "category_02",
+        "category_03",
+        "category_04",
+        "category_05",
+        "category_06",
+        "category_07"
       ],
       "name": "APGO · 品類導覽 v2",
       "settings": {
@@ -322,6 +431,7 @@
       "settings": {
         "title": "主打新品・新上市",
         "featured_product": "apgo-enamel-crystal-coating",
+        "secondary_products": [],
         "collection": "coating-series",
         "feature_copy": "高階滑順款鍍膜，輕鬆打造光亮保護膜。",
         "link": "shopify://collections/coating-series",
@@ -336,16 +446,71 @@
     "apgo_home_shelves_v2": {
       "type": "apgo-home-shelves-v2",
       "blocks": {
-        "shelf_01": { "type": "shelf", "settings": { "collection": "homecleaning", "title": "居家清潔", "subtitle": "洗得乾淨，也對家人溫和" } },
-        "shelf_02": { "type": "shelf", "settings": { "collection": "coating-series", "title": "鍍膜全系列", "subtitle": "比打蠟更輕鬆、更持久" } },
-        "shelf_03": { "type": "shelf", "settings": { "collection": "bestselling-discount-gift-set", "title": "暢銷優惠禮組", "subtitle": "一次備齊人氣組合" } },
-        "shelf_04": { "type": "shelf", "settings": { "collection": "清潔藥劑全系列", "title": "清潔藥劑", "subtitle": "對症下藥，一瓶解決一種髒" } },
-        "shelf_05": { "type": "shelf", "settings": { "collection": "洗車用品", "title": "洗車用品", "subtitle": "洗車工具與日常保養" } },
-        "shelf_06": { "type": "shelf", "settings": { "collection": "損傷修復", "title": "損傷修復", "subtitle": "刮痕、水痕與表面修復" } },
-        "shelf_07": { "type": "shelf", "settings": { "collection": "科技執法測速器", "title": "科技執法測速器", "subtitle": "行車安全與測速提醒" } }
+        "shelf_01": {
+          "type": "shelf",
+          "settings": {
+            "collection": "homecleaning",
+            "title": "居家清潔",
+            "subtitle": "洗得乾淨，也對家人溫和"
+          }
+        },
+        "shelf_02": {
+          "type": "shelf",
+          "settings": {
+            "collection": "coating-series",
+            "title": "鍍膜全系列",
+            "subtitle": "比打蠟更輕鬆、更持久"
+          }
+        },
+        "shelf_03": {
+          "type": "shelf",
+          "settings": {
+            "collection": "bestselling-discount-gift-set",
+            "title": "暢銷優惠禮組",
+            "subtitle": "一次備齊人氣組合"
+          }
+        },
+        "shelf_04": {
+          "type": "shelf",
+          "settings": {
+            "collection": "清潔藥劑全系列",
+            "title": "清潔藥劑",
+            "subtitle": "對症下藥，一瓶解決一種髒"
+          }
+        },
+        "shelf_05": {
+          "type": "shelf",
+          "settings": {
+            "collection": "洗車用品",
+            "title": "洗車用品",
+            "subtitle": "洗車工具與日常保養"
+          }
+        },
+        "shelf_06": {
+          "type": "shelf",
+          "settings": {
+            "collection": "損傷修復",
+            "title": "損傷修復",
+            "subtitle": "刮痕、水痕與表面修復"
+          }
+        },
+        "shelf_07": {
+          "type": "shelf",
+          "settings": {
+            "collection": "科技執法測速器",
+            "title": "科技執法測速器",
+            "subtitle": "行車安全與測速提醒"
+          }
+        }
       },
       "block_order": [
-        "shelf_01", "shelf_02", "shelf_03", "shelf_04", "shelf_05", "shelf_06", "shelf_07"
+        "shelf_01",
+        "shelf_02",
+        "shelf_03",
+        "shelf_04",
+        "shelf_05",
+        "shelf_06",
+        "shelf_07"
       ],
       "name": "APGO · 分類商品列 v2",
       "settings": {
