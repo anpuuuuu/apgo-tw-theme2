@@ -38,8 +38,10 @@ assert.match(styles, /max-height: 65dvh/);
 assert.match(styles, /\.apgo-cc-buybar--laundry \.apgo-cc-buybar__cart-link \{[^}]*color: var\(--cc-orange\);/);
 assert.match(styles, /\.apgo-cc-buybar--laundry \.apgo-cc-buybar__cart-link \{[^}]*padding: 4px 0;[^}]*font-size: 15px;/);
 assert.doesNotMatch(styles, /\.apgo-cc-buybar--laundry \.apgo-cc-buybar__cart-link \{[^}]*border:/);
-assert.match(styles, /\.apgo-cc-buybar--laundry\.is-open \.apgo-cc-buybar__cart-link \{[\s\S]*?display: inline-flex;/);
+assert.match(styles, /\.apgo-cc-buybar--laundry\.is-open \.apgo-cc-buybar__cart-link \{[^}]*width: 100%;[^}]*min-height: 46px;[^}]*background: var\(--cc-orange\);/);
 assert.match(styles, /\.apgo-cc-buybar--laundry \.apgo-cc-buybar__summary-actions \{[\s\S]*?justify-content: space-between;/);
+assert.match(styles, /\.apgo-cc-buybar--laundry\.is-open \.apgo-cc-buybar__top \{[^}]*display: none;/);
+assert.match(styles, /\.apgo-cc-buybar--laundry\.is-open \.apgo-cc-buybar__actions \{[^}]*display: none;/);
 assert.match(styles, /\.apgo-cc-buybar--laundry \.apgo-cc-buybar__chip \{[\s\S]*?color: var\(--cc-orange\);/);
 
 console.log('PASS shared mobile buy bar is wired for car-care and laundry templates');

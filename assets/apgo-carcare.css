@@ -2600,7 +2600,14 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
 }
 
 .apgo-cc-buybar.is-open .apgo-cc-buybar__cart-link {
+  width: 100%;
+  min-height: 46px;
   display: inline-flex;
+  justify-content: center;
+  padding: 11px 18px;
+  border-radius: var(--cc-r2, 10px);
+  background: var(--cc-orange, #ff6b1a);
+  color: #fff;
 }
 
 .apgo-cc-buybar__cart-link:hover,
@@ -2798,10 +2805,13 @@ body.apgo-cc-skin .product-card quick-add-component.quick-add {
   display: none;
 }
 .apgo-cc-buybar.is-open .apgo-cc-buybar__top {
-  flex: 0 0 auto;
-  width: auto;
-  padding-left: 0;
-  padding-right: 0;
+  display: none;
+}
+.apgo-cc-buybar.is-open .apgo-cc-buybar__summary-actions {
+  display: block;
+}
+.apgo-cc-buybar.is-open .apgo-cc-buybar__actions {
+  display: none;
 }
 
 .apgo-cc-buybar__btn {
