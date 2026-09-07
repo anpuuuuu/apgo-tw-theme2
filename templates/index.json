@@ -198,15 +198,6 @@
             "alt": "洗衣精買三送一、六送三"
           }
         },
-        "banner_xj9FpC": {
-          "type": "banner",
-          "name": "Banner-【🦬金牛獎尊榮 22件組🏆】",
-          "settings": {
-            "image": "shopify://shop_images/03_0_d90ab2ba-0cd5-4b9a-b7c6-40256bc4dd55.jpg",
-            "link": "shopify://products/初秋人氣禮組-金牛獎尊榮-22件組🏆-狂殺↘32折",
-            "alt": "【🦬金牛獎尊榮 22件組🏆】"
-          }
-        },
         "banner_r6gpWn": {
           "type": "banner",
           "name": "🏆🛵原子鍍膜機車尊榮全配組🏆 NT$1499",
@@ -214,6 +205,15 @@
             "image": "shopify://shop_images/06_4109c7ba-42f5-4c8e-975b-1c088fce591d.jpg",
             "link": "shopify://products/原子鍍膜機車尊榮全配組-🏆",
             "alt": "🏆🛵原子鍍膜機車尊榮全配組🏆 NT$1499"
+          }
+        },
+        "banner_xj9FpC": {
+          "type": "banner",
+          "name": "Banner-【🦬金牛獎尊榮 22件組🏆】",
+          "settings": {
+            "image": "shopify://shop_images/03_0_d90ab2ba-0cd5-4b9a-b7c6-40256bc4dd55.jpg",
+            "link": "shopify://products/初秋人氣禮組-金牛獎尊榮-22件組🏆-狂殺↘32折",
+            "alt": "【🦬金牛獎尊榮 22件組🏆】"
           }
         },
         "banner_CXPEDn": {
@@ -248,8 +248,8 @@
         "banner_MJgxgQ",
         "banner_7D3VN4",
         "banner_cNRtiH",
-        "banner_xj9FpC",
         "banner_r6gpWn",
+        "banner_xj9FpC",
         "banner_CXPEDn",
         "banner_T8KwPX",
         "banner_jGTL4Q"
