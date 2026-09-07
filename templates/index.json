@@ -275,6 +275,12 @@
     "apgo_home_bestsellers_v2": {
       "type": "apgo-home-bestsellers-v2",
       "blocks": {
+        "bestseller_01": {
+          "type": "product",
+          "settings": {
+            "product": "clearance-sale-lucky-box"
+          }
+        },
         "product_jzaqEn": {
           "type": "product",
           "settings": {
@@ -328,15 +334,10 @@
           "settings": {
             "product": "ti-coating"
           }
-        },
-        "bestseller_01": {
-          "type": "product",
-          "settings": {
-            "product": "apgo珊瑚絨毛巾"
-          }
         }
       },
       "block_order": [
+        "bestseller_01",
         "product_jzaqEn",
         "product_WqygLp",
         "bestseller_03",
@@ -345,8 +346,7 @@
         "product_6qtanB",
         "product_QW4bEt",
         "product_DLggdh",
-        "product_FLgd4N",
-        "bestseller_01"
+        "product_FLgd4N"
       ],
       "name": "APGO · 熱銷商品 v2",
       "settings": {
