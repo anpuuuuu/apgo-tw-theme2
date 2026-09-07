@@ -66,7 +66,11 @@
       return null;
     }
 
-    function updateUI() {
+    function updateUI(opts) {
+      // Gallery scrolling is opt-in: only an explicit variant tap passes
+      // scrollGallery, so initial load / post-add refreshes / gallery-driven
+      // chip syncs keep whatever slide the user is looking at.
+      var shouldScrollGallery = !!(opts && opts.scrollGallery);
       // Active chip + current value labels
       $$('[data-apgo-cc-option-group]', root).forEach(function (group) {
         var checked = $('input[data-apgo-cc-option-input]:checked', group);
@@ -88,7 +92,7 @@
       // Scroll the gallery track to the variant's featured_media slide so
       // the gallery shows the photo bound to this variant. The track is
       // initialized later in this section, so we resolve elements lazily.
-      if (v.featured_media && v.featured_media.id != null) {
+      if (shouldScrollGallery && v.featured_media && v.featured_media.id != null) {
         var trackEl = $('[data-apgo-cc-gallery-track]', root);
         var targetSlide = null;
         if (trackEl) {
@@ -130,7 +134,9 @@
     }
 
     $$('input[data-apgo-cc-option-input]', root).forEach(function (i) {
-      i.addEventListener('change', updateUI);
+      i.addEventListener('change', function () {
+        updateUI({ scrollGallery: true });
+      });
     });
 
     // ---------------- Qty stepper ----------------
@@ -542,7 +548,9 @@
       });
     }
 
-    // Initial paint
+    // Initial paint — intentionally without scrollGallery so the gallery
+    // always opens on the first image, even when the URL carries ?variant=
+    // or the selected variant has its own featured image.
     updateUI();
   }
 
