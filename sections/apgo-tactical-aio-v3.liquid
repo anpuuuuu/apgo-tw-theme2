@@ -47,6 +47,12 @@
         "content": "3. 優惠資訊版位 (Coupons)"
       },
       {
+        "type": "checkbox",
+        "id": "show_coupons",
+        "label": "顯示優惠版位",
+        "default": true
+      },
+      {
         "type": "text",
         "id": "coupon_sec_icon",
         "label": "優惠版位 Icon (FontAwesome)",
@@ -1232,16 +1238,16 @@
             {% endif %}
             {% assign nav_label = block.settings.nav_label_override | default: block.settings.section_title | default: '商品區塊' %}
             <div class="sticky-nav-link" onclick="scrollToSection('{{ anchor_id }}')">{{ nav_label }}</div>
-          {% elsif block.type == 'coupon_slot' and auto_has_coupon == false %}
+          {% elsif block.type == 'coupon_slot' and auto_has_coupon == false and section.settings.show_coupons != false %}
             {% assign auto_has_coupon = true %}
             {% assign nav_label = block.settings.nav_label_override | default: block.settings.section_title | default: section.settings.coupon_nav_label | default: section.settings.coupon_sec_title | default: '優惠版位' %}
             <div class="sticky-nav-link" onclick="scrollToSection('apgo-coupons')">{{ nav_label }}</div>
-          {% elsif block.type == 'coupon_item' and auto_has_coupon == false %}
+          {% elsif block.type == 'coupon_item' and auto_has_coupon == false and section.settings.show_coupons != false %}
             {% assign auto_has_coupon = true %}
             <div class="sticky-nav-link" onclick="scrollToSection('apgo-coupons')">{{ section.settings.coupon_nav_label | default: section.settings.coupon_sec_title | default: '優惠版位' }}</div>
           {% endif %}
         {% endfor %}
-        {% if auto_has_coupon == false %}
+        {% if auto_has_coupon == false and section.settings.show_coupons != false %}
           <div class="sticky-nav-link" onclick="scrollToSection('apgo-coupons')">{{ section.settings.coupon_nav_label | default: section.settings.coupon_sec_title | default: '優惠版位' }}</div>
         {% endif %}
       {% endif %}
@@ -1764,13 +1770,14 @@
           {% endif %}
         </section>
       {% elsif block.type == 'coupon_item' %}
-        {% unless coupon_section_rendered %}
+        {% unless coupon_section_rendered or section.settings.show_coupons == false %}
           {% assign coupon_section_rendered = true %}
           <section class="apgo-coupon-sec" id="apgo-coupons">
             <div class="apgo-grid-title" style="margin-bottom: 1rem;">
               <i class="fa-solid {{ coupon_icon }}" style="color:#f08418;"></i>
               {{ coupon_title }}
             </div>
+            {% if section.settings.coupon_banner_img or request.design_mode %}
             <div class="apgo-grid-banner" style="--apgo-banner-space-top:{% if section.settings.coupon_banner_spacing_top %}1rem{% else %}0{% endif %}; --apgo-banner-space-bottom:{% if section.settings.coupon_banner_spacing_bottom %}1rem{% else %}0{% endif %};">
               {% if section.settings.coupon_banner_img %}
                 {{ section.settings.coupon_banner_img | image_url: width: 1920 | image_tag: class: 'apgo-obj-cover' }}
@@ -1778,6 +1785,7 @@
                 <div class="apgo-img-placeholder">Banner 圖片位置</div>
               {% endif %}
             </div>
+            {% endif %}
             <div class="apgo-coupon-grid">
               {% for coupon_block in section.blocks %}
                 {% if coupon_block.type == 'coupon_item' %}
@@ -1795,12 +1803,13 @@
       {% endif %}
     {% endfor %}
 
-    {% unless coupon_section_rendered %}
+    {% unless coupon_section_rendered or section.settings.show_coupons == false %}
       <section class="apgo-coupon-sec" id="apgo-coupons">
         <div class="apgo-grid-title" style="margin-bottom: 1rem;">
           <i class="fa-solid {{ coupon_icon }}" style="color:#f08418;"></i>
           {{ coupon_title }}
         </div>
+        {% if section.settings.coupon_banner_img or request.design_mode %}
         <div class="apgo-grid-banner" style="--apgo-banner-space-top:{% if section.settings.coupon_banner_spacing_top %}1rem{% else %}0{% endif %}; --apgo-banner-space-bottom:{% if section.settings.coupon_banner_spacing_bottom %}1rem{% else %}0{% endif %};">
           {% if section.settings.coupon_banner_img %}
             {{ section.settings.coupon_banner_img | image_url: width: 1920 | image_tag: class: 'apgo-obj-cover' }}
@@ -1808,6 +1817,7 @@
             <div class="apgo-img-placeholder">Banner 圖片位置</div>
           {% endif %}
         </div>
+        {% endif %}
         <div class="apgo-coupon-grid">
           <div class="apgo-coupon-card" style="--theme-color: #f08418;">
             <i class="fa-solid fa-ticket" style="color:#f08418; font-size:18px; margin:4px 0;"></i>
