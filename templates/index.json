@@ -171,6 +171,24 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
+        "banner_x6UiQX": {
+          "type": "banner",
+          "name": "清倉優惠大集合-【鈦晶鍍膜．買一送二 】",
+          "settings": {
+            "image": "shopify://shop_images/1920.jpg",
+            "link": "shopify://products/clearance-sale",
+            "alt": "清倉優惠大集合-【鈦晶鍍膜．買一送二 】"
+          }
+        },
+        "banner_teqB3D": {
+          "type": "banner",
+          "name": "【🎉清倉優惠福箱禮組🎖️】",
+          "settings": {
+            "image": "shopify://shop_images/3688_1920.jpg",
+            "link": "shopify://products/clearance-sale-lucky-box",
+            "alt": "【🎉清倉優惠福箱禮組🎖️】"
+          }
+        },
         "banner_MJgxgQ": {
           "type": "banner",
           "name": "99購物季-滿額享購物金",
@@ -207,13 +225,13 @@
             "alt": "🏆🛵原子鍍膜機車尊榮全配組🏆 NT$1499"
           }
         },
-        "banner_xj9FpC": {
+        "banner_jGTL4Q": {
           "type": "banner",
-          "name": "Banner-【🦬金牛獎尊榮 22件組🏆】",
+          "name": "Banner-洗衣精訂閱制活動",
           "settings": {
-            "image": "shopify://shop_images/03_0_d90ab2ba-0cd5-4b9a-b7c6-40256bc4dd55.jpg",
-            "link": "shopify://products/初秋人氣禮組-金牛獎尊榮-22件組🏆-狂殺↘32折",
-            "alt": "【🦬金牛獎尊榮 22件組🏆】"
+            "image": "shopify://shop_images/BN-1920-3.png",
+            "link": "https://sub.apgo.tw/",
+            "alt": "洗衣精訂閱制活動"
           }
         },
         "banner_CXPEDn": {
@@ -233,26 +251,18 @@
             "link": "shopify://pages/campaign20260803",
             "alt": "APGO評價募集活動"
           }
-        },
-        "banner_jGTL4Q": {
-          "type": "banner",
-          "name": "Banner-洗衣精訂閱制活動",
-          "settings": {
-            "image": "shopify://shop_images/BN-1920-3.png",
-            "link": "https://sub.apgo.tw/",
-            "alt": "洗衣精訂閱制活動"
-          }
         }
       },
       "block_order": [
+        "banner_x6UiQX",
+        "banner_teqB3D",
         "banner_MJgxgQ",
         "banner_7D3VN4",
         "banner_cNRtiH",
         "banner_r6gpWn",
-        "banner_xj9FpC",
+        "banner_jGTL4Q",
         "banner_CXPEDn",
-        "banner_T8KwPX",
-        "banner_jGTL4Q"
+        "banner_T8KwPX"
       ],
       "settings": {
         "autoplay": true,
