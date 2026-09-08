@@ -247,9 +247,9 @@
           },
           {
             "type": "textarea",
-            "id": "variant_overrides",
-            "label": "指定變體（選填）",
-            "info": "每行一筆：商品handle=變體。變體可填變體ID、SKU 或變體標題。留空的商品維持原本行為（顯示價格區間、點「加入」跳出選擇視窗）。例：clearance-sale=【鋁圈光亮劑 500ml +送噴頭 】"
+            "id": "variant_ids",
+            "label": "指定變體 ID（選填）",
+            "info": "每行一個變體 ID（也可用逗號分隔，填 SKU 亦可）。填寫後這個區塊改為「一個變體一張卡」，只顯示列出的變體；變體必須屬於上方「選擇商品」清單裡的商品。留空則維持原本的「一個商品一張卡」。卡片順序依商品後台的變體排序。"
           },
           {
             "type": "text",
@@ -1676,6 +1676,19 @@
             {% assign has_products_in_grid = true %}
             {% break %}
           {% endfor %}
+          {% assign wanted_ids = ',' %}
+          {% assign variant_mode = false %}
+          {% assign wanted_count = 0 %}
+          {% assign id_specs = block.settings.variant_ids | newline_to_br | replace: '<br />', ',' | split: ',' %}
+          {% for id_spec in id_specs %}
+            {% assign id_clean = id_spec | strip %}
+            {% if id_clean != blank %}
+              {% assign wanted_ids = wanted_ids | append: id_clean | append: ',' %}
+              {% assign wanted_count = wanted_count | plus: 1 %}
+              {% assign variant_mode = true %}
+            {% endif %}
+          {% endfor %}
+          {% assign matched_count = 0 %}
           {% assign card_layout = block.settings.card_layout | default: 'horizontal' %}
           {% assign vertical_rows = block.settings.vertical_rows | default: '1' %}
           {% assign vertical_cards_per_view = block.settings.vertical_cards_per_view | default: '2.5' %}
@@ -1684,42 +1697,27 @@
             <div class="apgo-card-grid{% if card_layout == 'vertical' %} apgo-card-grid-vertical{% if vertical_rows == '2' %} apgo-card-grid-vertical-2rows{% endif %}{% endif %}"{% if card_layout == 'vertical' %} style="--apgo-cards-per-view: {{ vertical_cards_per_view }};"{% endif %}>
               {% if has_products_in_grid %}
                 {% for product in block.settings.product_list %}
+                  {% for v in product.variants %}
+                  {% assign forced_variant = blank %}
+                  {% if variant_mode %}
+                    {% assign vid_key = ',' | append: v.id | append: ',' %}
+                    {% assign sku_key = ',' | append: v.sku | append: ',' %}
+                    {% unless wanted_ids contains vid_key or wanted_ids contains sku_key %}{% continue %}{% endunless %}
+                    {% assign forced_variant = v %}
+                    {% assign matched_count = matched_count | plus: 1 %}
+                  {% else %}
+                    {% unless forloop.first %}{% break %}{% endunless %}
+                  {% endif %}
+
                   {% assign has_variants = false %}
-                  {% if product.variants.size > 1 %}
+                  {% if forced_variant == blank and product.variants.size > 1 %}
                     {% assign has_variants = true %}
                   {% endif %}
                   {% assign selected_variant = product.selected_or_first_available_variant %}
                   {% assign product_is_available = product.available %}
-
-                  {% assign forced_variant = blank %}
-                  {% assign wanted_variant = blank %}
-                  {% assign override_lines = block.settings.variant_overrides | newline_to_br | split: '<br />' %}
-                  {% for override_line in override_lines %}
-                    {% assign override_clean = override_line | strip %}
-                    {% assign override_pair = override_clean | split: '=' %}
-                    {% if override_pair.size < 2 %}{% continue %}{% endif %}
-                    {% assign override_key = override_pair[0] | strip %}
-                    {% if override_key != product.handle and override_key != product.title %}{% continue %}{% endif %}
-                    {% assign wanted_variant = override_clean | remove_first: override_pair[0] | remove_first: '=' | strip %}
-                    {% if wanted_variant == blank %}{% break %}{% endif %}
-                    {% for v in product.variants %}
-                      {% assign v_id_str = v.id | append: '' %}
-                      {% if v_id_str == wanted_variant or v.sku == wanted_variant or v.title == wanted_variant %}
-                        {% assign forced_variant = v %}
-                        {% break %}
-                      {% endif %}
-                    {% endfor %}
-                    {% break %}
-                  {% endfor %}
-
-                  {% if request.design_mode and wanted_variant != blank and forced_variant == blank %}
-                    <div class="apgo-img-placeholder" style="margin-bottom:6px;">⚠️ 找不到變體「{{ wanted_variant }}」，此卡維持原本行為</div>
-                  {% endif %}
-
                   {% assign card_title = product.title %}
                   {% assign card_image = product.featured_image %}
                   {% if forced_variant != blank %}
-                    {% assign has_variants = false %}
                     {% assign selected_variant = forced_variant %}
                     {% assign product_is_available = forced_variant.available %}
                     {% if forced_variant.title != 'Default Title' %}
@@ -1730,7 +1728,7 @@
                     {% endif %}
                   {% endif %}
                   
-                  <div class="apgo-card{% if card_layout == 'vertical' %} apgo-card-vertical{% endif %}" data-pid="{{ product.id }}">
+                  <div class="apgo-card{% if card_layout == 'vertical' %} apgo-card-vertical{% endif %}" data-pid="{{ product.id }}{% if forced_variant != blank %}-{{ forced_variant.id }}{% endif %}">
                     <div class="apgo-card-head">
                       <span class="apgo-card-tag apgo-font-mono">// {{ block.settings.card_tag }}</span>
                     </div>
@@ -1776,7 +1774,11 @@
                       </div>
                     </div>
                   </div>
+                  {% endfor %}
                 {% endfor %}
+                {% if request.design_mode and variant_mode and matched_count < wanted_count %}
+                  <div class="apgo-img-placeholder">⚠️ 有 {{ wanted_count | minus: matched_count }} 個變體 ID 找不到，請確認它們屬於上方選擇的商品</div>
+                {% endif %}
               {% else %}
                 <div class="apgo-card{% if card_layout == 'vertical' %} apgo-card-vertical{% endif %}">
                   <div class="apgo-card-head">
