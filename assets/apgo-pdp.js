@@ -210,12 +210,15 @@
       }
     }
 
-    function onOptionChange() {
+    // syncMedia is opt-in: only an actual option pick should move the gallery.
+    // Quantity edits reuse this to refresh labels and price, and must leave
+    // whatever image the shopper is currently looking at alone.
+    function onOptionChange(opts) {
       updateCurrentValueLabels();
       var values = readSelectedOptions();
       var variant = findVariant(values);
       updatePriceUI(variant);
-      syncMediaToVariant(variant);
+      if (opts && opts.syncMedia) syncMediaToVariant(variant);
     }
 
     // Wire radio inputs. When the user changes a radio in one layout,
@@ -239,7 +242,7 @@
           for (var k = 0; k < sib.length; k++) sib[k].classList && sib[k].classList.remove('active');
           ownLabel.classList.add('active');
         }
-        onOptionChange();
+        onOptionChange({ syncMedia: true });
       });
     });
 

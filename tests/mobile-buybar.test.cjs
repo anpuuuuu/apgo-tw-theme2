@@ -28,6 +28,15 @@ assert.match(script, /mode === 'laundry'/);
 assert.match(script, /form\.apgo-product-form/);
 assert.match(script, /\[data-apgo-variants\]/);
 
+// The purchase panel image must come from the variant JSON, not from the
+// gallery's [data-apgo-cc-main-img]: that attribute only moves once the
+// gallery's smooth scroll settles, so reading it right after a variant change
+// paints the previously selected variant's image.
+assert.match(script, /function variantImageSrc\(variant\)/);
+assert.match(script, /paintPurchaseImg\(selectedVariant\)/);
+assert.match(script, /paintPurchaseImg\(currentVariant\(\)\)/);
+assert.doesNotMatch(script, /purchaseImg\.src = sourceImg\.src/);
+
 assert.match(layout, /template\.suffix == 'apgo-v2' or template\.suffix == 'apgo-v1s-plus'/);
 assert.match(layout, /apgo-mobile-buybar\.css/);
 assert.match(layout, /apgo-cc-buybar\.js/);

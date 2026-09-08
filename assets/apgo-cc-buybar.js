@@ -61,6 +61,27 @@
     return null;
   }
 
+  // Resolve which image represents a variant. The variants JSON is
+  // authoritative and readable synchronously, so it stays correct no matter
+  // where we are called from. The gallery's [data-apgo-cc-main-img] is only a
+  // fallback for variants with no image of their own: that attribute moves
+  // when the gallery's smooth scroll settles, so reading it straight after a
+  // variant change would yield the previously selected variant's image.
+  function variantImageSrc(variant) {
+    var media = variant && (variant.featured_image || variant.featured_media);
+    var src = media && (media.src || (media.preview_image && media.preview_image.src));
+    if (src) return src.replace(/(\.[a-z]+)(\?|$)/i, '_600x$1$2');
+    var fallback = document.querySelector('[data-apgo-cc-main-img]') ||
+                   document.querySelector('[data-apgo-main-img]');
+    return fallback ? fallback.src : null;
+  }
+
+  function paintPurchaseImg(variant) {
+    if (!purchaseImg) return;
+    var src = variantImageSrc(variant);
+    if (src) purchaseImg.src = src;
+  }
+
   // ---------- Money formatter (TWD, no decimals) ----------
   // /cart.js returns prices in cents (multiplied by 100 for currencies that
   // support sub-units; TWD has none but Shopify still doubles to cents).
@@ -339,12 +360,13 @@
     // Sync modal chips to in-panel selection BEFORE syncing price/img so
     // any downstream state derived from chip state is consistent.
     syncModalChipsFromForm();
-    // Sync modal price + image from the in-panel display (apgo-cc-pdp.js
-    // keeps the in-panel ones fresh on variant change).
+    // Price comes from the in-panel display, which apgo-cc-pdp.js updates
+    // synchronously on variant change. The image comes from the variant
+    // itself, not the gallery, so it matches the selected chip even when the
+    // gallery is still showing the product's first image.
     var sourcePrice = document.querySelector('[data-apgo-cc-price]');
     if (sourcePrice && purchasePriceEl) purchasePriceEl.textContent = sourcePrice.textContent.trim();
-    var sourceImg = document.querySelector('[data-apgo-cc-main-img]');
-    if (sourceImg && purchaseImg) purchaseImg.src = sourceImg.src;
+    paintPurchaseImg(selectedVariant);
     // Sync qty value with whatever the in-panel form has
     var formQty = form.querySelector('[name="quantity"]');
     if (formQty && purchaseQtyInput) purchaseQtyInput.value = formQty.value || '1';
@@ -442,13 +464,15 @@
           realInput.checked = true;
           realInput.dispatchEvent(new Event('change', { bubbles: true }));
         }
-        // 3. Refresh modal price + image to match new variant
-        // (apgo-cc-pdp.js's updateUI() already updated main img / price
-        // by now since the change event ran on the in-panel radio above)
+        // 3. Refresh modal price + image to match the new variant. The price
+        // element was already rewritten synchronously by updateUI() above.
+        // The image must come from the variant data rather than the gallery:
+        // the gallery scrolls smoothly and only moves [data-apgo-cc-main-img]
+        // once that scroll settles, so reading it here would show the
+        // previously selected variant's image.
         var sourcePrice = document.querySelector('[data-apgo-cc-price]');
         if (sourcePrice && purchasePriceEl) purchasePriceEl.textContent = sourcePrice.textContent.trim();
-        var sourceImg = document.querySelector('[data-apgo-cc-main-img]');
-        if (sourceImg && purchaseImg) purchaseImg.src = sourceImg.src;
+        paintPurchaseImg(currentVariant());
       });
     });
   }
