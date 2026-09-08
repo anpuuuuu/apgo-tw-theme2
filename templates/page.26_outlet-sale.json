@@ -460,7 +460,9 @@
             "show_banner": false,
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
-            "product_list": [],
+            "product_list": [
+              "clearance-sale"
+            ],
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
