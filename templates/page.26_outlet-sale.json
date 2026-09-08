@@ -465,31 +465,9 @@
             "product_list": [
               "clearance-sale"
             ],
-            "variant_ids": "49275649425659\n49275649458427\n49275130315003\n49280847741179\n49280847773947\n49275649392891",
+            "variant_ids": "49275649425659\n49275649458427\n49275130315003\n49280847741179\n49280847773947\n49275649392891\n49280847806715",
             "card_tag": "TAG",
             "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_jNQtE7": {
-          "type": "product_grid",
-          "name": "【🎉清倉優惠福箱禮組🎖️】狂殺↘18折",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "🎉清倉優惠福箱禮組↘18折",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/3688.png",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "clearance-sale-lucky-box"
-            ],
-            "variant_ids": "",
-            "card_tag": "現折$16,644",
-            "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
           }
@@ -514,6 +492,28 @@
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "1"
+          }
+        },
+        "product_grid_jNQtE7": {
+          "type": "product_grid",
+          "name": "【🎉清倉優惠福箱禮組🎖️】狂殺↘18折",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "🎉清倉優惠福箱禮組↘18折",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/3688.png",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "clearance-sale-lucky-box"
+            ],
+            "variant_ids": "",
+            "card_tag": "現折$16,644",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
           }
         },
         "product_grid_HrcFDb": {
@@ -803,8 +803,8 @@
         "product_grid_n4MdhM",
         "simple_banner_slot_mFXA4r",
         "product_grid_XMR9K3",
-        "product_grid_jNQtE7",
         "product_grid_63pFYA",
+        "product_grid_jNQtE7",
         "product_grid_HrcFDb",
         "product_grid_A6kewb",
         "product_grid_JAm4Qp",
