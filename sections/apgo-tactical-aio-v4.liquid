@@ -929,6 +929,44 @@
     -webkit-overflow-scrolling: touch !important;
   }
   .apgo-card-grid.apgo-card-grid-vertical::-webkit-scrollbar { height: 6px; }
+  .apgo-card-scroller { position: relative !important; }
+  .apgo-card-arrow {
+    position: absolute !important;
+    top: 50% !important;
+    z-index: 3 !important;
+    width: 40px !important;
+    height: 40px !important;
+    border: 1px solid rgba(255,255,255,.55) !important;
+    border-radius: 50% !important;
+    background: rgba(0,0,0,.6) !important;
+    color: #fff !important;
+    display: grid !important;
+    place-items: center !important;
+    padding: 0 0 4px !important;
+    font-size: 1.9rem !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+    transform: translateY(-50%) !important;
+    transition: opacity .2s ease, background .2s ease !important;
+  }
+  .apgo-card-arrow--prev { left: -14px !important; }
+  .apgo-card-arrow--next { right: -14px !important; }
+  .apgo-card-arrow[hidden] { display: none !important; }
+  @media (max-width: 767px) {
+    .apgo-card-arrow {
+      width: 30px !important;
+      height: 46px !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      font-size: 1.6rem !important;
+      opacity: .5 !important;
+      text-shadow: 0 1px 5px rgba(0,0,0,.9) !important;
+    }
+    .apgo-card-arrow--prev { left: -6px !important; }
+    .apgo-card-arrow--next { right: -6px !important; }
+    .apgo-card-arrow:active { color: #f08418 !important; opacity: .9 !important; }
+  }
   .apgo-card-grid.apgo-card-grid-vertical .apgo-card {
     min-width: calc((100% - 0.75rem * 2) / var(--apgo-cards-per-view, 2.5)) !important;
     width: calc((100% - 0.75rem * 2) / var(--apgo-cards-per-view, 2.5)) !important;
@@ -1694,7 +1732,9 @@
           {% assign vertical_cards_per_view = block.settings.vertical_cards_per_view | default: '2.5' %}
 
           {% if has_products_in_grid or request.design_mode %}
-            <div class="apgo-card-grid{% if card_layout == 'vertical' %} apgo-card-grid-vertical{% if vertical_rows == '2' %} apgo-card-grid-vertical-2rows{% endif %}{% endif %}"{% if card_layout == 'vertical' %} style="--apgo-cards-per-view: {{ vertical_cards_per_view }};"{% endif %}>
+            {% if card_layout == 'vertical' %}<div class="apgo-card-scroller" data-apgo-card-scroller>
+              <button type="button" class="apgo-card-arrow apgo-card-arrow--prev" data-apgo-card-prev aria-label="往左瀏覽">‹</button>{% endif %}
+            <div class="apgo-card-grid{% if card_layout == 'vertical' %} apgo-card-grid-vertical{% if vertical_rows == '2' %} apgo-card-grid-vertical-2rows{% endif %}{% endif %}"{% if card_layout == 'vertical' %} data-apgo-card-track style="--apgo-cards-per-view: {{ vertical_cards_per_view }};"{% endif %}>
               {% if has_products_in_grid %}
                 {% for product in block.settings.product_list %}
                   {% for v in product.variants %}
@@ -1805,6 +1845,10 @@
                 </div>
               {% endif %}
             </div>
+            {% if card_layout == 'vertical' %}
+              <button type="button" class="apgo-card-arrow apgo-card-arrow--next" data-apgo-card-next aria-label="往右瀏覽">›</button>
+            </div>
+            {% endif %}
           {% endif %}
         </section>
       {% elsif block.type == 'coupon_item' %}
@@ -1891,6 +1935,54 @@
     </div>
   </div>
 </div>
+
+<script>
+  (function () {
+    // Arrows for the horizontally scrolling card layout. Touch swiping is the
+    // native overflow scroll, so these only add a pointer affordance - and they
+    // stay out of the way when there is nothing left to scroll.
+    function sync(scroller) {
+      var track = scroller.querySelector('[data-apgo-card-track]');
+      if (!track) return;
+      var prev = scroller.querySelector('[data-apgo-card-prev]');
+      var next = scroller.querySelector('[data-apgo-card-next]');
+      var scrollable = track.scrollWidth - track.clientWidth;
+      if (prev) prev.hidden = scrollable < 8 || track.scrollLeft < 8;
+      if (next) next.hidden = scrollable < 8 || track.scrollLeft >= scrollable - 8;
+    }
+
+    function step(scroller, direction) {
+      var track = scroller.querySelector('[data-apgo-card-track]');
+      if (!track) return;
+      var card = track.querySelector('.apgo-card');
+      var amount = card ? card.offsetWidth + 12 : Math.max(track.clientWidth * 0.8, 240);
+      track.scrollBy({ left: direction * amount, behavior: 'smooth' });
+    }
+
+    document.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-apgo-card-prev], [data-apgo-card-next]');
+      if (!button) return;
+      var scroller = button.closest('[data-apgo-card-scroller]');
+      if (!scroller) return;
+      step(scroller, button.hasAttribute('data-apgo-card-next') ? 1 : -1);
+    });
+
+    function initAll() {
+      document.querySelectorAll('[data-apgo-card-scroller]').forEach(function (scroller) {
+        sync(scroller);
+        if (scroller.dataset.apgoArrowsReady) return;
+        scroller.dataset.apgoArrowsReady = 'true';
+        var track = scroller.querySelector('[data-apgo-card-track]');
+        if (track) track.addEventListener('scroll', function () { sync(scroller); }, { passive: true });
+      });
+    }
+
+    initAll();
+    window.addEventListener('resize', initAll);
+    window.addEventListener('load', initAll);
+    document.addEventListener('shopify:section:load', initAll);
+  })();
+</script>
 
 <script>
   (function() {
