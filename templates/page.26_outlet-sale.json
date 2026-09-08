@@ -992,6 +992,7 @@
         "target_amount": 0,
         "target_reward": "",
         "hero_image_pc": "shopify://shop_images/1363976b3859b3a9ecf086101550da9c.jpg",
+        "hero_image_mb": "shopify://shop_images/f3dc61c70b62f90437967a35c9c630db.jpg",
         "coupon_sec_icon": "fa-ticket",
         "coupon_sec_title": "準時開搶折券",
         "coupon_nav_label": "優惠券版位",
