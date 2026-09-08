@@ -47,6 +47,12 @@
         "content": "3. 優惠資訊版位 (Coupons)"
       },
       {
+        "type": "checkbox",
+        "id": "show_coupons",
+        "label": "顯示優惠版位",
+        "default": true
+      },
+      {
         "type": "text",
         "id": "coupon_sec_icon",
         "label": "優惠版位 Icon (FontAwesome)",
@@ -1205,7 +1211,9 @@
       {% if use_manual_nav %}
         {% for block in section.blocks %}
           {% if block.type == 'nav_item' %}
-            <div class="sticky-nav-link" onclick="scrollToSection('{{ block.settings.nav_target_id }}')">{{ block.settings.nav_label }}</div>
+            {% unless block.settings.nav_target_id == 'apgo-coupons' and section.settings.show_coupons == false %}
+              <div class="sticky-nav-link" onclick="scrollToSection('{{ block.settings.nav_target_id }}')">{{ block.settings.nav_label }}</div>
+            {% endunless %}
           {% endif %}
         {% endfor %}
       {% else %}
@@ -1246,16 +1254,16 @@
             {% endif %}
             {% assign nav_label = block.settings.nav_label_override | default: block.settings.section_title | default: '商品區塊' %}
             <div class="sticky-nav-link" onclick="scrollToSection('{{ anchor_id }}')">{{ nav_label }}</div>
-          {% elsif block.type == 'coupon_slot' and auto_has_coupon == false %}
+          {% elsif block.type == 'coupon_slot' and auto_has_coupon == false and section.settings.show_coupons != false %}
             {% assign auto_has_coupon = true %}
             {% assign nav_label = block.settings.nav_label_override | default: block.settings.section_title | default: section.settings.coupon_nav_label | default: section.settings.coupon_sec_title | default: '優惠版位' %}
             <div class="sticky-nav-link" onclick="scrollToSection('apgo-coupons')">{{ nav_label }}</div>
-          {% elsif block.type == 'coupon_item' and auto_has_coupon == false %}
+          {% elsif block.type == 'coupon_item' and auto_has_coupon == false and section.settings.show_coupons != false %}
             {% assign auto_has_coupon = true %}
             <div class="sticky-nav-link" onclick="scrollToSection('apgo-coupons')">{{ section.settings.coupon_nav_label | default: section.settings.coupon_sec_title | default: '優惠版位' }}</div>
           {% endif %}
         {% endfor %}
-        {% if auto_has_coupon == false %}
+        {% if auto_has_coupon == false and section.settings.show_coupons != false %}
           <div class="sticky-nav-link" onclick="scrollToSection('apgo-coupons')">{{ section.settings.coupon_nav_label | default: section.settings.coupon_sec_title | default: '優惠版位' }}</div>
         {% endif %}
       {% endif %}
@@ -1784,7 +1792,7 @@
           {% endif %}
         </section>
       {% elsif block.type == 'coupon_item' %}
-        {% unless coupon_section_rendered %}
+        {% unless coupon_section_rendered or section.settings.show_coupons == false %}
           {% assign coupon_section_rendered = true %}
           <section class="apgo-coupon-sec" id="apgo-coupons">
             <div class="apgo-grid-title" style="margin-bottom: 1rem;">
@@ -1815,7 +1823,7 @@
       {% endif %}
     {% endfor %}
 
-    {% unless coupon_section_rendered %}
+    {% unless coupon_section_rendered or section.settings.show_coupons == false %}
       <section class="apgo-coupon-sec" id="apgo-coupons">
         <div class="apgo-grid-title" style="margin-bottom: 1rem;">
           <i class="fa-solid {{ coupon_icon }}" style="color:#f08418;"></i>
