@@ -12,23 +12,17 @@
     "main": {
       "type": "apgo-cc-product-detail",
       "settings": {
+        "sale_tag": "限時特價",
         "show_breadcrumb": true,
         "show_rating": false,
         "show_buy_now": true,
-        "show_thumbs": false,
+        "show_thumbs": true,
         "kicker": "",
         "rating_score": "4.9",
         "rating_count": "",
         "desc_kicker": "ABOUT THE PRODUCT",
         "desc_heading": "",
         "videos_heading": "商品實測影片",
-        "show_promo_pills": true,
-        "promo_pill_1_text": "满千免运",
-        "promo_pill_1_color": "orange",
-        "promo_pill_2_text": "",
-        "promo_pill_2_color": "green",
-        "promo_pill_3_text": "",
-        "promo_pill_3_color": "blue",
         "show_shipping": true,
         "shipping_label": "2–3 個工作日"
       }
