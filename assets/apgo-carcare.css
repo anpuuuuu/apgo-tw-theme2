@@ -107,8 +107,8 @@ body.apgo-cc-skin .product-grid {
 body.apgo-cc-skin .collection-links {
   background: var(--cc-bg) !important;
   position: sticky;
-  top: 0;
-  z-index: 40;
+  top: var(--header-height, 0px);
+  z-index: var(--layer-heightened, 4);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--cc-divider);
 }
