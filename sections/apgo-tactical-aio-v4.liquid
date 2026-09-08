@@ -98,42 +98,6 @@
         "default": true
       },
       {
-        "type": "text",
-        "id": "c1_condition",
-        "label": "Coupon 1 門檻",
-        "default": "條件一"
-      },
-      {
-        "type": "text",
-        "id": "c1_discount",
-        "label": "Coupon 1 折扣",
-        "default": "內容一"
-      },
-      {
-        "type": "text",
-        "id": "c2_condition",
-        "label": "Coupon 2 門檻",
-        "default": "條件二"
-      },
-      {
-        "type": "text",
-        "id": "c2_discount",
-        "label": "Coupon 2 折扣",
-        "default": "內容二"
-      },
-      {
-        "type": "text",
-        "id": "c3_condition",
-        "label": "Coupon 3 門檻",
-        "default": "條件三"
-      },
-      {
-        "type": "text",
-        "id": "c3_discount",
-        "label": "Coupon 3 折扣",
-        "default": "內容三"
-      },
-      {
         "type": "paragraph",
         "content": "提示：優惠券顯示順序改由下方「優惠券項目」blocks 拖曳控制。"
       }
@@ -1822,40 +1786,6 @@
         {% endunless %}
       {% endif %}
     {% endfor %}
-
-    {% unless coupon_section_rendered or section.settings.show_coupons == false %}
-      <section class="apgo-coupon-sec" id="apgo-coupons">
-        <div class="apgo-grid-title" style="margin-bottom: 1rem;">
-          <i class="fa-solid {{ coupon_icon }}" style="color:#f08418;"></i>
-          {{ coupon_title }}
-        </div>
-        <div class="apgo-grid-banner" style="--apgo-banner-space-top:{% if section.settings.coupon_banner_spacing_top %}1rem{% else %}0{% endif %}; --apgo-banner-space-bottom:{% if section.settings.coupon_banner_spacing_bottom %}1rem{% else %}0{% endif %};">
-          {% if section.settings.coupon_banner_img %}
-            {{ section.settings.coupon_banner_img | image_url: width: 1920 | image_tag: class: 'apgo-obj-cover' }}
-          {% else %}
-            <div class="apgo-img-placeholder">Banner 圖片位置</div>
-          {% endif %}
-        </div>
-        <div class="apgo-coupon-grid">
-          <div class="apgo-coupon-card" style="--theme-color: #f08418;">
-            <i class="fa-solid fa-ticket" style="color:#f08418; font-size:18px; margin:4px 0;"></i>
-            <div style="font-size:10px; color:#6b7280;">{{ section.settings.c1_condition }}</div>
-            <div class="apgo-coupon-amt">{{ section.settings.c1_discount }}</div>
-          </div>
-          <div class="apgo-coupon-card" style="--theme-color: #9ca3af;">
-            <i class="fa-solid fa-ticket" style="color:#9ca3af; font-size:18px; margin:4px 0;"></i>
-            <div style="font-size:10px; color:#6b7280;">{{ section.settings.c2_condition }}</div>
-            <div class="apgo-coupon-amt">{{ section.settings.c2_discount }}</div>
-          </div>
-          <div class="apgo-coupon-card" style="--theme-color: #f08418; border-color: rgba(240,132,24,0.5);">
-            <i class="fa-solid fa-ticket" style="color:#f08418; font-size:18px; margin:4px 0;"></i>
-            <div style="font-size:10px; color:#6b7280;">{{ section.settings.c3_condition }}</div>
-            <div class="apgo-coupon-amt" style="color:#f08418;">{{ section.settings.c3_discount }}</div>
-          </div>
-        </div>
-        <div style="text-align:center; font-size:10px; color:#666; margin-top:10px;">※ 優惠達門檻結帳自動折抵，無需手動輸入</div>
-      </section>
-    {% endunless %}
 
   </div>
 </div>
