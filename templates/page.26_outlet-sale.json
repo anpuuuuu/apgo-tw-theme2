@@ -470,20 +470,20 @@
         },
         "product_grid_jNQtE7": {
           "type": "product_grid",
-          "name": "7/31-8/31【🥉超級旗艦款禮盒】",
+          "name": "【🎉清倉優惠福箱禮組🎖️】狂殺↘18折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "超級旗艦款禮盒",
+            "section_title": "🎉清倉優惠福箱禮組↘18折",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/IMG-9704.jpg",
+            "banner_img": "shopify://shop_images/3688.png",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
             "product_list": [
-              "2688_3888"
+              "clearance-sale-lucky-box"
             ],
-            "card_tag": "現折$5130",
+            "card_tag": "現折$16,644",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
