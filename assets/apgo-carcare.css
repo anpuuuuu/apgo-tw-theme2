@@ -107,7 +107,7 @@ body.apgo-cc-skin .product-grid {
 body.apgo-cc-skin .collection-links {
   background: var(--cc-bg) !important;
   position: sticky;
-  top: var(--header-height, 0px);
+  top: calc(var(--header-height, 0px) - 1px); /* header sticks at -1px */
   z-index: var(--layer-heightened, 4);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--cc-divider);
@@ -1708,7 +1708,7 @@ body.apgo-cc-skin .apgo-cc-pdp__tabs {
 }
 body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
   position: sticky;
-  top: var(--header-height, 0px);
+  top: calc(var(--header-height, 0px) - 1px); /* header sticks at -1px */
   z-index: var(--layer-heightened, 4); /* above page content, below the header (--layer-sticky: 8) */
   background: var(--cc-bg);
   border-bottom: 1px solid var(--cc-divider);

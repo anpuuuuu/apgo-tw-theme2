@@ -675,7 +675,7 @@
   .nav-fixed {
     position: fixed !important; 
     /* The header is sticky "always", so pin below it rather than over it. */
-    top: var(--header-height, 0px); 
+    top: calc(var(--header-height, 0px) - 1px); 
     left: 0;
     background: rgba(5, 5, 5, 0.9) !important; 
     backdrop-filter: blur(10px);
@@ -960,8 +960,8 @@
       height: 46px !important;
       border: 0 !important;
       border-radius: 0 !important;
-      background: #000 !important;
-      border-radius: 4px !important;
+      background: transparent !important;
+      color: #000 !important;
       font-size: 1.6rem !important;
       opacity: 1 !important;
     }
