@@ -748,119 +748,6 @@
             "nav_label_override": "✨現搶折券"
           }
         },
-        "coupon_item_hH3EcG": {
-          "type": "coupon_item",
-          "name": "7.1 滿899折79",
-          "settings": {
-            "condition": "滿$999",
-            "discount": "折$99",
-            "theme_color": "#f08418",
-            "highlight_discount": false
-          }
-        },
-        "coupon_item_r6aVaY": {
-          "type": "coupon_item",
-          "name": "7.2 滿1599折159",
-          "settings": {
-            "condition": "滿$1888",
-            "discount": "折$250",
-            "theme_color": "#9ca3af",
-            "highlight_discount": false
-          }
-        },
-        "coupon_item_AaWikn": {
-          "type": "coupon_item",
-          "name": "7.3 滿2699折359",
-          "settings": {
-            "condition": "滿$2999",
-            "discount": "折$500",
-            "theme_color": "#f08418",
-            "highlight_discount": true
-          }
-        },
-        "simple_banner_slot_TA9VG7": {
-          "type": "simple_banner_slot",
-          "name": "限量200張，$599免運券",
-          "disabled": true,
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨5/5開搶599免運券",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/02_0_a4bc0510-29fe-47a4-9b3e-0c61d5fb453f.jpg",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
-        "simple_banner_slot_TYahzg": {
-          "type": "simple_banner_slot",
-          "name": "媽咪的美麗儀式75折券",
-          "disabled": true,
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨限時搶75折券",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/75_-01_8fd16315-8130-4b39-89e8-372a70d616a5.jpg",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
-        "product_grid_DRGBxw": {
-          "type": "product_grid",
-          "name": "【寵愛媽咪✨清潔藥劑✨人氣4件組】",
-          "disabled": true,
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨入手價↘$499",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/4_1b217180-7840-479c-a7a5-2485d559b5d1.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "pamper-mommy"
-            ],
-            "card_tag": "TAG",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_jHKxX8": {
-          "type": "product_grid",
-          "name": "超級洗衣精✨家庭囤貨組12包入",
-          "disabled": true,
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "家庭囤貨組✨現折$708",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/12_-01.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "apgorose",
-              "apgoocean",
-              "apgocotton",
-              "apgowhitetea",
-              "apgofreesia",
-              "apgolavender"
-            ],
-            "card_tag": "TAG",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
         "reward_tier_DUdarY": {
           "type": "reward_tier",
           "settings": {
@@ -917,13 +804,6 @@
         "product_grid_QYBDC9",
         "combo_showcase_HJntp9",
         "coupon_slot_QeXKfQ",
-        "coupon_item_hH3EcG",
-        "coupon_item_r6aVaY",
-        "coupon_item_AaWikn",
-        "simple_banner_slot_TA9VG7",
-        "simple_banner_slot_TYahzg",
-        "product_grid_DRGBxw",
-        "product_grid_jHKxX8",
         "reward_tier_DUdarY",
         "reward_tier_JKkApt"
       ],
@@ -944,7 +824,7 @@
         "c2_condition": "條件二",
         "c2_discount": "內容二",
         "c3_condition": "條件三",
-        "c3_discount": "88折"
+        "c3_discount": "內容三"
       }
     }
   },
