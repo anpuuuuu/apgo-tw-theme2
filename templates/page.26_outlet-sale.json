@@ -491,20 +491,20 @@
         },
         "product_grid_63pFYA": {
           "type": "product_grid",
-          "name": "7/31-8/31原子極光鍍膜買一送二",
+          "name": "✨清倉優惠大集合✨",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "極光鍍膜平均$493/罐",
+            "section_title": "✨限量夯品清倉大集合✨",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080__1480_7a711568-78c9-4164-ba08-6dc8facae8ec.png",
+            "banner_img": "shopify://shop_images/03_94ca0470-23be-484e-bec5-1b7f6ed40f10.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
             "product_list": [
-              "88_aurora_coaing1480"
+              "clearance-sale"
             ],
-            "card_tag": "現折$2960",
+            "card_tag": "款款限量．售完為止",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "1"
