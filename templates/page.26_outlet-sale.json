@@ -211,6 +211,7 @@
             "product_list": [
               "apgo-atomic-colored-glaze"
             ],
+            "variant_overrides": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -386,7 +387,7 @@
             "nav_label_override": "",
             "section_icon": "fa-image",
             "show_banner": true,
-            "banner_img": "shopify://shop_images/14442ee0cec9a226d451aa8ba01da327.jpg",
+            "banner_img": "shopify://shop_images/2_b8fa49a4-924b-4348-8082-a16f3e9c3fae.jpg",
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
             "banner_link": "",
@@ -426,6 +427,7 @@
             "product_list": [
               "狂殺↘24折-老闆生日慶-職人精選福箱-拆開現賺-11400"
             ],
+            "variant_overrides": "",
             "card_tag": "現賺$11,400",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -463,6 +465,7 @@
             "product_list": [
               "clearance-sale"
             ],
+            "variant_overrides": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -484,6 +487,7 @@
             "product_list": [
               "clearance-sale"
             ],
+            "variant_overrides": "",
             "card_tag": "款款限量．售完為止",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -505,6 +509,7 @@
             "product_list": [
               "clearance-sale-lucky-box"
             ],
+            "variant_overrides": "",
             "card_tag": "現折$16,644",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -527,6 +532,7 @@
             "product_list": [
               "🚗-鍍膜前置清潔套組"
             ],
+            "variant_overrides": "",
             "card_tag": "現折$558",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -558,6 +564,7 @@
               "原子鍍膜補充包",
               "apgo-plastic-hard-coating"
             ],
+            "variant_overrides": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -591,6 +598,7 @@
               "apgo-fresh-interior-cleaner",
               "apgo-bug-tar-remover"
             ],
+            "variant_overrides": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -647,6 +655,7 @@
             "product_list": [
               "one-box-to-refresh-your-car-interior"
             ],
+            "variant_overrides": "",
             "card_tag": "TAG",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -672,6 +681,7 @@
               "apgo珊瑚絨毛巾",
               "apgo加厚洗車巾"
             ],
+            "variant_overrides": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -694,6 +704,7 @@
             "product_list": [
               "aurora-coating"
             ],
+            "variant_overrides": "",
             "card_tag": "TAG",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -715,6 +726,7 @@
             "product_list": [
               "apgo-g11-plus"
             ],
+            "variant_overrides": "",
             "card_tag": "STARTER",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -813,18 +825,13 @@
         "target_reward": "",
         "hero_image_pc": "shopify://shop_images/1363976b3859b3a9ecf086101550da9c.jpg",
         "hero_image_mb": "shopify://shop_images/f3dc61c70b62f90437967a35c9c630db.jpg",
+        "show_coupons": true,
         "coupon_sec_icon": "fa-ticket",
         "coupon_sec_title": "準時開搶折券",
         "coupon_nav_label": "優惠券版位",
         "nav_mode": "auto",
         "coupon_banner_spacing_top": false,
-        "coupon_banner_spacing_bottom": false,
-        "c1_condition": "條件一",
-        "c1_discount": "內容一",
-        "c2_condition": "條件二",
-        "c2_discount": "內容二",
-        "c3_condition": "條件三",
-        "c3_discount": "內容三"
+        "coupon_banner_spacing_bottom": false
       }
     }
   },
