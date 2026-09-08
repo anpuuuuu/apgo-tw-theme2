@@ -246,6 +246,12 @@
             "limit": 12
           },
           {
+            "type": "textarea",
+            "id": "variant_overrides",
+            "label": "指定變體（選填）",
+            "info": "每行一筆：商品handle=變體。變體可填變體ID、SKU 或變體標題。留空的商品維持原本行為（顯示價格區間、點「加入」跳出選擇視窗）。例：clearance-sale=【鋁圈光亮劑 500ml +送噴頭 】"
+          },
+          {
             "type": "text",
             "id": "card_tag",
             "label": "卡片標籤",
@@ -1679,6 +1685,45 @@
                   {% endif %}
                   {% assign selected_variant = product.selected_or_first_available_variant %}
                   {% assign product_is_available = product.available %}
+
+                  {% assign forced_variant = blank %}
+                  {% assign wanted_variant = blank %}
+                  {% assign override_lines = block.settings.variant_overrides | newline_to_br | split: '<br />' %}
+                  {% for override_line in override_lines %}
+                    {% assign override_clean = override_line | strip %}
+                    {% assign override_pair = override_clean | split: '=' %}
+                    {% if override_pair.size < 2 %}{% continue %}{% endif %}
+                    {% assign override_key = override_pair[0] | strip %}
+                    {% if override_key != product.handle and override_key != product.title %}{% continue %}{% endif %}
+                    {% assign wanted_variant = override_clean | remove_first: override_pair[0] | remove_first: '=' | strip %}
+                    {% if wanted_variant == blank %}{% break %}{% endif %}
+                    {% for v in product.variants %}
+                      {% assign v_id_str = v.id | append: '' %}
+                      {% if v_id_str == wanted_variant or v.sku == wanted_variant or v.title == wanted_variant %}
+                        {% assign forced_variant = v %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+                    {% break %}
+                  {% endfor %}
+
+                  {% if request.design_mode and wanted_variant != blank and forced_variant == blank %}
+                    <div class="apgo-img-placeholder" style="margin-bottom:6px;">⚠️ 找不到變體「{{ wanted_variant }}」，此卡維持原本行為</div>
+                  {% endif %}
+
+                  {% assign card_title = product.title %}
+                  {% assign card_image = product.featured_image %}
+                  {% if forced_variant != blank %}
+                    {% assign has_variants = false %}
+                    {% assign selected_variant = forced_variant %}
+                    {% assign product_is_available = forced_variant.available %}
+                    {% if forced_variant.title != 'Default Title' %}
+                      {% assign card_title = forced_variant.title %}
+                    {% endif %}
+                    {% if forced_variant.featured_image %}
+                      {% assign card_image = forced_variant.featured_image %}
+                    {% endif %}
+                  {% endif %}
                   
                   <div class="apgo-card{% if card_layout == 'vertical' %} apgo-card-vertical{% endif %}" data-pid="{{ product.id }}">
                     <div class="apgo-card-head">
@@ -1686,19 +1731,19 @@
                     </div>
                     <div class="apgo-card-body">
                       <div class="apgo-card-img-box">
-                        {% if product.featured_image %}
-                          {{ product.featured_image | image_url: width: 800 | image_tag: class: 'apgo-obj-cover' }}
+                        {% if card_image %}
+                          {{ card_image | image_url: width: 800 | image_tag: class: 'apgo-obj-cover' }}
                         {% else %}
                           <i class="fa-solid fa-box" style="color:#666; font-size:24px;"></i>
                         {% endif %}
                       </div>
                       <div class="apgo-card-info">
                         <div>
-                          <div class="apgo-card-title">{{ product.title }}</div>
+                          <div class="apgo-card-title">{{ card_title }}</div>
                           <div class="apgo-card-desc">{{ product.description | strip_html | truncate: 50 }}</div>
                         </div>
                         <div class="apgo-card-foot"{% if card_layout == 'vertical' %} style="display:block !important;"{% endif %}>
-                          <div class="apgo-card-price apgo-font-mono">{% if product.price_min < product.price_max %}{{ product.price_min | money }} ~ {{ product.price_max | money }}{% else %}{{ product.price | money }}{% endif %}</div>
+                          <div class="apgo-card-price apgo-font-mono">{% if forced_variant != blank %}{{ forced_variant.price | money }}{% elsif product.price_min < product.price_max %}{{ product.price_min | money }} ~ {{ product.price_max | money }}{% else %}{{ product.price | money }}{% endif %}</div>
                           <div class="apgo-card-actions">
                             <a href="{{ product.url }}" class="apgo-btn apgo-btn-left">詳情</a>
                             {% if has_variants %}
@@ -1718,8 +1763,8 @@
                             </script>
                             {% else %}
                               {% assign p_img = '' %}
-                              {% if product.featured_image %}{% assign p_img = product.featured_image | image_url: width: 800 %}{% endif %}
-                              <button class="apgo-btn apgo-btn-right" {% unless selected_variant and selected_variant.available %}disabled{% endunless %} onclick="apgoAddWithAnimation(this, {{ selected_variant.id | default: 0 }}, '{{ product.title | escape }}', {{ product.price | divided_by: 100.0 }}, '{{ p_img }}')">{% if selected_variant and selected_variant.available %}加入{% else %}完售{% endif %}</button>
+                              {% if card_image %}{% assign p_img = card_image | image_url: width: 800 %}{% endif %}
+                              <button class="apgo-btn apgo-btn-right" {% unless selected_variant and selected_variant.available %}disabled{% endunless %} onclick="apgoAddWithAnimation(this, {{ selected_variant.id | default: 0 }}, '{{ card_title | escape }}', {{ selected_variant.price | default: product.price | divided_by: 100.0 }}, '{{ p_img }}')">{% if selected_variant and selected_variant.available %}加入{% else %}完售{% endif %}</button>
                             {% endif %}
                           </div>
                         </div>
