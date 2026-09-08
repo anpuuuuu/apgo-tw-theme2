@@ -452,7 +452,6 @@
         "product_grid_XMR9K3": {
           "type": "product_grid",
           "name": "✨超值10元挖寶區",
-          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "✨超值10元up挖寶區",
