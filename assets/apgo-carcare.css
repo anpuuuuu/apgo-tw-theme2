@@ -1709,7 +1709,7 @@ body.apgo-cc-skin .apgo-cc-pdp__tabs {
 body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
   position: sticky;
   top: var(--header-height, 0px);
-  z-index: 50; /* above page content, below the mobile buybar (z:90) */
+  z-index: var(--layer-heightened, 4); /* above page content, below the header (--layer-sticky: 8) */
   background: var(--cc-bg);
   border-bottom: 1px solid var(--cc-divider);
 }

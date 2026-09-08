@@ -666,14 +666,16 @@
     width: 100%; 
     background: #050505; 
     border-bottom: 1px solid #333; 
-    z-index: 1000;
+    /* Under the header (--layer-sticky: 8) so an open menu is not covered. */
+    z-index: var(--layer-heightened, 4);
     margin: 0 !important; /* 確保無邊距 */
   }
 
   /* 吸頂後的樣式 */
   .nav-fixed {
     position: fixed !important; 
-    top: 0; 
+    /* The header is sticky "always", so pin below it rather than over it. */
+    top: var(--header-height, 0px); 
     left: 0;
     background: rgba(5, 5, 5, 0.9) !important; 
     backdrop-filter: blur(10px);
@@ -958,10 +960,10 @@
       height: 46px !important;
       border: 0 !important;
       border-radius: 0 !important;
-      background: transparent !important;
+      background: #000 !important;
+      border-radius: 4px !important;
       font-size: 1.6rem !important;
-      opacity: .5 !important;
-      text-shadow: 0 1px 5px rgba(0,0,0,.9) !important;
+      opacity: 1 !important;
     }
     .apgo-card-arrow--prev { left: -6px !important; }
     .apgo-card-arrow--next { right: -6px !important; }
@@ -2133,6 +2135,12 @@
   const navLinks = document.querySelectorAll('.sticky-nav-link');
   let navStickTop = 0;
 
+  function apgoHeaderOffset() {
+    var raw = getComputedStyle(document.body).getPropertyValue('--header-height');
+    var value = parseFloat(raw);
+    return isNaN(value) ? 0 : value;
+  }
+
   function updateNavStickTop() {
     if (!nav) return;
     const wasFixed = nav.classList.contains('nav-fixed');
@@ -2153,7 +2161,7 @@
 
   window.addEventListener('scroll', () => {
     // 吸頂邏輯
-    if (window.scrollY >= navStickTop) {
+    if (window.scrollY >= navStickTop - apgoHeaderOffset()) {
       nav.classList.add('nav-fixed');
       placeholder.style.display = 'block';
     } else {
