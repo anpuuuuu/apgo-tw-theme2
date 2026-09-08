@@ -379,15 +379,14 @@
         },
         "simple_banner_slot_UVdfdB": {
           "type": "simple_banner_slot",
-          "name": "滿$6888即享88折",
-          "disabled": true,
+          "name": "擴廠出清品牌故事",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "7/31-8/10領88折券",
+            "section_title": "",
             "nav_label_override": "",
             "section_icon": "fa-image",
             "show_banner": true,
-            "banner_img": "shopify://shop_images/1280x600_8___1_0.png",
+            "banner_img": "shopify://shop_images/14442ee0cec9a226d451aa8ba01da327.jpg",
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
             "banner_link": "",
