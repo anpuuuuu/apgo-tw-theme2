@@ -29,12 +29,23 @@
               </div>
               <a href="{{ shelf_collection.url }}">查看全部 {{ shelf_collection.products_count }} 件</a>
             </header>
-            <div class="apgo-home-shelf__row">
+            {%- assign shelf_has_more = false -%}
+            {%- if shelf_collection.products_count > 4 -%}{%- assign shelf_has_more = true -%}{%- endif -%}
+            <div class="apgo-home-shelf__row{% if shelf_has_more %} apgo-home-shelf__row--with-view-all{% endif %}">
               {%- for product in shelf_collection.products limit: 4 -%}
                 <div class="apgo-home-shelf__item">
                   {% render 'apgo-home-product-card', product: product, show_add: false %}
                 </div>
               {%- endfor -%}
+              {%- if shelf_has_more -%}
+                <div class="apgo-home-shelf__item apgo-home-shelf__item--view-all">
+                  <a class="apgo-home-view-all" href="{{ shelf_collection.url }}">
+                    <span class="apgo-home-view-all__icon" aria-hidden="true">→</span>
+                    <span class="apgo-home-view-all__label">查看全部</span>
+                    <span class="apgo-home-view-all__count">{{ shelf_collection.products_count }} 件</span>
+                  </a>
+                </div>
+              {%- endif -%}
             </div>
           </section>
         {%- endfor -%}

@@ -38,6 +38,14 @@
                   {% render 'apgo-home-product-card', product: selected_product, show_add: true %}
                 </div>
               {%- endfor -%}
+              {%- if section.settings.link != blank -%}
+                <div class="apgo-home-product-row__item apgo-home-product-row__item--view-all">
+                  <a class="apgo-home-view-all" href="{{ section.settings.link }}">
+                    <span class="apgo-home-view-all__icon" aria-hidden="true">→</span>
+                    <span class="apgo-home-view-all__label">{{ section.settings.view_all_label }}</span>
+                  </a>
+                </div>
+              {%- endif -%}
             </div>
             <button class="apgo-home-scroll-button apgo-home-scroll-button--next" type="button" data-apgo-scroll-next aria-label="往右瀏覽">›</button>
           </div>

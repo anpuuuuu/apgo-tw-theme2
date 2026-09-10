@@ -98,6 +98,36 @@
 .apgo-home-scroll-button--prev { left: -18px; }
 .apgo-home-scroll-button--next { right: -18px; }
 
+.apgo-home-view-all {
+  height: 100%;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 8px;
+  background: #191a1f;
+  border: 1px solid #2c2d34;
+  border-radius: 15px;
+  color: var(--apgo-home-accent);
+  text-decoration: none;
+  text-align: center;
+  line-height: 1.35;
+  transition: border-color .2s ease, background .2s ease;
+}
+.apgo-home-view-all:hover { border-color: var(--apgo-home-accent); background: #1e2026; }
+.apgo-home-view-all__icon { font-size: 1.5rem; line-height: 1; }
+.apgo-home-view-all__label { font-size: .84rem; font-weight: 600; }
+.apgo-home-view-all__count { font-size: .72rem; color: #9899a2; }
+
+/* Narrow end column, so the four product cards keep their slots. */
+.apgo-home-product-row__item--view-all,
+.apgo-home-shelf__item--view-all {
+  flex: 0 0 96px;
+  min-width: 96px;
+}
+
 .apgo-home-card {
   height: 100%;
   display: flex;
@@ -237,6 +267,7 @@
 .apgo-home-heading--shelf p { color: #9899a2; margin: 0; }
 .apgo-home-shelf__row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
 .apgo-home-shelf__item { min-width: 0; }
+.apgo-home-shelf__row--with-view-all { grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(96px, 0.42fr); }
 
 @media (max-width: 989px) {
   .apgo-home-category-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -295,4 +326,14 @@
   }
 
   .apgo-home-shelf .apgo-home-card__form-component { display: none; }
+
+  .apgo-home-product-row__item--view-all,
+  .apgo-home-shelf__item--view-all {
+    flex: 0 0 84px;
+    min-width: 84px;
+  }
+
+  .apgo-home-view-all { min-height: 0; padding: 10px 6px; }
+  .apgo-home-view-all__icon { font-size: 1.3rem; }
+  .apgo-home-view-all__label { font-size: .78rem; }
 }
