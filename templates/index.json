@@ -228,7 +228,6 @@
         "banner_CXPEDn": {
           "type": "banner",
           "name": "google&fb五星好評",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/bf5e68b4-ef94-4a01-9a2e-d413dd6beeb3.png",
             "link": "shopify://pages/google-review",
@@ -238,7 +237,6 @@
         "banner_T8KwPX": {
           "type": "banner",
           "name": "Banner-APGO好評回饋$250",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/1920_0.jpg",
             "link": "shopify://pages/campaign20260803",
