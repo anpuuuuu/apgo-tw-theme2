@@ -424,6 +424,21 @@
             <span>運費 ({{ order.shipping_methods.first.title }})</span>
             <span>{{ order.shipping_price | money }}</span>
           </div>
+
+          {% comment %}
+            Shipping discounts are target_type 'shipping_line', so they are absent from
+            cart_level_discount_applications above, while order.shipping_price prints the
+            pre-discount fare. Without this row the summary does not add up to the total and
+            the customer cannot see that shipping was waived.
+          {% endcomment %}
+          {% for discount in order.discount_applications %}
+            {% if discount.target_type == 'shipping_line' %}
+              <div class="summary-row" style="color: #f08418;">
+                <span>折扣 ({{ discount.title }})</span>
+                <span>-{{ discount.total_allocated_amount | money }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
           
           <div class="summary-row">
             <span>稅金</span>
