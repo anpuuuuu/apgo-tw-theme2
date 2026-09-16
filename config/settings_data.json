@@ -69,14 +69,12 @@
         "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
         "disabled": true,
         "settings": {
+          "greeting_message": "",
           "button_color": "#f08418",
-          "secondary_color": "#ffffff",
-          "ternary_color": "#6a6a6a",
           "button_icon": "chat_bubble",
           "button_text": "need_help",
           "button_horizontal_position": "bottom_right",
-          "button_vertical_position": "higher",
-          "greeting_message": ""
+          "button_vertical_position": "higher"
         }
       },
       "6159598353363395418": {
@@ -102,6 +100,11 @@
       },
       "9022822286719573313": {
         "type": "shopify://apps/aiod-discount-gift/blocks/free-gift-manager/f216dffa-6875-4930-b932-dd7950bc93e6",
+        "disabled": false,
+        "settings": {}
+      },
+      "17317732794400948738": {
+        "type": "shopify://apps/pb-spin-wheel/blocks/popup-boost-embed/019bf6fd-475f-7e62-a826-b97e276cf42b",
         "disabled": false,
         "settings": {}
       }
