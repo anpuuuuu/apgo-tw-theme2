@@ -352,6 +352,27 @@
       {%- endcomment -%}
     </div>
 
+    {%- comment -%}
+      ---------- Side banner ----------
+      Sits in the right column directly under the buy panel. The gallery is made to
+      span both grid rows (see apgo-carcare.css) so this lands beside it instead of
+      being pushed below it. Renders only once an image is set in the editor.
+    {%- endcomment -%}
+    {%- assign banner_image = section.settings.banner_image -%}
+    {%- if banner_image != blank -%}
+      {%- assign banner_alt = section.settings.banner_alt | default: banner_image.alt -%}
+      {%- capture banner_media -%}
+        {{ banner_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: banner_alt, class: 'apgo-cc-pdp__side-banner-img' }}
+      {%- endcapture -%}
+      <div class="apgo-cc-pdp__side-banner">
+        {%- if section.settings.banner_link != blank -%}
+          <a class="apgo-cc-pdp__side-banner-link" href="{{ section.settings.banner_link }}">{{ banner_media }}</a>
+        {%- else -%}
+          {{ banner_media }}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
   </div>
 
   {%- comment -%}
@@ -640,7 +661,12 @@
 
     { "type": "header", "content": "運送資訊（§1.8）" },
     { "type": "checkbox", "id": "show_shipping", "label": "顯示運送資訊", "default": true },
-    { "type": "text", "id": "shipping_label", "label": "運送說明（例：2–3 個工作日）", "default": "2–3 個工作日" }
+    { "type": "text", "id": "shipping_label", "label": "運送說明（例：2–3 個工作日）", "default": "2–3 個工作日" },
+
+    { "type": "header", "content": "側邊橫幅（購買區下方）" },
+    { "type": "image_picker", "id": "banner_image", "label": "橫幅圖片", "info": "顯示在桌機右側購買區正下方、手機則在購買區之後。留空則整個區塊不顯示。建議寬度 900px 以上。" },
+    { "type": "url", "id": "banner_link", "label": "點擊連結", "info": "留空則圖片不可點擊。" },
+    { "type": "text", "id": "banner_alt", "label": "圖片替代文字", "info": "無障礙與 SEO 用。留空則沿用圖片本身的 alt。" }
   ],
   "presets": [
     { "name": "APGO · 商品詳情 (Car Care)" }

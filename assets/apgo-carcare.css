@@ -794,6 +794,31 @@ body.apgo-cc-skin .apgo-cc-pdp {
   }
 }
 
+/* ---- Side banner: editor-supplied image under the buy panel ---- */
+/* On desktop the gallery column is taller than the buy panel, so a third grid
+   child would auto-place below the gallery. Span the gallery across both rows and
+   pin the banner to row 2 of column 2 so it sits directly under the panel. With no
+   banner the second row collapses to zero and the layout is unchanged. */
+.apgo-cc-pdp__side-banner-link {
+  display: block;
+  transition: opacity 0.15s ease;
+}
+.apgo-cc-pdp__side-banner-link:hover { opacity: 0.88; }
+/* The banner shares a grid column with the buy panel, and global border-box makes
+   that column width the card width — so width:100% is exactly the card width, both
+   as a ceiling for large images and as a floor for small ones. Height stays auto:
+   the aspect ratio is whatever was uploaded. */
+.apgo-cc-pdp__side-banner-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--cc-r3);
+}
+@media (min-width: 900px) {
+  .apgo-cc-pdp__main > .apgo-cc-pdp__gallery { grid-row: 1 / span 2; }
+  .apgo-cc-pdp__side-banner { grid-column: 2; grid-row: 2; }
+}
+
 /* ---- Gallery ---- */
 .apgo-cc-pdp__gallery {
   background: var(--cc-bg-alt);
