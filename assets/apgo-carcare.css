@@ -1207,9 +1207,11 @@ body.apgo-cc-skin .apgo-cc-pdp {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin: 10px 0 2px;
+  margin: 10px 0 12px;
   padding-top: 10px;
+  padding-bottom: 10px;
   border-top: 1px solid var(--cc-divider);
+  border-bottom: 1px solid var(--cc-divider);
   font-family: var(--cc-font-body);
   font-size: 12px;
   color: var(--cc-fg-mid);
@@ -1362,7 +1364,6 @@ body.apgo-cc-skin .apgo-cc-pdp {
     overflow: visible;
     margin-top: 10px;
     padding-top: 10px;
-    border-top: 1px solid var(--cc-divider);
   }
   body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
     padding: 0;
