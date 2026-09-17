@@ -180,13 +180,13 @@
             "alt": "擴廠清倉10元起"
           }
         },
-        "banner_x6UiQX": {
+        "banner_cNRtiH": {
           "type": "banner",
-          "name": "清倉優惠大集合-【鈦晶鍍膜．買一送二 】",
+          "name": "Banner-洗衣精買4送2、6送3",
           "settings": {
-            "image": "shopify://shop_images/08_a2e796da-fff0-477d-991d-caeb871d49aa.jpg",
-            "link": "shopify://products/clearance-sale",
-            "alt": "清倉優惠大集合-【鈦晶鍍膜．買一送二 】"
+            "image": "shopify://shop_images/Codex_2026_9_17_11_29_56_0.png",
+            "link": "shopify://collections/超級洗衣精系列",
+            "alt": "洗衣精買4送2、6送3"
           }
         },
         "banner_teqB3D": {
@@ -198,13 +198,13 @@
             "alt": "【🎉清倉優惠福箱禮組🎖️】"
           }
         },
-        "banner_cNRtiH": {
+        "banner_x6UiQX": {
           "type": "banner",
-          "name": "Banner-洗衣精買4送2、6送3",
+          "name": "清倉優惠大集合-【鈦晶鍍膜．買一送二 】",
           "settings": {
-            "image": "shopify://shop_images/Codex_2026_9_17_11_29_56_0.png",
-            "link": "shopify://collections/超級洗衣精系列",
-            "alt": "洗衣精買4送2、6送3"
+            "image": "shopify://shop_images/08_a2e796da-fff0-477d-991d-caeb871d49aa.jpg",
+            "link": "shopify://products/clearance-sale",
+            "alt": "清倉優惠大集合-【鈦晶鍍膜．買一送二 】"
           }
         },
         "banner_r6gpWn": {
@@ -246,9 +246,9 @@
       },
       "block_order": [
         "banner_QcxFn3",
-        "banner_x6UiQX",
-        "banner_teqB3D",
         "banner_cNRtiH",
+        "banner_teqB3D",
+        "banner_x6UiQX",
         "banner_r6gpWn",
         "banner_jGTL4Q",
         "banner_CXPEDn",
