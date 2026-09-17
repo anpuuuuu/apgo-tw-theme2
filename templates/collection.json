@@ -119,7 +119,7 @@
           "促銷組合",
           "coating-series",
           "清潔藥劑全系列",
-          "洗車用品",
+          "car-wash-supplies",
           "科技執法測速器",
           "bestselling-discount-gift-set",
           "損傷修復",
@@ -196,7 +196,7 @@
         "tile_5": {
           "type": "tile",
           "settings": {
-            "collection": "洗車用品",
+            "collection": "car-wash-supplies",
             "url_override": "",
             "label_override": "洗車用品"
           }

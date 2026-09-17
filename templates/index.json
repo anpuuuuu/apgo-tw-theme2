@@ -397,7 +397,7 @@
         "category_05": {
           "type": "category",
           "settings": {
-            "collection": "洗車用品",
+            "collection": "car-wash-supplies",
             "title": "洗車用品",
             "icon": "car_wash"
           }
@@ -504,7 +504,7 @@
         "shelf_05": {
           "type": "shelf",
           "settings": {
-            "collection": "洗車用品",
+            "collection": "car-wash-supplies",
             "title": "洗車用品",
             "subtitle": "洗車工具與日常保養"
           }
