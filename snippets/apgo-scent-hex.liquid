@@ -1,0 +1,57 @@
+{%- comment -%}
+  Resolve a scent's swatch colour from a variant option value.
+
+  Option values carry status suffixes that the palette metaobjects do not always
+  mirror — 「淨心棉花（預購）」 on the product against 「淨心棉花」 in the palette, or the
+  other way round. An exact string compare fails silently when the two drift
+  apart, and because every lookup then lands on the same fallback, all six
+  swatches collapse to one beige and the picker looks broken rather than stale.
+
+  Compare on the part before the first bracket instead — full-width （ and
+  half-width ( both — so renaming on either side no longer needs a code change.
+
+  Accepts:
+    name — the option value, e.g. '淨心棉花（預購）'
+
+  Usage:
+    {%- capture swatch_color -%}{%- render 'apgo-scent-hex', name: value -%}{%- endcapture -%}
+    {%- assign swatch_color = swatch_color | strip -%}
+{%- endcomment -%}
+{%- liquid
+  assign wanted = name | split: '（' | first | split: '(' | first | strip
+  assign out = ''
+
+  assign palette = shop.metafields.apgo.scents.value
+  if palette != blank
+    for s in palette
+      assign candidate = s.name | split: '（' | first | split: '(' | first | strip
+      if candidate == wanted
+        assign out = s.hex
+        break
+      endif
+    endfor
+  endif
+
+  # Safety net for when the shop metafield loses an entry. Keyed on the
+  # bracket-stripped name for the same reason as the lookup above.
+  if out == blank
+    case wanted
+      when '淨心棉花'
+        assign out = '#E8DFC9'
+      when '花漾蒼蘭'
+        assign out = '#D4DDE0'
+      when '浪漫玫瑰'
+        assign out = '#E8D4CF'
+      when '海洋晨曦'
+        assign out = '#C8D6DA'
+      when '清雅白茶'
+        assign out = '#DAE0CE'
+      when '薰衣紫戀'
+        assign out = '#D6CFDD'
+      else
+        assign out = '#E8DFC9'
+    endcase
+  endif
+
+  echo out
+-%}

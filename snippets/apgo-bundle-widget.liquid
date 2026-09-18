@@ -187,23 +187,8 @@
       {%- endcomment -%}
       <div class="apgo-scent-grid apgo-bundle__single-grid" data-apgo-bundle-single-grid>
         {%- for value in scent_option.values -%}
-          {%- assign s_hex = '' -%}
-          {%- if scent_palette != blank -%}
-            {%- for s in scent_palette -%}
-              {%- if s.name == value -%}{%- assign s_hex = s.hex -%}{%- endif -%}
-            {%- endfor -%}
-          {%- endif -%}
-          {%- if s_hex == '' -%}
-            {%- assign s_hex = '#E8DFC9' -%}
-            {%- case value -%}
-              {%- when '淨心棉花' -%}{%- assign s_hex = '#E8DFC9' -%}
-              {%- when '花漾蒼蘭' -%}{%- assign s_hex = '#D4DDE0' -%}
-              {%- when '浪漫玫瑰' -%}{%- assign s_hex = '#E8D4CF' -%}
-              {%- when '海洋晨曦' -%}{%- assign s_hex = '#C8D6DA' -%}
-              {%- when '清雅白茶' -%}{%- assign s_hex = '#DAE0CE' -%}
-              {%- when '薰衣紫戀' -%}{%- assign s_hex = '#D6CFDD' -%}
-            {%- endcase -%}
-          {%- endif -%}
+          {%- capture s_hex -%}{%- render 'apgo-scent-hex', name: value -%}{%- endcapture -%}
+          {%- assign s_hex = s_hex | strip -%}
           <label class="apgo-scentbtn" data-apgo-bundle-single-scent="{{ value | escape }}">
             <input type="radio"
                    name="apgo-bundle-single-{{ shell }}"
@@ -216,24 +201,8 @@
 
       <div class="apgo-bundle__scent-rows">
         {%- for value in scent_option.values -%}
-          {%- assign hex = '' -%}
-          {%- if scent_palette != blank -%}
-            {%- for s in scent_palette -%}
-              {%- if s.name == value -%}{%- assign hex = s.hex -%}{%- endif -%}
-            {%- endfor -%}
-          {%- endif -%}
-          {%- comment -%} Safety net: if shop metafield apgo.scents loses its value (e.g. admin removes a metaobject entry from the list), keep dots colored so the UI doesn't fall back to a single beige fill. {%- endcomment -%}
-          {%- if hex == '' -%}
-            {%- assign hex = '#E8DFC9' -%}
-            {%- case value -%}
-              {%- when '淨心棉花' -%}{%- assign hex = '#E8DFC9' -%}
-              {%- when '花漾蒼蘭' -%}{%- assign hex = '#D4DDE0' -%}
-              {%- when '浪漫玫瑰' -%}{%- assign hex = '#E8D4CF' -%}
-              {%- when '海洋晨曦' -%}{%- assign hex = '#C8D6DA' -%}
-              {%- when '清雅白茶' -%}{%- assign hex = '#DAE0CE' -%}
-              {%- when '薰衣紫戀' -%}{%- assign hex = '#D6CFDD' -%}
-            {%- endcase -%}
-          {%- endif -%}
+          {%- capture hex -%}{%- render 'apgo-scent-hex', name: value -%}{%- endcapture -%}
+          {%- assign hex = hex | strip -%}
           {%- assign en_name = '' -%}
           {%- for pair in en_pairs -%}
             {%- assign p = pair | split: '|' -%}
