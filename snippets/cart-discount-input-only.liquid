@@ -8,10 +8,18 @@
 {%- enddoc -%}
 
 <div class="cdi-wrap" id="CartDiscountInline-{{ section_id }}" data-gift-ui data-code-mode="discount">
-  <div class="cdi-code-modes" role="group" aria-label="{{ 'apgo_gift.code_type' | t | escape }}">
-    <button type="button" data-code-mode="discount" aria-pressed="true">{{ 'apgo_gift.discount' | t }}</button>
-    <button type="button" data-code-mode="gift" aria-pressed="false">{{ 'apgo_gift.gift' | t }}</button>
-  </div>
+  {%- comment -%}
+    The gift-card tab is behind a theme setting. Only the tab is gated, not the
+    bridge below: a cart that already carries a gift card still needs its status
+    row and its remove button, otherwise the code would be stuck on the cart with
+    no way for the customer to take it off.
+  {%- endcomment -%}
+  {%- if settings.show_gift_card_code -%}
+    <div class="cdi-code-modes" role="group" aria-label="{{ 'apgo_gift.code_type' | t | escape }}">
+      <button type="button" data-code-mode="discount" aria-pressed="true">{{ 'apgo_gift.discount' | t }}</button>
+      <button type="button" data-code-mode="gift" aria-pressed="false">{{ 'apgo_gift.gift' | t }}</button>
+    </div>
+  {%- endif -%}
   <form class="cart-discount__form cdi-form" id="CartDiscountForm-{{ section_id }}" onsubmit="return false;">
     <input
       id="cdi-input-{{ section_id }}"

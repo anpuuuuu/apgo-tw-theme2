@@ -1799,6 +1799,13 @@
       },
       {
         "type": "checkbox",
+        "id": "show_gift_card_code",
+        "label": "允許在購物車輸入禮品卡",
+        "info": "關閉後購物車不再顯示「折扣碼 / 禮品卡」切換，顧客只能輸入折扣碼。已套用禮品卡的購物車仍可移除。",
+        "default": false
+      },
+      {
+        "type": "checkbox",
         "id": "show_installments",
         "label": "t:settings.installments",
         "default": true
