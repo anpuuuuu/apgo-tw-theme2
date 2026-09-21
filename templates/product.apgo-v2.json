@@ -25,7 +25,8 @@
         "videos_heading": "商品實測影片",
         "show_shipping": true,
         "shipping_label": "2–3 個工作日",
-        "banner_link": "",
+        "banner_image": "shopify://shop_images/Codex_2026_9_17_11_29_36_0.png",
+        "banner_link": "shopify://collections/超級洗衣精系列",
         "banner_alt": ""
       }
     },
