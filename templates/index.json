@@ -171,6 +171,15 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
+        "banner_AAW74k": {
+          "type": "banner",
+          "name": "第二波_LEAD買2送1",
+          "settings": {
+            "image": "shopify://shop_images/1920__-28_0.jpg",
+            "link": "https://apgo.tw/products/clearance-sale",
+            "alt": "第二波_LEAD買2送1"
+          }
+        },
         "banner_nbEMgN": {
           "type": "banner",
           "name": "9/23-9/30 $699免運券",
@@ -266,6 +275,7 @@
         }
       },
       "block_order": [
+        "banner_AAW74k",
         "banner_nbEMgN",
         "banner_a9rR9F",
         "banner_QcxFn3",
