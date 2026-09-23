@@ -183,7 +183,6 @@
         "banner_nbEMgN": {
           "type": "banner",
           "name": "9/23-9/30 $699免運券",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/06_0_c15589fe-f96d-4e6d-a1b2-df9b0c66e809.jpg",
             "link": "",
@@ -193,7 +192,6 @@
         "banner_a9rR9F": {
           "type": "banner",
           "name": "9/23-9/30 消費滿$6000享9折",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/03_0_2e0d96d2-58f8-466b-8de6-4c076538bc63.jpg",
             "link": "",
