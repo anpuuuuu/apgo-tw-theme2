@@ -19,6 +19,17 @@
       <button type="button" data-code-mode="discount" aria-pressed="true">{{ 'apgo_gift.discount' | t }}</button>
       <button type="button" data-code-mode="gift" aria-pressed="false">{{ 'apgo_gift.gift' | t }}</button>
     </div>
+    {%- comment -%}
+      A gift card settles part of the order at checkout without reducing totalPrice,
+      and the ERP builds the convenience-store collection amount from totalPrice — so
+      on a 超商取貨付款 order the gift-card portion gets collected from the customer a
+      second time at the counter. The cart cannot enforce this: the payment method is
+      chosen later, at checkout. Until the ERP reads the outstanding balance instead,
+      this line is the only warning the customer gets.
+    {%- endcomment -%}
+    <p class="cdi-gift-note" data-gift-note hidden>
+      此功能僅限「線上付款」類型訂單使用
+    </p>
   {%- endif -%}
   <form class="cart-discount__form cdi-form" id="CartDiscountForm-{{ section_id }}" onsubmit="return false;">
     <input
