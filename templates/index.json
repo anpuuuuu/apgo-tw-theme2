@@ -395,9 +395,8 @@
       "blocks": {
         "category_tQnYcN": {
           "type": "category",
-          "disabled": true,
           "settings": {
-            "collection": "",
+            "collection": "新手入門",
             "title": "新手入門",
             "icon": "beginner_guide"
           }
