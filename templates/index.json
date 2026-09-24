@@ -393,6 +393,14 @@
     "apgo_home_categories_v2": {
       "type": "apgo-home-categories-v2",
       "blocks": {
+        "category_tQnYcN": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "title": "新手入門",
+            "icon": "home_cleaning"
+          }
+        },
         "category_01": {
           "type": "category",
           "settings": {
@@ -451,6 +459,7 @@
         }
       },
       "block_order": [
+        "category_tQnYcN",
         "category_01",
         "category_02",
         "category_03",
