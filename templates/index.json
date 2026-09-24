@@ -395,6 +395,7 @@
       "blocks": {
         "category_tQnYcN": {
           "type": "category",
+          "disabled": true,
           "settings": {
             "collection": "",
             "title": "新手入門",
