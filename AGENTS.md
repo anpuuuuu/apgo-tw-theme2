@@ -6,7 +6,7 @@ This is a **Shopify theme** (Savor v2.1.6) — there is no build step, no packag
 
 ### Development Environment
 
-- **Node.js 20.x** and **Shopify CLI 3.x** are required
+- **Node.js 20+** and **Shopify CLI** are required (tested with Node v22.x, Shopify CLI 4.x)
 - Install: `npm install -g @shopify/cli @shopify/theme`
 
 ### Key Commands
