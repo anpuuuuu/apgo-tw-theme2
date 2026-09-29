@@ -482,18 +482,19 @@
         },
         "product_grid_jNQtE7": {
           "type": "product_grid",
-          "name": "7/31-8/31【🥉超級旗艦款禮盒】",
+          "name": "10/1-11/1｜G9 、G11測速器 現折 $700",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "超級旗艦款禮盒",
+            "section_title": "單件現折$700",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/IMG-9704.jpg",
+            "banner_img": "shopify://shop_images/08_0.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
             "product_list": [
-              "2688_3888"
+              "apgo-g11-plus",
+              "g9-plus"
             ],
             "variant_ids": "",
             "card_tag": "現折$5130",
