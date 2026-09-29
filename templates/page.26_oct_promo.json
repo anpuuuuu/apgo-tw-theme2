@@ -211,6 +211,7 @@
             "product_list": [
               "apgo-atomic-colored-glaze"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -427,6 +428,7 @@
             "product_list": [
               "狂殺↘24折-老闆生日慶-職人精選福箱-拆開現賺-11400"
             ],
+            "variant_ids": "",
             "card_tag": "現賺$11,400",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -452,13 +454,13 @@
         },
         "product_grid_XMR9K3": {
           "type": "product_grid",
-          "name": "7/31-8/31超級洗衣精✨滿件最高66折",
+          "name": "10/1-11/1秋衣濃．香遇好時光💘",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "買越多送越多",
+            "section_title": "香遇好時光",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1280_6548835b-b6e4-4801-b5b8-13890b360ce4.png",
+            "banner_img": "shopify://shop_images/05_0_33e40b08-c6c4-4692-9910-0f06fe87ef8b.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
@@ -471,6 +473,7 @@
               "apgolavender",
               "apgorose"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -492,6 +495,7 @@
             "product_list": [
               "2688_3888"
             ],
+            "variant_ids": "",
             "card_tag": "現折$5130",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -513,6 +517,7 @@
             "product_list": [
               "88_aurora_coaing1480"
             ],
+            "variant_ids": "",
             "card_tag": "現折$2960",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -534,6 +539,7 @@
             "product_list": [
               "apgo-g11-plus"
             ],
+            "variant_ids": "",
             "card_tag": "現折$188",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -555,6 +561,7 @@
             "product_list": [
               "2688_999"
             ],
+            "variant_ids": "",
             "card_tag": "現折$188",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -593,6 +600,7 @@
             "product_list": [
               "🚗-鍍膜前置清潔套組"
             ],
+            "variant_ids": "",
             "card_tag": "現折$558",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -624,6 +632,7 @@
               "原子鍍膜補充包",
               "apgo-plastic-hard-coating"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -657,6 +666,7 @@
               "apgo-fresh-interior-cleaner",
               "apgo-bug-tar-remover"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -713,6 +723,7 @@
             "product_list": [
               "one-box-to-refresh-your-car-interior"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -738,6 +749,7 @@
               "apgo_coral_fleece_towel",
               "apgo加厚洗車巾"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -760,6 +772,7 @@
             "product_list": [
               "aurora-coating"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -781,6 +794,7 @@
             "product_list": [
               "apgo-g11-plus"
             ],
+            "variant_ids": "",
             "card_tag": "STARTER",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -894,6 +908,7 @@
             "product_list": [
               "pamper-mommy"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -921,6 +936,7 @@
               "apgofreesia",
               "apgolavender"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -1002,6 +1018,7 @@
         "target_reward": "",
         "hero_image_pc": "shopify://shop_images/1920x800__1999_LEAD.png",
         "hero_image_mb": "shopify://shop_images/3126x4584__1999_LEAD.png",
+        "show_coupons": true,
         "coupon_sec_icon": "fa-ticket",
         "coupon_sec_title": "準時開搶折券",
         "coupon_nav_label": "優惠券版位",
