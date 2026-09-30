@@ -1017,8 +1017,8 @@
       "settings": {
         "target_amount": 0,
         "target_reward": "",
-        "hero_image_pc": "shopify://shop_images/1920x800__1999_LEAD.png",
-        "hero_image_mb": "shopify://shop_images/3126x4584__1999_LEAD.png",
+        "hero_image_pc": "shopify://shop_images/19_0.jpg",
+        "hero_image_mb": "shopify://shop_images/20_0.jpg",
         "show_coupons": true,
         "coupon_sec_icon": "fa-ticket",
         "coupon_sec_title": "準時開搶折券",
