@@ -378,227 +378,71 @@
             "success_button_text": "前往結帳，以保有優惠"
           }
         },
-        "simple_banner_slot_UVdfdB": {
-          "type": "simple_banner_slot",
-          "name": "擴廠出清品牌故事",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "擴廠出清故事",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/2_b8fa49a4-924b-4348-8082-a16f3e9c3fae.jpg",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
-        "simple_banner_slot_Q7RCNM": {
-          "type": "simple_banner_slot",
-          "name": "限量500張．免運券",
-          "disabled": true,
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "7/31-8/10領免運券",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/1280x600_8___4.png",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
-        "product_grid_n4MdhM": {
+        "product_grid_A6kewb": {
           "type": "product_grid",
-          "name": "【老闆生日慶 職人精選福箱】",
-          "disabled": true,
+          "name": "10/1-11/1秋衣濃．香遇好時光💘",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "好評延長↘24折",
+            "section_title": "🌺香遇好時光",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080.png",
+            "banner_img": "shopify://shop_images/05_0_33e40b08-c6c4-4692-9910-0f06fe87ef8b.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
+            "banner_spacing_bottom": true,
             "product_list": [
-              "狂殺↘24折-老闆生日慶-職人精選福箱-拆開現賺-11400"
+              "apgo-superwash",
+              "apgorose",
+              "apgoocean",
+              "apgocotton",
+              "apgowhitetea",
+              "apgofreesia",
+              "apgolavender"
             ],
             "variant_ids": "",
-            "card_tag": "現賺$11,400",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
-          }
-        },
-        "simple_banner_slot_mFXA4r": {
-          "type": "simple_banner_slot",
-          "name": "滿618贈雨刷玻璃光亮劑",
-          "disabled": true,
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "滿618贈雨刷玻璃光亮劑",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/618.png",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
-        "product_grid_XMR9K3": {
-          "type": "product_grid",
-          "name": "✨超值10元挖寶區",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨超值10元up挖寶區",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "show_banner": false,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "clearance-sale"
-            ],
-            "variant_ids": "49280848298235\n49275649425659\n49275649458427\n49275130315003\n49280847741179\n49280847773947\n49275649392891\n49280847806715\n49280847839483\n49280847872251\n49280847905019\n49280847937787\n49280847970555\n49280848003323\n49280848036091\n49280848068859\n49280848101627\n49280848134395\n49280848167163\n49280848199931\n49280848232699\n49280848265467\n49280848363771\n49281009516795\n49281009549563\n49281009582331\n49281009615099\n49281009647867\n49281009680635\n49281009713403\n49281009746171\n49281009778939\n49281009811707\n49281009844475\n49281009877243\n49292000002299\n49292000035067\n49292000067835\n49292000100603\n49292000133371\n49292000166139",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_63pFYA": {
-          "type": "product_grid",
-          "name": "✨清倉優惠大集合✨",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "✨限量夯品清倉大集合✨",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/03_94ca0470-23be-484e-bec5-1b7f6ed40f10.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "clearance-sale"
-            ],
-            "variant_ids": "",
-            "card_tag": "款款限量．售完為止",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
           }
         },
         "product_grid_jNQtE7": {
           "type": "product_grid",
-          "name": "【🎉清倉優惠福箱禮組🎖️】狂殺↘18折",
+          "name": "10/1-11/1｜G9 、G11測速器 現折 $700",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "🎉清倉優惠福箱禮組↘18折",
+            "section_title": "🎉 測速器現折$700",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/3688.png",
+            "banner_img": "shopify://shop_images/07_0_8c4c82ce-09b4-4ecf-a27a-9224953490b5.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
             "product_list": [
-              "clearance-sale-lucky-box"
+              "apgo-g11-plus",
+              "g9-plus"
             ],
             "variant_ids": "",
-            "card_tag": "現折$16,644",
+            "card_tag": "現折$700",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
           }
         },
-        "product_grid_HrcFDb": {
-          "type": "product_grid",
-          "name": "鍍膜前置清潔套組",
-          "disabled": true,
+        "simple_banner_slot_8hL6PK": {
+          "type": "simple_banner_slot",
+          "name": "10.10 「十」在心動．599免運券限時搶購",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "鍍膜前置清潔套組",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/6_-03.jpg",
+            "section_title": "10/4-10/14 搶 599免運券",
+            "nav_label_override": "領599免運券",
+            "section_icon": "fa-image",
             "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "🚗-鍍膜前置清潔套組"
-            ],
-            "variant_ids": "",
-            "card_tag": "現折$558",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_A6kewb": {
-          "type": "product_grid",
-          "name": "汽車鍍膜類專區",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "汽車鍍膜類專區",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/09_0.jpg",
-            "show_banner": true,
+            "banner_img": "shopify://shop_images/11_0.jpg",
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
-            "product_list": [
-              "early-autumn-22-piece-set",
-              "aurora-coating",
-              "apgo-atomic-colored-glaze",
-              "apgo-enamel-crystal-coating",
-              "glaze_coating",
-              "apgo-plastic-hard-coating",
-              "apgo-natural-interior-protectant",
-              "ti-coating"
-            ],
-            "variant_ids": "",
-            "card_tag": "TAG",
-            "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_JAm4Qp": {
-          "type": "product_grid",
-          "name": "洗車藥劑類",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "洗車藥劑類",
-            "nav_label_override": "",
-            "section_icon": "6/1-6/5",
-            "banner_img": "shopify://shop_images/10_0_79ecfa91-a65f-4a11-8379-f384cf5d862a.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "extreme-iron-remover",
-              "apgo-plastic-protectant",
-              "apgo-car-shampoo",
-              "apgo-natural-interior-protectant",
-              "apgo-anti-scratch-prewash-cleaner",
-              "water-stain-removeer",
-              "apgo-all-purpose-cleaner",
-              "apgo-wiper-fluid",
-              "apgo-wheel-cleaner",
-              "apgo-glass-cleaner",
-              "apgo-fresh-interior-cleaner",
-              "apgo-bug-tar-remover"
-            ],
-            "variant_ids": "",
-            "card_tag": "TAG",
-            "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
+            "banner_link": "",
+            "banner_anchor_id": ""
           }
         },
         "simple_banner_slot_V38Hcr": {
@@ -794,16 +638,9 @@
         "flash_sale_item_MXr8TC",
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
-        "simple_banner_slot_UVdfdB",
-        "simple_banner_slot_Q7RCNM",
-        "product_grid_n4MdhM",
-        "simple_banner_slot_mFXA4r",
-        "product_grid_XMR9K3",
-        "product_grid_63pFYA",
-        "product_grid_jNQtE7",
-        "product_grid_HrcFDb",
         "product_grid_A6kewb",
-        "product_grid_JAm4Qp",
+        "product_grid_jNQtE7",
+        "simple_banner_slot_8hL6PK",
         "simple_banner_slot_V38Hcr",
         "simple_banner_slot_pxYmgd",
         "product_grid_nrB4HP",
@@ -819,8 +656,8 @@
       "settings": {
         "target_amount": 0,
         "target_reward": "",
-        "hero_image_pc": "shopify://shop_images/1363976b3859b3a9ecf086101550da9c.jpg",
-        "hero_image_mb": "shopify://shop_images/f3dc61c70b62f90437967a35c9c630db.jpg",
+        "hero_image_pc": "shopify://shop_images/19_0.jpg",
+        "hero_image_mb": "shopify://shop_images/20_0.jpg",
         "show_coupons": true,
         "coupon_sec_icon": "fa-ticket",
         "coupon_sec_title": "準時開搶折券",
