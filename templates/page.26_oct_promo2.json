@@ -461,6 +461,22 @@
             "banner_anchor_id": ""
           }
         },
+        "simple_banner_slot_ha3bdL": {
+          "type": "simple_banner_slot",
+          "name": "10.10 「十」在心動．超級洗衣精滿6包 再送天絲專用洗潔精*1包",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "10/4-10/14 滿6包再送天絲洗潔精",
+            "nav_label_override": "買洗衣精送好禮",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/17_0.jpg",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "shopify://collections/超級洗衣精系列",
+            "banner_anchor_id": ""
+          }
+        },
         "simple_banner_slot_V38Hcr": {
           "type": "simple_banner_slot",
           "name": "6/5-6/16免運券限量500張",
@@ -658,6 +674,7 @@
         "product_grid_jNQtE7",
         "simple_banner_slot_8hL6PK",
         "simple_banner_slot_DUz7qw",
+        "simple_banner_slot_ha3bdL",
         "simple_banner_slot_V38Hcr",
         "simple_banner_slot_pxYmgd",
         "product_grid_nrB4HP",
