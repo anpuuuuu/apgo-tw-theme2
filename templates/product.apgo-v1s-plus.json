@@ -85,6 +85,8 @@
         "rating_count": "",
         "show_installment": false,
         "show_buy_now": true,
+        "banner_link": "shopify://collections/超級洗衣精系列",
+        "banner_alt": "",
         "pain_heading": "日常痛點 · 專屬科學解方",
         "cmp_kicker": "THE DIFFERENCE",
         "cmp_title": "為什麼選 APGO？",
@@ -93,10 +95,7 @@
         "cmp_col_competitor": "一般市售洗衣精",
         "ugc_kicker": "APGO 用戶實拍",
         "ugc_title": "@apgo_tw · Instagram",
-        "related_collection": "所有產品",
-        "banner_image": "shopify://shop_images/06_0_cb07eb01-c047-48de-a48d-d073604d6f4d.jpg",
-        "banner_link": "shopify://collections/超級洗衣精系列",
-        "banner_alt": ""
+        "related_collection": "所有產品"
       }
     },
     "apgo_related_qqpb6W": {
