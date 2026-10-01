@@ -781,15 +781,21 @@ body.apgo-cc-skin .apgo-cc-pdp {
 }
 .apgo-cc-pdp__breadcrumb-current { color: var(--cc-fg) !important; margin: 0 !important; }
 
-/* Main 2-col grid */
+/* Main 2-col grid.
+   minmax(0, …) rather than a bare fr: a bare 1fr track never shrinks below its
+   items' min-content width, and the thumbnail strip's min-content grows with the
+   image count (every gap and border counts, even though the strip scrolls). With
+   66 images that was ~524px, which pushed the gallery past a phone screen and
+   cut off the main image. minmax(0, …) keeps the columns at the container width;
+   the strip then scrolls inside it as intended. */
 .apgo-cc-pdp__main {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
 }
 @media (min-width: 900px) {
   .apgo-cc-pdp__main {
-    grid-template-columns: 5fr 4fr;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
     align-items: start;
   }
 }
