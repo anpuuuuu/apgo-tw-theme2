@@ -30,6 +30,25 @@
   endif
 -%}
 
+{%- comment -%}
+  Side banner — an editor-chosen image under the ship card, the same idea as
+  the banner in apgo-cc-product-detail. Built once here and placed in both the
+  desktop sidebar and the mobile info block. Empty until an image is set.
+{%- endcomment -%}
+{%- capture apgo_banner -%}
+  {%- if section.settings.banner_image != blank -%}
+    {%- assign banner_alt = section.settings.banner_alt | default: section.settings.banner_image.alt -%}
+    {%- capture banner_img -%}
+      {{- section.settings.banner_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: banner_alt, widths: '600, 900, 1200', sizes: '(min-width: 769px) 460px, 100vw' -}}
+    {%- endcapture -%}
+    {%- if section.settings.banner_link != blank -%}
+      <a href="{{ section.settings.banner_link }}">{{ banner_img }}</a>
+    {%- else -%}
+      {{ banner_img }}
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+
 <section class="apgo-mpdp" data-section-id="{{ section.id }}">
   {% form 'product', product, id: 'apgo-mobile-product-form', class: 'apgo-product-form apgo-mpdp-form' %}
     <input type="hidden" name="id" value="{{ v.id }}" data-apgo-variant-id>
@@ -264,6 +283,10 @@
               </div>
             {%- endif -%}
 
+            {%- if apgo_banner != blank -%}
+              <div class="apgo-pdp-banner">{{ apgo_banner }}</div>
+            {%- endif -%}
+
           </aside>
         </div>
       </div>
@@ -444,6 +467,10 @@
             {%- unless forloop.last -%}<div class="apgo-mpdp-ship-sep"></div>{%- endunless -%}
           {%- endfor -%}
         </div>
+      {%- endif -%}
+
+      {%- if apgo_banner != blank -%}
+        <div class="apgo-mpdp-banner">{{ apgo_banner }}</div>
       {%- endif -%}
 
     </div>
@@ -915,6 +942,11 @@
     { "type": "text",     "id": "rating_count", "label": "評價數", "default": "2,847" },
     { "type": "checkbox", "id": "show_installment", "label": "顯示 3 期 0 利率", "default": true },
     { "type": "checkbox", "id": "show_buy_now",  "label": "顯示「立即購買」按鈕（桌面）", "default": true },
+
+    { "type": "header", "content": "橫幅（運送資訊卡下方）" },
+    { "type": "image_picker", "id": "banner_image", "label": "橫幅圖片", "info": "顯示在桌機右側運送資訊卡正下方、手機則在運送資訊卡之後。留空則不顯示。建議寬度 900px 以上。" },
+    { "type": "url", "id": "banner_link", "label": "點擊連結", "info": "留空則圖片不可點擊。" },
+    { "type": "text", "id": "banner_alt", "label": "圖片替代文字", "info": "無障礙與 SEO 用。留空則沿用圖片本身的 alt。" },
 
     { "type": "header", "content": "商品說明 tab" },
     { "type": "paragraph", "content": "「Ritual 視覺」「長圖」由 Description 提供（HTML 模式貼入 .apgo-mpdp-ritual-wrap / .apgo-mpdp-longimg-wrap）。「痛點 × 解方」「比較表」由產品 metafield 驅動（apgo.pain_solutions / apgo.comparison_rows）。在 Description 中插入 <!-- apgo:sections --> 這行 HTML 註解，pain + cmp 兩段就會渲染在那個位置。" },

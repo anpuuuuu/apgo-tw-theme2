@@ -241,6 +241,19 @@
 }
 .apgo-ship-sep { height: 1px; background: var(--apgo-line); }
 
+/* Side banner under the ship card (section setting banner_image). Desktop sits in
+   the sidebar column; mobile follows the ship card in the info block. Same corner
+   radius as the ship card, full column width, height from the uploaded image. */
+.apgo-pdp-banner { margin-top: 16px; }
+.apgo-mpdp-banner { margin-bottom: 28px; }
+.apgo-mpdp-ship + .apgo-mpdp-banner { margin-top: -16px; } /* 12px under the card, not its 28px */
+.apgo-pdp-banner a,
+.apgo-mpdp-banner a { display: block; transition: opacity 0.15s ease; }
+.apgo-pdp-banner a:hover,
+.apgo-mpdp-banner a:hover { opacity: 0.88; }
+.apgo-pdp-banner img,
+.apgo-mpdp-banner img { display: block; width: 100%; height: auto; border-radius: 14px; }
+
 .apgo-share {
   margin-top: 20px; display: flex; gap: 14px; font-size: 12px;
   color: var(--apgo-muted); letter-spacing: 0.1em;
