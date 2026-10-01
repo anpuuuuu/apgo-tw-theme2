@@ -379,6 +379,10 @@
     }
 
     .social-card {
+      /* A grid item keeps min-width:auto, so the card would grow to fit its
+         single-line name instead of letting the ellipsis cut it, and a long name
+         (𝐀𝐏𝐆𝐎 汽車美容商城-台灣) widened every TikTok card past a phone screen. */
+      min-width: 0;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px;
