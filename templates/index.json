@@ -325,6 +325,13 @@
             "product": "apgo-superwash"
           }
         },
+        "product_LAkYiA": {
+          "type": "product",
+          "name": "鍍膜布10入組",
+          "settings": {
+            "product": "鍍膜布10入組"
+          }
+        },
         "product_WqygLp": {
           "type": "product",
           "settings": {
@@ -360,6 +367,7 @@
         "product_bTiDRt",
         "bestseller_01",
         "product_jzaqEn",
+        "product_LAkYiA",
         "product_WqygLp",
         "bestseller_03",
         "product_BtwRD9",
