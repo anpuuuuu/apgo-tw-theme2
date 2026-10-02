@@ -332,6 +332,12 @@
             "product": "鍍膜布10入組"
           }
         },
+        "product_idBkKa": {
+          "type": "product",
+          "settings": {
+            "product": "apgo_coral_fleece_towel"
+          }
+        },
         "product_WqygLp": {
           "type": "product",
           "settings": {
@@ -344,16 +350,11 @@
             "product": "glass-coating"
           }
         },
-        "product_BtwRD9": {
+        "product_iEzaFp": {
           "type": "product",
+          "name": "500ML噴頭",
           "settings": {
-            "product": "新手鍍膜入門組-原子鍍膜-2-加厚洗車巾-1-鍍膜布-2"
-          }
-        },
-        "product_6qtanB": {
-          "type": "product",
-          "settings": {
-            "product": "early-autumn-22-piece-set"
+            "product": "500ml專用噴頭"
           }
         },
         "product_DLggdh": {
@@ -368,10 +369,10 @@
         "bestseller_01",
         "product_jzaqEn",
         "product_LAkYiA",
+        "product_idBkKa",
         "product_WqygLp",
         "bestseller_03",
-        "product_BtwRD9",
-        "product_6qtanB",
+        "product_iEzaFp",
         "product_DLggdh"
       ],
       "name": "APGO · 熱銷商品 v2",
