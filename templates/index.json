@@ -329,25 +329,7 @@
           "type": "product",
           "name": "鍍膜布10入組",
           "settings": {
-            "product": "鍍膜布10入組"
-          }
-        },
-        "product_idBkKa": {
-          "type": "product",
-          "settings": {
-            "product": "apgo_coral_fleece_towel"
-          }
-        },
-        "product_WqygLp": {
-          "type": "product",
-          "settings": {
-            "product": "atomic_coating_motoset"
-          }
-        },
-        "bestseller_03": {
-          "type": "product",
-          "settings": {
-            "product": "glass-coating"
+            "product": "apgo_coating_cloth"
           }
         },
         "product_iEzaFp": {
@@ -357,10 +339,37 @@
             "product": "500ml專用噴頭"
           }
         },
-        "product_DLggdh": {
+        "product_idBkKa": {
           "type": "product",
           "settings": {
-            "product": "aurora-coating"
+            "product": "apgo_coral_fleece_towel"
+          }
+        },
+        "bestseller_03": {
+          "type": "product",
+          "settings": {
+            "product": "glass-coating"
+          }
+        },
+        "product_mPBdJG": {
+          "type": "product",
+          "name": "洗車手套",
+          "settings": {
+            "product": "apgo-car-wash-mitt"
+          }
+        },
+        "product_dYmcmV": {
+          "type": "product",
+          "name": "鐵粉去除劑",
+          "settings": {
+            "product": "extreme-iron-remover"
+          }
+        },
+        "product_TxRURV": {
+          "type": "product",
+          "name": "細節刷成雙組合",
+          "settings": {
+            "product": "apgo-細節刷成雙組合"
           }
         }
       },
@@ -369,11 +378,12 @@
         "bestseller_01",
         "product_jzaqEn",
         "product_LAkYiA",
-        "product_idBkKa",
-        "product_WqygLp",
-        "bestseller_03",
         "product_iEzaFp",
-        "product_DLggdh"
+        "product_idBkKa",
+        "bestseller_03",
+        "product_mPBdJG",
+        "product_dYmcmV",
+        "product_TxRURV"
       ],
       "name": "APGO · 熱銷商品 v2",
       "settings": {
