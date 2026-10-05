@@ -192,7 +192,6 @@
         "banner_jjYVLA": {
           "type": "banner",
           "name": "洗衣精滿6包送天絲專用洗劑",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/18_0.jpg",
             "link": "shopify://collections/超級洗衣精系列",
@@ -211,6 +210,7 @@
         "banner_cNRtiH": {
           "type": "banner",
           "name": "Banner-洗衣精買4送2、6送3",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/06_0_cb07eb01-c047-48de-a48d-d073604d6f4d.jpg",
             "link": "shopify://collections/超級洗衣精系列",
