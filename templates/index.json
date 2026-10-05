@@ -185,13 +185,14 @@
           "name": "滿額折現",
           "settings": {
             "image": "shopify://shop_images/15_0.jpg",
-            "link": "shopify://collections",
+            "link": "shopify://pages/26_oct_promo",
             "alt": "滿額折現"
           }
         },
         "banner_jjYVLA": {
           "type": "banner",
           "name": "洗衣精滿6包送天絲專用洗劑",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/18_0.jpg",
             "link": "shopify://collections/超級洗衣精系列",
