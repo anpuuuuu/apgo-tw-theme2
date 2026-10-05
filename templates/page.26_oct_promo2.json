@@ -432,7 +432,6 @@
         "simple_banner_slot_8hL6PK": {
           "type": "simple_banner_slot",
           "name": "10.10 「十」在心動．599免運券限時搶購",
-          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "10/5-10/14 搶 599免運券",
@@ -449,7 +448,6 @@
         "simple_banner_slot_DUz7qw": {
           "type": "simple_banner_slot",
           "name": "10.10 「十」在心動．贈99購物金．消費滿1999即可享用",
-          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "10/5-10/14 指定商品限定",
@@ -466,7 +464,6 @@
         "simple_banner_slot_ha3bdL": {
           "type": "simple_banner_slot",
           "name": "10.10 「十」在心動．超級洗衣精滿6包 再送天絲專用洗潔精*1包",
-          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "10/5-10/14 滿6包再送天絲洗潔精",
