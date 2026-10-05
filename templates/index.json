@@ -238,6 +238,7 @@
         "banner_QcxFn3": {
           "type": "banner",
           "name": "擴廠清倉10元起",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/1363976b3859b3a9ecf086101550da9c.jpg",
             "link": "https://apgo.tw/pages/26_outletsale10up",
