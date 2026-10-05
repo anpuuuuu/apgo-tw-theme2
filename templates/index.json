@@ -171,6 +171,15 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
+        "banner_NcDi4E": {
+          "type": "banner",
+          "name": "599免運",
+          "settings": {
+            "image": "shopify://shop_images/12_0.jpg",
+            "link": "",
+            "alt": "599免運"
+          }
+        },
         "banner_nbEMgN": {
           "type": "banner",
           "name": "【入秋養光計畫．洗去夏天塵埃】消費滿$1600折$100",
@@ -273,6 +282,7 @@
         }
       },
       "block_order": [
+        "banner_NcDi4E",
         "banner_nbEMgN",
         "banner_cNRtiH",
         "banner_a9rR9F",
