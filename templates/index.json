@@ -171,12 +171,21 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
+        "banner_k83FMd": {
+          "type": "banner",
+          "name": "滿額折現",
+          "settings": {
+            "image": "shopify://shop_images/15_0.jpg",
+            "link": "shopify://collections",
+            "alt": "滿額折現"
+          }
+        },
         "banner_NcDi4E": {
           "type": "banner",
           "name": "599免運",
           "settings": {
             "image": "shopify://shop_images/12_0.jpg",
-            "link": "",
+            "link": "shopify://collections",
             "alt": "599免運"
           }
         },
@@ -282,6 +291,7 @@
         }
       },
       "block_order": [
+        "banner_k83FMd",
         "banner_NcDi4E",
         "banner_nbEMgN",
         "banner_cNRtiH",
