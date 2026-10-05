@@ -171,6 +171,15 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
+        "banner_NcDi4E": {
+          "type": "banner",
+          "name": "599免運",
+          "settings": {
+            "image": "shopify://shop_images/12_0.jpg",
+            "link": "shopify://collections",
+            "alt": "599免運"
+          }
+        },
         "banner_k83FMd": {
           "type": "banner",
           "name": "滿額折現",
@@ -180,13 +189,13 @@
             "alt": "滿額折現"
           }
         },
-        "banner_NcDi4E": {
+        "banner_jjYVLA": {
           "type": "banner",
-          "name": "599免運",
+          "name": "洗衣精滿6包送天絲專用洗劑",
           "settings": {
-            "image": "shopify://shop_images/12_0.jpg",
-            "link": "shopify://collections",
-            "alt": "599免運"
+            "image": "shopify://shop_images/18_0.jpg",
+            "link": "shopify://collections/超級洗衣精系列",
+            "alt": "洗衣精滿6包送天絲專用洗劑"
           }
         },
         "banner_nbEMgN": {
@@ -265,6 +274,7 @@
         "banner_jGTL4Q": {
           "type": "banner",
           "name": "Banner-洗衣精訂閱制活動",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/BN-1920-3.png",
             "link": "https://sub.apgo.tw/",
@@ -291,8 +301,9 @@
         }
       },
       "block_order": [
-        "banner_k83FMd",
         "banner_NcDi4E",
+        "banner_k83FMd",
+        "banner_jjYVLA",
         "banner_nbEMgN",
         "banner_cNRtiH",
         "banner_a9rR9F",
