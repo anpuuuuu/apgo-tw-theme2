@@ -180,15 +180,6 @@
             "alt": "599免運"
           }
         },
-        "banner_k83FMd": {
-          "type": "banner",
-          "name": "滿額折現",
-          "settings": {
-            "image": "shopify://shop_images/15_0.jpg",
-            "link": "shopify://pages/26_oct_promo",
-            "alt": "滿額折現"
-          }
-        },
         "banner_jjYVLA": {
           "type": "banner",
           "name": "洗衣精滿6包送天絲專用洗劑",
@@ -300,11 +291,19 @@
             "link": "shopify://pages/campaign20260803",
             "alt": "APGO評價募集活動"
           }
+        },
+        "banner_k83FMd": {
+          "type": "banner",
+          "name": "滿額折現",
+          "settings": {
+            "image": "shopify://shop_images/15_0.jpg",
+            "link": "shopify://pages/26_oct_promo",
+            "alt": "滿額折現"
+          }
         }
       },
       "block_order": [
         "banner_NcDi4E",
-        "banner_k83FMd",
         "banner_jjYVLA",
         "banner_nbEMgN",
         "banner_cNRtiH",
@@ -316,7 +315,8 @@
         "banner_r6gpWn",
         "banner_jGTL4Q",
         "banner_CXPEDn",
-        "banner_T8KwPX"
+        "banner_T8KwPX",
+        "banner_k83FMd"
       ],
       "settings": {
         "autoplay": true,
