@@ -171,24 +171,6 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
-        "banner_NcDi4E": {
-          "type": "banner",
-          "name": "599免運",
-          "settings": {
-            "image": "shopify://shop_images/12_0.jpg",
-            "link": "shopify://pages/26_oct_promo",
-            "alt": "599免運"
-          }
-        },
-        "banner_jjYVLA": {
-          "type": "banner",
-          "name": "洗衣精滿6包送天絲專用洗劑",
-          "settings": {
-            "image": "shopify://shop_images/18_0.jpg",
-            "link": "shopify://collections/超級洗衣精系列",
-            "alt": "洗衣精滿6包送天絲專用洗劑"
-          }
-        },
         "banner_nbEMgN": {
           "type": "banner",
           "name": "【入秋養光計畫．洗去夏天塵埃】消費滿$1600折$100",
@@ -201,7 +183,6 @@
         "banner_cNRtiH": {
           "type": "banner",
           "name": "Banner-洗衣精買4送2、6送3",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/06_0_cb07eb01-c047-48de-a48d-d073604d6f4d.jpg",
             "link": "shopify://collections/超級洗衣精系列",
@@ -248,6 +229,7 @@
         "banner_x6UiQX": {
           "type": "banner",
           "name": "清倉優惠大集合-【鈦晶鍍膜．買一送二 】",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/08_a2e796da-fff0-477d-991d-caeb871d49aa.jpg",
             "link": "shopify://products/clearance-sale",
@@ -267,7 +249,6 @@
         "banner_jGTL4Q": {
           "type": "banner",
           "name": "Banner-洗衣精訂閱制活動",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/BN-1920-3.png",
             "link": "https://sub.apgo.tw/",
@@ -291,20 +272,9 @@
             "link": "shopify://pages/campaign20260803",
             "alt": "APGO評價募集活動"
           }
-        },
-        "banner_k83FMd": {
-          "type": "banner",
-          "name": "滿額折現",
-          "settings": {
-            "image": "shopify://shop_images/15_0.jpg",
-            "link": "shopify://pages/26_oct_promo",
-            "alt": "滿額折現"
-          }
         }
       },
       "block_order": [
-        "banner_NcDi4E",
-        "banner_jjYVLA",
         "banner_nbEMgN",
         "banner_cNRtiH",
         "banner_a9rR9F",
@@ -315,8 +285,7 @@
         "banner_r6gpWn",
         "banner_jGTL4Q",
         "banner_CXPEDn",
-        "banner_T8KwPX",
-        "banner_k83FMd"
+        "banner_T8KwPX"
       ],
       "settings": {
         "autoplay": true,
