@@ -337,7 +337,10 @@
             .then(function (cart) { return { added: added, cart: cart }; });
         })
         .then(function (result) {
-          showApgoCartToast('✓ 已加入購物車');
+          // The 你可能也需要 panel (apgo-maybe-need.js) replaces the toast,
+          // and the drawer below, when this product has recommendations.
+          var panelOpened = !!(window.ApgoMaybeNeed && window.ApgoMaybeNeed.open(result.cart));
+          if (!panelOpened) showApgoCartToast('✓ 已加入購物車');
 
           // Keep Horizon and legacy APGO cart listeners in sync with one event.
           // Horizon reads detail.data.itemCount; legacy sections read detail.cart.
@@ -358,7 +361,7 @@
           document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: result.cart } }));
 
           // If a cart drawer is in the DOM, ask it to open
-          var drawer = document.querySelector('cart-drawer-component, cart-drawer, [data-apgo-cart-drawer]');
+          var drawer = !panelOpened && document.querySelector('cart-drawer-component, cart-drawer, [data-apgo-cart-drawer]');
           if (drawer && typeof drawer.open === 'function') {
             try { drawer.open(); } catch (_) { /* swallow */ }
           }

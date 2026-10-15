@@ -538,12 +538,15 @@
       });
   }
 
-  // Modal 加入購物車 CTA — adds + toast + closes modal + opens mini cart
+  // Modal 加入購物車 CTA — adds + toast + closes modal + opens mini cart.
+  // When this product has recommendations, the 你可能也需要 panel
+  // (apgo-maybe-need.js) opens instead of the toast and the mini cart.
   if (purchaseAddCta) {
     purchaseAddCta.addEventListener('click', function () {
-      purchaseSubmit(purchaseAddCta, function () {
-        showToast('✓ 已加入購物車');
+      purchaseSubmit(purchaseAddCta, function (cart) {
         closePurchase();
+        if (window.ApgoMaybeNeed && window.ApgoMaybeNeed.open(cart)) return;
+        showToast('✓ 已加入購物車');
         if (!bar.classList.contains('is-open')) open();
       });
     });

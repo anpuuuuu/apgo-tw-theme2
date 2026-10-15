@@ -251,10 +251,630 @@
         "enable_tracking": false,
         "ga_tracking_id": ""
       }
+    },
+    "apgo_maybe_need": {
+      "type": "apgo-maybe-need",
+      "settings": {
+        "enabled": true,
+        "heading": "你可能也需要",
+        "max_items": 4,
+        "min_items": 2,
+        "gift_collection": "bestselling-discount-gift-set"
+      },
+      "blocks": {
+        "rule_01": {
+          "type": "rule",
+          "settings": {
+            "title": "九合一磁土",
+            "source_collection": "",
+            "source_products": [
+              "apgo-九合一磁土"
+            ],
+            "intro": "",
+            "product_1": "apgo-磁土潤滑劑",
+            "label_1": "施工搭配",
+            "note_1": "磁土一定要搭配潤滑，避免刮傷",
+            "product_2": "apgo-car-shampoo",
+            "label_2": "前置清潔",
+            "note_2": "磁土前先洗淨車身",
+            "product_3": "atomic-coating",
+            "label_3": "後續保護",
+            "note_3": "去除污染後上一層鍍膜"
+          }
+        },
+        "rule_02": {
+          "type": "rule",
+          "settings": {
+            "title": "磁土潤滑劑",
+            "source_collection": "",
+            "source_products": [
+              "apgo-磁土潤滑劑"
+            ],
+            "intro": "",
+            "product_1": "apgo-九合一磁土",
+            "label_1": "施工搭配",
+            "note_1": "搭配磁土去除漆面污染",
+            "product_2": "apgo-car-shampoo",
+            "label_2": "前置清潔",
+            "note_2": "磁土前先洗淨車身",
+            "product_3": "apgo加厚毛巾60x160",
+            "label_3": "施工工具",
+            "note_3": "施工後擦乾收尾"
+          }
+        },
+        "rule_03": {
+          "type": "rule",
+          "settings": {
+            "title": "原子鍍膜（已附鍍膜布，鍍膜布排最後）",
+            "source_collection": "",
+            "source_products": [
+              "atomic-coating"
+            ],
+            "intro": "",
+            "product_1": "apgo-car-shampoo",
+            "label_1": "前置清潔",
+            "note_1": "鍍膜前先洗淨車身",
+            "product_2": "extreme-iron-remover",
+            "label_2": "前置清潔",
+            "note_2": "深層清潔時搭配",
+            "product_3": "apgo加厚毛巾60x160",
+            "label_3": "施工工具",
+            "note_3": "洗後擦乾、施工收尾",
+            "product_4": "apgo_coating_cloth",
+            "label_4": "施工工具",
+            "note_4": "已附一條，可多備替換"
+          }
+        },
+        "rule_04": {
+          "type": "rule",
+          "settings": {
+            "title": "車內鍍膜",
+            "source_collection": "",
+            "source_products": [
+              "apgo-natural-interior-protectant"
+            ],
+            "intro": "",
+            "product_1": "apgo-fresh-interior-cleaner",
+            "label_1": "前置清潔",
+            "note_1": "同一部位，先清潔再保養",
+            "product_2": "apgo_coral_fleece_towel",
+            "label_2": "施工工具",
+            "note_2": "擦拭內裝不刮傷",
+            "product_3": "apgo-細節刷成雙組合",
+            "label_3": "施工工具",
+            "note_3": "清潔縫隙與按鍵"
+          }
+        },
+        "rule_05": {
+          "type": "rule",
+          "settings": {
+            "title": "車內清潔劑",
+            "source_collection": "",
+            "source_products": [
+              "apgo-fresh-interior-cleaner"
+            ],
+            "intro": "",
+            "product_1": "apgo-natural-interior-protectant",
+            "label_1": "後續保養",
+            "note_1": "清潔後上一層保護",
+            "product_2": "apgo_coral_fleece_towel",
+            "label_2": "施工工具",
+            "note_2": "擦拭內裝不刮傷",
+            "product_3": "apgo-細節刷成雙組合",
+            "label_3": "施工工具",
+            "note_3": "清潔縫隙與按鍵"
+          }
+        },
+        "rule_06": {
+          "type": "rule",
+          "settings": {
+            "title": "玻璃清潔劑",
+            "source_collection": "",
+            "source_products": [
+              "apgo-glass-cleaner",
+              "玻璃清潔劑2l"
+            ],
+            "intro": "",
+            "product_1": "apgo玻璃珍珠布",
+            "label_1": "施工工具",
+            "note_1": "玻璃專用，不留棉絮",
+            "product_2": "glass-coating-1",
+            "label_2": "後續保護",
+            "note_2": "清潔後鍍膜，下雨更好開",
+            "product_3": "apgo-wiper-fluid",
+            "label_3": "日常維護",
+            "note_3": "雨刷水箱也一起補"
+          }
+        },
+        "rule_07": {
+          "type": "rule",
+          "settings": {
+            "title": "玻璃去油劑、玻璃鍍膜組",
+            "source_collection": "",
+            "source_products": [
+              "apgo-prefect-glass-restorer",
+              "glass-coating-1"
+            ],
+            "intro": "",
+            "product_1": "apgo玻璃珍珠布",
+            "label_1": "施工工具",
+            "note_1": "玻璃專用，不留棉絮",
+            "product_2": "apgo-glass-cleaner",
+            "label_2": "日常維護",
+            "note_2": "平常清潔玻璃用",
+            "product_3": "apgo-wiper-fluid",
+            "label_3": "日常維護",
+            "note_3": "雨刷水箱也一起補"
+          }
+        },
+        "rule_08": {
+          "type": "rule",
+          "settings": {
+            "title": "鋁圈光亮劑",
+            "source_collection": "",
+            "source_products": [
+              "apgo-wheel-cleaner",
+              "wheelcleaner2l"
+            ],
+            "intro": "",
+            "product_1": "extreme-iron-remover",
+            "label_1": "前置清潔",
+            "note_1": "用在輪圈：深層去除鐵粉",
+            "product_2": "apgo-細節刷成雙組合",
+            "label_2": "施工工具",
+            "note_2": "刷洗輪圈縫隙",
+            "product_3": "apgo-tire-shine-high-gloss",
+            "label_3": "後續保養",
+            "note_3": "用在輪胎：恢復黑亮",
+            "product_4": "輪胎專用海綿",
+            "label_4": "施工工具",
+            "note_4": "用在輪胎：均勻上光"
+          }
+        },
+        "rule_09": {
+          "type": "rule",
+          "settings": {
+            "title": "太陽紋修復劑、美白劑",
+            "source_collection": "",
+            "source_products": [
+              "apgo-swirl-remover",
+              "apgo-car-whitener"
+            ],
+            "intro": "",
+            "product_1": "apgo-car-shampoo",
+            "label_1": "前置清潔",
+            "note_1": "修復前先洗淨車身",
+            "product_2": "apgo_coral_fleece_towel",
+            "label_2": "施工工具",
+            "note_2": "擦拭殘留不留痕",
+            "product_3": "atomic-coating",
+            "label_3": "後續保護",
+            "note_3": "修復後上鍍膜鎖住效果"
+          }
+        },
+        "rule_10": {
+          "type": "rule",
+          "settings": {
+            "title": "鐵粉去除劑、柏油蚊蟲清潔劑",
+            "source_collection": "",
+            "source_products": [
+              "extreme-iron-remover",
+              "iron-particle-cleaner-2l",
+              "apgo-bug-tar-remover"
+            ],
+            "intro": "",
+            "product_1": "apgo-car-shampoo",
+            "label_1": "接著清洗",
+            "note_1": "局部去污後整車清洗",
+            "product_2": "apgo-細節刷成雙組合",
+            "label_2": "施工工具",
+            "note_2": "頑固處局部刷洗",
+            "product_3": "500ml專用噴頭",
+            "label_3": "施工工具",
+            "note_3": "分裝噴灑更方便",
+            "product_4": "atomic-coating",
+            "label_4": "後續保護",
+            "note_4": "清潔完上一層鍍膜"
+          }
+        },
+        "rule_11": {
+          "type": "rule",
+          "settings": {
+            "title": "洗車精、預洗清潔劑",
+            "source_collection": "",
+            "source_products": [
+              "apgo-car-shampoo",
+              "洗車精2l",
+              "新包裝-apgo鍍膜專用洗車精補充包",
+              "apgo-anti-scratch-prewash-cleaner",
+              "防刮傷預洗清潔劑2l"
+            ],
+            "intro": "",
+            "product_1": "apgo-car-wash-mitt",
+            "label_1": "施工工具",
+            "note_1": "搭配洗車精刷洗",
+            "product_2": "apgo-pressure-foam-sprayer",
+            "label_2": "施工工具",
+            "note_2": "打出綿密泡沫",
+            "product_3": "apgo加厚毛巾60x160",
+            "label_3": "施工工具",
+            "note_3": "洗後吸水擦乾",
+            "product_4": "atomic-coating",
+            "label_4": "後續保護",
+            "note_4": "洗完順手上一層鍍膜"
+          }
+        },
+        "rule_12": {
+          "type": "rule",
+          "settings": {
+            "title": "洗車手套、泡沫噴壺",
+            "source_collection": "",
+            "source_products": [
+              "apgo-car-wash-mitt",
+              "apgo-plush-wash-glove",
+              "apgo-pressure-foam-sprayer"
+            ],
+            "intro": "",
+            "product_1": "apgo-car-shampoo",
+            "label_1": "搭配藥劑",
+            "note_1": "搭配洗車精使用",
+            "product_2": "apgo-anti-scratch-prewash-cleaner",
+            "label_2": "前置清潔",
+            "note_2": "先預洗，減少刮傷",
+            "product_3": "apgo加厚毛巾60x160",
+            "label_3": "施工工具",
+            "note_3": "洗後吸水擦乾"
+          }
+        },
+        "rule_13": {
+          "type": "rule",
+          "settings": {
+            "title": "鍍膜布、鍍膜海綿",
+            "source_collection": "",
+            "source_products": [
+              "apgo_coating_cloth",
+              "鍍膜布10入組",
+              "apgo-鍍晶海綿",
+              "apgo六角鍍晶海綿",
+              "apgo-四吋打蠟海綿"
+            ],
+            "intro": "",
+            "product_1": "atomic-coating",
+            "label_1": "對應鍍膜",
+            "note_1": "搭配鍍膜施工",
+            "product_2": "atomic-cyrstal-coating",
+            "label_2": "對應鍍膜",
+            "note_2": "想要更持久的選擇",
+            "product_3": "apgo-car-shampoo",
+            "label_3": "前置清潔",
+            "note_3": "鍍膜前先洗淨車身"
+          }
+        },
+        "rule_14": {
+          "type": "rule",
+          "settings": {
+            "title": "毛巾",
+            "source_collection": "",
+            "source_products": [
+              "apgo加厚毛巾60x160",
+              "apgo加厚洗車巾",
+              "apgo_coral_fleece_towel"
+            ],
+            "intro": "",
+            "product_1": "apgo-car-shampoo",
+            "label_1": "搭配藥劑",
+            "note_1": "洗車必備",
+            "product_2": "apgo-car-wash-mitt",
+            "label_2": "施工工具",
+            "note_2": "刷洗用手套",
+            "product_3": "atomic-coating",
+            "label_3": "後續保護",
+            "note_3": "擦乾後上一層鍍膜"
+          }
+        },
+        "rule_15": {
+          "type": "rule",
+          "settings": {
+            "title": "玻璃珍珠布",
+            "source_collection": "",
+            "source_products": [
+              "apgo玻璃珍珠布"
+            ],
+            "intro": "",
+            "product_1": "apgo-glass-cleaner",
+            "label_1": "搭配藥劑",
+            "note_1": "搭配玻璃清潔劑使用",
+            "product_2": "glass-coating-1",
+            "label_2": "後續保護",
+            "note_2": "清潔後鍍膜，下雨更好開"
+          }
+        },
+        "rule_16": {
+          "type": "rule",
+          "settings": {
+            "title": "超級洗衣精",
+            "source_collection": "超級洗衣精系列",
+            "source_products": [
+              "apgo-superwash",
+              "apgoocean",
+              "apgowhitetea",
+              "apgocotton",
+              "apgorose",
+              "apgolavender",
+              "apgofreesia"
+            ],
+            "intro": "",
+            "product_1": "天絲專用洗潔精",
+            "label_1": "居家清潔",
+            "note_1": "天絲、精緻衣物專用",
+            "product_2": "apgo-特效淨白粉",
+            "label_2": "居家清潔",
+            "note_2": "白衣增白、去黃",
+            "product_3": "apgo-衣領潔淨劑",
+            "label_3": "居家清潔",
+            "note_3": "衣領袖口先處理",
+            "product_4": "apgo-白鞋清潔劑",
+            "label_4": "居家清潔",
+            "note_4": "白鞋一起洗乾淨",
+            "product_5": "apgo-地板清潔劑",
+            "label_5": "居家清潔",
+            "note_5": "居家清潔一起補貨"
+          }
+        },
+        "rule_17": {
+          "type": "rule",
+          "settings": {
+            "title": "居家清潔",
+            "source_collection": "homecleaning",
+            "source_products": [],
+            "intro": "",
+            "product_1": "apgo-superwash",
+            "label_1": "居家清潔",
+            "note_1": "居家清潔一起補貨",
+            "product_2": "apgo-特效淨白粉",
+            "label_2": "居家清潔",
+            "note_2": "白衣增白、去黃",
+            "product_3": "apgo-地板清潔劑",
+            "label_3": "居家清潔",
+            "note_3": "居家清潔一起補貨",
+            "product_4": "aogo-廚房清潔劑",
+            "label_4": "居家清潔",
+            "note_4": "廚房油污一起處理",
+            "product_5": "除霉專家",
+            "label_5": "居家清潔",
+            "note_5": "浴室、牆角除霉"
+          }
+        },
+        "rule_18": {
+          "type": "rule",
+          "settings": {
+            "title": "其他車漆鍍膜",
+            "source_collection": "coating-series",
+            "source_products": [],
+            "intro": "",
+            "product_1": "apgo-car-shampoo",
+            "label_1": "前置清潔",
+            "note_1": "鍍膜前先洗淨車身",
+            "product_2": "extreme-iron-remover",
+            "label_2": "前置清潔",
+            "note_2": "深層清潔時搭配",
+            "product_3": "apgo_coating_cloth",
+            "label_3": "施工工具",
+            "note_3": "鍍膜擦拭專用",
+            "product_4": "apgo加厚毛巾60x160",
+            "label_4": "施工工具",
+            "note_4": "洗後擦乾、施工收尾"
+          }
+        },
+        "family_19": {
+          "type": "family",
+          "settings": {
+            "title": "鐵粉去除劑",
+            "products": [
+              "extreme-iron-remover",
+              "iron-particle-cleaner-2l"
+            ]
+          }
+        },
+        "family_20": {
+          "type": "family",
+          "settings": {
+            "title": "高泡潔淨洗車精",
+            "products": [
+              "apgo-car-shampoo",
+              "洗車精2l",
+              "新包裝-apgo鍍膜專用洗車精補充包"
+            ]
+          }
+        },
+        "family_21": {
+          "type": "family",
+          "settings": {
+            "title": "防刮傷預洗清潔劑",
+            "products": [
+              "apgo-anti-scratch-prewash-cleaner",
+              "防刮傷預洗清潔劑2l"
+            ]
+          }
+        },
+        "family_22": {
+          "type": "family",
+          "settings": {
+            "title": "玻璃清潔劑",
+            "products": [
+              "apgo-glass-cleaner",
+              "玻璃清潔劑2l"
+            ]
+          }
+        },
+        "family_23": {
+          "type": "family",
+          "settings": {
+            "title": "鋁圈光亮劑",
+            "products": [
+              "apgo-wheel-cleaner",
+              "wheelcleaner2l"
+            ]
+          }
+        },
+        "family_24": {
+          "type": "family",
+          "settings": {
+            "title": "萬用清潔劑",
+            "products": [
+              "apgo-all-purpose-cleaner",
+              "apgo-all-purpose-cleaner2l"
+            ]
+          }
+        },
+        "family_25": {
+          "type": "family",
+          "settings": {
+            "title": "水漬去除劑",
+            "products": [
+              "water-stain-removeer",
+              "water-spot-remover-2l"
+            ]
+          }
+        },
+        "family_26": {
+          "type": "family",
+          "settings": {
+            "title": "塑膠還原保護劑",
+            "products": [
+              "apgo-plastic-protectant",
+              "塑膠還原劑2l"
+            ]
+          }
+        },
+        "family_27": {
+          "type": "family",
+          "settings": {
+            "title": "濃縮全效雨刷精",
+            "products": [
+              "apgo-wiper-fluid",
+              "雨刷小幫手2l",
+              "新包裝-apgo玻璃雨刷小幫手補充包"
+            ]
+          }
+        },
+        "family_28": {
+          "type": "family",
+          "settings": {
+            "title": "原子鍍膜",
+            "products": [
+              "atomic-coating",
+              "原子鍍膜補充包"
+            ]
+          }
+        },
+        "family_29": {
+          "type": "family",
+          "settings": {
+            "title": "原子微晶鍍膜",
+            "products": [
+              "atomic-cyrstal-coating",
+              "原子微晶鍍膜-2"
+            ]
+          }
+        },
+        "family_30": {
+          "type": "family",
+          "settings": {
+            "title": "原子封體鍍膜",
+            "products": [
+              "原子封體鍍膜",
+              "原子封體鍍膜補充包"
+            ]
+          }
+        },
+        "family_31": {
+          "type": "family",
+          "settings": {
+            "title": "原子釉鍍膜",
+            "products": [
+              "glaze_coating",
+              "apgo-原子釉鍍膜補充包"
+            ]
+          }
+        },
+        "family_32": {
+          "type": "family",
+          "settings": {
+            "title": "鍍膜布",
+            "products": [
+              "apgo_coating_cloth",
+              "鍍膜布10入組"
+            ]
+          }
+        },
+        "family_33": {
+          "type": "family",
+          "settings": {
+            "title": "玻璃去油鍍膜組",
+            "products": [
+              "glass-coating-1",
+              "glass-coating"
+            ]
+          }
+        },
+        "family_34": {
+          "type": "family",
+          "settings": {
+            "title": "超級洗衣精",
+            "products": [
+              "apgo-superwash",
+              "apgoocean",
+              "apgowhitetea",
+              "apgocotton",
+              "apgorose",
+              "apgolavender",
+              "apgofreesia"
+            ]
+          }
+        }
+      },
+      "block_order": [
+        "rule_01",
+        "rule_02",
+        "rule_03",
+        "rule_04",
+        "rule_05",
+        "rule_06",
+        "rule_07",
+        "rule_08",
+        "rule_09",
+        "rule_10",
+        "rule_11",
+        "rule_12",
+        "rule_13",
+        "rule_14",
+        "rule_15",
+        "rule_16",
+        "rule_17",
+        "rule_18",
+        "family_19",
+        "family_20",
+        "family_21",
+        "family_22",
+        "family_23",
+        "family_24",
+        "family_25",
+        "family_26",
+        "family_27",
+        "family_28",
+        "family_29",
+        "family_30",
+        "family_31",
+        "family_32",
+        "family_33",
+        "family_34"
+      ]
     }
   },
   "order": [
     "custom_liquid_f7mCmU",
-    "apgo_footer_9eB3Gp"
+    "apgo_footer_9eB3Gp",
+    "apgo_maybe_need"
   ]
 }

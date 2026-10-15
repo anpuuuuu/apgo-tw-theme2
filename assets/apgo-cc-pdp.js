@@ -531,7 +531,10 @@
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         var btn = $('button[type="submit"]', form);
-        ajaxAdd(btn, function () {
+        ajaxAdd(btn, function (cart) {
+          // The 你可能也需要 panel (apgo-maybe-need.js) replaces the toast
+          // when this product has recommendations.
+          if (window.ApgoMaybeNeed && window.ApgoMaybeNeed.open(cart)) return;
           showToast('✓ 已加入購物車');
         });
       });

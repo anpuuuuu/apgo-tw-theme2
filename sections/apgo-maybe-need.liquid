@@ -1,0 +1,305 @@
+{%- comment -%}
+  APGO · 你可能也需要 — the panel that replaces the "✓ 已加入購物車" toast
+  after 加入購物車 on a product page (Apple's "你可能也喜歡" sheet).
+
+  Lives in the footer group so the rules exist once for every product
+  template. Renders nothing except on a product page whose product matches
+  a rule and still has enough to recommend.
+
+  Rules are blocks, checked top to bottom; the first one whose source
+  collection or source products include this product wins. Each rule lists
+  up to five products in order, each with a step label (前置清潔 / 施工工具 /
+  後續保養) and a one-line reason. Left out:
+    - this product, and products in the same 同款不同容量 group
+    - products already in the cart, and their 同款不同容量 groups
+      (the script drops anything added after the page loaded)
+    - sold-out products
+  Gift sets (gift_collection) never open the panel.
+
+  apgo-maybe-need.js shows it: the three add-to-cart scripts (apgo-pdp.js,
+  apgo-cc-pdp.js, apgo-cc-buybar.js) call ApgoMaybeNeed.open(cart) and fall
+  back to their toast when it returns false.
+{%- endcomment -%}
+
+{%- liquid
+  assign mn_rule = blank
+  assign mn_gift = false
+
+  if template.name == 'product' and product != blank and section.settings.enabled
+    if section.settings.gift_collection != blank
+      for c in product.collections
+        if c.id == section.settings.gift_collection.id
+          assign mn_gift = true
+          break
+        endif
+      endfor
+    endif
+
+    unless mn_gift
+      for block in section.blocks
+        if block.type != 'rule'
+          continue
+        endif
+        assign mn_hit = false
+        for p in block.settings.source_products
+          if p.id == product.id
+            assign mn_hit = true
+            break
+          endif
+        endfor
+        if mn_hit == false and block.settings.source_collection != blank
+          for c in product.collections
+            if c.id == block.settings.source_collection.id
+              assign mn_hit = true
+              break
+            endif
+          endfor
+        endif
+        if mn_hit
+          assign mn_rule = block
+          break
+        endif
+      endfor
+    endunless
+  endif
+
+  if mn_rule != blank
+    # Product ids that must not be recommended, as "|id|id|". Starts with
+    # this product and whatever is already in the cart, then pulls in their
+    # 同款不同容量 groups.
+    assign mn_blocked = '|' | append: product.id | append: '|'
+    for item in cart.items
+      assign mn_blocked = mn_blocked | append: item.product_id | append: '|'
+    endfor
+    for block in section.blocks
+      if block.type != 'family'
+        continue
+      endif
+      assign mn_touch = false
+      for p in block.settings.products
+        assign mn_key = '|' | append: p.id | append: '|'
+        if mn_blocked contains mn_key
+          assign mn_touch = true
+          break
+        endif
+      endfor
+      if mn_touch
+        for p in block.settings.products
+          assign mn_blocked = mn_blocked | append: p.id | append: '|'
+        endfor
+      endif
+    endfor
+
+    assign mn_count = 0
+    for i in (1..5)
+      assign mn_key = 'product_' | append: i
+      assign p = mn_rule.settings[mn_key]
+      if p == blank or p.available == false
+        continue
+      endif
+      assign mn_id = '|' | append: p.id | append: '|'
+      unless mn_blocked contains mn_id
+        assign mn_count = mn_count | plus: 1
+      endunless
+    endfor
+  endif
+-%}
+
+{%- if mn_rule != blank and mn_count >= section.settings.min_items -%}
+  {{ 'apgo-maybe-need.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'apgo-maybe-need.js' | asset_url }}" defer></script>
+
+  <div
+    class="apgo-mn"
+    data-apgo-maybe-need
+    data-product-id="{{ product.id }}"
+    data-product-handle="{{ product.handle | escape }}"
+    data-max="{{ section.settings.max_items }}"
+    data-min="{{ section.settings.min_items }}"
+    hidden
+  >
+    <div class="apgo-mn__backdrop" data-mn-close></div>
+    <div
+      class="apgo-mn__sheet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ApgoMnTitle-{{ section.id }}"
+      tabindex="-1"
+    >
+      <div class="apgo-mn__added">
+        <span class="apgo-mn__check" aria-hidden="true">✓</span>
+        <span class="apgo-mn__added-text">
+          已加入購物車<span class="apgo-mn__added-name">{{ product.title | escape }}</span>
+        </span>
+        <button type="button" class="apgo-mn__x" data-mn-close aria-label="關閉">×</button>
+      </div>
+
+      <div class="apgo-mn__body">
+        <h2 class="apgo-mn__title" id="ApgoMnTitle-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+        {%- if mn_rule.settings.intro != blank -%}
+          <p class="apgo-mn__intro">{{ mn_rule.settings.intro | escape }}</p>
+        {%- endif -%}
+
+        <ul class="apgo-mn__grid" role="list">
+          {%- for i in (1..5) -%}
+            {%- liquid
+              assign mn_key = 'product_' | append: i
+              assign p = mn_rule.settings[mn_key]
+              if p == blank or p.available == false
+                continue
+              endif
+              assign mn_id = '|' | append: p.id | append: '|'
+              if mn_blocked contains mn_id
+                continue
+              endif
+              assign v = p.selected_or_first_available_variant
+              assign label_key = 'label_' | append: i
+              assign note_key = 'note_' | append: i
+
+              # Its 同款不同容量 group, so the script can also drop it when
+              # another size goes into the cart after the page loaded.
+              assign mn_family = ''
+              for fb in section.blocks
+                if fb.type != 'family'
+                  continue
+                endif
+                assign mn_in = false
+                for q in fb.settings.products
+                  if q.id == p.id
+                    assign mn_in = true
+                    break
+                  endif
+                endfor
+                if mn_in
+                  for q in fb.settings.products
+                    assign mn_family = mn_family | append: q.id | append: ','
+                  endfor
+                endif
+              endfor
+            -%}
+            <li
+              class="apgo-mn__card"
+              data-mn-card
+              data-product-id="{{ p.id }}"
+              data-handle="{{ p.handle | escape }}"
+              data-family="{{ mn_family }}"
+            >
+              <a class="apgo-mn__img" href="{{ p.url }}" data-mn-link>
+                {%- if p.featured_image != blank -%}
+                  {{
+                    p.featured_image
+                    | image_url: width: 480
+                    | image_tag: loading: 'lazy', widths: '240, 360, 480', sizes: '(min-width: 750px) 200px, 45vw', alt: p.title
+                  }}
+                {%- endif -%}
+              </a>
+              {%- if mn_rule.settings[label_key] != blank -%}
+                <span class="apgo-mn__label">{{ mn_rule.settings[label_key] | escape }}</span>
+              {%- endif -%}
+              <a class="apgo-mn__name" href="{{ p.url }}" data-mn-link>{{ p.title | escape }}</a>
+              {%- if mn_rule.settings[note_key] != blank -%}
+                <p class="apgo-mn__note">{{ mn_rule.settings[note_key] | escape }}</p>
+              {%- endif -%}
+              <p class="apgo-mn__price">
+                {%- if p.price_varies -%}{{ p.price_min | money }} 起{%- else -%}{{ v.price | money }}{%- endif -%}
+                {%- if v.compare_at_price > v.price and p.price_varies == false -%}
+                  <s>{{ v.compare_at_price | money }}</s>
+                {%- endif -%}
+              </p>
+              {%- if p.variants.size == 1 -%}
+                <button type="button" class="apgo-mn__add" data-mn-add data-variant-id="{{ v.id }}">加入購物車</button>
+              {%- else -%}
+                <a class="apgo-mn__add apgo-mn__add--choose" href="{{ p.url }}" data-mn-link>選擇規格</a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <div class="apgo-mn__foot">
+        <button type="button" class="apgo-mn__btn apgo-mn__btn--ghost" data-mn-close>繼續購物</button>
+        <a class="apgo-mn__btn apgo-mn__btn--primary" href="{{ routes.cart_url }}" data-mn-cart>前往購物車</a>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "你可能也需要",
+  "class": "apgo-mn-section",
+  "enabled_on": { "groups": ["footer"] },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "加入購物車後跳出的推薦面板，只在商品頁出現。規則由上往下比對，第一條符合的生效：把「指定商品」的規則放在「商品系列」的規則上面。同一個商品在同一次瀏覽只跳一次。"
+    },
+    { "type": "checkbox", "id": "enabled", "label": "啟用", "default": true },
+    { "type": "text", "id": "heading", "label": "標題", "default": "你可能也需要" },
+    { "type": "range", "id": "max_items", "label": "最多顯示幾個", "min": 2, "max": 5, "step": 1, "default": 4 },
+    {
+      "type": "range",
+      "id": "min_items",
+      "label": "可推薦的少於幾個就不跳出",
+      "info": "不跳出時，照舊只顯示「✓ 已加入購物車」。",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "collection",
+      "id": "gift_collection",
+      "label": "禮組商品系列",
+      "info": "買這個系列裡的商品時不跳出。"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "rule",
+      "name": "推薦規則",
+      "settings": [
+        { "type": "text", "id": "title", "label": "規則名稱（只顯示在編輯器）" },
+        { "type": "collection", "id": "source_collection", "label": "消費者正在看的商品系列" },
+        { "type": "product_list", "id": "source_products", "label": "或指定商品", "limit": 20 },
+        { "type": "text", "id": "intro", "label": "搭配說明", "info": "顯示在標題下方，可留白。" },
+        { "type": "header", "content": "推薦 1" },
+        { "type": "product", "id": "product_1", "label": "商品" },
+        { "type": "text", "id": "label_1", "label": "步驟標籤", "info": "例：前置清潔、施工工具、後續保養" },
+        { "type": "text", "id": "note_1", "label": "搭配理由", "info": "例：深層清潔時搭配" },
+        { "type": "header", "content": "推薦 2" },
+        { "type": "product", "id": "product_2", "label": "商品" },
+        { "type": "text", "id": "label_2", "label": "步驟標籤" },
+        { "type": "text", "id": "note_2", "label": "搭配理由" },
+        { "type": "header", "content": "推薦 3" },
+        { "type": "product", "id": "product_3", "label": "商品" },
+        { "type": "text", "id": "label_3", "label": "步驟標籤" },
+        { "type": "text", "id": "note_3", "label": "搭配理由" },
+        { "type": "header", "content": "推薦 4" },
+        { "type": "product", "id": "product_4", "label": "商品" },
+        { "type": "text", "id": "label_4", "label": "步驟標籤" },
+        { "type": "text", "id": "note_4", "label": "搭配理由" },
+        { "type": "header", "content": "推薦 5（前面有商品已在購物車或售完時遞補）" },
+        { "type": "product", "id": "product_5", "label": "商品" },
+        { "type": "text", "id": "label_5", "label": "步驟標籤" },
+        { "type": "text", "id": "note_5", "label": "搭配理由" }
+      ]
+    },
+    {
+      "type": "family",
+      "name": "同款不同容量",
+      "settings": [
+        { "type": "text", "id": "title", "label": "名稱（只顯示在編輯器）" },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "同一款的商品",
+          "info": "看其中一個時，不推薦其他幾個；購物車裡有其中一個時也一樣。",
+          "limit": 10
+        }
+      ]
+    }
+  ],
+  "presets": [{ "name": "你可能也需要" }]
+}
+{% endschema %}
