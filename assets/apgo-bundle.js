@@ -359,7 +359,9 @@
           return;
         }
 
-        toast('✓ 已加入購物車');
+        // The 你可能也需要 panel (apgo-maybe-need.js) replaces the toast
+        // when this product has recommendations.
+        if (!(window.ApgoMaybeNeed && window.ApgoMaybeNeed.open(cart))) toast('✓ 已加入購物車');
 
         // Reset CTA UI back to enabled state for another round of selection
         allBtns.forEach(function (b) { b.disabled = false; b.classList.remove('is-loading'); });
