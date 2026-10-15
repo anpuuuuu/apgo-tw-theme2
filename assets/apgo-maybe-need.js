@@ -62,9 +62,11 @@
   }
 
   // The car-care product pages are dark, the laundry ones cream: match
-  // whichever this page is, read from its background.
+  // whichever this page is, read from the first background actually painted.
+  // The laundry page paints cream on its section over a black body, so the
+  // section is asked first.
   function pageIsDark() {
-    var els = [document.querySelector('main'), document.body];
+    var els = [document.querySelector('main > .shopify-section'), document.querySelector('main'), document.body];
     for (var i = 0; i < els.length; i++) {
       if (!els[i]) continue;
       var rgba = (getComputedStyle(els[i]).backgroundColor.match(/[\d.]+/g) || []).map(Number);
