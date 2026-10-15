@@ -60,6 +60,7 @@
   min-width: 0;
   background: var(--mn-bg);
   border-radius: 18px 18px 0 0;
+  overflow: hidden; /* clip the footer's background to the rounded corners */
   box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.18);
   transform: translateY(100%);
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
