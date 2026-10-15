@@ -200,10 +200,15 @@
               {%- if mn_rule.settings[note_key] != blank -%}
                 <p class="apgo-mn__note">{{ mn_rule.settings[note_key] | escape }}</p>
               {%- endif -%}
+              {%- comment -%} "NT$ 130", as the product pages print it (apgo-cc-pdp.js formatMoney). {%- endcomment -%}
               <p class="apgo-mn__price">
-                {%- if p.price_varies -%}{{ p.price_min | money }} 起{%- else -%}{{ v.price | money }}{%- endif -%}
+                {%- if p.price_varies -%}
+                  {{ p.price_min | money_without_trailing_zeros | replace: '$', 'NT$ ' }} 起
+                {%- else -%}
+                  {{ v.price | money_without_trailing_zeros | replace: '$', 'NT$ ' }}
+                {%- endif -%}
                 {%- if v.compare_at_price > v.price and p.price_varies == false -%}
-                  <s>{{ v.compare_at_price | money }}</s>
+                  <s>{{ v.compare_at_price | money_without_trailing_zeros | replace: '$', 'NT$ ' }}</s>
                 {%- endif -%}
               </p>
               {%- if p.variants.size == 1 -%}

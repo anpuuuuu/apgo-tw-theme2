@@ -61,6 +61,19 @@
     return shown;
   }
 
+  // The car-care product pages are dark, the laundry ones cream: match
+  // whichever this page is, read from its background.
+  function pageIsDark() {
+    var els = [document.querySelector('main'), document.body];
+    for (var i = 0; i < els.length; i++) {
+      if (!els[i]) continue;
+      var rgba = (getComputedStyle(els[i]).backgroundColor.match(/[\d.]+/g) || []).map(Number);
+      if (rgba.length < 3 || rgba[3] === 0) continue; // transparent: look further out
+      return (0.299 * rgba[0] + 0.587 * rgba[1] + 0.114 * rgba[2]) / 255 < 0.4;
+    }
+    return false;
+  }
+
   function open(cart) {
     try {
       if (window.sessionStorage.getItem(storageKey)) return false;
@@ -70,6 +83,7 @@
     if (shown.length < min) return false;
 
     try { window.sessionStorage.setItem(storageKey, '1'); } catch (e) { /* see above */ }
+    root.classList.toggle('apgo-mn--dark', pageIsDark());
     root.setAttribute('data-count', String(shown.length));
     lastFocus = document.activeElement;
     root.hidden = false;

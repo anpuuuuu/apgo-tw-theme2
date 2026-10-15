@@ -10,6 +10,11 @@
   --mn-sage: #5e6f5d;
   --mn-orange: #f58220;
   --mn-orange-hi: #df7117;
+  --mn-card: #fff;
+  --mn-check: var(--mn-sage);
+  --mn-label: var(--mn-sage);
+  --mn-label-bg: rgba(94, 111, 93, 0.12);
+  --mn-added: var(--mn-sage);
   position: fixed;
   inset: 0;
   z-index: 2147483000; /* above the sticky buy bar (90) and chat widgets */
@@ -17,6 +22,22 @@
   color: var(--mn-ink);
 }
 .apgo-mn[hidden] { display: none; }
+
+/* On the dark car-care pages (apgo-maybe-need.js checks the page background). */
+.apgo-mn--dark {
+  --mn-bg: #1c1f24;
+  --mn-surface: #2a2e35;
+  --mn-card: #23272d;
+  --mn-ink: #f0ece4;
+  --mn-muted: rgba(240, 236, 228, 0.6);
+  --mn-line: rgba(240, 236, 228, 0.14);
+  --mn-orange: #ff6b1a;
+  --mn-orange-hi: #ff8a47;
+  --mn-check: #ff6b1a;
+  --mn-label: #ff8a47;
+  --mn-label-bg: rgba(255, 107, 26, 0.14);
+  --mn-added: #3d7a4f;
+}
 
 .apgo-mn__backdrop {
   position: absolute;
@@ -60,7 +81,7 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: var(--mn-sage);
+  background: var(--mn-check);
   color: #fff;
   font-size: 14px;
   font-weight: 700;
@@ -103,6 +124,7 @@
 }
 .apgo-mn__title {
   margin: 0;
+  color: var(--mn-ink);
   font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -130,7 +152,7 @@
   padding: 10px;
   border: 1px solid var(--mn-line);
   border-radius: 14px;
-  background: #fff;
+  background: var(--mn-card);
 }
 .apgo-mn__card[hidden] { display: none; }
 .apgo-mn__img {
@@ -151,8 +173,8 @@
   margin-top: 2px;
   padding: 2px 8px;
   border-radius: 999px;
-  background: rgba(94, 111, 93, 0.12);
-  color: var(--mn-sage);
+  background: var(--mn-label-bg);
+  color: var(--mn-label);
   font-size: 11px;
   font-weight: 600;
 }
@@ -175,6 +197,7 @@
 }
 .apgo-mn__price {
   margin: auto 0 0;
+  color: var(--mn-ink);
   padding-top: 2px;
   font-size: 14px;
   font-weight: 700;
@@ -200,11 +223,11 @@
   text-decoration: none;
   cursor: pointer;
 }
-.apgo-mn__add:hover { background: rgba(245, 130, 32, 0.08); }
+.apgo-mn__add:hover { background: var(--mn-label-bg); }
 .apgo-mn__add[disabled] { opacity: 0.6; cursor: default; }
 .apgo-mn__add.is-added {
-  border-color: var(--mn-sage);
-  background: var(--mn-sage);
+  border-color: var(--mn-added);
+  background: var(--mn-added);
   color: #fff;
 }
 .apgo-mn__add--choose {
