@@ -33,6 +33,8 @@
 {%- endif -%}
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
+{%- render 'apgo-page-scrollbar', track: '#16181c', thumb: 'rgba(240, 236, 228, 0.32)' -%}
+
 <section class="apgo-cc-pdp" data-apgo-cc-pdp data-section-id="{{ section.id }}">
 
   {%- comment -%} Breadcrumb {%- endcomment -%}

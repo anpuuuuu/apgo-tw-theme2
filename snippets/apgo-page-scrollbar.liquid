@@ -1,0 +1,29 @@
+{%- comment -%}
+  Brings back the page scrollbar on desktop for the page that renders this.
+
+  styles.css hides the html/body scrollbar site-wide (scrollbar-width: none and
+  ::-webkit-scrollbar { display: none }). Rendered by the product sections
+  apgo-cc-product-detail (car care, dark) and apgo-mobile-pdp (laundry, cream),
+  so only those pages get it back, and only with a mouse at desktop width —
+  phones and tablets keep the overlay behaviour they have now.
+
+  Chrome and Firefox use scrollbar-color (once it is set, Chrome ignores the
+  ::-webkit-scrollbar rules); Safari only knows the ::-webkit-scrollbar ones.
+
+  Params:
+    track  colour behind the thumb, the page background
+    thumb  colour of the thumb
+{%- endcomment -%}
+<style>
+  @media (min-width: 750px) and (hover: hover) and (pointer: fine) {
+    html, body { scrollbar-width: auto; }
+    html { scrollbar-color: {{ thumb }} {{ track }}; }
+    html::-webkit-scrollbar { display: block; width: 12px; }
+    html::-webkit-scrollbar-track { background: {{ track }}; }
+    html::-webkit-scrollbar-thumb {
+      background: {{ thumb }};
+      border: 3px solid {{ track }};
+      border-radius: 6px;
+    }
+  }
+</style>

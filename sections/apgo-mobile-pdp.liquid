@@ -49,6 +49,8 @@
   {%- endif -%}
 {%- endcapture -%}
 
+{%- render 'apgo-page-scrollbar', track: '#f6f1e7', thumb: 'rgba(45, 46, 40, 0.32)' -%}
+
 <section class="apgo-mpdp" data-section-id="{{ section.id }}">
   {% form 'product', product, id: 'apgo-mobile-product-form', class: 'apgo-product-form apgo-mpdp-form' %}
     <input type="hidden" name="id" value="{{ v.id }}" data-apgo-variant-id>
