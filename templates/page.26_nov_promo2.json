@@ -413,13 +413,13 @@
         },
         "product_grid_bY6hrM": {
           "type": "product_grid",
-          "name": "【2026周年慶限定】滿漢盛宴",
+          "name": "銅板價$33、$55、$77．限量搶",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "狂殺↘2折",
+            "section_title": "銅板價$33、$55、$77．限量搶",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/2_5f5599b5-c51f-47f1-9436-48de965ec6b0.jpg",
+            "banner_img": "shopify://shop_images/1080__33_55_77.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
@@ -428,26 +428,24 @@
             "card_tag": "現賺$13,612",
             "card_layout": "horizontal",
             "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
+            "vertical_cards_per_view": "1"
           }
         },
         "product_grid_jNQtE7": {
           "type": "product_grid",
-          "name": "【老闆生日慶 職人精選福箱】",
+          "name": "［汽車煥新尊寵禮組］ 優惠價 3888元",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "狂殺↘24折",
+            "section_title": "現賺$17,176",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080.png",
+            "banner_img": "shopify://shop_images/11_-30_0_0374f75c-e0cf-4e13-b6af-8d7f96187a16.jpg",
             "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
-            "product_list": [
-              "狂殺↘24折-老闆生日慶-職人精選福箱-拆開現賺-11400"
-            ],
+            "banner_spacing_top": true,
+            "banner_spacing_bottom": true,
+            "product_list": [],
             "variant_ids": "",
-            "card_tag": "現賺$11,400",
+            "card_tag": "狂殺↘18折",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
