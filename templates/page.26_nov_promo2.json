@@ -423,7 +423,9 @@
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
-            "product_list": [],
+            "product_list": [
+              "指定款清潔藥劑-超殺銅板價-33-55-77-限量搶購"
+            ],
             "variant_ids": "",
             "card_tag": "現賺$13,612",
             "card_layout": "horizontal",
