@@ -397,15 +397,15 @@
         },
         "simple_banner_slot_bky9zY": {
           "type": "simple_banner_slot",
-          "name": "滿$2000送撲克牌",
+          "name": "全館指定商品滿額折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "6/27-6/30滿額贈",
+            "section_title": "全館指定商品滿額折",
             "nav_label_override": "",
             "section_icon": "fa-image",
             "show_banner": true,
-            "banner_img": "shopify://shop_images/1280__2000.png",
-            "banner_spacing_top": false,
+            "banner_img": "shopify://shop_images/1920_x_1080__3_up.jpg",
+            "banner_spacing_top": true,
             "banner_spacing_bottom": true,
             "banner_link": "",
             "banner_anchor_id": ""
@@ -423,9 +423,7 @@
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": false,
-            "product_list": [
-              "2026the-manchu-han-imperial-feast"
-            ],
+            "product_list": [],
             "variant_ids": "",
             "card_tag": "現賺$13,612",
             "card_layout": "horizontal",
@@ -1235,7 +1233,7 @@
         "coupon_nav_label": "最高折$311",
         "nav_mode": "auto",
         "coupon_banner_img": "shopify://shop_images/2501X522__111_211_311.jpg",
-        "coupon_banner_spacing_top": false,
+        "coupon_banner_spacing_top": true,
         "coupon_banner_spacing_bottom": true
       }
     }
