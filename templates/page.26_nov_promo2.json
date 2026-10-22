@@ -875,19 +875,18 @@
         },
         "product_grid_XMR9K3": {
           "type": "product_grid",
-          "name": "6/1-6/30超級洗衣精✨滿件最高66折",
-          "disabled": true,
+          "name": "11/4-11/30新包裝超級洗衣精買3送3",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "✨無效退費",
+            "section_title": "人氣新品✨嚐鮮搶優惠",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/11_-02.jpg",
+            "banner_img": "shopify://shop_images/1920____3_3.jpg",
             "show_banner": true,
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
             "product_list": [
-              "apgo-superwash"
+              "全新包裝-超級洗衣精"
             ],
             "variant_ids": "",
             "card_tag": "TAG",
