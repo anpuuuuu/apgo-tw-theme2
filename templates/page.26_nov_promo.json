@@ -1,0 +1,660 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "shogun-helper": {
+      "type": "shogun-helper",
+      "disabled": true,
+      "settings": {}
+    },
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "shogun-optimizer": {
+      "type": "shogun-optimizer",
+      "disabled": true,
+      "settings": {}
+    },
+    "apgo_tactical_aio_v3_ggePBR": {
+      "type": "apgo-tactical-aio-v4",
+      "blocks": {
+        "nav_item_b3WmgV": {
+          "type": "nav_item",
+          "settings": {
+            "nav_label": "首圖",
+            "nav_target_id": "apgo-hero"
+          }
+        },
+        "nav_item_a4dqFB": {
+          "type": "nav_item",
+          "settings": {
+            "nav_label": "焦點橫幅版位",
+            "nav_target_id": "apgo-feature-main"
+          }
+        },
+        "nav_item_acJwfK": {
+          "type": "nav_item",
+          "settings": {
+            "nav_label": "快速導流格版位",
+            "nav_target_id": "apgo-quick-grid-main"
+          }
+        },
+        "nav_item_qUPgUz": {
+          "type": "nav_item",
+          "settings": {
+            "nav_label": "組合版位",
+            "nav_target_id": "apgo-combo-1"
+          }
+        },
+        "nav_item_V8EgTt": {
+          "type": "nav_item",
+          "settings": {
+            "nav_label": "商品版位A",
+            "nav_target_id": "apgo-grid-1"
+          }
+        },
+        "nav_item_b97hKE": {
+          "type": "nav_item",
+          "settings": {
+            "nav_label": "商品版位B",
+            "nav_target_id": "apgo-grid-2"
+          }
+        },
+        "nav_item_8pYQCf": {
+          "type": "nav_item",
+          "settings": {
+            "nav_label": "整點驚喜",
+            "nav_target_id": "apgo-flash-main"
+          }
+        },
+        "nav_item_Kp4NX3": {
+          "type": "nav_item",
+          "settings": {
+            "nav_label": "優惠版位",
+            "nav_target_id": "apgo-coupons"
+          }
+        },
+        "feature_banner_slot_p3nzwJ": {
+          "type": "feature_banner_slot",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "apgo-feature-main",
+            "section_title": "$99免運券限量搶（4/2-4/6)",
+            "nav_label_override": "",
+            "section_icon": "fa-bolt",
+            "show_banner": true,
+            "banner_image": "shopify://shop_images/4.4_1280x600_f3b85345-15df-48f4-ab66-b9bb8b9b6267.jpg",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "left_anchor_id": "",
+            "left_link": "",
+            "left_btn_text": "立即領取",
+            "right_anchor_id": "",
+            "right_link": "",
+            "right_product": "",
+            "right_btn_text": "立即領取",
+            "show_left_btn": false,
+            "show_right_btn": false
+          }
+        },
+        "simple_banner_slot_KcC7Fz": {
+          "type": "simple_banner_slot",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "滿$2200享優惠加購",
+            "nav_label_override": "Banner",
+            "section_icon": "fa-image",
+            "show_banner": false,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
+        "quick_links_grid_slot_Cn37Eq": {
+          "type": "quick_links_grid_slot",
+          "name": "版位樣式：限量折券立即領取（4/2-4/6)",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "apgo-quick-grid-main",
+            "section_title": "限量折券立即領取（4/2-4/6)",
+            "nav_label_override": "",
+            "section_icon": "fa-layer-group",
+            "item_count": "2",
+            "show_banner": false,
+            "banner_img": "shopify://shop_images/4.4_-_--02_0.jpg",
+            "banner_spacing_top": true,
+            "banner_spacing_bottom": true,
+            "show_item_divider": true,
+            "item1_title": "",
+            "item1_img": "shopify://shop_images/4.4_-_--02_0.jpg",
+            "item1_anchor": "",
+            "item1_link": "",
+            "item2_title": "",
+            "item2_img": "shopify://shop_images/4.4_-_--03_0.jpg",
+            "item2_anchor": "",
+            "item2_link": "",
+            "item3_title": "項目 3",
+            "item3_img": "shopify://shop_images/1510819.jpg",
+            "item3_anchor": "",
+            "item3_link": "",
+            "item4_title": "項目 4",
+            "item4_img": "shopify://shop_images/fa6f8da217907f3de717e871bebef875_24016072-8d9d-4752-9263-3694436f478c.png",
+            "item4_anchor": "",
+            "item4_link": ""
+          }
+        },
+        "product_grid_AYVj9j": {
+          "type": "product_grid",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "買一送一-3DAY快閃",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "show_banner": false,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "apgo-atomic-colored-glaze"
+            ],
+            "variant_ids": "",
+            "card_tag": "TAG",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
+        "flash_sale_slot_bNAHaB": {
+          "type": "flash_sale_slot",
+          "name": "2.4整點驚喜限時搶購",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "apgo-flash-main",
+            "section_title": "整點驚喜限時搶購",
+            "nav_label_override": "整點驚喜購",
+            "section_icon": "fa-bolt",
+            "show_banner": false,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "countdown_label": "距本檔結束還剩",
+            "cards_per_view": "2.5"
+          }
+        },
+        "flash_sale_item_yAqqpy": {
+          "type": "flash_sale_item",
+          "settings": {
+            "slot_time": "2026/04/04 12:00",
+            "end_time": "2026/04/04 23:59",
+            "product": "apgo-特效淨白粉",
+            "badge_text": "限量 60 組",
+            "coupon_code": "FFF88",
+            "coupon_hint": "結帳輸入折扣碼享驚喜價",
+            "flash_price_manual": 88,
+            "flash_compare_price_manual": 149,
+            "limit_text": "每人限購一組",
+            "button_text": "馬上搶",
+            "success_button_text": "前往結帳，以保有優惠"
+          }
+        },
+        "flash_sale_item_WrP8cg": {
+          "type": "flash_sale_item",
+          "settings": {
+            "slot_time": "2026/04/04 12:00",
+            "end_time": "2026/04/04 23:59",
+            "product": "aogo-廚房清潔劑",
+            "badge_text": "限量 60 組",
+            "coupon_code": "KKK88",
+            "coupon_hint": "結帳輸入享優惠",
+            "flash_price_manual": 88,
+            "flash_compare_price_manual": 149,
+            "limit_text": "每人限購一組",
+            "button_text": "馬上搶",
+            "success_button_text": "前往結帳，以保有優惠"
+          }
+        },
+        "flash_sale_item_c4XT7M": {
+          "type": "flash_sale_item",
+          "settings": {
+            "slot_time": "2026/04/04 12:00",
+            "end_time": "2026/04/04 23:59",
+            "product": "apgo-特效淨白粉",
+            "badge_text": "限量 60 組",
+            "coupon_code": "WWW88",
+            "coupon_hint": "結帳輸入享優惠",
+            "flash_price_manual": 88,
+            "flash_compare_price_manual": 149,
+            "limit_text": "每人限購一組",
+            "button_text": "馬上搶",
+            "success_button_text": "前往結帳，以保有優惠"
+          }
+        },
+        "flash_sale_item_DzUcti": {
+          "type": "flash_sale_item",
+          "settings": {
+            "slot_time": "2026/04/04 18:00",
+            "end_time": "2026/04/04 23:59",
+            "product": "apgo-fresh-interior-cleaner",
+            "badge_text": "限量 40 組",
+            "coupon_code": "CCC66",
+            "coupon_hint": "結帳輸入享優惠",
+            "flash_price_manual": 66,
+            "flash_compare_price_manual": 130,
+            "limit_text": "每人限購一組",
+            "button_text": "馬上搶",
+            "success_button_text": "前往結帳，以保有優惠"
+          }
+        },
+        "flash_sale_item_b7KxUd": {
+          "type": "flash_sale_item",
+          "settings": {
+            "slot_time": "2026/04/04 18:00",
+            "end_time": "2026/04/04 23:59",
+            "product": "water-stain-removeer",
+            "badge_text": "限量 40 組",
+            "coupon_code": "LLL66",
+            "coupon_hint": "結帳輸入享優惠",
+            "flash_price_manual": 66,
+            "flash_compare_price_manual": 130,
+            "limit_text": "每人限購一組",
+            "button_text": "馬上搶",
+            "success_button_text": "前往結帳，以保有優惠"
+          }
+        },
+        "flash_sale_item_fBe7gG": {
+          "type": "flash_sale_item",
+          "settings": {
+            "slot_time": "2026/04/04 18:00",
+            "end_time": "2026/04/04 23:59",
+            "product": "apgo-all-purpose-cleaner",
+            "badge_text": "限量 40 組",
+            "coupon_code": "AAA66",
+            "coupon_hint": "結帳輸入享優惠",
+            "flash_price_manual": 66,
+            "flash_compare_price_manual": 130,
+            "limit_text": "每人限購一組",
+            "button_text": "馬上搶",
+            "success_button_text": "前往結帳，以保有優惠"
+          }
+        },
+        "flash_sale_item_MXr8TC": {
+          "type": "flash_sale_item",
+          "settings": {
+            "slot_time": "2026/04/04 21:00",
+            "end_time": "2026/04/04 23:59",
+            "product": "apgo-atomic-colored-glaze",
+            "badge_text": "限量 20 組",
+            "coupon_code": "HHH1399",
+            "coupon_hint": "結帳輸入享優惠",
+            "flash_price_manual": 1399,
+            "flash_compare_price_manual": 1999,
+            "limit_text": "每人限購一組",
+            "button_text": "馬上搶",
+            "success_button_text": "前往結帳，以保有優惠"
+          }
+        },
+        "flash_sale_item_Hn6Y3f": {
+          "type": "flash_sale_item",
+          "settings": {
+            "slot_time": "2026/04/04 21:00",
+            "end_time": "2026/04/04 23:59",
+            "product": "ti-coating",
+            "badge_text": "限量 20 組",
+            "coupon_code": "TTT1299",
+            "coupon_hint": "結帳輸入享優惠",
+            "flash_price_manual": 1299,
+            "flash_compare_price_manual": 1880,
+            "limit_text": "每人限購一組",
+            "button_text": "馬上搶",
+            "success_button_text": "前往結帳，以保有優惠"
+          }
+        },
+        "flash_sale_item_DLfea8": {
+          "type": "flash_sale_item",
+          "settings": {
+            "slot_time": "2026/04/04 21:00",
+            "end_time": "2026/04/04 23:59",
+            "product": "glaze_coating",
+            "badge_text": "限量 20 組",
+            "coupon_code": "HHH599",
+            "coupon_hint": "結帳輸入享優惠",
+            "flash_price_manual": 599,
+            "flash_compare_price_manual": 880,
+            "limit_text": "每人限購一組",
+            "button_text": "馬上搶",
+            "success_button_text": "前往結帳，以保有優惠"
+          }
+        },
+        "product_grid_A6kewb": {
+          "type": "product_grid",
+          "name": "10/1-11/1秋衣濃．香遇好時光💘",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "🌺香遇好時光",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/05_0_33e40b08-c6c4-4692-9910-0f06fe87ef8b.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "apgo-superwash",
+              "apgorose",
+              "apgoocean",
+              "apgocotton",
+              "apgowhitetea",
+              "apgofreesia",
+              "apgolavender"
+            ],
+            "variant_ids": "",
+            "card_tag": "TAG",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_jNQtE7": {
+          "type": "product_grid",
+          "name": "10/1-11/1｜G9 、G11測速器 現折 $700",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "🎉 測速器現折$700",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/07_0_8c4c82ce-09b4-4ecf-a27a-9224953490b5.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "apgo-g11-plus",
+              "g9-plus"
+            ],
+            "variant_ids": "",
+            "card_tag": "現折$700",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "simple_banner_slot_V38Hcr": {
+          "type": "simple_banner_slot",
+          "name": "6/5-6/16免運券限量500張",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "699免運券(6/5-6/16)",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1080_0605-0616_699_500.jpg",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
+        "simple_banner_slot_pxYmgd": {
+          "type": "simple_banner_slot",
+          "name": "6/17-6/18搶$618免運券✨ ",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "618免運券(6/17-6/18)",
+            "nav_label_override": "",
+            "section_icon": "",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/618_48HR_618_free618_100_-02_0.jpg",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
+        "product_grid_nrB4HP": {
+          "type": "product_grid",
+          "name": "暢銷禮組-內裝全效清潔組",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "✨搶↘只要$309",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080_d92ae479-21b7-4d24-acaf-30fb2d2ea774.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "one-box-to-refresh-your-car-interior"
+            ],
+            "variant_ids": "",
+            "card_tag": "TAG",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_feF934": {
+          "type": "product_grid",
+          "name": "滿2000加價購",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "滿額加價購",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/GO_2200__1280x600_b4b6539c-fd7a-452e-b14b-10170b54e8d2.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "apgo-car-wash-mitt",
+              "apgo-鍍晶海綿",
+              "apgo_coral_fleece_towel",
+              "apgo加厚洗車巾"
+            ],
+            "variant_ids": "",
+            "card_tag": "TAG",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_azzQYb": {
+          "type": "product_grid",
+          "name": "原子琉璃釉☆買一送一☆立即購",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "原子極光鍍膜☆優惠$999 ☆買一送一☆",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080__._980848c4-afbc-430d-b3bc-7749dd803a05.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
+            "product_list": [
+              "aurora-coating"
+            ],
+            "variant_ids": "",
+            "card_tag": "TAG",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "product_grid_QYBDC9": {
+          "type": "product_grid",
+          "name": "6.G11 1999",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "6.G11 1999",
+            "nav_label_override": "",
+            "section_icon": "fa-user-astronaut",
+            "show_banner": false,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "apgo-g11-plus"
+            ],
+            "variant_ids": "",
+            "card_tag": "STARTER",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "1"
+          }
+        },
+        "combo_showcase_HJntp9": {
+          "type": "combo_showcase",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "G11測速器↘現折$581",
+            "nav_label_override": "",
+            "section_icon": "fa-layer-group",
+            "main_image": "shopify://shop_images/1280x600_2.jpg",
+            "display_mode": "single",
+            "combo_title": "G11測速器 ↘優惠價$1999(原價$2580)",
+            "single_price_manual": 0,
+            "single_compare_price_manual": 0,
+            "combo_desc": "",
+            "combo_product": "apgo-g11-plus",
+            "sub_products": []
+          }
+        },
+        "coupon_slot_QeXKfQ": {
+          "type": "coupon_slot",
+          "name": "7.盛夏寵車季滿額折",
+          "settings": {
+            "section_title": "現領折券",
+            "section_icon": "fa-ticket",
+            "nav_label_override": "✨現搶折券"
+          }
+        },
+        "reward_tier_DUdarY": {
+          "type": "reward_tier",
+          "settings": {
+            "amount": 799,
+            "reward_name": "獎勵項目A"
+          }
+        },
+        "reward_tier_JKkApt": {
+          "type": "reward_tier",
+          "settings": {
+            "amount": 1499,
+            "reward_name": "獎勵項目B"
+          }
+        }
+      },
+      "block_order": [
+        "nav_item_b3WmgV",
+        "nav_item_a4dqFB",
+        "nav_item_acJwfK",
+        "nav_item_qUPgUz",
+        "nav_item_V8EgTt",
+        "nav_item_b97hKE",
+        "nav_item_8pYQCf",
+        "nav_item_Kp4NX3",
+        "feature_banner_slot_p3nzwJ",
+        "simple_banner_slot_KcC7Fz",
+        "quick_links_grid_slot_Cn37Eq",
+        "product_grid_AYVj9j",
+        "flash_sale_slot_bNAHaB",
+        "flash_sale_item_yAqqpy",
+        "flash_sale_item_WrP8cg",
+        "flash_sale_item_c4XT7M",
+        "flash_sale_item_DzUcti",
+        "flash_sale_item_b7KxUd",
+        "flash_sale_item_fBe7gG",
+        "flash_sale_item_MXr8TC",
+        "flash_sale_item_Hn6Y3f",
+        "flash_sale_item_DLfea8",
+        "product_grid_A6kewb",
+        "product_grid_jNQtE7",
+        "simple_banner_slot_V38Hcr",
+        "simple_banner_slot_pxYmgd",
+        "product_grid_nrB4HP",
+        "product_grid_feF934",
+        "product_grid_azzQYb",
+        "product_grid_QYBDC9",
+        "combo_showcase_HJntp9",
+        "coupon_slot_QeXKfQ",
+        "reward_tier_DUdarY",
+        "reward_tier_JKkApt"
+      ],
+      "name": "APGO - 戰術活動頁 (All-in-One)",
+      "settings": {
+        "target_amount": 0,
+        "target_reward": "",
+        "hero_image_pc": "shopify://shop_images/19_0.jpg",
+        "hero_image_mb": "shopify://shop_images/20_0.jpg",
+        "show_coupons": true,
+        "coupon_sec_icon": "fa-ticket",
+        "coupon_sec_title": "準時開搶折券",
+        "coupon_nav_label": "優惠券版位",
+        "nav_mode": "auto",
+        "coupon_banner_spacing_top": false,
+        "coupon_banner_spacing_bottom": false
+      }
+    }
+  },
+  "order": [
+    "shogun-helper",
+    "main",
+    "shogun-optimizer",
+    "apgo_tactical_aio_v3_ggePBR"
+  ]
+}
