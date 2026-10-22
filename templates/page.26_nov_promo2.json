@@ -211,6 +211,7 @@
             "product_list": [
               "apgo-atomic-colored-glaze"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -425,6 +426,7 @@
             "product_list": [
               "2026the-manchu-han-imperial-feast"
             ],
+            "variant_ids": "",
             "card_tag": "現賺$13,612",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -446,6 +448,7 @@
             "product_list": [
               "狂殺↘24折-老闆生日慶-職人精選福箱-拆開現賺-11400"
             ],
+            "variant_ids": "",
             "card_tag": "現賺$11,400",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -544,6 +547,7 @@
               "apgo-natural-interior-protectant",
               "apgo-wiper-fluid"
             ],
+            "variant_ids": "",
             "card_tag": "6/6-6/22開搶",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -566,6 +570,7 @@
             "product_list": [
               "apgo-atomic-colored-glaze"
             ],
+            "variant_ids": "",
             "card_tag": "-6/22售完為止",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -588,6 +593,7 @@
             "product_list": [
               "aurora-coating"
             ],
+            "variant_ids": "",
             "card_tag": "-6/22售完為止",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -610,6 +616,7 @@
             "product_list": [
               "apgo-g11-plus"
             ],
+            "variant_ids": "",
             "card_tag": "單件現折↘$900",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -632,6 +639,7 @@
             "product_list": [
               "618aurora-coating12set"
             ],
+            "variant_ids": "",
             "card_tag": "-6/22售完為止",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -663,6 +671,7 @@
               "原子鍍膜補充包",
               "apgo-plastic-hard-coating"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -685,6 +694,7 @@
             "product_list": [
               "618樂購季-全車深層淨化8件組"
             ],
+            "variant_ids": "",
             "card_tag": "6/1-6/30開搶",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -707,6 +717,7 @@
             "product_list": [
               "618樂購季-30分鐘快速亮車組"
             ],
+            "variant_ids": "",
             "card_tag": "6/1-6/30開搶",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -729,6 +740,7 @@
             "product_list": [
               "618樂購季-夏日抗曬防護組"
             ],
+            "variant_ids": "",
             "card_tag": "6/1-6/30開搶",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -762,6 +774,7 @@
               "apgo-fresh-interior-cleaner",
               "apgo-bug-tar-remover"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -832,6 +845,7 @@
             "product_list": [
               "apgo-superwash"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -870,6 +884,7 @@
             "product_list": [
               "apgo-superwash"
             ],
+            "variant_ids": "",
             "card_tag": "最高6.6折",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -909,6 +924,7 @@
             "product_list": [
               "one-box-to-refresh-your-car-interior"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -934,6 +950,7 @@
               "apgo_coral_fleece_towel",
               "apgo加厚洗車巾"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -956,6 +973,7 @@
             "product_list": [
               "aurora-coating"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -977,6 +995,7 @@
             "product_list": [
               "apgo-g11-plus"
             ],
+            "variant_ids": "",
             "card_tag": "STARTER",
             "card_layout": "vertical",
             "vertical_rows": "1",
@@ -1090,6 +1109,7 @@
             "product_list": [
               "pamper-mommy"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -1117,6 +1137,7 @@
               "apgofreesia",
               "apgolavender"
             ],
+            "variant_ids": "",
             "card_tag": "TAG",
             "card_layout": "horizontal",
             "vertical_rows": "1",
@@ -1206,13 +1227,14 @@
       "settings": {
         "target_amount": 0,
         "target_reward": "",
-        "hero_image_pc": "shopify://shop_images/b41e0fce-6e55-403f-94c3-42794321e6ad.png",
-        "hero_image_mb": "shopify://shop_images/2e3d038e-a461-4152-862d-8b7cd12aa3b9.png",
+        "hero_image_pc": "shopify://shop_images/1920x800__11.jpg",
+        "hero_image_mb": "shopify://shop_images/3126X4584__11.jpg",
+        "show_coupons": true,
         "coupon_sec_icon": "fa-ticket",
-        "coupon_sec_title": "6/1(一)準時開搶折券",
-        "coupon_nav_label": "優惠券版位",
+        "coupon_sec_title": "最高折$311",
+        "coupon_nav_label": "最高折$311",
         "nav_mode": "auto",
-        "coupon_banner_img": "shopify://shop_images/2501x522.jpg",
+        "coupon_banner_img": "shopify://shop_images/2501X522__111_211_311.jpg",
         "coupon_banner_spacing_top": false,
         "coupon_banner_spacing_bottom": true
       }
