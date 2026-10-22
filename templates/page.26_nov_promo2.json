@@ -455,6 +455,28 @@
             "vertical_cards_per_view": "2.5"
           }
         },
+        "product_grid_T4apH3": {
+          "type": "product_grid",
+          "name": "【經典款 騎士寵車豪華禮組】 優惠價 1688元",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "現賺$2,377",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/11_-33_0_4841592e-b48f-41da-b086-635c0dcef2b7.jpg",
+            "show_banner": true,
+            "banner_spacing_top": true,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "2026雙11限定🎖️-騎士寵車豪華禮組-狂殺↘41折🎉"
+            ],
+            "variant_ids": "",
+            "card_tag": "狂殺↘41折",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "simple_banner_slot_Dip9ED": {
           "type": "simple_banner_slot",
           "name": "滿額送清潔藥劑3罐組",
@@ -1186,6 +1208,7 @@
         "simple_banner_slot_bky9zY",
         "product_grid_bY6hrM",
         "product_grid_jNQtE7",
+        "product_grid_T4apH3",
         "simple_banner_slot_Dip9ED",
         "simple_banner_slot_YxQfUA",
         "simple_banner_slot_Abbmm9",
