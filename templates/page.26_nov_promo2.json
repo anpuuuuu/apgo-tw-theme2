@@ -548,19 +548,41 @@
             "banner_anchor_id": ""
           }
         },
-        "simple_banner_slot_PkhXBx": {
-          "type": "simple_banner_slot",
-          "name": "11/4-11/30 g11測速器$1480",
+        "product_grid_XMR9K3": {
+          "type": "product_grid",
+          "name": "11/4-11/30新包裝超級洗衣精買3送3",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "雙11必搶！現省↘$1108",
+            "section_title": "人氣新品✨嚐鮮搶優惠",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1920____3_3.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "全新包裝-超級洗衣精"
+            ],
+            "variant_ids": "",
+            "card_tag": "TAG",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
+        "simple_banner_slot_PkhXBx": {
+          "type": "simple_banner_slot",
+          "name": "11/6-11/16 滿599免運送到府",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "雙11限時599免運",
             "nav_label_override": "",
             "section_icon": "fa-image",
             "show_banner": true,
-            "banner_img": "shopify://shop_images/11_-17_0.jpg",
+            "banner_img": "shopify://shop_images/1920x1080_599.jpg",
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
-            "banner_link": "shopify://products/apgo-g11-plus",
+            "banner_link": "",
             "banner_anchor_id": ""
           }
         },
@@ -833,28 +855,6 @@
               "apgo-glass-cleaner",
               "apgo-fresh-interior-cleaner",
               "apgo-bug-tar-remover"
-            ],
-            "variant_ids": "",
-            "card_tag": "TAG",
-            "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
-          }
-        },
-        "product_grid_XMR9K3": {
-          "type": "product_grid",
-          "name": "11/4-11/30新包裝超級洗衣精買3送3",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "人氣新品✨嚐鮮搶優惠",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1920____3_3.jpg",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "全新包裝-超級洗衣精"
             ],
             "variant_ids": "",
             "card_tag": "TAG",
@@ -1203,6 +1203,7 @@
         "simple_banner_slot_Dip9ED",
         "simple_banner_slot_YxQfUA",
         "simple_banner_slot_Abbmm9",
+        "product_grid_XMR9K3",
         "simple_banner_slot_PkhXBx",
         "simple_banner_slot_mFXA4r",
         "product_grid_3BCxpy",
@@ -1215,7 +1216,6 @@
         "product_grid_zF47dN",
         "product_grid_fXt3Nh",
         "product_grid_JAm4Qp",
-        "product_grid_XMR9K3",
         "simple_banner_slot_V38Hcr",
         "product_grid_j6egnX",
         "simple_banner_slot_pxYmgd",
