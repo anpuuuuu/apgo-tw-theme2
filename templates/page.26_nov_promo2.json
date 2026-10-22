@@ -534,7 +534,7 @@
         },
         "simple_banner_slot_Abbmm9": {
           "type": "simple_banner_slot",
-          "name": "6/27-6/30洗車用品$59up",
+          "name": "11/4-11/30 g11測速器$1480",
           "settings": {
             "custom_anchor_id": "",
             "section_title": "雙11必搶！現省↘$1108",
@@ -823,54 +823,6 @@
             "card_layout": "vertical",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
-          }
-        },
-        "simple_banner_slot_QAmTNd": {
-          "type": "simple_banner_slot",
-          "name": "運費折抵券$50",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "6/27-6/30領運費折券$50",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/1280__50_new._5f2be5a4-7ca2-4c25-88de-be39794a95f5.png",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
-        "simple_banner_slot_9C6cyY": {
-          "type": "simple_banner_slot",
-          "name": "獨享折扣碼",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "6/27-6/30獨享折扣碼",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/1280__200_new.png",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
-        "simple_banner_slot_7pebBp": {
-          "type": "simple_banner_slot",
-          "name": "周年慶！達標禮 ",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "6/27-6/30周年慶！達標禮",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/1280__4099_6099__new.png",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
           }
         },
         "product_grid_XMR9K3": {
@@ -1245,9 +1197,6 @@
         "product_grid_zF47dN",
         "product_grid_fXt3Nh",
         "product_grid_JAm4Qp",
-        "simple_banner_slot_QAmTNd",
-        "simple_banner_slot_9C6cyY",
-        "simple_banner_slot_7pebBp",
         "product_grid_XMR9K3",
         "simple_banner_slot_V38Hcr",
         "product_grid_j6egnX",
