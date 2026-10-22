@@ -171,6 +171,15 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
+        "banner_WX3fPW": {
+          "type": "banner",
+          "name": "限時快閃【買一送一】原子琺瑯晶鍍膜 高階滑順款",
+          "settings": {
+            "image": "shopify://shop_images/26_0_8d79bf56-5966-41f9-ad04-9994e09b9b67.jpg",
+            "link": "https://apgo.tw/products/apgo-enamel-crystal-coating",
+            "alt": "限時快閃【買一送一】原子琺瑯晶鍍膜 高階滑順款"
+          }
+        },
         "banner_nbEMgN": {
           "type": "banner",
           "name": "【入秋養光計畫．洗去夏天塵埃】消費滿$1600折$100",
@@ -201,6 +210,7 @@
         "banner_AAW74k": {
           "type": "banner",
           "name": "第二波_LEAD買2送1",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/35_0.jpg",
             "link": "https://apgo.tw/products/clearance-sale",
@@ -275,6 +285,7 @@
         }
       },
       "block_order": [
+        "banner_WX3fPW",
         "banner_nbEMgN",
         "banner_cNRtiH",
         "banner_a9rR9F",
