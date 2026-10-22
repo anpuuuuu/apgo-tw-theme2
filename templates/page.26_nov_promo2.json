@@ -518,17 +518,17 @@
         },
         "simple_banner_slot_YxQfUA": {
           "type": "simple_banner_slot",
-          "name": "6/27-6/30指定鍍膜88折",
+          "name": "［原子極光鍍膜］× 3罐  優惠價 1111 元",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "6/27-6/30指定鍍膜88折",
+            "section_title": "雙11必囤3罐組！贈鍍膜布&珊瑚絨毛巾",
             "nav_label_override": "",
             "section_icon": "fa-image",
             "show_banner": true,
-            "banner_img": "shopify://shop_images/1280__88.png",
+            "banner_img": "shopify://shop_images/1280x600__3_1111.jpg",
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
-            "banner_link": "shopify://collections/coating-series",
+            "banner_link": "shopify://products/aurora-coating",
             "banner_anchor_id": ""
           }
         },
