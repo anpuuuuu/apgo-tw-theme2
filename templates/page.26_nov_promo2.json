@@ -1065,7 +1065,7 @@
         },
         "coupon_item_hH3EcG": {
           "type": "coupon_item",
-          "name": "7.1 滿618折18",
+          "name": "7.1 滿1999折111",
           "settings": {
             "condition": "滿$1999",
             "discount": "折$111",
@@ -1075,7 +1075,7 @@
         },
         "coupon_item_r6aVaY": {
           "type": "coupon_item",
-          "name": "7.2 滿1688折168",
+          "name": "7.2 滿2999折211",
           "settings": {
             "condition": "滿$2999",
             "discount": "折$211",
@@ -1085,7 +1085,7 @@
         },
         "coupon_item_AaWikn": {
           "type": "coupon_item",
-          "name": "7.3 滿3000折618",
+          "name": "7.3 滿3999折311",
           "settings": {
             "condition": "滿$3999",
             "discount": "折$311",
