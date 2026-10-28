@@ -521,20 +521,26 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "simple_banner_slot_YxQfUA": {
-          "type": "simple_banner_slot",
-          "name": "［原子極光鍍膜］× 3罐  優惠價 1111 元",
+        "product_grid_GPGTkE": {
+          "type": "product_grid",
+          "name": "11/4-11/30 g11測速器$1480",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "雙11必囤3罐組！贈鍍膜布&珊瑚絨毛巾",
+            "section_title": "雙11必搶！現省↘$1108",
             "nav_label_override": "",
-            "section_icon": "fa-image",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/11_-15_0.jpg",
             "show_banner": true,
-            "banner_img": "shopify://shop_images/1280x600__3_1111.jpg",
-            "banner_spacing_top": false,
+            "banner_spacing_top": true,
             "banner_spacing_bottom": true,
-            "banner_link": "shopify://products/aurora-coating",
-            "banner_anchor_id": ""
+            "product_list": [
+              "apgo-g11-plus"
+            ],
+            "variant_ids": "",
+            "card_tag": "狂殺↘25折",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
           }
         },
         "simple_banner_slot_Abbmm9": {
@@ -1248,7 +1254,7 @@
         "product_grid_T4apH3",
         "product_grid_acXNBR",
         "product_grid_n6jT6p",
-        "simple_banner_slot_YxQfUA",
+        "product_grid_GPGTkE",
         "simple_banner_slot_Abbmm9",
         "product_grid_XMR9K3",
         "simple_banner_slot_Dip9ED",
