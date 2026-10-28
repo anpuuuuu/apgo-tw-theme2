@@ -499,21 +499,26 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "simple_banner_slot_Dip9ED": {
-          "type": "simple_banner_slot",
-          "name": "滿額送清潔藥劑3罐組",
-          "disabled": true,
+        "product_grid_n6jT6p": {
+          "type": "product_grid",
+          "name": "［原子極光鍍膜］× 3罐  優惠價 1111 元",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "滿3000送3罐組",
+            "section_title": "雙11必囤3罐組！贈鍍膜布&珊瑚絨毛巾",
             "nav_label_override": "",
-            "section_icon": "fa-image",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080__3_1111.jpg",
             "show_banner": true,
-            "banner_img": "shopify://shop_images/1080__3000_3.png",
-            "banner_spacing_top": false,
+            "banner_spacing_top": true,
             "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
+            "product_list": [
+              "aurora-coating"
+            ],
+            "variant_ids": "",
+            "card_tag": "狂殺↘25折",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
           }
         },
         "simple_banner_slot_YxQfUA": {
@@ -551,6 +556,7 @@
         "product_grid_XMR9K3": {
           "type": "product_grid",
           "name": "11/4-11/30新包裝超級洗衣精買3送3",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "人氣新品✨嚐鮮搶優惠",
@@ -576,9 +582,27 @@
             "vertical_cards_per_view": "2.5"
           }
         },
+        "simple_banner_slot_Dip9ED": {
+          "type": "simple_banner_slot",
+          "name": "滿額送清潔藥劑3罐組",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "滿3000送3罐組",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1080__3000_3.png",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
         "simple_banner_slot_PkhXBx": {
           "type": "simple_banner_slot",
           "name": "11/6-11/16 滿599免運送到府",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "雙11限時599免運",
@@ -595,6 +619,7 @@
         "simple_banner_slot_cQVhtp": {
           "type": "simple_banner_slot",
           "name": "11/11  雙11最狂299免運券｜限量搶",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "雙11最狂！準時開搶",
@@ -1222,10 +1247,11 @@
         "product_grid_jNQtE7",
         "product_grid_T4apH3",
         "product_grid_acXNBR",
-        "simple_banner_slot_Dip9ED",
+        "product_grid_n6jT6p",
         "simple_banner_slot_YxQfUA",
         "simple_banner_slot_Abbmm9",
         "product_grid_XMR9K3",
+        "simple_banner_slot_Dip9ED",
         "simple_banner_slot_PkhXBx",
         "simple_banner_slot_cQVhtp",
         "simple_banner_slot_mFXA4r",
