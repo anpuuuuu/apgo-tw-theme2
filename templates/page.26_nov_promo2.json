@@ -543,22 +543,6 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "simple_banner_slot_Abbmm9": {
-          "type": "simple_banner_slot",
-          "name": "11/4-11/30 g11測速器$1480",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "雙11必搶！現省↘$1108",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/11_-17_0.jpg",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "shopify://products/apgo-g11-plus",
-            "banner_anchor_id": ""
-          }
-        },
         "product_grid_XMR9K3": {
           "type": "product_grid",
           "name": "11/4-11/30新包裝超級洗衣精買3送3",
@@ -586,23 +570,6 @@
             "card_layout": "vertical",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
-          }
-        },
-        "simple_banner_slot_Dip9ED": {
-          "type": "simple_banner_slot",
-          "name": "滿額送清潔藥劑3罐組",
-          "disabled": true,
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "滿3000送3罐組",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/1080__3000_3.png",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
           }
         },
         "simple_banner_slot_PkhXBx": {
@@ -650,6 +617,23 @@
             "section_icon": "fa-image",
             "show_banner": true,
             "banner_img": "shopify://shop_images/618.png",
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
+        "simple_banner_slot_Dip9ED": {
+          "type": "simple_banner_slot",
+          "name": "滿額送清潔藥劑3罐組",
+          "disabled": true,
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "滿3000送3罐組",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1080__3000_3.png",
             "banner_spacing_top": false,
             "banner_spacing_bottom": true,
             "banner_link": "",
@@ -1255,12 +1239,11 @@
         "product_grid_acXNBR",
         "product_grid_n6jT6p",
         "product_grid_GPGTkE",
-        "simple_banner_slot_Abbmm9",
         "product_grid_XMR9K3",
-        "simple_banner_slot_Dip9ED",
         "simple_banner_slot_PkhXBx",
         "simple_banner_slot_cQVhtp",
         "simple_banner_slot_mFXA4r",
+        "simple_banner_slot_Dip9ED",
         "product_grid_3BCxpy",
         "product_grid_63pFYA",
         "product_grid_HrcFDb",
