@@ -1262,8 +1262,8 @@
       "settings": {
         "target_amount": 0,
         "target_reward": "",
-        "hero_image_pc": "shopify://shop_images/1920x800__11.jpg",
-        "hero_image_mb": "shopify://shop_images/3126X4584__11.jpg",
+        "hero_image_pc": "shopify://shop_images/1920x800__11_..jpg",
+        "hero_image_mb": "shopify://shop_images/3126X4584__11_..jpg",
         "show_coupons": true,
         "coupon_sec_icon": "fa-ticket",
         "coupon_sec_title": "最高折$311",
