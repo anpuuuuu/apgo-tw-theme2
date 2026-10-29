@@ -121,18 +121,63 @@
             "gift_product": ""
           }
         },
+        "reward_K8Tfep": {
+          "type": "reward",
+          "settings": {
+            "reward_type": "gift",
+            "icon_fallback": "🎁",
+            "icon_image": "shopify://shop_images/a512d05e8fc42e76352cc4644d96ae8a.png",
+            "title": "滿額贈-地板清潔劑",
+            "reward_subtitle": "滿 $2599 即享",
+            "locked_text": "下一階段解鎖",
+            "unlocked_text": "已達成",
+            "better_tier_text": "已享更優",
+            "threshold_amount": 2599,
+            "reward_description": "",
+            "gift_product": ""
+          }
+        },
         "reward_rjGwP6": {
           "type": "reward",
-          "disabled": true,
           "settings": {
             "reward_type": "order_discount",
             "icon_fallback": "🏷️",
-            "title": "滿$3000折$618",
-            "reward_subtitle": "滿 $3000 解鎖",
+            "title": "滿$1999折$111",
+            "reward_subtitle": "雙11限定券",
             "locked_text": "下一階段解鎖",
             "unlocked_text": "部分商品不適用",
             "better_tier_text": "已享更優",
-            "threshold_amount": 3000,
+            "threshold_amount": 1999,
+            "reward_description": "",
+            "gift_product": ""
+          }
+        },
+        "reward_jQyUwf": {
+          "type": "reward",
+          "settings": {
+            "reward_type": "order_discount",
+            "icon_fallback": "🏷️",
+            "title": "滿$2999折$211",
+            "reward_subtitle": "雙11限定券",
+            "locked_text": "下一階段解鎖",
+            "unlocked_text": "部分商品不適用",
+            "better_tier_text": "已享更優",
+            "threshold_amount": 2999,
+            "reward_description": "",
+            "gift_product": ""
+          }
+        },
+        "reward_BB88cb": {
+          "type": "reward",
+          "settings": {
+            "reward_type": "order_discount",
+            "icon_fallback": "🏷️",
+            "title": "滿$3999折$311",
+            "reward_subtitle": "雙11限定券",
+            "locked_text": "下一階段解鎖",
+            "unlocked_text": "部分商品不適用",
+            "better_tier_text": "已享更優",
+            "threshold_amount": 3999,
             "reward_description": "",
             "gift_product": ""
           }
@@ -249,7 +294,10 @@
         "reward_ship",
         "reward_discount",
         "reward_NCHjbq",
+        "reward_K8Tfep",
         "reward_rjGwP6",
+        "reward_jQyUwf",
+        "reward_BB88cb",
         "reward_pGFXLa",
         "reward_YwhUQw",
         "reward_g6J8nJ",
