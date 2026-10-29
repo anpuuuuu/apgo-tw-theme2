@@ -316,6 +316,7 @@
         "banner_8cPcnG": {
           "type": "banner",
           "name": "狂降↘25折［原子極光鍍膜］× 3罐  優惠價 1111 元",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/1920x1080__3_1111.jpg",
             "link": "shopify://products/aurora-coating",
