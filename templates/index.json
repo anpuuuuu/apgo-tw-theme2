@@ -312,6 +312,15 @@
             "link": "shopify://pages/26_nov_prom2",
             "alt": "雙11神券"
           }
+        },
+        "banner_8cPcnG": {
+          "type": "banner",
+          "name": "狂降↘25折［原子極光鍍膜］× 3罐  優惠價 1111 元",
+          "settings": {
+            "image": "shopify://shop_images/1920x1080__3_1111.jpg",
+            "link": "shopify://products/aurora-coating",
+            "alt": "狂降↘25折［原子極光鍍膜］× 3罐  優惠價 1111 元"
+          }
         }
       },
       "block_order": [
@@ -329,7 +338,8 @@
         "banner_r6gpWn",
         "banner_Bx33JH",
         "banner_zxjP6a",
-        "banner_rcwDi3"
+        "banner_rcwDi3",
+        "banner_8cPcnG"
       ],
       "settings": {
         "autoplay": true,
