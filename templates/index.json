@@ -283,7 +283,6 @@
         "banner_Bx33JH": {
           "type": "banner",
           "name": "測速器G11 優惠價1480元",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/G11_1480__1920X1080_2c7028e6-a964-4c83-9194-c59087096ab4.jpg",
             "link": "shopify://products/apgo-g11-plus",
