@@ -296,6 +296,7 @@
         "banner_zxjP6a": {
           "type": "banner",
           "name": "【經典款．騎士寵車豪華禮組】 優惠價 1688元",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/11_-35_0.jpg",
             "link": "shopify://products/11-4120261111moto",
