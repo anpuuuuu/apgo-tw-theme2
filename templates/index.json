@@ -305,7 +305,8 @@
         },
         "banner_rcwDi3": {
           "type": "banner",
-          "name": "雙11神券",
+          "name": "雙11神券-$111、$211、$311",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/1920_x_1080__3_up_4ebc35b9-5cd5-42bd-8efa-6a43a09a29b4.jpg",
             "link": "shopify://pages/26_nov_prom2",
