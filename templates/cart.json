@@ -107,17 +107,16 @@
         },
         "reward_NCHjbq": {
           "type": "reward",
-          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
-            "icon_image": "shopify://shop_images/lead_f63dd9f5-2cab-48d4-9fed-da77bc194590.jpg",
-            "title": "滿額贈-防刮傷預洗清潔劑",
-            "reward_subtitle": "滿 $1999 即享",
+            "icon_image": "shopify://shop_images/1080_4e515eb4-8a57-40c8-9bfe-98a6542efd34.png",
+            "title": "滿額贈-幸福集字卡(累積贈送)",
+            "reward_subtitle": "滿 $1000 即享",
             "locked_text": "下一階段解鎖",
             "unlocked_text": "已達成",
             "better_tier_text": "已享更優",
-            "threshold_amount": 1999,
+            "threshold_amount": 1000,
             "reward_description": "",
             "gift_product": ""
           }
