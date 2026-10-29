@@ -171,22 +171,21 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
-        "banner_WX3fPW": {
-          "type": "banner",
-          "name": "限時快閃【買一送一】原子琺瑯晶鍍膜 高階滑順款",
-          "settings": {
-            "image": "shopify://shop_images/26_1.jpg",
-            "link": "https://apgo.tw/products/apgo-enamel-crystal-coating",
-            "alt": "限時快閃【買一送一】原子琺瑯晶鍍膜 高階滑順款"
-          }
-        },
         "banner_nbEMgN": {
           "type": "banner",
           "name": "【入秋養光計畫．洗去夏天塵埃】消費滿$1600折$100",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/03_0_fafb9baa-6a93-455e-8cca-c46c154cc82b.jpg",
             "link": "https://apgo.tw/pages/26_oct_promo",
             "alt": "【入秋養光計畫．洗去夏天塵埃】消費滿$1600折$100"
+          }
+        },
+        "banner_nVicTc": {
+          "type": "banner",
+          "settings": {
+            "link": "",
+            "alt": ""
           }
         },
         "banner_cNRtiH": {
@@ -201,6 +200,7 @@
         "banner_a9rR9F": {
           "type": "banner",
           "name": "【秋遊有測．行車有策｜G9 、G11測速器 現折 $700】",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/09_0_44fb6bc2-3e91-4656-ae9a-e1d3b63b4900.jpg",
             "link": "shopify://collections/科技執法測速器",
@@ -210,6 +210,7 @@
         "banner_teqB3D": {
           "type": "banner",
           "name": "【🎉清倉優惠福箱禮組🎖️】",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/02_0_dcbe6671-353c-477e-b193-0d81611dbe4c.jpg",
             "link": "shopify://products/clearance-sale-lucky-box",
@@ -325,8 +326,8 @@
         }
       },
       "block_order": [
-        "banner_WX3fPW",
         "banner_nbEMgN",
+        "banner_nVicTc",
         "banner_cNRtiH",
         "banner_a9rR9F",
         "banner_teqB3D",
