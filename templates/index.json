@@ -245,11 +245,11 @@
         },
         "banner_AAW74k": {
           "type": "banner",
-          "name": "第二波_LEAD買2送1",
+          "name": " 雙11 洗亮狂購節｜愛車煥新・居家囤好 滿額贈",
           "disabled": true,
           "settings": {
             "image": "shopify://shop_images/1920x800__11_._61051a67-7f0b-4052-8b29-f62710254a06.jpg",
-            "link": "",
+            "link": "shopify://pages/26_nov_prom2",
             "alt": "雙11全館滿額贈"
           }
         },
