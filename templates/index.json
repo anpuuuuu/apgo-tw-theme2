@@ -180,24 +180,6 @@
             "alt": "百年好合．幸福集字卡．全館消費滿$1,000集贈送幸福集字卡1張"
           }
         },
-        "banner_AAW74k": {
-          "type": "banner",
-          "name": " 雙11 洗亮狂購節｜愛車煥新・居家囤好 滿額贈",
-          "settings": {
-            "image": "shopify://shop_images/1920X1080__11_....jpg",
-            "link": "shopify://pages/26_nov_prom2",
-            "alt": "雙11全館滿額贈"
-          }
-        },
-        "banner_x6UiQX": {
-          "type": "banner",
-          "name": "指定款清潔藥劑  超殺銅板價$33、$55、$77．限量搶購",
-          "settings": {
-            "image": "shopify://shop_images/1920X1080__33_55_77.jpg",
-            "link": "shopify://products/20261111-335577",
-            "alt": "指定款清潔藥劑  超殺銅板價$33、$55、$77．限量搶購"
-          }
-        },
         "banner_r6gpWn": {
           "type": "banner",
           "name": "［汽車煥新尊寵禮組］ 優惠價 3888元",
@@ -225,6 +207,24 @@
             "alt": "狂降↘25折［原子極光鍍膜］× 3罐  優惠價 1111 元"
           }
         },
+        "banner_zxjP6a": {
+          "type": "banner",
+          "name": "【經典款．騎士寵車豪華禮組】 優惠價 1688元",
+          "settings": {
+            "image": "shopify://shop_images/11_-35_0.jpg",
+            "link": "shopify://products/11-4120261111moto",
+            "alt": "【經典款．騎士寵車豪華禮組】 優惠價 1688元"
+          }
+        },
+        "banner_AAW74k": {
+          "type": "banner",
+          "name": " 雙11 洗亮狂購節｜愛車煥新・居家囤好 滿額贈",
+          "settings": {
+            "image": "shopify://shop_images/1920X1080__11_....jpg",
+            "link": "shopify://pages/26_nov_prom2",
+            "alt": "雙11全館滿額贈"
+          }
+        },
         "banner_rcwDi3": {
           "type": "banner",
           "name": "雙11神券-$111、$211、$311",
@@ -234,19 +234,19 @@
             "alt": "雙11神券"
           }
         },
-        "banner_zxjP6a": {
+        "banner_x6UiQX": {
           "type": "banner",
-          "name": "【經典款．騎士寵車豪華禮組】 優惠價 1688元",
-          "disabled": true,
+          "name": "指定款清潔藥劑  超殺銅板價$33、$55、$77．限量搶購",
           "settings": {
-            "image": "shopify://shop_images/11_-35_0.jpg",
-            "link": "shopify://products/11-4120261111moto",
-            "alt": "【經典款．騎士寵車豪華禮組】 優惠價 1688元"
+            "image": "shopify://shop_images/1920X1080__33_55_77.jpg",
+            "link": "shopify://products/20261111-335577",
+            "alt": "指定款清潔藥劑  超殺銅板價$33、$55、$77．限量搶購"
           }
         },
         "banner_jGTL4Q": {
           "type": "banner",
           "name": "洗衣精訂閱制活動",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/BN-1920-3.png",
             "link": "https://sub.apgo.tw/",
@@ -276,13 +276,13 @@
       },
       "block_order": [
         "banner_QcxFn3",
-        "banner_AAW74k",
-        "banner_x6UiQX",
         "banner_r6gpWn",
         "banner_Bx33JH",
         "banner_8cPcnG",
-        "banner_rcwDi3",
         "banner_zxjP6a",
+        "banner_AAW74k",
+        "banner_rcwDi3",
+        "banner_x6UiQX",
         "banner_jGTL4Q",
         "banner_CXPEDn",
         "banner_T8KwPX"
