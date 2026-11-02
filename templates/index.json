@@ -175,7 +175,7 @@
           "type": "banner",
           "name": "百年好合．幸福集字卡．全館消費滿$1,000集贈送幸福集字卡1張",
           "settings": {
-            "image": "shopify://shop_images/1920X1080.png",
+            "image": "shopify://shop_images/1920x1080_dfd742cb-edda-4402-a935-b7a291ba2736.png",
             "link": "https://club.apgo.tw/events/wedding",
             "alt": "百年好合．幸福集字卡．全館消費滿$1,000集贈送幸福集字卡1張"
           }
@@ -237,6 +237,7 @@
         "banner_rcwDi3": {
           "type": "banner",
           "name": "雙11神券-$111、$211、$311",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/1920_x_1080__3_up_4ebc35b9-5cd5-42bd-8efa-6a43a09a29b4.jpg",
             "link": "shopify://pages/26_nov_prom2",
