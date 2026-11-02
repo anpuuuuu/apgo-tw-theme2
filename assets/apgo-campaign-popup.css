@@ -104,6 +104,14 @@
   text-align: center;
 }
 
+.apgo-cp__title,
+.apgo-cp__text,
+.apgo-cp__cta,
+.apgo-cp__dismiss {
+  font-family: inherit;
+  text-transform: none;
+}
+
 .apgo-cp__title {
   margin: 0;
   color: inherit;
