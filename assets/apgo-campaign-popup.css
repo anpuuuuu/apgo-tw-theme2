@@ -1,5 +1,6 @@
 /* APGO · 活動彈窗 — sections/apgo-campaign-popup.liquid
- * Colours come from the section settings as --apgo-cp-* on the root. */
+ * Colours come from the section settings as --apgo-cp-* on the root.
+ * Text keeps the popup font: some pages restyle headings (monospace, uppercase). */
 .apgo-cp {
   --apgo-cp-bg: #fff6f7;
   --apgo-cp-ink: #4a2a31;
