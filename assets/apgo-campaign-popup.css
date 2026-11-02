@@ -1,0 +1,189 @@
+/* APGO · 活動彈窗 — sections/apgo-campaign-popup.liquid
+ * Colours come from the section settings as --apgo-cp-* on the root. */
+.apgo-cp {
+  --apgo-cp-bg: #fff6f7;
+  --apgo-cp-ink: #4a2a31;
+  --apgo-cp-btn: #c8102e;
+  --apgo-cp-btn-ink: #fff;
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  font-family: Inter, var(--font-body--family), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.apgo-cp.is-open {
+  display: block;
+}
+
+.apgo-cp__backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  background: rgba(10, 6, 8, .66);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+
+.apgo-cp__sheet {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: 14px;
+  background: var(--apgo-cp-bg);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .45);
+  transform: translate(-50%, -48%) scale(.97);
+  opacity: 0;
+  transition: opacity .22s ease, transform .22s ease;
+  outline: none;
+}
+
+.apgo-cp.is-open .apgo-cp__sheet {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.apgo-cp__close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .42);
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.apgo-cp__close:hover,
+.apgo-cp__close:focus-visible {
+  background: rgba(0, 0, 0, .62);
+  transform: rotate(90deg);
+}
+
+.apgo-cp__media {
+  display: block;
+  flex: none;
+  width: 100%;
+  background: #f3e3e6;
+}
+
+.apgo-cp__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.apgo-cp__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 22px 16px;
+  color: var(--apgo-cp-ink);
+  text-align: center;
+}
+
+.apgo-cp__title {
+  margin: 0;
+  color: inherit;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.apgo-cp__text {
+  margin: 0;
+  color: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: .82;
+}
+
+.apgo-cp__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 4px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: var(--apgo-cp-btn);
+  color: var(--apgo-cp-btn-ink);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: filter .2s ease, transform .2s ease;
+}
+
+.apgo-cp__cta:hover,
+.apgo-cp__cta:focus-visible {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.apgo-cp__dismiss {
+  padding: 6px 12px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-size: 14px;
+  opacity: .6;
+  cursor: pointer;
+}
+
+.apgo-cp__dismiss:hover,
+.apgo-cp__dismiss:focus-visible {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+@media (max-width: 749px) {
+  .apgo-cp__content {
+    gap: 8px;
+    padding: 14px 18px 12px;
+  }
+
+  .apgo-cp__title {
+    font-size: 19px;
+  }
+
+  .apgo-cp__text {
+    font-size: 13px;
+  }
+
+  .apgo-cp__cta {
+    min-height: 46px;
+    font-size: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apgo-cp__sheet,
+  .apgo-cp__close,
+  .apgo-cp__cta {
+    transition: none;
+  }
+}

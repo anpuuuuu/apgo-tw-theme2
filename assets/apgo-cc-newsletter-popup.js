@@ -55,6 +55,8 @@
   document.addEventListener('DOMContentLoaded', function () {
     var root = document.querySelector('[data-apgo-newsletter]');
     if (!root) return;
+    // A running campaign popup (sections/apgo-campaign-popup.liquid) takes this slot.
+    if (document.querySelector('[data-apgo-campaign-popup]')) return;
 
     var storageKey = root.getAttribute('data-storage-key') || STORAGE_DEFAULT;
     var sessionKey = storageKey + SESSION_SUFFIX;

@@ -1,0 +1,208 @@
+{%- comment -%}
+  APGO · 活動彈窗 — a campaign image with a short line and a button, shown
+  once per browsing session to every visitor (members too) on the first page
+  they open. Lives in the footer group so it can run site-wide.
+
+  Shown only when enabled and an image is picked. While it is on the page,
+  the homepage newsletter popup (apgo-cc-newsletter-popup) stays closed, so
+  the two never stack; turn this off and the newsletter comes back.
+
+  In the theme editor it opens while this section is selected, instead of on
+  page load. Views, clicks and closes go to dataLayer and Shopify customer
+  events as apgo_campaign_popup_view / _click / _close.
+{%- endcomment -%}
+{%- liquid
+  assign campaign_popup_enabled = false
+  if section.settings.enabled and section.settings.image != blank
+    if section.settings.pages == 'all' or template.name == 'index'
+      assign campaign_popup_enabled = true
+    endif
+  endif
+
+  assign link = section.settings.link | default: '/'
+  assign image_alt = section.settings.image.alt | default: section.settings.title | default: shop.name
+-%}
+
+{%- if campaign_popup_enabled -%}
+  {{ 'apgo-campaign-popup.css' | asset_url | stylesheet_tag }}
+
+  <div
+    class="apgo-cp"
+    data-apgo-campaign-popup
+    data-section-id="{{ section.id }}"
+    data-campaign="{{ section.settings.campaign_id | escape }}"
+    {% if request.design_mode %}data-design-mode{% endif %}
+    aria-hidden="true"
+    style="--apgo-cp-bg: {{ section.settings.color_bg }}; --apgo-cp-ink: {{ section.settings.color_text }}; --apgo-cp-btn: {{ section.settings.color_button }}; --apgo-cp-btn-ink: {{ section.settings.color_button_text }};"
+  >
+    <button class="apgo-cp__backdrop" type="button" data-apgo-cp-close tabindex="-1" aria-label="關閉活動彈窗"></button>
+
+    <div
+      class="apgo-cp__sheet"
+      role="dialog"
+      aria-modal="true"
+      aria-label="{{ section.settings.title | default: image_alt | escape }}"
+      tabindex="-1"
+    >
+      <button class="apgo-cp__close" type="button" data-apgo-cp-close aria-label="關閉">
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+      <a
+        class="apgo-cp__media"
+        href="{{ link }}"
+        data-apgo-cp-link="image"
+        {% if section.settings.new_tab %}target="_blank" rel="noopener"{% endif %}
+        style="aspect-ratio: {{ section.settings.image.aspect_ratio }};"
+      >
+        {{ section.settings.image
+          | image_url: width: 1100
+          | image_tag:
+            loading: 'lazy',
+            alt: image_alt,
+            widths: '400, 550, 750, 900, 1100',
+            sizes: '(min-width: 750px) 520px, calc(100vw - 32px)'
+        }}
+      </a>
+
+      {%- if section.settings.title != blank
+        or section.settings.text != blank
+        or section.settings.button_label != blank
+        or section.settings.dismiss_label != blank
+      -%}
+        <div class="apgo-cp__content">
+          {%- if section.settings.title != blank -%}
+            <h2 class="apgo-cp__title">{{ section.settings.title | escape }}</h2>
+          {%- endif -%}
+          {%- if section.settings.text != blank -%}
+            <p class="apgo-cp__text">{{ section.settings.text | escape | newline_to_br }}</p>
+          {%- endif -%}
+          {%- if section.settings.button_label != blank -%}
+            <a
+              class="apgo-cp__cta"
+              href="{{ link }}"
+              data-apgo-cp-link="button"
+              {% if section.settings.new_tab %}target="_blank" rel="noopener"{% endif %}
+            >
+              {{- section.settings.button_label | escape -}}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.dismiss_label != blank -%}
+            <button class="apgo-cp__dismiss" type="button" data-apgo-cp-close>
+              {{- section.settings.dismiss_label | escape -}}
+            </button>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <script src="{{ 'apgo-campaign-popup.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "APGO · 活動彈窗",
+  "enabled_on": { "groups": ["footer"] },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "啟用活動彈窗",
+      "info": "開啟時，首頁的電子報彈窗會自動不出現；關閉後電子報彈窗會回來。",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "pages",
+      "label": "顯示在",
+      "options": [
+        { "value": "all", "label": "全站（訪客進站的第一頁）" },
+        { "value": "index", "label": "只有首頁" }
+      ],
+      "default": "all",
+      "info": "每位訪客每次進站只跳一次，會員也會看到。"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "活動圖片",
+      "info": "沒選圖片時不會顯示。"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "點圖片和按鈕前往"
+    },
+    {
+      "type": "checkbox",
+      "id": "new_tab",
+      "label": "用新分頁開啟連結",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "標題",
+      "info": "留空就不顯示。"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "說明文字",
+      "info": "留空就不顯示。"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "按鈕文字",
+      "info": "留空就不顯示按鈕，只有圖片可以點。"
+    },
+    {
+      "type": "text",
+      "id": "dismiss_label",
+      "label": "略過文字",
+      "default": "先逛逛"
+    },
+    {
+      "type": "text",
+      "id": "campaign_id",
+      "label": "活動代號（追蹤用）",
+      "info": "會帶進 GA 事件，換活動時改一下就能分開看成效。"
+    },
+    {
+      "type": "header",
+      "content": "配色"
+    },
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "文字區背景",
+      "default": "#FFF6F7"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "文字",
+      "default": "#4A2A31"
+    },
+    {
+      "type": "color",
+      "id": "color_button",
+      "label": "按鈕",
+      "default": "#C8102E"
+    },
+    {
+      "type": "color",
+      "id": "color_button_text",
+      "label": "按鈕文字",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "APGO · 活動彈窗"
+    }
+  ]
+}
+{% endschema %}
