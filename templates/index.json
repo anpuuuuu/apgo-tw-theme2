@@ -234,6 +234,15 @@
             "alt": "雙11全館滿額贈"
           }
         },
+        "banner_fDyECz": {
+          "type": "banner",
+          "name": "防詐騙宣導",
+          "settings": {
+            "image": "shopify://shop_images/APGO__BN_1920x1080_8c5af350-2a86-4cce-8e18-b31d06e84c45.png",
+            "link": "",
+            "alt": ""
+          }
+        },
         "banner_rcwDi3": {
           "type": "banner",
           "name": "雙11神券-$111、$211、$311",
@@ -283,6 +292,7 @@
         "banner_zxjP6a",
         "banner_x6UiQX",
         "banner_AAW74k",
+        "banner_fDyECz",
         "banner_rcwDi3",
         "banner_jGTL4Q",
         "banner_CXPEDn",
