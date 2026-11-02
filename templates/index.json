@@ -180,13 +180,13 @@
             "alt": "百年好合．幸福集字卡．全館消費滿$1,000集贈送幸福集字卡1張"
           }
         },
-        "banner_r6gpWn": {
+        "banner_8cPcnG": {
           "type": "banner",
-          "name": "［汽車煥新尊寵禮組］ 優惠價 3888元",
+          "name": "狂降↘25折［原子極光鍍膜］× 3罐  優惠價 1111 元",
           "settings": {
-            "image": "shopify://shop_images/1920X1080.jpg",
-            "link": "shopify://products/20261111-3888",
-            "alt": "［汽車煥新尊寵禮組］ 優惠價 3888元"
+            "image": "shopify://shop_images/1920x1080__3_1111.jpg",
+            "link": "shopify://products/aurora-coating",
+            "alt": "狂降↘25折［原子極光鍍膜］× 3罐  優惠價 1111 元"
           }
         },
         "banner_Bx33JH": {
@@ -198,13 +198,13 @@
             "alt": "測速器G11 優惠價1480元"
           }
         },
-        "banner_8cPcnG": {
+        "banner_r6gpWn": {
           "type": "banner",
-          "name": "狂降↘25折［原子極光鍍膜］× 3罐  優惠價 1111 元",
+          "name": "［汽車煥新尊寵禮組］ 優惠價 3888元",
           "settings": {
-            "image": "shopify://shop_images/1920x1080__3_1111.jpg",
-            "link": "shopify://products/aurora-coating",
-            "alt": "狂降↘25折［原子極光鍍膜］× 3罐  優惠價 1111 元"
+            "image": "shopify://shop_images/1920X1080.jpg",
+            "link": "shopify://products/20261111-3888",
+            "alt": "［汽車煥新尊寵禮組］ 優惠價 3888元"
           }
         },
         "banner_zxjP6a": {
@@ -214,6 +214,15 @@
             "image": "shopify://shop_images/11_-35_0.jpg",
             "link": "shopify://products/11-4120261111moto",
             "alt": "【經典款．騎士寵車豪華禮組】 優惠價 1688元"
+          }
+        },
+        "banner_x6UiQX": {
+          "type": "banner",
+          "name": "指定款清潔藥劑  超殺銅板價$33、$55、$77．限量搶購",
+          "settings": {
+            "image": "shopify://shop_images/1920X1080__33_55_77.jpg",
+            "link": "shopify://products/20261111-335577",
+            "alt": "指定款清潔藥劑  超殺銅板價$33、$55、$77．限量搶購"
           }
         },
         "banner_AAW74k": {
@@ -232,15 +241,6 @@
             "image": "shopify://shop_images/1920_x_1080__3_up_4ebc35b9-5cd5-42bd-8efa-6a43a09a29b4.jpg",
             "link": "shopify://pages/26_nov_prom2",
             "alt": "雙11神券"
-          }
-        },
-        "banner_x6UiQX": {
-          "type": "banner",
-          "name": "指定款清潔藥劑  超殺銅板價$33、$55、$77．限量搶購",
-          "settings": {
-            "image": "shopify://shop_images/1920X1080__33_55_77.jpg",
-            "link": "shopify://products/20261111-335577",
-            "alt": "指定款清潔藥劑  超殺銅板價$33、$55、$77．限量搶購"
           }
         },
         "banner_jGTL4Q": {
@@ -276,13 +276,13 @@
       },
       "block_order": [
         "banner_QcxFn3",
-        "banner_r6gpWn",
-        "banner_Bx33JH",
         "banner_8cPcnG",
+        "banner_Bx33JH",
+        "banner_r6gpWn",
         "banner_zxjP6a",
+        "banner_x6UiQX",
         "banner_AAW74k",
         "banner_rcwDi3",
-        "banner_x6UiQX",
         "banner_jGTL4Q",
         "banner_CXPEDn",
         "banner_T8KwPX"
