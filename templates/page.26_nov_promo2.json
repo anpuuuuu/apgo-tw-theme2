@@ -411,42 +411,26 @@
             "banner_anchor_id": ""
           }
         },
-        "simple_banner_slot_DnW4gg": {
-          "type": "simple_banner_slot",
-          "name": "全館滿額折",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "滿額最高折$311",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/1920_x_1080__3_up.jpg",
-            "banner_spacing_top": true,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
-        "product_grid_bY6hrM": {
+        "product_grid_n6jT6p": {
           "type": "product_grid",
-          "name": "銅板價$33/$55/$77",
+          "name": "［原子極光鍍膜］× 3罐  優惠價 1111 元",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "銅板價$33/$55/$77",
+            "section_title": "雙11必囤3罐組",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080__33_55_77.jpg",
+            "banner_img": "shopify://shop_images/1080__3_1111.jpg",
             "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": false,
+            "banner_spacing_top": true,
+            "banner_spacing_bottom": true,
             "product_list": [
-              "20261111-335577"
+              "aurora-coating"
             ],
             "variant_ids": "",
-            "card_tag": "現賺$13,612",
+            "card_tag": "狂殺↘25折再贈鍍膜布$珊瑚絨毛巾",
             "card_layout": "horizontal",
             "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
+            "vertical_cards_per_view": "2.5"
           }
         },
         "product_grid_jNQtE7": {
@@ -515,26 +499,42 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "product_grid_n6jT6p": {
-          "type": "product_grid",
-          "name": "［原子極光鍍膜］× 3罐  優惠價 1111 元",
+        "simple_banner_slot_DnW4gg": {
+          "type": "simple_banner_slot",
+          "name": "全館滿額折",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "雙11必囤3罐組",
+            "section_title": "滿額最高折$311",
             "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080__3_1111.jpg",
+            "section_icon": "fa-image",
             "show_banner": true,
+            "banner_img": "shopify://shop_images/1920_x_1080__3_up.jpg",
             "banner_spacing_top": true,
             "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
+        "product_grid_bY6hrM": {
+          "type": "product_grid",
+          "name": "銅板價$33/$55/$77",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "銅板價$33/$55/$77",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1080__33_55_77.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": false,
             "product_list": [
-              "aurora-coating"
+              "20261111-335577"
             ],
             "variant_ids": "",
-            "card_tag": "狂殺↘25折再贈鍍膜布$珊瑚絨毛巾",
+            "card_tag": "現賺$13,612",
             "card_layout": "horizontal",
             "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
+            "vertical_cards_per_view": "1"
           }
         },
         "product_grid_GPGTkE": {
@@ -1249,12 +1249,12 @@
         "flash_sale_item_DLfea8",
         "simple_banner_slot_c4GqJF",
         "simple_banner_slot_bky9zY",
-        "simple_banner_slot_DnW4gg",
-        "product_grid_bY6hrM",
+        "product_grid_n6jT6p",
         "product_grid_jNQtE7",
         "product_grid_T4apH3",
         "product_grid_acXNBR",
-        "product_grid_n6jT6p",
+        "simple_banner_slot_DnW4gg",
+        "product_grid_bY6hrM",
         "product_grid_GPGTkE",
         "product_grid_XMR9K3",
         "simple_banner_slot_PkhXBx",
