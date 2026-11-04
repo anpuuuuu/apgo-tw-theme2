@@ -39,20 +39,20 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p><a href=\"/pages/26_nov_prom2\" title=\"2026.11月活動頁\"><em><strong>🛍️&nbsp;雙11瘋狂購物節-活動入口 🎁</strong></em></a></p>",
+            "text": "<p><a href=\"/pages/26_nov_prom2\" title=\"2026.11月活動頁\"><strong>🛍️ 雙11瘋狂購物節－活動入口 🎁 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</strong></a></p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
-            "type_preset": "rte",
+            "type_preset": "custom",
             "font": "var(--font-body--family)",
-            "font_size": "1rem",
+            "font_size": "0.75rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
-            "wrap": "pretty",
+            "wrap": "balance",
             "color": "var(--color-foreground)",
             "background": true,
-            "background_color": "#150D0D54",
+            "background_color": "#150D0D00",
             "corner_radius": 1,
             "padding-block-start": 0,
             "padding-block-end": 0,
@@ -68,9 +68,9 @@
       "name": "t:names.marquee_section",
       "settings": {
         "movement_direction": "normal",
-        "color_scheme": "scheme-a27d2d12-7174-40fe-a01c-a128174b4c26",
-        "padding-block-start": 3,
-        "padding-block-end": 15,
+        "color_scheme": "scheme-ac839963-9fda-4600-95a2-075a5cd344a3",
+        "padding-block-start": 0,
+        "padding-block-end": 0,
         "gap_between_elements": 10
       }
     },
@@ -342,8 +342,8 @@
         "overlay_on_hero": false,
         "overlap": 200,
         "overlap_mobile": 160,
-        "gap_top": 0,
-        "gap_bottom": 18,
+        "gap_top": 6,
+        "gap_bottom": 4,
         "aria_label": "優惠輪播"
       }
     },
@@ -458,8 +458,8 @@
         "view_all_label": "查看全部",
         "max_width": 1440,
         "accent_color": "#f58220",
-        "padding_top": 48,
-        "padding_bottom": 12
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "apgo_home_categories_v2": {
