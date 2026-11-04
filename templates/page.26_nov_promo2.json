@@ -395,22 +395,6 @@
             "banner_anchor_id": ""
           }
         },
-        "simple_banner_slot_bky9zY": {
-          "type": "simple_banner_slot",
-          "name": "全館滿額贈",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "全館滿額贈",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/1280X600__11_..jpg",
-            "banner_spacing_top": true,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
         "product_grid_n6jT6p": {
           "type": "product_grid",
           "name": "［原子極光鍍膜］× 3罐  優惠價 1111 元",
@@ -509,6 +493,22 @@
             "section_icon": "fa-image",
             "show_banner": true,
             "banner_img": "shopify://shop_images/1920_x_1080__3_up.jpg",
+            "banner_spacing_top": true,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
+        "simple_banner_slot_bky9zY": {
+          "type": "simple_banner_slot",
+          "name": "全館滿額贈",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "全館滿額贈",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/1280X600__11_..jpg",
             "banner_spacing_top": true,
             "banner_spacing_bottom": true,
             "banner_link": "",
@@ -1248,12 +1248,12 @@
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
         "simple_banner_slot_c4GqJF",
-        "simple_banner_slot_bky9zY",
         "product_grid_n6jT6p",
         "product_grid_jNQtE7",
         "product_grid_T4apH3",
         "product_grid_acXNBR",
         "simple_banner_slot_DnW4gg",
+        "simple_banner_slot_bky9zY",
         "product_grid_bY6hrM",
         "product_grid_GPGTkE",
         "product_grid_XMR9K3",

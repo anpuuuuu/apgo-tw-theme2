@@ -34,12 +34,43 @@
     },
     "marquee_p8YTpL": {
       "type": "marquee",
+      "blocks": {
+        "text_WzURt8": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p><a href=\"/pages/26_nov_prom2\" title=\"2026.11月活動頁\"><em><strong>🛍️&nbsp;雙11瘋狂購物節-活動入口 🎁</strong></em></a></p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": true,
+            "background_color": "#150D0D54",
+            "corner_radius": 1,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_WzURt8"
+      ],
       "name": "t:names.marquee_section",
       "settings": {
         "movement_direction": "normal",
         "color_scheme": "scheme-a27d2d12-7174-40fe-a01c-a128174b4c26",
         "padding-block-start": 3,
-        "padding-block-end": 26,
+        "padding-block-end": 15,
         "gap_between_elements": 10
       }
     },
@@ -175,7 +206,7 @@
           "type": "banner",
           "name": "百年好合．幸福集字卡．全館消費滿$1,000集贈送幸福集字卡1張",
           "settings": {
-            "image": "shopify://shop_images/iPhone_Duo_ea815e5c-0a99-4fda-acaf-87b19f74de4c.png",
+            "image": "shopify://shop_images/iPhone-Duo_d6e996f7-2be0-4220-9c3e-6b0311d4b9cc.png",
             "link": "shopify://pages/26_nov_prom2",
             "alt": "百年好合．幸福集字卡．全館消費滿$1,000集贈送幸福集字卡1張"
           }
@@ -318,19 +349,6 @@
     },
     "apgo_cc_badge_carousel_dGRGB7": {
       "type": "apgo-cc-badge-carousel",
-      "blocks": {
-        "banner_WRYjqd": {
-          "type": "banner",
-          "settings": {
-            "image": "shopify://shop_images/APGO__BN_1280x600_f11ead19-d51f-4d78-8dbb-598880614a76.png",
-            "link": "https://club.apgo.tw/events/wedding?tab=scan",
-            "alt": ""
-          }
-        }
-      },
-      "block_order": [
-        "banner_WRYjqd"
-      ],
       "settings": {
         "autoplay": true,
         "interval": 4,
