@@ -352,17 +352,39 @@
     "apgo_home_bestsellers_v2": {
       "type": "apgo-home-bestsellers-v2",
       "blocks": {
-        "product_bTiDRt": {
+        "product_LCTmWe": {
           "type": "product",
-          "name": "10元挖寶區",
+          "name": "極光鍍膜3建$1111",
           "settings": {
-            "product": "clearance-sale"
+            "product": "aurora-coating"
           }
         },
-        "bestseller_01": {
+        "product_dfzhfF": {
           "type": "product",
+          "name": "3888汽車禮組",
           "settings": {
-            "product": "clearance-sale-lucky-box"
+            "product": "20261111-3888"
+          }
+        },
+        "product_HAnc6c": {
+          "type": "product",
+          "name": "$1688機車禮組",
+          "settings": {
+            "product": "11-4120261111moto"
+          }
+        },
+        "product_z9bfRw": {
+          "type": "product",
+          "name": "$1480 G11測速器",
+          "settings": {
+            "product": "apgo-g11-plus"
+          }
+        },
+        "product_pyUGAA": {
+          "type": "product",
+          "name": "雙11超殺銅板價",
+          "settings": {
+            "product": "20261111-335577"
           }
         },
         "product_jzaqEn": {
@@ -371,11 +393,10 @@
             "product": "apgo-superwash"
           }
         },
-        "product_LAkYiA": {
+        "bestseller_03": {
           "type": "product",
-          "name": "鍍膜布10入組",
           "settings": {
-            "product": "apgo_coating_cloth"
+            "product": "glass-coating"
           }
         },
         "product_iEzaFp": {
@@ -385,23 +406,11 @@
             "product": "500ml專用噴頭"
           }
         },
-        "product_idBkKa": {
+        "product_LAkYiA": {
           "type": "product",
+          "name": "鍍膜布10入組",
           "settings": {
-            "product": "apgo_coral_fleece_towel"
-          }
-        },
-        "bestseller_03": {
-          "type": "product",
-          "settings": {
-            "product": "glass-coating"
-          }
-        },
-        "product_mPBdJG": {
-          "type": "product",
-          "name": "洗車手套",
-          "settings": {
-            "product": "apgo-car-wash-mitt"
+            "product": "apgo_coating_cloth"
           }
         },
         "product_dYmcmV": {
@@ -410,26 +419,19 @@
           "settings": {
             "product": "extreme-iron-remover"
           }
-        },
-        "product_TxRURV": {
-          "type": "product",
-          "name": "細節刷成雙組合",
-          "settings": {
-            "product": "apgo-細節刷成雙組合"
-          }
         }
       },
       "block_order": [
-        "product_bTiDRt",
-        "bestseller_01",
+        "product_LCTmWe",
+        "product_dfzhfF",
+        "product_HAnc6c",
+        "product_z9bfRw",
+        "product_pyUGAA",
         "product_jzaqEn",
-        "product_LAkYiA",
-        "product_iEzaFp",
-        "product_idBkKa",
         "bestseller_03",
-        "product_mPBdJG",
-        "product_dYmcmV",
-        "product_TxRURV"
+        "product_iEzaFp",
+        "product_LAkYiA",
+        "product_dYmcmV"
       ],
       "name": "APGO · 熱銷商品 v2",
       "settings": {
