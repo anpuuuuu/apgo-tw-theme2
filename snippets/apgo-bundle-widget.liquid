@@ -211,10 +211,15 @@
         {%- for value in scent_option.values -%}
           {%- capture hex -%}{%- render 'apgo-scent-hex', name: value -%}{%- endcapture -%}
           {%- assign hex = hex | strip -%}
+          {%- comment -%}
+            Match on the name before any bracket, like apgo-scent-hex does, so
+            「淨心棉花 (預購)」 still finds COTTON.
+          {%- endcomment -%}
+          {%- assign bare_value = value | split: '（' | first | split: '(' | first | strip -%}
           {%- assign en_name = '' -%}
           {%- for pair in en_pairs -%}
             {%- assign p = pair | split: '|' -%}
-            {%- if p[0] == value -%}{%- assign en_name = p[1] -%}{%- endif -%}
+            {%- if p[0] == bare_value -%}{%- assign en_name = p[1] -%}{%- endif -%}
           {%- endfor -%}
 
           <div class="apgo-bundle__scent-row" data-apgo-bundle-scent="{{ value | escape }}">
