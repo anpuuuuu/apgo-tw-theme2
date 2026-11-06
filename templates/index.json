@@ -202,12 +202,10 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
-        "banner_4JmTtU": {
+        "banner_hJFrbM": {
           "type": "banner",
-          "name": "新包裝 瓶裝超級洗衣精 買3送3",
           "settings": {
-            "image": "shopify://shop_images/11_-26_0.jpg",
-            "link": "shopify://collections/home-clean",
+            "link": "",
             "alt": ""
           }
         },
@@ -274,6 +272,15 @@
             "alt": "雙11全館滿額贈"
           }
         },
+        "banner_4JmTtU": {
+          "type": "banner",
+          "name": "新包裝 瓶裝超級洗衣精 買3送3",
+          "settings": {
+            "image": "shopify://shop_images/11_-26_0.jpg",
+            "link": "shopify://collections/home-clean",
+            "alt": ""
+          }
+        },
         "banner_fDyECz": {
           "type": "banner",
           "name": "防詐騙宣導",
@@ -325,7 +332,7 @@
         }
       },
       "block_order": [
-        "banner_4JmTtU",
+        "banner_hJFrbM",
         "banner_QcxFn3",
         "banner_r6gpWn",
         "banner_8cPcnG",
@@ -333,6 +340,7 @@
         "banner_zxjP6a",
         "banner_x6UiQX",
         "banner_AAW74k",
+        "banner_4JmTtU",
         "banner_fDyECz",
         "banner_rcwDi3",
         "banner_jGTL4Q",
