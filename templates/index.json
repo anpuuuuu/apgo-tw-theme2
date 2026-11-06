@@ -52,7 +52,7 @@
             "wrap": "balance",
             "color": "var(--color-foreground)",
             "background": true,
-            "background_color": "#150D0D00",
+            "background_color": "rgba(0,0,0,0)",
             "corner_radius": 1,
             "padding-block-start": 0,
             "padding-block-end": 0,
@@ -202,6 +202,15 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
+        "banner_4JmTtU": {
+          "type": "banner",
+          "name": "洗衣精買4送2、買6送3",
+          "settings": {
+            "image": "shopify://shop_images/1920X1080_4_2-_6_3.png",
+            "link": "shopify://collections/home-clean",
+            "alt": ""
+          }
+        },
         "banner_QcxFn3": {
           "type": "banner",
           "name": "百年好合．幸福集字卡．全館消費滿$1,000集贈送幸福集字卡1張",
@@ -316,6 +325,7 @@
         }
       },
       "block_order": [
+        "banner_4JmTtU",
         "banner_QcxFn3",
         "banner_8cPcnG",
         "banner_Bx33JH",
