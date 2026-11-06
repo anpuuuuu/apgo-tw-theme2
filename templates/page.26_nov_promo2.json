@@ -543,9 +543,37 @@
             "vertical_cards_per_view": "2.5"
           }
         },
+        "product_grid_Nb3Jn3": {
+          "type": "product_grid",
+          "name": "新包裝-瓶裝超級洗衣精買3送3",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "人氣新品✨嚐鮮優惠價",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/11_-25_0_ed634594-3495-4cd2-a699-62bb72d0a82b.jpg",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "apgo-superwash-canned",
+              "apgosilkenlily",
+              "apgoazuregarden",
+              "apgocashmerewoods",
+              "apgofloralallure",
+              "apgosunlitgrove",
+              "apgospringveil"
+            ],
+            "variant_ids": "",
+            "card_tag": "TAG",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "product_grid_XMR9K3": {
           "type": "product_grid",
-          "name": "11/4-11/3超級洗衣精買3送3",
+          "name": "超級洗衣精買3送3",
           "settings": {
             "custom_anchor_id": "",
             "section_title": "人氣夯品✨囤貨必搶",
@@ -1254,6 +1282,7 @@
         "product_grid_acXNBR",
         "product_grid_bY6hrM",
         "product_grid_GPGTkE",
+        "product_grid_Nb3Jn3",
         "product_grid_XMR9K3",
         "simple_banner_slot_bky9zY",
         "simple_banner_slot_PkhXBx",
