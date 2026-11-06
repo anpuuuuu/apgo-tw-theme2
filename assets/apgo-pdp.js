@@ -57,18 +57,27 @@
       try { variants = JSON.parse(variantsEl.textContent); } catch (e) { variants = []; }
     }
 
-    // Current selected option values — read from checked radios.
-    // The form may contain duplicate option groups (one in the desktop
-    // shell + one in the mobile shell on the unified PDP section), so
-    // dedupe by data-option-position before assembling the value array.
-    function readSelectedOptions() {
+    // Current selected option values — read from checked radios, keyed by
+    // data-option-position. The form may contain duplicate option groups
+    // (one in the desktop shell + one in the mobile shell on the unified PDP
+    // section) whose radios share a name, so the browser keeps only ONE of
+    // the two copies checked — usually the mobile one. Take the value from
+    // whichever copy holds it; reading only the first copy picked up nothing
+    // on desktop and fell back to the first variant.
+    function selectedByPosition() {
       var byPos = {};
       $$('[data-apgo-option-group]', form).forEach(function (group) {
         var pos = parseInt(group.getAttribute('data-option-position'), 10);
-        if (!pos || byPos.hasOwnProperty(pos)) return;
+        if (!pos) return;
         var checked = $('input[data-apgo-option-input]:checked', group);
-        byPos[pos] = checked ? checked.value : null;
+        if (checked) byPos[pos] = checked.value;
+        else if (!byPos.hasOwnProperty(pos)) byPos[pos] = null;
       });
+      return byPos;
+    }
+
+    function readSelectedOptions() {
+      var byPos = selectedByPosition();
       var positions = Object.keys(byPos).map(Number).sort(function (a, b) { return a - b; });
       return positions.map(function (p) { return byPos[p]; });
     }
@@ -134,18 +143,20 @@
       });
     }
 
+    // Both shells show the selected value, even the copy whose radio the
+    // browser unchecked (see selectedByPosition).
     function updateCurrentValueLabels() {
+      var byPos = selectedByPosition();
       $$('[data-apgo-option-group]', form).forEach(function (group) {
-        var checked = $('input[data-apgo-option-input]:checked', group);
+        var value = byPos[parseInt(group.getAttribute('data-option-position'), 10)];
         var label = $('[data-apgo-current-value]', group);
-        if (checked && label) label.textContent = checked.value;
+        if (value != null && label) label.textContent = value;
 
         // Toggle .active on parent chip / scentbtn
         $$('label', group).forEach(function (lbl) {
           var input = $('input[data-apgo-option-input]', lbl);
           if (!input) return;
-          if (input.checked) lbl.classList.add('active');
-          else lbl.classList.remove('active');
+          lbl.classList.toggle('active', value != null && input.value === value);
         });
       });
     }
