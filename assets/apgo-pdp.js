@@ -221,6 +221,15 @@
       }
     }
 
+    // The bundle picker (apgo-bundle.js) replaces the option radios with its
+    // own scent buttons, so it asks for a scent's image with this event.
+    form.addEventListener('apgo:show-variant-media', function (e) {
+      var id = e.detail && String(e.detail.variantId);
+      for (var i = 0; i < variants.length; i++) {
+        if (String(variants[i].id) === id) { syncMediaToVariant(variants[i]); return; }
+      }
+    });
+
     // syncMedia is opt-in: only an actual option pick should move the gallery.
     // Quantity edits reuse this to refresh labels and price, and must leave
     // whatever image the shopper is currently looking at alone.

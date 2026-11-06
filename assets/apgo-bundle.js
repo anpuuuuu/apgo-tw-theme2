@@ -223,6 +223,7 @@
       Object.keys(state.scents).forEach(function (n) { state.scents[n] = 0; });
       state.scents[name] = 1;
       render();
+      showScentMedia(name, chip);
     });
 
     // Qty +/- (delegated so dynamically-added rows also work)
@@ -239,6 +240,7 @@
       if (delta > 0 && totalSelected() >= state.tier.total) return; // hit max
       state.scents[name] = newVal;
       render();
+      if (delta > 0) showScentMedia(name, row);
     });
 
     // Quick actions: 全部都同款 / 隨機驚喜 / 清除.
@@ -428,6 +430,14 @@
   }
   function availableScentNames() {
     return Object.keys(state.scents).filter(isAvailable);
+  }
+
+  // Bring the picked scent's photo into the gallery, the way the plain
+  // option radios do. apgo-pdp.js owns the gallery and listens on the form.
+  function showScentMedia(name, fromEl) {
+    var id = variantsByScent[name];
+    if (!id || !fromEl) return;
+    fromEl.dispatchEvent(new CustomEvent('apgo:show-variant-media', { bubbles: true, detail: { variantId: id } }));
   }
 
   // Build Shopify cart payload (items[] for POST /cart/add.js).
