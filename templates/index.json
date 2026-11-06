@@ -256,15 +256,6 @@
             "alt": "指定款清潔藥劑  超殺銅板價$33、$55、$77．限量搶購"
           }
         },
-        "banner_4JmTtU": {
-          "type": "banner",
-          "name": "洗衣精買4送2、買6送3",
-          "settings": {
-            "image": "shopify://shop_images/1920X1080_4_2-_6_3.png",
-            "link": "shopify://collections/home-clean",
-            "alt": ""
-          }
-        },
         "banner_AAW74k": {
           "type": "banner",
           "name": " 雙11 洗亮狂購節｜愛車煥新・居家囤好 滿額贈",
@@ -272,6 +263,15 @@
             "image": "shopify://shop_images/06_d91d469a-97fe-48f5-b25f-c8fb95f1707e.png",
             "link": "shopify://pages/26_nov_prom2",
             "alt": "雙11全館滿額贈"
+          }
+        },
+        "banner_4JmTtU": {
+          "type": "banner",
+          "name": "洗衣精買4送2、買6送3",
+          "settings": {
+            "image": "shopify://shop_images/1920X1080_4_2-_6_3.png",
+            "link": "shopify://collections/home-clean",
+            "alt": ""
           }
         },
         "banner_fDyECz": {
@@ -331,8 +331,8 @@
         "banner_Bx33JH",
         "banner_zxjP6a",
         "banner_x6UiQX",
-        "banner_4JmTtU",
         "banner_AAW74k",
+        "banner_4JmTtU",
         "banner_fDyECz",
         "banner_rcwDi3",
         "banner_jGTL4Q",
