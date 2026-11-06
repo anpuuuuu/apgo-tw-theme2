@@ -69,10 +69,18 @@
   assign single_price = product.price | default: 0
 
   comment
-    Chinese → English subtitle map for scent rows.
+    包 for the refills, 瓶 for the bottles — see snippets/apgo-bundle-unit.
+  endcomment
+  capture unit
+    render 'apgo-bundle-unit', product: product
+  endcapture
+  assign unit = unit | strip
+
+  comment
+    Chinese → English subtitle map for scent rows: the refills, then the bottles.
     Phase D will move this onto the scent metaobject as a name_en field.
   endcomment
-  assign en_pairs_str = '淨心棉花|COTTON,花漾蒼蘭|FREESIA,浪漫玫瑰|ROSE,海洋晨曦|OCEANS,清雅白茶|WHITE TEA,薰衣紫戀|LAVENDER'
+  assign en_pairs_str = '淨心棉花|COTTON,花漾蒼蘭|FREESIA,浪漫玫瑰|ROSE,海洋晨曦|OCEANS,清雅白茶|WHITE TEA,薰衣紫戀|LAVENDER,夢幻百合|SILKEN LILY,陽光森林|SUNLIT GROVE,甜蜜依蘭|FLORAL ALLURE,烏木庭園|CASHMERE WOODS,風中春雨|SPRING VEIL,天空花園|AZURE GARDEN'
   assign en_pairs = en_pairs_str | split: ','
 
   assign scent_palette = shop.metafields.apgo.scents.value
@@ -146,7 +154,7 @@
             {%- endif -%}
           </div>
           <div class="apgo-bundle__tier-meta">
-            共 {{ t_total_count }} 包 · 每包平均 {{ t_avg_price | money }}
+            共 {{ t_total_count }} {{ unit }} · 每{{ unit }}平均 {{ t_avg_price | money }}
             {%- if t_savings > 0 -%}
               <span class="apgo-bundle__tier-savings">· 省 {{ t_savings | money }}</span>
             {%- endif -%}
@@ -155,7 +163,7 @@
         <div class="apgo-bundle__tier-price-area">
           <div class="apgo-bundle__tier-price">{{ t_total_price | money }}</div>
           {%- if t_gift > 0 -%}
-            <div class="apgo-bundle__tier-gift">+送 {{ t_gift }} 包</div>
+            <div class="apgo-bundle__tier-gift">+送 {{ t_gift }} {{ unit }}</div>
           {%- endif -%}
         </div>
       </label>
@@ -227,8 +235,8 @@
       </div>
 
       <div class="apgo-bundle__min-note">
-        選需選滿 <span data-apgo-bundle-max-note>3</span> 包香氛
-        · 含 <span data-apgo-bundle-gift-note>1</span> 包免費贈品
+        選需選滿 <span data-apgo-bundle-max-note>3</span> {{ unit }}香氛
+        · 含 <span data-apgo-bundle-gift-note>1</span> {{ unit }}免費贈品
       </div>
     </div>
   {%- endif -%}
@@ -237,7 +245,7 @@
   {%- if with_cta -%}
     <div class="apgo-bundle__cta-area">
       <button type="button" class="apgo-bundle__cta-disabled" data-apgo-bundle-cta-disabled disabled>
-        請先選滿香氛 · 還差 <span data-apgo-bundle-remaining>3</span> 包
+        請先選滿香氛 · 還差 <span data-apgo-bundle-remaining>3</span> {{ unit }}
       </button>
       <div class="apgo-bundle__cta-enabled" data-apgo-bundle-cta-enabled style="display:none;">
         <button type="button" class="apgo-bundle__cta-add" data-apgo-bundle-add>加入購物車</button>

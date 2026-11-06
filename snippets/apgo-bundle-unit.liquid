@@ -1,0 +1,27 @@
+{%- comment -%}
+  The counting word for a bundle product: 包 for the refill packs, 瓶 for the
+  bottles. Taken from the label of the product's first bundle tier
+  (product.metafields.apgo.bundle_tiers), so naming that tier 單瓶 is all a
+  bottled product needs: 單包 → 包, 單瓶 → 瓶. No tiers, or a first label that
+  isn't 單 + one word, reads 包.
+
+  Accepts:
+    product — the product with the bundle
+
+  Usage:
+    {%- capture unit -%}{%- render 'apgo-bundle-unit', product: product -%}{%- endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign unit = '包'
+  for entry in product.metafields.apgo.bundle_tiers.value limit: 1
+    capture first_label
+      echo entry.label
+    endcapture
+    assign first_label = first_label | strip
+    assign label_head = first_label | slice: 0
+    if label_head == '單' and first_label.size == 2
+      assign unit = first_label | slice: 1
+    endif
+  endfor
+  echo unit
+-%}
