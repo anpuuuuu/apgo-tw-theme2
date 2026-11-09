@@ -449,6 +449,28 @@
             "vertical_cards_per_view": "2.5"
           }
         },
+        "product_grid_tBQz9N": {
+          "type": "product_grid",
+          "name": "【雙11限定-頂規款】原子琉璃釉買1送2",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "雙11必收買1送2",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/apgo-1111-glaze-buy1get2-1999.png",
+            "show_banner": true,
+            "banner_spacing_top": true,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "apgo-atomic-colored-glaze"
+            ],
+            "variant_ids": "",
+            "card_tag": "狂殺↘33折再贈鍍膜布$珊瑚絨毛巾",
+            "card_layout": "horizontal",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "product_grid_jNQtE7": {
           "type": "product_grid",
           "name": "［汽車煥新尊寵禮組］ 優惠價 3888元",
@@ -1277,6 +1299,7 @@
         "simple_banner_slot_PkhXBx",
         "simple_banner_slot_DnW4gg",
         "product_grid_n6jT6p",
+        "product_grid_tBQz9N",
         "product_grid_jNQtE7",
         "product_grid_T4apH3",
         "product_grid_acXNBR",
