@@ -204,9 +204,11 @@
       "blocks": {
         "banner_hJFrbM": {
           "type": "banner",
+          "name": "原子琉璃釉買一送2",
           "settings": {
-            "link": "",
-            "alt": ""
+            "image": "shopify://shop_images/APGO_11_2167ce02-8474-4711-a97b-5d2da22f5d3c.png",
+            "link": "shopify://products/apgo-atomic-colored-glaze",
+            "alt": "原子琉璃釉買一送2"
           }
         },
         "banner_QcxFn3": {
@@ -284,6 +286,7 @@
         "banner_fDyECz": {
           "type": "banner",
           "name": "防詐騙宣導",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/1920x1080_APGO.png",
             "link": "",
