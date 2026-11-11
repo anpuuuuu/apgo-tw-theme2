@@ -1007,12 +1007,21 @@
         "color_button": "#c8102e",
         "color_button_text": "#ffffff"
       }
+    },
+    "apgo_survey": {
+      "type": "apgo-survey",
+      "settings": {
+        "enabled": true,
+        "pages": "index",
+        "campaign_id": "2026-11"
+      }
     }
   },
   "order": [
     "custom_liquid_f7mCmU",
     "apgo_footer_9eB3Gp",
     "apgo_maybe_need",
-    "apgo_campaign_popup"
+    "apgo_campaign_popup",
+    "apgo_survey"
   ]
 }

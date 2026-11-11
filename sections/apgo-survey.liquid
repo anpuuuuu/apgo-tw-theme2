@@ -1,0 +1,315 @@
+{%- comment -%}
+  APGO · 購物體驗調查 — a floating entry at the bottom right that opens a
+  three-question survey on the page itself. Lives in the footer group, like
+  the campaign popup, and shows on the homepage only unless set to all pages.
+
+  Answers go to /apps/survey/… — a Shopify App Proxy to the apgo-survey worker,
+  which stores them and hands out the reward. Shopify adds the signed-in
+  customer's id to every proxied request, so the reward needs no cookie.
+
+  Every finished screen can be previewed without sending anything: add
+  ?apgo_survey_preview=issued (or login, already, failed, error, hint) to the
+  page URL, or pick a state under 預覽 in the theme editor.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign survey_on = false
+  if s.enabled
+    if s.pages == 'all' or template.name == 'index'
+      assign survey_on = true
+    endif
+  endif
+
+  assign code = s.discount_code | strip
+  assign login_return = request.path | append: '?apgo_survey=claim' | url_encode
+  assign login_url = routes.account_login_url | append: '?return_url=' | append: login_return | append: '&return_to=' | append: login_return
+  assign shop_url = s.shop_link | default: routes.all_products_collection_url
+-%}
+
+{%- if survey_on -%}
+  {{ 'apgo-survey.css' | asset_url | stylesheet_tag }}
+
+  <div
+    class="apgo-sv"
+    data-apgo-survey
+    data-campaign="{{ s.campaign_id | default: 'survey' | escape }}"
+    data-endpoint="{{ s.endpoint | default: '/apps/survey' | escape }}"
+    data-logged-in="{% if customer %}true{% else %}false{% endif %}"
+    data-hint-delay="{{ s.hint_delay }}"
+    data-page="{{ template.name | escape }}"
+    data-preview="{% if request.design_mode %}{{ s.preview }}{% endif %}"
+    {% if request.design_mode %}data-design-mode{% endif %}
+  >
+    <div class="apgo-sv__launcher" data-apgo-sv-launcher>
+      <button type="button" class="apgo-sv__open" data-apgo-sv-open aria-haspopup="dialog">
+        <span class="apgo-sv__gift" aria-hidden="true">🎁</span>
+        <span class="apgo-sv__open-label">{{ s.launcher_label | escape }}</span>
+      </button>
+      <button type="button" class="apgo-sv__collapse" data-apgo-sv-collapse aria-label="收起問卷入口">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="apgo-sv__hint" data-apgo-sv-hint hidden>
+        <button type="button" class="apgo-sv__hint-text" data-apgo-sv-open>{{ s.hint_text | escape }}</button>
+        <button type="button" class="apgo-sv__hint-close" data-apgo-sv-hint-close aria-label="關閉提示">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="apgo-sv__layer" data-apgo-sv-layer hidden>
+      <button type="button" class="apgo-sv__backdrop" data-apgo-sv-close tabindex="-1" aria-label="關閉問卷"></button>
+
+      <div
+        class="apgo-sv__panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="ApgoSurveyTitle-{{ section.id }}"
+        tabindex="-1"
+      >
+        <button type="button" class="apgo-sv__x" data-apgo-sv-close aria-label="關閉">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <div class="apgo-sv__head">
+          <p class="apgo-sv__eyebrow">APGO｜購物體驗調查</p>
+          <h2 class="apgo-sv__title" id="ApgoSurveyTitle-{{ section.id }}">{{ s.title | escape }}</h2>
+          <p class="apgo-sv__sub">{{ s.subtitle | escape }}</p>
+        </div>
+
+        <div class="apgo-sv__body" data-apgo-sv-body>
+          <p class="apgo-sv__note" data-apgo-sv-claimed hidden>
+            {{ s.refill_note | escape }}
+            {%- if code != blank %} 折扣碼 <strong>{{ code | escape }}</strong>{% endif %}
+          </p>
+
+          <div class="apgo-sv__progress" aria-hidden="true">
+            <span class="apgo-sv__bar"><span data-apgo-sv-bar></span></span>
+            <span class="apgo-sv__count" data-apgo-sv-count>1 / 3</span>
+          </div>
+
+          <form class="apgo-sv__form" data-apgo-sv-form novalidate>
+            <fieldset class="apgo-sv__step" data-step="1">
+              <legend class="apgo-sv__q">1. 你對 APGO 官網的購物體驗滿意嗎？</legend>
+              <div class="apgo-sv__faces">
+                {%- assign faces = '😣,😕,😐,🙂,😍' | split: ',' -%}
+                {%- assign face_names = '非常不滿意,不太滿意,普通,滿意,非常滿意' | split: ',' -%}
+                {%- for face in faces -%}
+                  <label class="apgo-sv__face">
+                    <input type="radio" name="q1" value="{{ forloop.index }}">
+                    <span class="apgo-sv__face-icon" aria-hidden="true">{{ face }}</span>
+                    <span class="apgo-sv__face-score">{{ forloop.index }} 分</span>
+                    <span class="apgo-sv__sr">{{ face_names[forloop.index0] }}</span>
+                  </label>
+                {%- endfor -%}
+              </div>
+              <p class="apgo-sv__error" data-apgo-sv-error hidden>請選一個分數</p>
+            </fieldset>
+
+            <fieldset class="apgo-sv__step" data-step="2" hidden>
+              <legend class="apgo-sv__q">2. 你覺得 APGO 官網有哪些地方需要改善？<span class="apgo-sv__hint-q">（可複選）</span></legend>
+              {%- capture q2_options -%}find|商品不好找／分類不清楚;info|商品介紹不夠清楚;promo|優惠活動或折扣不好理解;dense|頁面資訊太多／不好閱讀;mobile|手機版操作不方便;checkout|購物車或結帳不順暢;speed|網頁載入速度太慢;shipping|運費、付款或配送資訊不清楚;support|找不到客服或問題解答;other|其他問題;none|沒有遇到問題{%- endcapture -%}
+              <div class="apgo-sv__options">
+                {%- assign q2_list = q2_options | split: ';' -%}
+                {%- for pair in q2_list -%}
+                  {%- assign parts = pair | split: '|' -%}
+                  <label class="apgo-sv__option">
+                    <input type="checkbox" name="q2" value="{{ parts[0] }}">
+                    <span>{{ parts[1] }}</span>
+                  </label>
+                  {%- if parts[0] == 'other' -%}
+                    <input
+                      class="apgo-sv__other"
+                      type="text"
+                      name="q2_other"
+                      maxlength="50"
+                      placeholder="簡單說說遇到什麼問題（50 字內）"
+                      aria-label="其他問題說明"
+                      data-apgo-sv-other
+                      hidden
+                    >
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              <p class="apgo-sv__error" data-apgo-sv-error hidden>請至少選一項</p>
+            </fieldset>
+
+            <fieldset class="apgo-sv__step" data-step="3" hidden>
+              <legend class="apgo-sv__q">3. 有沒有其他想對我們說的話？<span class="apgo-sv__hint-q">（選填）</span></legend>
+              <textarea
+                class="apgo-sv__text"
+                name="q3"
+                rows="4"
+                maxlength="300"
+                placeholder="例如：希望搜尋商品更方便、結帳步驟更簡單……"
+                aria-label="其他意見"
+                data-apgo-sv-q3
+              ></textarea>
+              <p class="apgo-sv__chars"><span data-apgo-sv-chars>300</span> 字</p>
+              <p class="apgo-sv__error" data-apgo-sv-send-error hidden>
+                送出失敗，你的答案都還在，請再試一次。
+              </p>
+            </fieldset>
+
+            <div class="apgo-sv__nav">
+              <button type="button" class="apgo-sv__btn apgo-sv__btn--ghost" data-apgo-sv-prev hidden>上一題</button>
+              <button type="button" class="apgo-sv__btn" data-apgo-sv-next>下一題</button>
+              <button type="submit" class="apgo-sv__btn" data-apgo-sv-submit hidden>送出問卷</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="apgo-sv__done" data-apgo-sv-done hidden>
+          <div data-apgo-sv-state="issued" hidden>
+            <p class="apgo-sv__done-title">{{ s.done_title | escape }}</p>
+            <p class="apgo-sv__done-text">{{ s.done_text | escape | newline_to_br }}</p>
+            <p class="apgo-sv__reward">{{ s.reward_text | escape }}</p>
+            {%- if code != blank -%}
+              <div class="apgo-sv__code">
+                <span class="apgo-sv__code-value">{{ code | escape }}</span>
+                <button type="button" class="apgo-sv__copy" data-apgo-sv-copy="{{ code | escape }}">複製</button>
+              </div>
+            {%- endif -%}
+            <p class="apgo-sv__small">{{ s.code_note | escape }}</p>
+            <a class="apgo-sv__btn apgo-sv__btn--block" href="{{ shop_url }}" data-apgo-sv-shop>去逛逛</a>
+          </div>
+
+          <div data-apgo-sv-state="login" hidden>
+            <p class="apgo-sv__done-title">{{ s.done_title | escape }}</p>
+            <p class="apgo-sv__done-text">{{ s.login_text | escape | newline_to_br }}</p>
+            <a class="apgo-sv__btn apgo-sv__btn--block" href="{{ login_url }}" data-apgo-sv-login>登入領取</a>
+          </div>
+
+          <div data-apgo-sv-state="already" hidden>
+            <p class="apgo-sv__done-title">{{ s.already_title | escape }}</p>
+            <p class="apgo-sv__done-text">{{ s.already_text | escape | newline_to_br }}</p>
+            {%- if code != blank -%}
+              <div class="apgo-sv__code">
+                <span class="apgo-sv__code-value">{{ code | escape }}</span>
+                <button type="button" class="apgo-sv__copy" data-apgo-sv-copy="{{ code | escape }}">複製</button>
+              </div>
+            {%- endif -%}
+            <a class="apgo-sv__btn apgo-sv__btn--block" href="{{ shop_url }}" data-apgo-sv-shop>去逛逛</a>
+          </div>
+
+          <div data-apgo-sv-state="failed" hidden>
+            <p class="apgo-sv__done-title">{{ s.failed_title | escape }}</p>
+            <p class="apgo-sv__done-text">{{ s.failed_text | escape | newline_to_br }}</p>
+            {%- if s.support_link != blank -%}
+              <a class="apgo-sv__btn apgo-sv__btn--block apgo-sv__btn--ghost" href="{{ s.support_link }}">聯絡客服</a>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ 'apgo-survey.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "APGO · 購物體驗調查",
+  "class": "apgo-survey-section",
+  "limit": 1,
+  "enabled_on": { "groups": ["footer"] },
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "啟用問卷入口", "default": false },
+    {
+      "type": "select",
+      "id": "pages",
+      "label": "顯示在",
+      "options": [
+        { "value": "index", "label": "只有首頁" },
+        { "value": "all", "label": "全站" }
+      ],
+      "default": "index"
+    },
+    {
+      "type": "text",
+      "id": "campaign_id",
+      "label": "活動代號",
+      "info": "換新一期問卷時改這裡；同一個代號，每位會員只領一次獎勵。",
+      "default": "2026-11"
+    },
+    { "type": "header", "content": "入口與提示" },
+    { "type": "text", "id": "launcher_label", "label": "入口文字", "default": "購物體驗調查" },
+    { "type": "text", "id": "hint_text", "label": "提示泡泡文字", "default": "花 30 秒填問卷，送你 $200 折價券" },
+    {
+      "type": "range",
+      "id": "hint_delay",
+      "label": "停留幾秒後出現提示",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "unit": "秒",
+      "default": 30
+    },
+    { "type": "header", "content": "問卷" },
+    { "type": "text", "id": "title", "label": "標題", "default": "你的意見，讓 APGO 更好！" },
+    { "type": "text", "id": "subtitle", "label": "說明", "default": "只需約 30 秒，幫助我們改善購物體驗。" },
+    {
+      "type": "text",
+      "id": "refill_note",
+      "label": "已領過獎勵的會員看到的提醒",
+      "default": "你已領過折價券，可以再填，但不會再發獎勵。"
+    },
+    { "type": "header", "content": "完成畫面" },
+    { "type": "text", "id": "done_title", "label": "感謝標題", "default": "🎁 感謝你的回饋！" },
+    {
+      "type": "textarea",
+      "id": "done_text",
+      "label": "感謝文字",
+      "default": "你的意見，讓 APGO 變得更好。\n送你一份專屬購物回饋禮："
+    },
+    { "type": "text", "id": "reward_text", "label": "獎勵說明", "default": "$200 折價券（訂單滿 $999 可用）" },
+    { "type": "text", "id": "discount_code", "label": "折扣碼", "default": "QNA200" },
+    { "type": "text", "id": "code_note", "label": "折扣碼下方小字", "default": "約 5 分鐘後可使用，每位會員限用一次。" },
+    {
+      "type": "textarea",
+      "id": "login_text",
+      "label": "未登入時的文字",
+      "default": "登入會員即可領取 $200 折價券。"
+    },
+    { "type": "text", "id": "already_title", "label": "已領過：標題", "default": "感謝你再次回饋！" },
+    {
+      "type": "textarea",
+      "id": "already_text",
+      "label": "已領過：文字",
+      "default": "折價券每位會員限領一次，你的折扣碼是："
+    },
+    { "type": "text", "id": "failed_title", "label": "發放失敗：標題", "default": "問卷已收到！" },
+    {
+      "type": "textarea",
+      "id": "failed_text",
+      "label": "發放失敗：文字",
+      "default": "折價券稍後會自動補發，有問題請聯絡客服。"
+    },
+    { "type": "url", "id": "support_link", "label": "客服連結" },
+    { "type": "url", "id": "shop_link", "label": "「去逛逛」連結", "info": "留空＝全部商品" },
+    { "type": "header", "content": "進階" },
+    {
+      "type": "text",
+      "id": "endpoint",
+      "label": "後端網址",
+      "info": "Shopify App Proxy 的路徑，平常不用改。",
+      "default": "/apps/survey"
+    },
+    {
+      "type": "select",
+      "id": "preview",
+      "label": "預覽（只在編輯器有效）",
+      "info": "選一種完成畫面，在編輯器裡送出問卷時直接顯示，不會真的送出。",
+      "options": [
+        { "value": "", "label": "不預覽，真的送出" },
+        { "value": "issued", "label": "已登入、第一次領" },
+        { "value": "login", "label": "未登入" },
+        { "value": "already", "label": "已領過" },
+        { "value": "failed", "label": "發放失敗" },
+        { "value": "error", "label": "送出失敗（網路）" }
+      ],
+      "default": ""
+    }
+  ],
+  "presets": [{ "name": "APGO · 購物體驗調查" }]
+}
+{% endschema %}
