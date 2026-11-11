@@ -42,7 +42,7 @@
   >
     <div class="apgo-sv__launcher" data-apgo-sv-launcher>
       <button type="button" class="apgo-sv__open" data-apgo-sv-open aria-haspopup="dialog">
-        <span class="apgo-sv__gift" aria-hidden="true">🎁</span>
+        <span class="apgo-sv__gift">{% render 'apgo-icon-gift' %}</span>
         <span class="apgo-sv__open-label">{{ s.launcher_label | escape }}</span>
       </button>
       <button type="button" class="apgo-sv__collapse" data-apgo-sv-collapse aria-label="收起問卷入口">
@@ -160,6 +160,7 @@
 
         <div class="apgo-sv__done" data-apgo-sv-done hidden>
           <div data-apgo-sv-state="issued" hidden>
+            <span class="apgo-sv__done-icon">{% render 'apgo-icon-gift' %}</span>
             <p class="apgo-sv__done-title">{{ s.done_title | escape }}</p>
             <p class="apgo-sv__done-text">{{ s.done_text | escape | newline_to_br }}</p>
             <p class="apgo-sv__reward">{{ s.reward_text | escape }}</p>
@@ -174,12 +175,14 @@
           </div>
 
           <div data-apgo-sv-state="login" hidden>
+            <span class="apgo-sv__done-icon">{% render 'apgo-icon-gift' %}</span>
             <p class="apgo-sv__done-title">{{ s.done_title | escape }}</p>
             <p class="apgo-sv__done-text">{{ s.login_text | escape | newline_to_br }}</p>
             <a class="apgo-sv__btn apgo-sv__btn--block" href="{{ login_url }}" data-apgo-sv-login>登入領取</a>
           </div>
 
           <div data-apgo-sv-state="already" hidden>
+            <span class="apgo-sv__done-icon">{% render 'apgo-icon-gift' %}</span>
             <p class="apgo-sv__done-title">{{ s.already_title | escape }}</p>
             <p class="apgo-sv__done-text">{{ s.already_text | escape | newline_to_br }}</p>
             {%- if code != blank -%}
@@ -254,7 +257,7 @@
       "default": "你已領過折價券，可以再填，但不會再發獎勵。"
     },
     { "type": "header", "content": "完成畫面" },
-    { "type": "text", "id": "done_title", "label": "感謝標題", "default": "🎁 感謝你的回饋！" },
+    { "type": "text", "id": "done_title", "label": "感謝標題", "default": "感謝你的回饋！" },
     {
       "type": "textarea",
       "id": "done_text",

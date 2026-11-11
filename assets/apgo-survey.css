@@ -55,7 +55,20 @@
 }
 
 .apgo-sv__open:hover { border-color: var(--sv-accent); }
-.apgo-sv__gift { font-size: 20px; line-height: 1; }
+.apgo-sv__gift { display: inline-flex; width: 22px; height: 22px; color: var(--sv-accent); }
+.apgo-sv__gift svg,
+.apgo-sv__done-icon svg { width: 100%; height: 100%; }
+
+.apgo-sv__done-icon {
+  display: inline-flex;
+  width: 52px;
+  height: 52px;
+  padding: 12px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: rgba(240, 132, 24, 0.14);
+  color: var(--sv-accent);
+}
 
 .apgo-sv__collapse {
   width: 26px;
@@ -358,7 +371,7 @@
     justify-content: center;
   }
   .apgo-sv__open-label { display: none; }
-  .apgo-sv__gift { font-size: 24px; }
+  .apgo-sv__gift { width: 26px; height: 26px; }
   .apgo-sv__collapse {
     position: absolute;
     top: -6px;
