@@ -89,7 +89,7 @@
   align-items: flex-start;
   gap: 4px;
   width: max-content;
-  max-width: min(280px, calc(100vw - 32px));
+  max-width: min(340px, calc(100vw - 32px));
   padding: 10px 8px 10px 14px;
   border-radius: 12px;
   background: var(--sv-accent);
