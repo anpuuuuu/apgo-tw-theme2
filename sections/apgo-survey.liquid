@@ -78,8 +78,9 @@
 
         <div class="apgo-sv__body" data-apgo-sv-body>
           <p class="apgo-sv__note" data-apgo-sv-claimed hidden>
-            {{ s.refill_note | escape }}
-            {%- if code != blank %} 折扣碼 <strong>{{ code | escape }}</strong>{% endif %}
+            {%- comment -%} {code} in the text becomes the discount code, highlighted. {%- endcomment -%}
+            {%- assign code_html = '<strong>' | append: code | append: '</strong>' -%}
+            {{ s.refill_note | escape | replace: '{code}', code_html }}
           </p>
 
           <div class="apgo-sv__progress" aria-hidden="true">
@@ -254,7 +255,8 @@
       "type": "text",
       "id": "refill_note",
       "label": "已領過獎勵的會員看到的提醒",
-      "default": "你已領過折價券，可以再填，但不會再發獎勵。"
+      "info": "寫 {code} 的地方會換成折扣碼。",
+      "default": "你的 $200 折價券已經送給你囉！結帳時輸入 {code} 就能使用。也歡迎再分享想法，每一則我們都會認真看。"
     },
     { "type": "header", "content": "完成畫面" },
     { "type": "text", "id": "done_title", "label": "感謝標題", "default": "感謝你的回饋！" },
@@ -273,12 +275,12 @@
       "label": "未登入時的文字",
       "default": "登入會員即可領取 $200 折價券。"
     },
-    { "type": "text", "id": "already_title", "label": "已領過：標題", "default": "感謝你再次回饋！" },
+    { "type": "text", "id": "already_title", "label": "已領過：標題", "default": "謝謝你再次分享！" },
     {
       "type": "textarea",
       "id": "already_text",
       "label": "已領過：文字",
-      "default": "折價券每位會員限領一次，你的折扣碼是："
+      "default": "你的 $200 折價券已經送給你囉，結帳時輸入這組折扣碼就能使用："
     },
     { "type": "text", "id": "failed_title", "label": "發放失敗：標題", "default": "問卷已收到！" },
     {
