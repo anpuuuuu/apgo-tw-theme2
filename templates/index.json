@@ -38,8 +38,9 @@
         "text_WzURt8": {
           "type": "text",
           "name": "t:names.text",
+          "disabled": true,
           "settings": {
-            "text": "<p><a href=\"/pages/26_nov_prom2\" title=\"2026.11月活動頁\"><strong>最狂雙11🛍️599免運－必搶買1送2🎁</strong></a></p>",
+            "text": "<p><a href=\"/pages/26_nov_prom2\" title=\"2026.11月活動頁\"><strong>最狂雙11🛍️299免運－必搶買1送2🎁</strong></a></p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -283,6 +284,15 @@
             "alt": ""
           }
         },
+        "banner_Vy3Bhj": {
+          "type": "banner",
+          "name": "vip分級會員優惠",
+          "settings": {
+            "image": "shopify://shop_images/APGO_81f23450-55c3-4cd5-a08e-9129cb558314.png",
+            "link": "shopify://pages/apgo-vipmembership",
+            "alt": "vip分級會員優惠"
+          }
+        },
         "banner_fDyECz": {
           "type": "banner",
           "name": "防詐騙宣導",
@@ -344,6 +354,7 @@
         "banner_x6UiQX",
         "banner_AAW74k",
         "banner_4JmTtU",
+        "banner_Vy3Bhj",
         "banner_fDyECz",
         "banner_rcwDi3",
         "banner_jGTL4Q",
