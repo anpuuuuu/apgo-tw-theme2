@@ -2,6 +2,7 @@
   APGO · 購物體驗調查 — a floating entry at the bottom right that opens a
   three-question survey on the page itself. Lives in the footer group, like
   the campaign popup, and shows on the homepage only unless set to all pages.
+  Design: the 「購物體驗問卷 UI 重新設計」 canvas (2026-11-12).
 
   Answers go to /apps/survey/… — a Shopify App Proxy to the apgo-survey worker,
   which stores them and hands out the reward. Shopify adds the signed-in
@@ -24,7 +25,30 @@
   assign login_return = request.path | append: '?apgo_survey=claim' | url_encode
   assign login_url = routes.account_login_url | append: '?return_url=' | append: login_return | append: '&return_to=' | append: login_return
   assign shop_url = s.shop_link | default: routes.all_products_collection_url
+
+  # The reward words (e.g. "$200 折價券") show in orange wherever they appear in the hint and the header.
+  assign reward_hl = s.reward_short | escape
+  assign reward_strong = '<strong class="apgo-sv__hl">' | append: reward_hl | append: '</strong>'
+  assign code_strong = '<strong class="apgo-sv__hl">' | append: code | append: '</strong>'
 -%}
+
+{%- capture gift_icon -%}{% render 'apgo-icon-gift' %}{%- endcapture -%}
+
+{%- capture ticket -%}
+  <div class="apgo-sv__ticket">
+    <div class="apgo-sv__ticket-main">
+      <p class="apgo-sv__ticket-label">{{ s.reward_label | escape }}</p>
+      <p class="apgo-sv__ticket-amount">{{ s.reward_amount | escape }}</p>
+      <p class="apgo-sv__ticket-cond">{{ s.reward_condition | escape }}</p>
+    </div>
+    <span class="apgo-sv__ticket-cut" aria-hidden="true"></span>
+    <div class="apgo-sv__ticket-side">
+      <p class="apgo-sv__ticket-label">折扣碼</p>
+      <p class="apgo-sv__ticket-code">{{ code | escape }}</p>
+      <button type="button" class="apgo-sv__copy" data-apgo-sv-copy="{{ code | escape }}">複製</button>
+    </div>
+  </div>
+{%- endcapture -%}
 
 {%- if survey_on -%}
   {{ 'apgo-survey.css' | asset_url | stylesheet_tag }}
@@ -40,18 +64,23 @@
     data-preview="{% if request.design_mode %}{{ s.preview }}{% endif %}"
     {% if request.design_mode %}data-design-mode{% endif %}
   >
+    {%- comment -%} Entry: a round gift on phones, a pill with words on larger screens. {%- endcomment -%}
     <div class="apgo-sv__launcher" data-apgo-sv-launcher>
-      <button type="button" class="apgo-sv__open" data-apgo-sv-open aria-haspopup="dialog">
-        <span class="apgo-sv__gift">{% render 'apgo-icon-gift' %}</span>
+      <button type="button" class="apgo-sv__open" data-apgo-sv-open aria-haspopup="dialog" aria-label="{{ s.launcher_label | escape }}">
+        <span class="apgo-sv__gift">{{ gift_icon }}</span>
         <span class="apgo-sv__open-label">{{ s.launcher_label | escape }}</span>
+        <span class="apgo-sv__dot" aria-hidden="true"></span>
       </button>
       <button type="button" class="apgo-sv__collapse" data-apgo-sv-collapse aria-label="收起問卷入口">
-        <span aria-hidden="true">&times;</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
       <div class="apgo-sv__hint" data-apgo-sv-hint hidden>
-        <button type="button" class="apgo-sv__hint-text" data-apgo-sv-open>{{ s.hint_text | escape }}</button>
+        <button type="button" class="apgo-sv__hint-body" data-apgo-sv-open>
+          <span class="apgo-sv__hint-title">{{ s.hint_title | escape }}</span>
+          <span class="apgo-sv__hint-text">{{ s.hint_text | escape | replace: reward_hl, reward_strong }}</span>
+        </button>
         <button type="button" class="apgo-sv__hint-close" data-apgo-sv-hint-close aria-label="關閉提示">
-          <span aria-hidden="true">&times;</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
         </button>
       </div>
     </div>
@@ -59,148 +88,172 @@
     <div class="apgo-sv__layer" data-apgo-sv-layer hidden>
       <button type="button" class="apgo-sv__backdrop" data-apgo-sv-close tabindex="-1" aria-label="關閉問卷"></button>
 
-      <div
-        class="apgo-sv__panel"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="ApgoSurveyTitle-{{ section.id }}"
-        tabindex="-1"
-      >
-        <button type="button" class="apgo-sv__x" data-apgo-sv-close aria-label="關閉">
-          <span aria-hidden="true">&times;</span>
-        </button>
+      <div class="apgo-sv__panel" role="dialog" aria-modal="true" aria-labelledby="ApgoSurveyTitle-{{ section.id }}" tabindex="-1">
+        <span class="apgo-sv__grab" aria-hidden="true"></span>
 
         <div class="apgo-sv__head">
-          <p class="apgo-sv__eyebrow">APGO｜購物體驗調查</p>
-          <h2 class="apgo-sv__title" id="ApgoSurveyTitle-{{ section.id }}">{{ s.title | escape }}</h2>
-          <p class="apgo-sv__sub">{{ s.subtitle | escape }}</p>
+          <span class="apgo-sv__head-icon" aria-hidden="true">{{ gift_icon }}</span>
+          <div class="apgo-sv__head-text">
+            <h2 class="apgo-sv__title" id="ApgoSurveyTitle-{{ section.id }}">{{ s.panel_title | escape }}</h2>
+            <p class="apgo-sv__sub">{{ s.panel_note | escape | replace: reward_hl, reward_strong }}</p>
+          </div>
+          <button type="button" class="apgo-sv__x" data-apgo-sv-close aria-label="關閉問卷">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
         </div>
 
-        <div class="apgo-sv__body" data-apgo-sv-body>
-          <p class="apgo-sv__note" data-apgo-sv-claimed hidden>
-            {%- comment -%} {code} in the text becomes the discount code, highlighted. {%- endcomment -%}
-            {%- assign code_html = '<strong>' | append: code | append: '</strong>' -%}
-            {{ s.refill_note | escape | replace: '{code}', code_html }}
-          </p>
+        <div class="apgo-sv__progress" data-apgo-sv-progress aria-hidden="true">
+          <span class="apgo-sv__seg" data-apgo-sv-seg></span>
+          <span class="apgo-sv__seg" data-apgo-sv-seg></span>
+          <span class="apgo-sv__seg" data-apgo-sv-seg></span>
+          <span class="apgo-sv__count" data-apgo-sv-count>1 / 3</span>
+        </div>
 
-          <div class="apgo-sv__progress" aria-hidden="true">
-            <span class="apgo-sv__bar"><span data-apgo-sv-bar></span></span>
-            <span class="apgo-sv__count" data-apgo-sv-count>1 / 3</span>
-          </div>
+        <form class="apgo-sv__form" data-apgo-sv-form novalidate>
+          <div class="apgo-sv__body" data-apgo-sv-body>
+            <p class="apgo-sv__note" data-apgo-sv-claimed hidden>
+              {{ s.refill_note | escape | replace: '{code}', code_strong }}
+            </p>
 
-          <form class="apgo-sv__form" data-apgo-sv-form novalidate>
             <fieldset class="apgo-sv__step" data-step="1">
-              <legend class="apgo-sv__q">1. 你對 APGO 官網的購物體驗滿意嗎？</legend>
+              <legend class="apgo-sv__q">你對 APGO 官網的購物體驗滿意嗎？</legend>
+              <p class="apgo-sv__q-sub">點一下最接近的表情就好</p>
               <div class="apgo-sv__faces">
-                {%- assign faces = '😣,😕,😐,🙂,😍' | split: ',' -%}
                 {%- assign face_names = '非常不滿意,不太滿意,普通,滿意,非常滿意' | split: ',' -%}
-                {%- for face in faces -%}
+                {%- capture eyes_dot -%}M8.6 9.8h.01M15.4 9.8h.01{%- endcapture -%}
+                {%- assign mouths = 'M8 17c1.1-1.7 2.5-2.5 4-2.5s2.9.8 4 2.5|M8.5 16.2c1-.8 2.2-1.2 3.5-1.2s2.5.4 3.5 1.2|M8.6 15.4h6.8|M8.5 14.6c1 .9 2.2 1.4 3.5 1.4s2.5-.5 3.5-1.4|M8 14c1.1 1.9 2.5 2.8 4 2.8s2.9-.9 4-2.8' | split: '|' -%}
+                {%- for name in face_names -%}
+                  {%- liquid
+                    assign eyes = eyes_dot
+                    if forloop.last
+                      assign eyes = 'M7.9 10.2c.6-.9 1.6-.9 2.2 0M13.9 10.2c.6-.9 1.6-.9 2.2 0'
+                    endif
+                  -%}
                   <label class="apgo-sv__face">
-                    <input type="radio" name="q1" value="{{ forloop.index }}">
-                    <span class="apgo-sv__face-icon" aria-hidden="true">{{ face }}</span>
-                    <span class="apgo-sv__face-score">{{ forloop.index }} 分</span>
-                    <span class="apgo-sv__sr">{{ face_names[forloop.index0] }}</span>
+                    <input type="radio" name="q1" value="{{ forloop.index }}" data-label="{{ name }}" aria-label="{{ forloop.index }} 分，{{ name }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.5"/><path d="{{ eyes }}"/><path d="{{ mouths[forloop.index0] }}"/></svg>
+                    <span class="apgo-sv__face-score" aria-hidden="true">{{ forloop.index }}</span>
                   </label>
                 {%- endfor -%}
               </div>
-              <p class="apgo-sv__error" data-apgo-sv-error hidden>請選一個分數</p>
+              <div class="apgo-sv__ends" aria-hidden="true"><span>非常不滿意</span><span>非常滿意</span></div>
+              <p class="apgo-sv__score-label" data-apgo-sv-score-label aria-live="polite">還沒選</p>
             </fieldset>
 
             <fieldset class="apgo-sv__step" data-step="2" hidden>
-              <legend class="apgo-sv__q">2. 你覺得 APGO 官網有哪些地方需要改善？<span class="apgo-sv__hint-q">（可複選）</span></legend>
-              {%- capture q2_options -%}find|商品不好找／分類不清楚;info|商品介紹不夠清楚;promo|優惠活動或折扣不好理解;dense|頁面資訊太多／不好閱讀;mobile|手機版操作不方便;checkout|購物車或結帳不順暢;speed|網頁載入速度太慢;shipping|運費、付款或配送資訊不清楚;support|找不到客服或問題解答;other|其他問題;none|沒有遇到問題{%- endcapture -%}
-              <div class="apgo-sv__options">
+              <legend class="apgo-sv__q">你覺得官網有哪些地方需要改善？</legend>
+              <p class="apgo-sv__q-sub">可以選好幾個</p>
+              {%- capture q2_options -%}find|商品不好找／分類不清楚;info|商品介紹不夠清楚;promo|優惠活動或折扣不好理解;dense|頁面資訊太多／不好閱讀;mobile|手機版操作不方便;checkout|購物車或結帳不順暢;speed|網頁載入速度太慢;shipping|運費、付款或配送資訊不清楚;support|找不到客服或問題解答;other|其他問題{%- endcapture -%}
+              <div class="apgo-sv__chips">
                 {%- assign q2_list = q2_options | split: ';' -%}
                 {%- for pair in q2_list -%}
                   {%- assign parts = pair | split: '|' -%}
-                  <label class="apgo-sv__option">
+                  <label class="apgo-sv__chip">
                     <input type="checkbox" name="q2" value="{{ parts[0] }}">
+                    <span class="apgo-sv__box" aria-hidden="true"></span>
                     <span>{{ parts[1] }}</span>
                   </label>
-                  {%- if parts[0] == 'other' -%}
-                    <input
-                      class="apgo-sv__other"
-                      type="text"
-                      name="q2_other"
-                      maxlength="50"
-                      placeholder="簡單說說遇到什麼問題（50 字內）"
-                      aria-label="其他問題說明"
-                      data-apgo-sv-other
-                      hidden
-                    >
-                  {%- endif -%}
                 {%- endfor -%}
               </div>
-              <p class="apgo-sv__error" data-apgo-sv-error hidden>請至少選一項</p>
+              <input
+                class="apgo-sv__other"
+                type="text"
+                name="q2_other"
+                maxlength="50"
+                placeholder="簡單說說遇到什麼問題（50 字內）"
+                aria-label="其他問題說明"
+                data-apgo-sv-other
+                hidden
+              >
+              <div class="apgo-sv__or" aria-hidden="true"><span>或</span></div>
+              <label class="apgo-sv__chip apgo-sv__chip--wide">
+                <input type="checkbox" name="q2" value="none">
+                <span class="apgo-sv__box" aria-hidden="true"></span>
+                <span>沒有遇到問題，一切都很順利</span>
+              </label>
             </fieldset>
 
             <fieldset class="apgo-sv__step" data-step="3" hidden>
-              <legend class="apgo-sv__q">3. 有沒有其他想對我們說的話？<span class="apgo-sv__hint-q">（選填）</span></legend>
+              <legend class="apgo-sv__q">還有什麼想對我們說的嗎？</legend>
+              <p class="apgo-sv__q-sub">選填，不寫也可以直接送出</p>
               <textarea
                 class="apgo-sv__text"
                 name="q3"
-                rows="4"
+                rows="6"
                 maxlength="300"
                 placeholder="例如：希望搜尋商品更方便、結帳步驟更簡單……"
                 aria-label="其他意見"
                 data-apgo-sv-q3
               ></textarea>
-              <p class="apgo-sv__chars"><span data-apgo-sv-chars>300</span> 字</p>
-              <p class="apgo-sv__error" data-apgo-sv-send-error hidden>
-                送出失敗，你的答案都還在，請再試一次。
-              </p>
+              <p class="apgo-sv__chars"><span data-apgo-sv-chars>0</span> / 300</p>
+              <p class="apgo-sv__error" data-apgo-sv-send-error hidden role="alert">送出失敗，你的答案都還在，請再試一次。</p>
             </fieldset>
+          </div>
 
-            <div class="apgo-sv__nav">
-              <button type="button" class="apgo-sv__btn apgo-sv__btn--ghost" data-apgo-sv-prev hidden>上一題</button>
-              <button type="button" class="apgo-sv__btn" data-apgo-sv-next>下一題</button>
-              <button type="submit" class="apgo-sv__btn" data-apgo-sv-submit hidden>送出問卷</button>
-            </div>
-          </form>
-        </div>
+          <div class="apgo-sv__nav" data-apgo-sv-nav>
+            <button type="button" class="apgo-sv__btn apgo-sv__btn--ghost" data-apgo-sv-prev hidden>上一題</button>
+            <button type="button" class="apgo-sv__btn" data-apgo-sv-next disabled>下一題</button>
+            <button type="submit" class="apgo-sv__btn" data-apgo-sv-submit hidden>送出問卷</button>
+          </div>
+        </form>
 
         <div class="apgo-sv__done" data-apgo-sv-done hidden>
           <div data-apgo-sv-state="issued" hidden>
-            <span class="apgo-sv__done-icon">{% render 'apgo-icon-gift' %}</span>
-            <p class="apgo-sv__done-title">{{ s.done_title | escape }}</p>
-            <p class="apgo-sv__done-text">{{ s.done_text | escape | newline_to_br }}</p>
-            <p class="apgo-sv__reward">{{ s.reward_text | escape }}</p>
-            {%- if code != blank -%}
-              <div class="apgo-sv__code">
-                <span class="apgo-sv__code-value">{{ code | escape }}</span>
-                <button type="button" class="apgo-sv__copy" data-apgo-sv-copy="{{ code | escape }}">複製</button>
-              </div>
-            {%- endif -%}
+            <div class="apgo-sv__done-head">
+              <span class="apgo-sv__done-icon" aria-hidden="true">{{ gift_icon }}</span>
+              <p class="apgo-sv__done-title">{{ s.done_title | escape }}</p>
+              <p class="apgo-sv__done-text">{{ s.done_text | escape | newline_to_br }}</p>
+            </div>
+            {%- if code != blank %}{{ ticket }}{% endif -%}
             <p class="apgo-sv__small">{{ s.code_note | escape }}</p>
             <a class="apgo-sv__btn apgo-sv__btn--block" href="{{ shop_url }}" data-apgo-sv-shop>去逛逛</a>
+            <button type="button" class="apgo-sv__text-btn" data-apgo-sv-close>關閉</button>
           </div>
 
           <div data-apgo-sv-state="login" hidden>
-            <span class="apgo-sv__done-icon">{% render 'apgo-icon-gift' %}</span>
-            <p class="apgo-sv__done-title">{{ s.done_title | escape }}</p>
-            <p class="apgo-sv__done-text">{{ s.login_text | escape | newline_to_br }}</p>
+            <div class="apgo-sv__done-head">
+              <span class="apgo-sv__done-icon" aria-hidden="true">{{ gift_icon }}</span>
+              <p class="apgo-sv__done-title">{{ s.done_title | escape }}</p>
+              <p class="apgo-sv__done-text">{{ s.login_text | escape | newline_to_br }}</p>
+            </div>
+            <div class="apgo-sv__ticket apgo-sv__ticket--locked">
+              <div class="apgo-sv__ticket-main">
+                <p class="apgo-sv__ticket-label">{{ s.reward_label | escape }}</p>
+                <p class="apgo-sv__ticket-amount">{{ s.reward_amount | escape }}</p>
+                <p class="apgo-sv__ticket-cond">{{ s.reward_condition | escape }}</p>
+              </div>
+              <span class="apgo-sv__ticket-cut" aria-hidden="true"></span>
+              <div class="apgo-sv__ticket-side">
+                <svg class="apgo-sv__lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="9.5" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                <p class="apgo-sv__ticket-locked-text">登入後<br>顯示折扣碼</p>
+              </div>
+            </div>
             <a class="apgo-sv__btn apgo-sv__btn--block" href="{{ login_url }}" data-apgo-sv-login>登入領取</a>
+            <button type="button" class="apgo-sv__text-btn" data-apgo-sv-close>先逛逛，稍後再領</button>
+            <p class="apgo-sv__small">{{ s.login_note | escape }}</p>
           </div>
 
           <div data-apgo-sv-state="already" hidden>
-            <span class="apgo-sv__done-icon">{% render 'apgo-icon-gift' %}</span>
-            <p class="apgo-sv__done-title">{{ s.already_title | escape }}</p>
-            <p class="apgo-sv__done-text">{{ s.already_text | escape | newline_to_br }}</p>
-            {%- if code != blank -%}
-              <div class="apgo-sv__code">
-                <span class="apgo-sv__code-value">{{ code | escape }}</span>
-                <button type="button" class="apgo-sv__copy" data-apgo-sv-copy="{{ code | escape }}">複製</button>
-              </div>
-            {%- endif -%}
+            <div class="apgo-sv__done-head">
+              <span class="apgo-sv__done-icon" aria-hidden="true">{{ gift_icon }}</span>
+              <p class="apgo-sv__done-title">{{ s.already_title | escape }}</p>
+              <p class="apgo-sv__done-text">{{ s.already_text | escape | newline_to_br }}</p>
+            </div>
+            {%- if code != blank %}{{ ticket }}{% endif -%}
             <a class="apgo-sv__btn apgo-sv__btn--block" href="{{ shop_url }}" data-apgo-sv-shop>去逛逛</a>
+            <button type="button" class="apgo-sv__text-btn" data-apgo-sv-close>關閉</button>
           </div>
 
           <div data-apgo-sv-state="failed" hidden>
-            <p class="apgo-sv__done-title">{{ s.failed_title | escape }}</p>
-            <p class="apgo-sv__done-text">{{ s.failed_text | escape | newline_to_br }}</p>
+            <div class="apgo-sv__done-head">
+              <span class="apgo-sv__done-icon" aria-hidden="true">{{ gift_icon }}</span>
+              <p class="apgo-sv__done-title">{{ s.failed_title | escape }}</p>
+              <p class="apgo-sv__done-text">{{ s.failed_text | escape | newline_to_br }}</p>
+            </div>
             {%- if s.support_link != blank -%}
               <a class="apgo-sv__btn apgo-sv__btn--block apgo-sv__btn--ghost" href="{{ s.support_link }}">聯絡客服</a>
             {%- endif -%}
+            <button type="button" class="apgo-sv__text-btn" data-apgo-sv-close>關閉</button>
           </div>
         </div>
       </div>
@@ -236,8 +289,9 @@
       "default": "2026-11"
     },
     { "type": "header", "content": "入口與提示" },
-    { "type": "text", "id": "launcher_label", "label": "入口文字", "default": "購物體驗調查" },
-    { "type": "text", "id": "hint_text", "label": "提示泡泡文字", "default": "花 30 秒填問卷，送你 $200 折價券" },
+    { "type": "text", "id": "launcher_label", "label": "入口文字（電腦版）", "default": "購物體驗調查" },
+    { "type": "text", "id": "hint_title", "label": "提示泡泡標題", "default": "花 30 秒填問卷" },
+    { "type": "text", "id": "hint_text", "label": "提示泡泡文字", "default": "送你 $200 折價券，馬上開始 →" },
     {
       "type": "range",
       "id": "hint_delay",
@@ -249,8 +303,8 @@
       "default": 30
     },
     { "type": "header", "content": "問卷" },
-    { "type": "text", "id": "title", "label": "標題", "default": "你的意見，讓 APGO 更好！" },
-    { "type": "text", "id": "subtitle", "label": "說明", "default": "只需約 30 秒，幫助我們改善購物體驗。" },
+    { "type": "text", "id": "panel_title", "label": "視窗標題", "default": "購物體驗調查" },
+    { "type": "text", "id": "panel_note", "label": "標題下方小字", "default": "約 30 秒 · 完成送 $200 折價券" },
     {
       "type": "text",
       "id": "refill_note",
@@ -258,29 +312,35 @@
       "info": "寫 {code} 的地方會換成折扣碼。",
       "default": "你的 $200 折價券已經送給你囉！結帳時輸入 {code} 就能使用。也歡迎再分享想法，每一則我們都會認真看。"
     },
+    { "type": "header", "content": "折價券" },
+    {
+      "type": "text",
+      "id": "reward_short",
+      "label": "要標成橘色的獎勵字樣",
+      "info": "提示泡泡和視窗標題裡出現這幾個字時，會標成橘色。",
+      "default": "$200 折價券"
+    },
+    { "type": "text", "id": "reward_amount", "label": "票券金額", "default": "$200" },
+    { "type": "text", "id": "reward_label", "label": "票券名稱", "default": "購物回饋券" },
+    { "type": "text", "id": "reward_condition", "label": "使用條件", "default": "訂單滿 $999 可用" },
+    { "type": "text", "id": "discount_code", "label": "折扣碼", "default": "QNA200" },
+    { "type": "text", "id": "code_note", "label": "票券下方小字", "default": "約 5 分鐘後可使用 · 每位會員限用一次" },
     { "type": "header", "content": "完成畫面" },
     { "type": "text", "id": "done_title", "label": "感謝標題", "default": "感謝你的回饋！" },
     {
       "type": "textarea",
       "id": "done_text",
       "label": "感謝文字",
-      "default": "你的意見，讓 APGO 變得更好。\n送你一份專屬購物回饋禮："
+      "default": "你的意見會讓 APGO 變得更好，\n這張購物回饋券送給你。"
     },
-    { "type": "text", "id": "reward_text", "label": "獎勵說明", "default": "$200 折價券（訂單滿 $999 可用）" },
-    { "type": "text", "id": "discount_code", "label": "折扣碼", "default": "QNA200" },
-    { "type": "text", "id": "code_note", "label": "折扣碼下方小字", "default": "約 5 分鐘後可使用，每位會員限用一次。" },
-    {
-      "type": "textarea",
-      "id": "login_text",
-      "label": "未登入時的文字",
-      "default": "登入會員即可領取 $200 折價券。"
-    },
+    { "type": "textarea", "id": "login_text", "label": "未登入：文字", "default": "登入會員，就能領取這張購物回饋券。" },
+    { "type": "text", "id": "login_note", "label": "未登入：下方小字", "default": "問卷已經保存，登入後回到首頁就會自動領取。" },
     { "type": "text", "id": "already_title", "label": "已領過：標題", "default": "謝謝你再次分享！" },
     {
       "type": "textarea",
       "id": "already_text",
       "label": "已領過：文字",
-      "default": "你的 $200 折價券已經送給你囉，結帳時輸入這組折扣碼就能使用："
+      "default": "這張購物回饋券已經送給你囉，\n結帳時輸入折扣碼就能使用。"
     },
     { "type": "text", "id": "failed_title", "label": "發放失敗：標題", "default": "問卷已收到！" },
     {

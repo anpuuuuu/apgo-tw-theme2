@@ -2,8 +2,9 @@
  * APGO · 購物體驗調查 (sections/apgo-survey.liquid)
  *
  * The entry opens a three-question survey on the page. Answers are kept on
- * this device until sent, so closing and reopening loses nothing. Sending goes
- * to the App Proxy (/apps/survey/…), which answers with the reward state:
+ * this device until sent, so closing and reopening loses nothing. Picking a
+ * face moves on to the next question by itself. Sending goes to the App Proxy
+ * (/apps/survey/…), which answers with the reward state:
  *   issued   signed in, first time: show the code
  *   login    not signed in: offer 登入領取; after signing in the page comes
  *            back with ?apgo_survey=claim and the reward is claimed here
@@ -34,20 +35,21 @@
   var CLIENT_KEY = 'apgo-survey:client';
   var SESSION_COLLAPSED = 'apgo-survey:collapsed';
   var SESSION_HINT = 'apgo-survey:hinted';
+  var AUTO_NEXT_MS = 450;
 
-  var launcher = root.querySelector('[data-apgo-sv-launcher]');
   var hint = root.querySelector('[data-apgo-sv-hint]');
   var layer = root.querySelector('[data-apgo-sv-layer]');
   var panel = root.querySelector('.apgo-sv__panel');
-  var body = root.querySelector('[data-apgo-sv-body]');
-  var done = root.querySelector('[data-apgo-sv-done]');
+  var progress = root.querySelector('[data-apgo-sv-progress]');
+  var segs = Array.prototype.slice.call(root.querySelectorAll('[data-apgo-sv-seg]'));
+  var count = root.querySelector('[data-apgo-sv-count]');
   var form = root.querySelector('[data-apgo-sv-form]');
+  var done = root.querySelector('[data-apgo-sv-done]');
   var steps = Array.prototype.slice.call(root.querySelectorAll('.apgo-sv__step'));
   var prevBtn = root.querySelector('[data-apgo-sv-prev]');
   var nextBtn = root.querySelector('[data-apgo-sv-next]');
   var submitBtn = root.querySelector('[data-apgo-sv-submit]');
-  var bar = root.querySelector('[data-apgo-sv-bar]');
-  var count = root.querySelector('[data-apgo-sv-count]');
+  var scoreLabel = root.querySelector('[data-apgo-sv-score-label]');
   var otherInput = root.querySelector('[data-apgo-sv-other]');
   var q3 = root.querySelector('[data-apgo-sv-q3]');
   var chars = root.querySelector('[data-apgo-sv-chars]');
@@ -57,6 +59,7 @@
   var step = 1;
   var lastFocus = null;
   var hintTimer = null;
+  var autoTimer = null;
   var statusChecked = false;
   var sending = false;
 
@@ -110,8 +113,8 @@
     if (hub) {
       var r = hub.getBoundingClientRect();
       if (r.width && r.height && getComputedStyle(hub).position === 'fixed') {
-        bottom = Math.round(window.innerHeight - r.top + 12);
-        right = Math.max(12, Math.round(window.innerWidth - r.right));
+        bottom = Math.round(window.innerHeight - r.top + 14);
+        right = Math.max(12, Math.round(window.innerWidth - r.right + (r.width - 56) / 2));
       }
     }
     root.style.setProperty('--sv-bottom', bottom + 'px');
@@ -131,6 +134,28 @@
     };
   }
 
+  // Picked answers are styled by this class (works without :has()).
+  function syncChecked() {
+    form.querySelectorAll('.apgo-sv__face, .apgo-sv__chip').forEach(function (label) {
+      var input = label.querySelector('input');
+      label.classList.toggle('is-checked', !!(input && input.checked));
+    });
+    var picked = form.querySelector('input[name="q1"]:checked');
+    if (scoreLabel) {
+      scoreLabel.textContent = picked ? picked.getAttribute('data-label') : '還沒選';
+      scoreLabel.classList.toggle('is-on', !!picked);
+    }
+    if (otherInput) {
+      var other = form.querySelector('input[name="q2"][value="other"]');
+      otherInput.hidden = !(other && other.checked);
+    }
+    nextBtn.disabled = !stepValid(step);
+  }
+
+  function countChars() {
+    if (q3 && chars) chars.textContent = String(q3.value.length);
+  }
+
   function restore() {
     var a = saved.answers;
     if (!a) return;
@@ -144,7 +169,6 @@
     });
     if (otherInput && a.q2_other) otherInput.value = a.q2_other;
     if (q3 && a.q3) q3.value = a.q3;
-    syncOther();
     countChars();
   }
 
@@ -154,41 +178,7 @@
     save();
   }
 
-  // Older browsers without :has() style the picked answers by this class.
-  function syncChecked() {
-    form.querySelectorAll('.apgo-sv__face, .apgo-sv__option').forEach(function (label) {
-      var input = label.querySelector('input');
-      label.classList.toggle('is-checked', !!(input && input.checked));
-    });
-  }
-
-  function syncOther() {
-    syncChecked();
-    if (!otherInput) return;
-    var other = form.querySelector('input[name="q2"][value="other"]');
-    otherInput.hidden = !(other && other.checked);
-  }
-
-  function countChars() {
-    if (q3 && chars) chars.textContent = String(300 - q3.value.length);
-  }
-
   /* ---------- steps ---------- */
-
-  function showStep(n) {
-    step = n;
-    steps.forEach(function (s) { s.hidden = Number(s.getAttribute('data-step')) !== n; });
-    prevBtn.hidden = n === 1;
-    nextBtn.hidden = n === steps.length;
-    submitBtn.hidden = n !== steps.length;
-    if (bar) bar.style.width = Math.round((n / steps.length) * 100) + '%';
-    if (count) count.textContent = n + ' / ' + steps.length;
-    steps.forEach(function (s) {
-      var err = s.querySelector('[data-apgo-sv-error]');
-      if (err) err.hidden = true;
-    });
-    if (sendError) sendError.hidden = true;
-  }
 
   function stepValid(n) {
     var a = answers();
@@ -197,22 +187,35 @@
     return true;
   }
 
+  function showStep(n) {
+    step = n;
+    steps.forEach(function (s) { s.hidden = Number(s.getAttribute('data-step')) !== n; });
+    prevBtn.hidden = n === 1;
+    nextBtn.hidden = n === steps.length;
+    submitBtn.hidden = n !== steps.length;
+    segs.forEach(function (seg, i) { seg.classList.toggle('is-on', i < n); });
+    if (count) count.textContent = n + ' / ' + steps.length;
+    if (sendError) sendError.hidden = true;
+    syncChecked();
+  }
+
   function next() {
-    if (!stepValid(step)) {
-      var err = steps[step - 1].querySelector('[data-apgo-sv-error]');
-      if (err) err.hidden = false;
-      return;
-    }
+    clearTimeout(autoTimer);
+    if (!stepValid(step) || step >= steps.length) return;
     track('apgo_survey_step', { step: step });
     showStep(step + 1);
     remember();
-    var first = steps[step - 1].querySelector('input, textarea');
-    if (first) first.focus({ preventScroll: true });
   }
 
   /* ---------- open / close ---------- */
 
   function isOpen() { return !layer.hidden; }
+
+  function showForm() {
+    done.hidden = true;
+    form.hidden = false;
+    progress.hidden = false;
+  }
 
   function open(source) {
     if (isOpen()) return;
@@ -227,15 +230,14 @@
 
   function close() {
     if (!isOpen()) return;
+    clearTimeout(autoTimer);
     layer.hidden = true;
     document.documentElement.classList.remove('apgo-sv-lock');
     if (!done.hidden) {
       // A finished survey starts fresh next time.
-      done.hidden = true;
-      body.hidden = false;
       form.reset();
-      syncOther();
       countChars();
+      showForm();
       showStep(1);
     }
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
@@ -317,17 +319,18 @@
     Array.prototype.forEach.call(done.querySelectorAll('[data-apgo-sv-state]'), function (el) {
       el.hidden = el.getAttribute('data-apgo-sv-state') !== state;
     });
-    body.hidden = true;
+    form.hidden = true;
+    progress.hidden = true;
     done.hidden = false;
-    panel.scrollTop = 0;
+    done.scrollTop = 0;
     track('apgo_survey_done', { reward: state });
   }
 
   function submit(event) {
     if (event) event.preventDefault();
     if (sending) return;
-    if (!stepValid(1)) { showStep(1); return next(); }
-    if (!stepValid(2)) { showStep(2); return next(); }
+    if (!stepValid(1)) return showStep(1);
+    if (!stepValid(2)) return showStep(2);
 
     var a = answers();
     sending = true;
@@ -350,11 +353,8 @@
     call.then(function (data) {
       track('apgo_survey_submit', { score: a.q1 });
       var state = (data.reward && data.reward.status) || 'failed';
-      if (state === 'login') {
-        saved.pending = data.survey_id;
-      } else {
-        delete saved.pending;
-      }
+      if (state === 'login') saved.pending = data.survey_id;
+      else delete saved.pending;
       delete saved.answers;
       delete saved.step;
       save();
@@ -395,10 +395,8 @@
     if (!t || !root.contains(t)) return;
 
     if (t.hasAttribute('data-apgo-sv-open')) {
-      if (root.classList.contains('is-collapsed') && t.classList.contains('apgo-sv__open')) {
-        root.classList.remove('is-collapsed');
-      }
-      open(t.classList.contains('apgo-sv__hint-text') ? 'hint' : 'button');
+      if (root.classList.contains('is-collapsed')) root.classList.remove('is-collapsed');
+      open(t.classList.contains('apgo-sv__hint-body') ? 'hint' : 'button');
     } else if (t.hasAttribute('data-apgo-sv-close')) {
       close();
     } else if (t.hasAttribute('data-apgo-sv-collapse')) {
@@ -410,6 +408,7 @@
       hideHint();
       track('apgo_survey_hint_close');
     } else if (t === prevBtn) {
+      clearTimeout(autoTimer);
       showStep(step - 1);
       remember();
     } else if (t === nextBtn) {
@@ -417,11 +416,8 @@
     } else if (t.hasAttribute('data-apgo-sv-copy')) {
       var code = t.getAttribute('data-apgo-sv-copy');
       var ok = function () { t.textContent = '已複製'; setTimeout(function () { t.textContent = '複製'; }, 2000); };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(ok, ok);
-      } else {
-        ok();
-      }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code).then(ok, ok);
+      else ok();
       track('apgo_survey_copy');
     } else if (t.hasAttribute('data-apgo-sv-login')) {
       track('apgo_survey_login');
@@ -438,13 +434,15 @@
         var none = form.querySelector('input[name="q2"][value="none"]');
         if (none) none.checked = false;
       }
-      syncOther();
-      if (t.value === 'other' && t.checked && otherInput) otherInput.focus();
     }
     syncChecked();
-    var err = steps[step - 1].querySelector('[data-apgo-sv-error]');
-    if (err && stepValid(step)) err.hidden = true;
+    if (t.name === 'q2' && t.value === 'other' && t.checked && otherInput) otherInput.focus();
     remember();
+    // A face is the whole answer to Q1: move on by itself.
+    if (t.name === 'q1' && step === 1) {
+      clearTimeout(autoTimer);
+      autoTimer = setTimeout(function () { if (step === 1 && isOpen()) next(); }, AUTO_NEXT_MS);
+    }
   });
 
   form.addEventListener('input', function (e) {
@@ -473,7 +471,7 @@
   if (preview === 'hint') {
     try { sessionStorage.removeItem(SESSION_HINT); } catch (e) { /* ignore */ }
     setTimeout(showHint, 800);
-  } else if (preview && preview !== 'hint' && !designMode) {
+  } else if (preview && !designMode) {
     open('preview');
   } else if (!designMode) {
     hintTimer = setTimeout(showHint, hintDelay);
