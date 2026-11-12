@@ -112,7 +112,7 @@
         <form class="apgo-sv__form" data-apgo-sv-form novalidate>
           <div class="apgo-sv__body" data-apgo-sv-body>
             <p class="apgo-sv__note" data-apgo-sv-claimed hidden>
-              {{ s.refill_note | escape | replace: '{code}', code_strong }}
+              {{ s.refill_note | escape | replace: '[code]', code_strong }}
             </p>
 
             <fieldset class="apgo-sv__step" data-step="1">
@@ -309,8 +309,8 @@
       "type": "text",
       "id": "refill_note",
       "label": "已領過獎勵的會員看到的提醒",
-      "info": "寫 {code} 的地方會換成折扣碼。",
-      "default": "你的 $200 折價券已經送給你囉！結帳時輸入 {code} 就能使用。也歡迎再分享想法，每一則我們都會認真看。"
+      "info": "寫 [code] 的地方會換成折扣碼。",
+      "default": "你的 $200 折價券已經送給你囉！結帳時輸入 [code] 就能使用。也歡迎再分享想法，每一則我們都會認真看。"
     },
     { "type": "header", "content": "折價券" },
     {
