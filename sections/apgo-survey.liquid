@@ -64,11 +64,15 @@
     data-preview="{% if request.design_mode %}{{ s.preview }}{% endif %}"
     {% if request.design_mode %}data-design-mode{% endif %}
   >
-    {%- comment -%} Entry: a round gift on phones, a pill with words on larger screens. {%- endcomment -%}
+    {%- comment -%} Entry: a pill with the full label on larger screens; on phones a short label, or a round gift when that is blank. {%- endcomment -%}
+    {%- assign label_m = s.launcher_label_mobile | strip -%}
     <div class="apgo-sv__launcher" data-apgo-sv-launcher>
-      <button type="button" class="apgo-sv__open" data-apgo-sv-open aria-haspopup="dialog" aria-label="{{ s.launcher_label | escape }}">
+      <button type="button" class="apgo-sv__open{% if label_m != blank %} apgo-sv__open--m-label{% endif %}" data-apgo-sv-open aria-haspopup="dialog" aria-label="{{ s.launcher_label | escape }}">
         <span class="apgo-sv__gift">{{ gift_icon }}</span>
         <span class="apgo-sv__open-label">{{ s.launcher_label | escape }}</span>
+        {%- if label_m != blank %}
+        <span class="apgo-sv__open-label-m" aria-hidden="true">{{ label_m | escape }}</span>
+        {%- endif %}
         <span class="apgo-sv__dot" aria-hidden="true"></span>
       </button>
       <button type="button" class="apgo-sv__collapse" data-apgo-sv-collapse aria-label="收起問卷入口">
@@ -290,6 +294,7 @@
     },
     { "type": "header", "content": "入口與提示" },
     { "type": "text", "id": "launcher_label", "label": "入口文字（電腦版）", "default": "購物體驗調查送$200" },
+    { "type": "text", "id": "launcher_label_mobile", "label": "入口文字（手機版）", "info": "留空時手機只顯示圓形禮物圖示。", "default": "送$200" },
     { "type": "text", "id": "hint_title", "label": "提示泡泡標題", "default": "花 30 秒填問卷" },
     { "type": "text", "id": "hint_text", "label": "提示泡泡文字", "default": "送你 $200 折價券，馬上開始 →" },
     {
