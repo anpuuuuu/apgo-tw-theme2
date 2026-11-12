@@ -111,10 +111,15 @@
     var bottom = 20;
     var right = 20;
     if (hub) {
-      var r = hub.getBoundingClientRect();
-      if (r.width && r.height && getComputedStyle(hub).position === 'fixed') {
-        bottom = Math.round(window.innerHeight - r.top + 14);
-        right = Math.max(12, Math.round(window.innerWidth - r.right + (r.width - 56) / 2));
+      // Work from the hub's own bottom/right offsets, not window.innerHeight:
+      // on phones innerHeight changes while the browser bar slides in and out
+      // as the page scrolls, and measuring against it made the gift jump.
+      var cs = getComputedStyle(hub);
+      var hubBottom = parseFloat(cs.bottom);
+      var hubRight = parseFloat(cs.right);
+      if (cs.position === 'fixed' && hub.offsetWidth && hub.offsetHeight && !isNaN(hubBottom) && !isNaN(hubRight)) {
+        bottom = Math.round(hubBottom + hub.offsetHeight + 14);
+        right = Math.max(12, Math.round(hubRight + (hub.offsetWidth - 56) / 2));
       }
     }
     root.style.setProperty('--sv-bottom', bottom + 'px');
