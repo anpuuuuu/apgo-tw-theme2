@@ -64,7 +64,7 @@
     data-preview="{% if request.design_mode %}{{ s.preview }}{% endif %}"
     {% if request.design_mode %}data-design-mode{% endif %}
   >
-    {%- comment -%} Entry: a pill with the full label on larger screens; on phones a short label, or a round gift when that is blank. {%- endcomment -%}
+    {%- comment -%} Entry: a pill with the full label on larger screens; on phones a round gift with an optional short tag on top. {%- endcomment -%}
     {%- assign label_m = s.launcher_label_mobile | strip -%}
     <div class="apgo-sv__launcher" data-apgo-sv-launcher>
       <button type="button" class="apgo-sv__open{% if label_m != blank %} apgo-sv__open--m-label{% endif %}" data-apgo-sv-open aria-haspopup="dialog" aria-label="{{ s.launcher_label | escape }}">
@@ -294,7 +294,7 @@
     },
     { "type": "header", "content": "入口與提示" },
     { "type": "text", "id": "launcher_label", "label": "入口文字（電腦版）", "default": "購物體驗調查送$200" },
-    { "type": "text", "id": "launcher_label_mobile", "label": "入口文字（手機版）", "info": "留空時手機只顯示圓形禮物圖示。", "default": "送$200" },
+    { "type": "text", "id": "launcher_label_mobile", "label": "手機版禮物上方標籤", "info": "顯示在手機版圓形禮物按鈕上方的橘色小標籤；留空就不顯示。", "default": "送$200" },
     { "type": "text", "id": "hint_title", "label": "提示泡泡標題", "default": "花 30 秒填問卷" },
     { "type": "text", "id": "hint_text", "label": "提示泡泡文字", "default": "送你 $200 折價券，馬上開始 →" },
     {

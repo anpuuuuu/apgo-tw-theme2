@@ -447,9 +447,26 @@
   .apgo-sv__open { width: 56px; min-height: 56px; padding: 0; justify-content: center; }
   .apgo-sv__open-label { display: none; }
   .apgo-sv__gift { width: 26px; height: 26px; }
-  .apgo-sv__open--m-label { width: auto; min-height: 52px; padding: 0 18px 0 14px; gap: 6px; }
-  .apgo-sv__open--m-label .apgo-sv__gift { width: 24px; height: 24px; }
-  .apgo-sv__open--m-label .apgo-sv__open-label-m { display: inline; white-space: nowrap; }
+  /* the short label sits as an orange tag on top of the round gift */
+  .apgo-sv__open--m-label .apgo-sv__open-label-m {
+    display: block;
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% - 8px);
+    transform: translateX(-50%);
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--sv-accent);
+    color: #141414;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  }
+  .apgo-sv__open--m-label .apgo-sv__dot { display: none; }
+  .apgo-sv__open--m-label ~ .apgo-sv__collapse { top: 16px; left: -22px; }
+  .apgo-sv__open--m-label ~ .apgo-sv__hint { bottom: calc(100% + 24px); }
   .apgo-sv.is-collapsed .apgo-sv__open { width: 42px; min-height: 42px; }
 
   .apgo-sv__panel {
