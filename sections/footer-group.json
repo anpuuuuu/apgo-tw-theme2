@@ -992,7 +992,7 @@
     "apgo_campaign_popup": {
       "type": "apgo-campaign-popup",
       "settings": {
-        "enabled": true,
+        "enabled": false,
         "pages": "all",
         "image": "shopify://shop_images/11_e20fd9f3-0811-452d-9e6f-372968017243.png",
         "link": "shopify://pages/26_nov_prom2",
