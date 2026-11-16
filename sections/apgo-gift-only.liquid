@@ -1,0 +1,145 @@
+{%- comment -%}
+  APGO · 贈品商品頁 — used by the product template `gift-only`.
+
+  Gifts such as the 集字卡 are put in the cart by an app (AIOD) when an order
+  qualifies. Their product page must not let shoppers add them directly, so
+  this page has no buy button. Products on this template are also skipped in
+  collection and search grids, and the cart page locks their quantity.
+{%- endcomment -%}
+
+<section class="apgo-gift-only">
+  <div class="apgo-gift-only__card">
+    {%- if product.featured_image -%}
+      <div class="apgo-gift-only__media">
+        {{
+          product.featured_image
+          | image_url: width: 900
+          | image_tag:
+            loading: 'eager',
+            alt: product.title,
+            class: 'apgo-gift-only__img',
+            sizes: '(min-width: 750px) 420px, 100vw'
+        }}
+      </div>
+    {%- endif -%}
+
+    <div class="apgo-gift-only__body">
+      {%- if section.settings.badge != blank -%}
+        <span class="apgo-gift-only__badge">{{ section.settings.badge | escape }}</span>
+      {%- endif -%}
+      <h1 class="apgo-gift-only__title">{{ product.title | escape }}</h1>
+      <p class="apgo-gift-only__note">{{ section.settings.note | escape }}</p>
+      {%- if product.description != blank -%}
+        <div class="apgo-gift-only__desc">{{ product.description }}</div>
+      {%- endif -%}
+      <a
+        class="apgo-gift-only__btn"
+        href="{{ section.settings.button_link | default: routes.all_products_collection_url }}"
+      >
+        {{- section.settings.button_label | escape -}}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .apgo-gift-only {
+    padding: 40px 16px 64px;
+  }
+  .apgo-gift-only__card {
+    display: grid;
+    gap: 24px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .apgo-gift-only__media {
+    border-radius: 14px;
+    overflow: hidden;
+    background: #1a1c20;
+  }
+  .apgo-gift-only__img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .apgo-gift-only__badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(240, 132, 24, 0.14);
+    color: #f08418;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .apgo-gift-only__title {
+    margin: 12px 0 0;
+    font-size: 24px;
+    line-height: 1.4;
+  }
+  .apgo-gift-only__note {
+    margin: 12px 0 0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #f08418;
+    font-weight: 700;
+  }
+  .apgo-gift-only__desc {
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 1.8;
+    opacity: 0.85;
+  }
+  .apgo-gift-only__desc img {
+    max-width: 100%;
+    height: auto;
+  }
+  .apgo-gift-only__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    margin-top: 24px;
+    padding: 0 28px;
+    border-radius: 12px;
+    background: #f08418;
+    color: #141414;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  @media (min-width: 750px) {
+    .apgo-gift-only {
+      padding: 64px 32px 96px;
+    }
+    .apgo-gift-only__card {
+      grid-template-columns: 420px minmax(0, 1fr);
+      gap: 40px;
+      padding: 32px;
+      align-items: start;
+    }
+    .apgo-gift-only__title {
+      font-size: 28px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "APGO · 贈品商品頁",
+  "settings": [
+    { "type": "text", "id": "badge", "label": "標籤", "default": "活動贈品" },
+    {
+      "type": "textarea",
+      "id": "note",
+      "label": "說明",
+      "default": "這是活動贈品，不能單獨購買。符合活動條件時，會自動放進購物車。"
+    },
+    { "type": "text", "id": "button_label", "label": "按鈕文字", "default": "繼續逛逛" },
+    { "type": "url", "id": "button_link", "label": "按鈕連結", "info": "留空時連到全部商品。" }
+  ]
+}
+{% endschema %}

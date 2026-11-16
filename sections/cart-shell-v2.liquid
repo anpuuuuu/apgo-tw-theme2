@@ -3084,6 +3084,17 @@
     font-family: ui-monospace, Menlo, monospace;
   }
 
+  /* gift lines: quantity shown, not editable */
+  .cart-shell-v2 [data-block='equipment'] .qty--locked {
+    border-color: transparent;
+  }
+
+  .cart-shell-v2 [data-block='equipment'] .qty--locked .qty-val {
+    width: auto;
+    padding: 0 4px;
+    color: #bbb;
+  }
+
   .cart-shell-v2 [data-block='upsell'] .u-open {
     color: var(--dt-signal-orange);
     font-weight: 700;

@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "apgo-gift-only",
+      "settings": {
+        "badge": "活動贈品",
+        "note": "這是活動贈品，不能單獨購買。符合活動條件時，會自動放進購物車。",
+        "button_label": "繼續逛逛"
+      }
+    }
+  },
+  "order": ["main"]
+}

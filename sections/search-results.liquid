@@ -30,6 +30,8 @@
 
       {% capture children %}
         {% for product in products %}
+          {%- comment -%} Gifts on the gift-only product template can't be bought on their own; keep them out of listings. {%- endcomment -%}
+          {%- if product.template_suffix == 'gift-only' -%}{%- continue -%}{%- endif -%}
           <li
             id="{{ section.id }}-{{ product.id }}"
             class="product-grid__item product-grid__item--{{ forloop.index0 }}"

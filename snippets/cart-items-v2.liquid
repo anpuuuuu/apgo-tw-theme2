@@ -31,6 +31,15 @@
       {%- if item.properties._gift_auto == 'true' or item.properties._gift_auto == true -%}
         {%- assign is_gift = true -%}
       {%- endif -%}
+      {%- comment -%}
+        Gifts an app put in the cart (AIOD marks its lines with _aiod_free_gift)
+        and products on the gift-only template: the shopper can remove them
+        but not change how many there are.
+      {%- endcomment -%}
+      {%- assign qty_locked = false -%}
+      {%- if item.properties['_aiod_free_gift'] != blank or item.product.template_suffix == 'gift-only' -%}
+        {%- assign qty_locked = true -%}
+      {%- endif -%}
       <article
         class="e-item"
         data-line="{{ forloop.index }}"
@@ -67,11 +76,17 @@
           </div>
 
           <div class="e-bottom">
-            <div class="qty" aria-label="quantity controls">
-              <button type="button" class="qty-btn" data-quantity-delta="-1" data-line="{{ forloop.index }}">−</button>
-              <div class="qty-val">{{ item.quantity }}</div>
-              <button type="button" class="qty-btn" data-quantity-delta="1" data-line="{{ forloop.index }}">+</button>
-            </div>
+            {%- if qty_locked -%}
+              <div class="qty qty--locked" aria-label="數量 {{ item.quantity }}">
+                <div class="qty-val">× {{ item.quantity }}</div>
+              </div>
+            {%- else -%}
+              <div class="qty" aria-label="quantity controls">
+                <button type="button" class="qty-btn" data-quantity-delta="-1" data-line="{{ forloop.index }}">−</button>
+                <div class="qty-val">{{ item.quantity }}</div>
+                <button type="button" class="qty-btn" data-quantity-delta="1" data-line="{{ forloop.index }}">+</button>
+              </div>
+            {%- endif -%}
             <div class="e-price-wrap">
               {%- if item.original_line_price != item.final_line_price -%}
                 <div class="e-price-before">{{ item.original_line_price | money }}</div>
