@@ -143,8 +143,8 @@
     max-width: var(--qn-maxw, 1440px);
     margin: 0 auto;
     padding: 20px 16px 16px;
-    background: var(--qn-bg, #17191d);
-    border: 1px solid var(--qn-border, #2a2d33);
+    background: var(--qn-bg, #0d0d10);
+    border: 1px solid var(--qn-border, #25262c);
     border-radius: 22px;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
     box-sizing: border-box;
@@ -269,14 +269,17 @@
       margin-bottom: var(--qn-gap-bottom-m, 16px);
     }
     .apgo-qn__card {
-      padding: 14px 6px 12px;
+      padding: 10px 6px 8px;
       border-radius: 18px;
     }
     .apgo-qn__list {
       gap: 4px;
       grid-auto-columns: calc((100% - 4px * (var(--qn-per-row-m, 4.5) - 1)) / var(--qn-per-row-m, 4.5));
     }
-    .apgo-qn__link { gap: 8px; }
+    .apgo-qn__link {
+      gap: 7px;
+      padding: 2px 2px 0;
+    }
     .apgo-qn__icon {
       width: var(--qn-icon-m, 56px);
       height: var(--qn-icon-m, 56px);
@@ -335,8 +338,8 @@
       "info": "用 .5 時最右邊會露出半格，提示可以往右滑。"
     },
     { "type": "header", "content": "外觀" },
-    { "type": "color", "id": "card_bg", "label": "卡片底色", "default": "#17191d" },
-    { "type": "color", "id": "card_border", "label": "卡片邊框", "default": "#2a2d33" },
+    { "type": "color", "id": "card_bg", "label": "卡片底色", "default": "#0d0d10" },
+    { "type": "color", "id": "card_border", "label": "卡片邊框", "default": "#25262c" },
     { "type": "color", "id": "text_color", "label": "文字顏色", "default": "#e9e9ec" },
     { "type": "color", "id": "hover_color", "label": "滑過時文字顏色", "default": "#f08418" },
     {
