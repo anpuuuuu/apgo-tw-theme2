@@ -398,6 +398,7 @@
         "simple_banner_slot_PkhXBx": {
           "type": "simple_banner_slot",
           "name": "滿599免運送到府",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "限時599免運",
