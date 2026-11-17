@@ -203,10 +203,10 @@
      a little trims the tile's corners so only the circle shows. */
   .apgo-qn--crop .apgo-qn__icon img { transform: scale(1.12); }
   .apgo-qn__label {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
+    display: block;
+    max-width: 100%;
+    /* split long names evenly (汽車清 / 潔用品) instead of leaving one character alone */
+    text-wrap: balance;
     font-size: 14px;
     font-weight: 600;
     line-height: 1.35;
