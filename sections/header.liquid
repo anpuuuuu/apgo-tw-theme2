@@ -92,7 +92,7 @@
     endif
   endif
   capture search
-    render 'search', style: search_style, class: search_class
+    render 'search', style: search_style, class: search_class, inline: section.settings.search_inline_desktop, placeholder: section.settings.search_placeholder
   endcapture
 
   # Skip mobile search under specific conditions:
@@ -785,6 +785,21 @@
       "id": "show_search",
       "label": "t:settings.search_icon",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "search_inline_desktop",
+      "label": "電腦版改成搜尋欄位",
+      "info": "螢幕寬度 990px 以上，放大鏡改成可以直接輸入的搜尋框；手機和平板維持放大鏡。",
+      "default": false,
+      "visible_if": "{{ section.settings.show_search }}"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "搜尋欄位提示文字",
+      "default": "搜尋商品、關鍵字…",
+      "visible_if": "{{ section.settings.show_search and section.settings.search_inline_desktop }}"
     },
     {
       "type": "select",

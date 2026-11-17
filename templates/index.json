@@ -366,17 +366,113 @@
         "interval": 4,
         "show_dots": true,
         "show_arrows": true,
-        "max_width": 1600,
-        "side_padding": 16,
-        "radius": 14,
-        "border_width": 1,
+        "max_width": 0,
+        "side_padding": 0,
+        "radius": 0,
+        "border_width": 0,
         "border_color": "#3d4148",
         "overlay_on_hero": false,
         "overlap": 200,
         "overlap_mobile": 160,
-        "gap_top": 6,
-        "gap_bottom": 4,
+        "gap_top": 0,
+        "gap_bottom": 0,
         "aria_label": "優惠輪播"
+      }
+    },
+    "apgo_home_quicknav": {
+      "type": "apgo-home-quicknav",
+      "blocks": {
+        "qn_coating": {
+          "type": "item",
+          "settings": {
+            "label": "鍍膜系列",
+            "link": "shopify://collections/coating-series",
+            "builtin": "coating"
+          }
+        },
+        "qn_gift": {
+          "type": "item",
+          "settings": {
+            "label": "超值禮組",
+            "link": "shopify://collections/bestselling-discount-gift-set",
+            "builtin": "gift"
+          }
+        },
+        "qn_home": {
+          "type": "item",
+          "settings": {
+            "label": "居家清潔",
+            "link": "shopify://collections/homecleaning",
+            "builtin": "home"
+          }
+        },
+        "qn_carcare": {
+          "type": "item",
+          "settings": {
+            "label": "汽車清潔用品",
+            "link": "/collections/%E6%B8%85%E6%BD%94%E8%97%A5%E5%8A%91%E5%85%A8%E7%B3%BB%E5%88%97",
+            "builtin": "carcare"
+          }
+        },
+        "qn_repair": {
+          "type": "item",
+          "settings": {
+            "label": "損傷修復",
+            "link": "/collections/%E6%90%8D%E5%82%B7%E4%BF%AE%E5%BE%A9",
+            "builtin": "repair"
+          }
+        },
+        "qn_tools": {
+          "type": "item",
+          "settings": {
+            "label": "洗車工具",
+            "link": "shopify://collections/car-wash-supplies",
+            "builtin": "tools"
+          }
+        },
+        "qn_speed": {
+          "type": "item",
+          "settings": {
+            "label": "科技執法測速器",
+            "link": "/collections/%E7%A7%91%E6%8A%80%E5%9F%B7%E6%B3%95%E6%B8%AC%E9%80%9F%E5%99%A8",
+            "builtin": "speed"
+          }
+        },
+        "qn_promo": {
+          "type": "item",
+          "settings": {
+            "label": "優惠活動",
+            "builtin": "promo"
+          }
+        }
+      },
+      "block_order": [
+        "qn_coating",
+        "qn_gift",
+        "qn_home",
+        "qn_carcare",
+        "qn_repair",
+        "qn_tools",
+        "qn_speed",
+        "qn_promo"
+      ],
+      "settings": {
+        "overlap": 28,
+        "overlap_mobile": 12,
+        "max_width": 1440,
+        "side_padding": 16,
+        "side_padding_mobile": 12,
+        "gap_bottom": 28,
+        "gap_bottom_mobile": 16,
+        "icon_size": 76,
+        "icon_size_mobile": 56,
+        "per_row_mobile": 4.5,
+        "card_bg": "#17191d",
+        "card_border": "#2a2d33",
+        "text_color": "#e9e9ec",
+        "hover_color": "#f08418",
+        "crop_circle": true,
+        "aria_label": "商品分類"
       }
     },
     "apgo_cc_badge_carousel_dGRGB7": {
@@ -687,6 +783,7 @@
     "marquee_p8YTpL",
     "section_NcGDMK",
     "apgo_cc_badge_carousel",
+    "apgo_home_quicknav",
     "apgo_cc_badge_carousel_dGRGB7",
     "apgo_home_bestsellers_v2",
     "apgo_home_categories_v2",

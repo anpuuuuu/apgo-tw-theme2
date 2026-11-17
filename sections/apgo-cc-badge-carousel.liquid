@@ -69,7 +69,7 @@
             <img
               class="apgo-cc-badge__img"
               src="{{ block.settings.image | image_url: width: 1600 }}"
-              srcset="{{ block.settings.image | image_url: width: 800 }} 800w, {{ block.settings.image | image_url: width: 1200 }} 1200w, {{ block.settings.image | image_url: width: 1600 }} 1600w"
+              srcset="{{ block.settings.image | image_url: width: 800 }} 800w, {{ block.settings.image | image_url: width: 1200 }} 1200w, {{ block.settings.image | image_url: width: 1600 }} 1600w, {{ block.settings.image | image_url: width: 2000 }} 2000w, {{ block.settings.image | image_url: width: 2400 }} 2400w"
               sizes="100vw"
               alt="{{ block.settings.alt | escape }}"
               loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
@@ -287,7 +287,10 @@
     }
     .apgo-cc-badge__dots {
       position: absolute;
-      left: 0; right: 0; bottom: 10px;
+      left: 0; right: 0;
+      /* --apgo-qn-overlap comes from the 圖示選單 section, which rises into
+         the bottom of this banner; keep the dots above the covered strip. */
+      bottom: calc(10px + var(--apgo-qn-overlap, 0px));
       display: flex; justify-content: center; align-items: center; gap: 7px;
       z-index: 2;
       pointer-events: none;

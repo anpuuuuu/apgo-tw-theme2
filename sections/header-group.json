@@ -340,6 +340,8 @@
         "menu_position": "left",
         "menu_row": "top",
         "show_search": true,
+        "search_inline_desktop": true,
+        "search_placeholder": "搜尋商品、關鍵字…",
         "search_position": "right",
         "search_row": "top",
         "show_country": false,

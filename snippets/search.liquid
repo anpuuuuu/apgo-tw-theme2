@@ -1,15 +1,19 @@
 {%- doc -%}
-  Renders the search action button.
+  Renders the search action button. With `inline`, computers (990px and
+  wider) get a search field instead; narrower screens keep the button that
+  opens the search modal.
 
   @param {string} [style] - The style of the search action.
   @param {string} [class] - Additional classes for the search action.
+  @param {boolean} [inline] - Show a search field on computers instead of the button.
+  @param {string} [placeholder] - Placeholder text for the search field.
 
   @example
   {% render 'search', style: 'default', class: 'custom-class' %}
 {%- enddoc -%}
 
 {% unless style == 'none' %}
-  <search-button class="search-action{% if class != blank %} {{ class | strip }}{% endif %}">
+  {%- capture search_modal_button -%}
     <button
       on:click="#search-modal/showDialog"
       class="button button-unstyled search-modal__button header-actions__action"
@@ -22,7 +26,49 @@
         {{ 'icon-search.svg' | inline_asset_content }}
       </span>
     </button>
-  </search-button>
+  {%- endcapture -%}
+
+  {%- if inline -%}
+    <div class="search-action search-action--inline{% if class != blank %} {{ class | strip }}{% endif %}">
+      <form
+        class="search-inline"
+        action="{{ routes.search_url }}"
+        method="get"
+        role="search"
+      >
+        <button
+          type="submit"
+          class="search-inline__submit"
+          aria-label="搜尋"
+        >
+          <span
+            aria-hidden="true"
+            class="svg-wrapper"
+          >
+            {{ 'icon-search.svg' | inline_asset_content }}
+          </span>
+        </button>
+        <input
+          class="search-inline__input"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ placeholder | default: '搜尋商品、關鍵字…' | escape }}"
+          aria-label="{{ placeholder | default: '搜尋商品、關鍵字…' | escape }}"
+          autocomplete="off"
+          enterkeyhint="search"
+        >
+        <input type="hidden" name="options[prefix]" value="last">
+      </form>
+      <search-button class="search-inline__modal">
+        {{ search_modal_button }}
+      </search-button>
+    </div>
+  {%- else -%}
+    <search-button class="search-action{% if class != blank %} {{ class | strip }}{% endif %}">
+      {{ search_modal_button }}
+    </search-button>
+  {%- endif -%}
 {% endunless %}
 
 {% stylesheet %}
@@ -48,5 +94,99 @@
     @media screen and (min-width: 750px) {
       margin-inline: calc(var(--gap-md) * -1) calc(var(--gap-xs) * -1);
     }
+  }
+
+  /* Inline search field (computers). Below 990px the modal button shows. */
+  .search-action--inline {
+    align-items: center;
+  }
+
+  .search-inline__modal {
+    display: flex;
+  }
+
+  .search-inline {
+    display: none;
+    position: relative;
+    align-items: center;
+  }
+
+  @media screen and (min-width: 990px) {
+    .search-action--inline .search-inline {
+      display: flex;
+    }
+
+    .search-action--inline .search-inline__modal {
+      display: none;
+    }
+
+    .header__column--right .search-action--inline {
+      margin-inline: 0 12px;
+    }
+  }
+
+  .search-inline__input {
+    width: clamp(190px, 17vw, 270px);
+    height: 40px;
+    margin: 0;
+    padding: 0 16px 0 40px;
+    border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, currentColor 7%, transparent);
+    color: inherit;
+    font: inherit;
+    font-size: 14px;
+    line-height: 40px;
+    outline: none;
+    box-shadow: none;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .search-inline__input::placeholder {
+    color: currentColor;
+    opacity: 0.55;
+  }
+
+  .search-inline__input::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+
+  .search-inline__input:hover {
+    border-color: color-mix(in srgb, currentColor 32%, transparent);
+  }
+
+  .search-inline__input:focus {
+    border-color: #f08418;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+  }
+
+  .search-inline__submit {
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    opacity: 0.7;
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
+
+  .search-inline__submit:hover {
+    opacity: 1;
+  }
+
+  .search-inline__submit .svg-wrapper,
+  .search-inline__submit svg {
+    width: 18px;
+    height: 18px;
   }
 {% endstylesheet %}
