@@ -468,9 +468,9 @@
         "icon_size": 76,
         "icon_size_mobile": 56,
         "per_row_mobile": 4.5,
-        "card_bg": "#0d0d10",
-        "card_border": "#25262c",
-        "text_color": "#e9e9ec",
+        "card_bg": "#ffffff",
+        "card_border": "#ffffff",
+        "text_color": "#1a1a1a",
         "hover_color": "#f08418",
         "crop_circle": true,
         "aria_label": "商品分類"
