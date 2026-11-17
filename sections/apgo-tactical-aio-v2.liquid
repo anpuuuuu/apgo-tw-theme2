@@ -581,17 +581,19 @@
   }
 
   @media (min-width: 768px) {
+    /* 桌機：每個 nav 依文字寬度排，放不下就換到第二排置中。
+       以前是強制等寬，項目一多（例如 13 個）字就會疊在一起。 */
     #sticky-nav-container {
       display: flex;
+      flex-wrap: wrap;
       overflow-x: visible;
-      justify-content: space-evenly;  /* 桌機：平均分配寬度 */
+      justify-content: center;
       align-items: center;
     }
     .sticky-nav-link {
       font-size: 13px;
-      padding: 14px 18px;
-      flex: 1 1 0;             /* 桌機：每個 nav 等寬 */
-      min-width: 0;
+      padding: 12px 14px;
+      flex: 0 0 auto;
     }
   }
 
@@ -1583,6 +1585,8 @@
       placeholder.style.display = 'none';
     }
     navStickTop = nav.getBoundingClientRect().top + window.scrollY;
+    // The nav may wrap to two rows on computers; reserve its real height while it is pinned.
+    if (placeholder) placeholder.style.height = nav.offsetHeight + 'px';
     if (wasFixed) {
       nav.classList.add('nav-fixed');
       placeholder.style.display = 'block';
@@ -1636,7 +1640,10 @@
   function scrollToSection(id) {
     const el = document.getElementById(id);
     if (el) {
-      window.scrollTo({ top: el.offsetTop - 60, behavior: 'smooth' });
+      // The nav can wrap to two rows on computers; leave room for its real height.
+      const nav = document.getElementById('apgo-sticky-nav');
+      const navH = nav ? nav.offsetHeight : 0;
+      window.scrollTo({ top: el.offsetTop - Math.max(60, navH + 12), behavior: 'smooth' });
     }
   }
 
