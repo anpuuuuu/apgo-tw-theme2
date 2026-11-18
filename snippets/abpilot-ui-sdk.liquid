@@ -14,5 +14,6 @@ window.designMode = {{ request.design_mode | json }};
 
 </script>
 
+{%- comment -%} async: the only experiment is a tracking code, so the page no longer waits ~0.5s for this script before drawing. {%- endcomment -%}
 <link href="https://script.abpilot.io/abpilot.js" rel="preload" as="script">
-<script type="text/javascript" src="https://script.abpilot.io/abpilot.js"></script>
+<script type="text/javascript" src="https://script.abpilot.io/abpilot.js" async></script>

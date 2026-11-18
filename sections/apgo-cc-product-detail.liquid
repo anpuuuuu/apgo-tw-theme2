@@ -518,7 +518,7 @@
         {%- if section.settings.desc_heading != blank -%}
           <h2 class="apgo-cc-pdp__panel-heading">{{ section.settings.desc_heading }}</h2>
         {%- endif -%}
-        <div class="apgo-cc-pdp__rte rte">{{ product.description }}</div>
+        <div class="apgo-cc-pdp__rte rte">{% render 'apgo-lazy-rte', html: product.description %}</div>
       </div>
       {%- assign first_panel_set = true -%}
     {%- endif -%}

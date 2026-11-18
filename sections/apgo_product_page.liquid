@@ -1939,7 +1939,7 @@
           >
             {% if forloop.first %}
               {% if product.description != blank %}
-                {{ product.description }}
+                {% render 'apgo-lazy-rte', html: product.description %}
               {% else %}
                 {{ tab.content | default: 'product.no_description' | t }}
               {% endif %}

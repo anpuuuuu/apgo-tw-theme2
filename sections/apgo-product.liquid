@@ -1659,7 +1659,7 @@
                       <h4 style="color: var(--primary-orange); margin-bottom: 15px; font-size: 1.2rem;">{{ 'apgo_product.product_description_title' | t }}</h4>
                        {% if shopify_product.description != blank %}
                          <div style="color: var(--text-gray); line-height: 1.8;">
-                           {{ shopify_product.description }}
+                           {% render 'apgo-lazy-rte', html: shopify_product.description %}
                          </div>
                        {% elsif product.settings.detailed_description != blank %}
                         <p style="color: var(--text-gray); line-height: 1.8;">{{ product.settings.detailed_description }}</p>

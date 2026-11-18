@@ -1,0 +1,50 @@
+{%- doc -%}
+  Outputs rich text such as a product description, with its images loading
+  only when the shopper scrolls near them and at a size that fits the screen.
+  Without this, every description image downloads at full size (often
+  1254px PNGs) as soon as the page opens, even far below the fold.
+
+  Images hosted on Shopify get a srcset with width-limited copies; other
+  images only get lazy loading. Images that already have a srcset are left
+  as they are apart from lazy loading.
+
+  @param {string} html - The rich text HTML to output.
+
+  @example
+  {% render 'apgo-lazy-rte', html: product.description %}
+{%- enddoc -%}
+
+{%- liquid
+  assign parts = html | default: '' | split: '<img '
+  echo parts.first
+
+  for part in parts offset: 1
+    assign tag = part | split: '>' | first
+    assign extra = ' loading="lazy" decoding="async"'
+
+    unless tag contains 'srcset='
+      assign src_bits = tag | split: 'src="'
+      if src_bits.size > 1
+        assign src = src_bits[1] | split: '"' | first
+        if src contains '/files/'
+          if src contains 'cdn.shopify.com' or src contains '/cdn/shop/'
+            assign joiner = '?'
+            if src contains '?'
+              assign joiner = '&'
+            endif
+            assign base = src | append: joiner | append: 'width='
+            capture srcset
+              echo base | append: '480 480w, '
+              echo base | append: '720 720w, '
+              echo base | append: '960 960w, '
+              echo base | append: '1280 1280w'
+            endcapture
+            assign extra = extra | append: ' srcset="' | append: srcset | append: '" sizes="(max-width: 749px) calc(100vw - 32px), 960px"'
+          endif
+        endif
+      endif
+    endunless
+
+    echo '<img' | append: extra | append: ' ' | append: part
+  endfor
+-%}
