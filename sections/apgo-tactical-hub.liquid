@@ -375,6 +375,9 @@
             if (Date.now() < until) requestAnimationFrame(follow);
         })();
         setTimeout(function () {
+            // Land exactly on the edge even if the slide was held back
+            // (e.g. the tab was in the background).
+            if (container.getAnimations) container.getAnimations().forEach(function (a) { a.finish(); });
             container.classList.remove('is-snapping');
             pin(side, bottom);
             save(side, bottom);
