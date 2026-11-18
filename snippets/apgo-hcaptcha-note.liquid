@@ -1,0 +1,18 @@
+{%- doc -%}
+  hCaptcha notice for forms Shopify protects with hCaptcha (newsletter and
+  contact forms). Shopify pins an hCaptcha badge to the bottom-right corner
+  once such a form is touched, where it covers the floating buttons; the
+  theme hides that badge (layout/theme.liquid), and hCaptcha asks for this
+  notice in the form instead.
+
+  @param {string} [class] - Extra class for styling in the host form.
+
+  @example
+  {% render 'apgo-hcaptcha-note' %}
+{%- enddoc -%}
+
+<p class="apgo-hcaptcha-note{% if class != blank %} {{ class }}{% endif %}">
+  本網站受 hCaptcha 保護，並適用 hCaptcha 的
+  <a href="https://www.hcaptcha.com/privacy" target="_blank" rel="noopener">隱私權政策</a>與
+  <a href="https://www.hcaptcha.com/terms" target="_blank" rel="noopener">服務條款</a>。
+</p>

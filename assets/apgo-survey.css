@@ -16,6 +16,7 @@
   --sv-on-accent: #141414;
   --sv-bottom: 20px; /* set by the script to clear the tactical hub button */
   --sv-right: 20px;
+  --sv-left: auto; /* used instead of --sv-right when the hub is docked on the left */
   color: var(--sv-ink);
   font-family: inherit;
 }
@@ -30,8 +31,13 @@
 .apgo-sv__launcher {
   position: fixed;
   right: var(--sv-right);
+  left: var(--sv-left);
   bottom: var(--sv-bottom);
   z-index: 9990;
+  /* the gift can be dragged (it moves the hub button with it) */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .apgo-sv__open {
@@ -441,6 +447,12 @@
 .apgo-sv__lock { width: 26px; height: 26px; }
 .apgo-sv__ticket-locked-text { font-size: 12px; line-height: 1.5; }
 
+/* ---------- docked on the left edge (follows the hub button) ---------- */
+
+.apgo-sv.is-left .apgo-sv__hint { right: auto; left: -6px; }
+.apgo-sv.is-left .apgo-sv__hint::after { right: auto; left: 26px; }
+.apgo-sv.is-left .apgo-sv__collapse { left: auto; right: -8px; }
+
 /* ---------- phones: a round entry and a bottom sheet ---------- */
 
 @media (max-width: 749px) {
@@ -466,6 +478,7 @@
   }
   .apgo-sv__open--m-label .apgo-sv__dot { display: none; }
   .apgo-sv__open--m-label ~ .apgo-sv__collapse { top: 16px; left: -22px; }
+  .apgo-sv.is-left .apgo-sv__open--m-label ~ .apgo-sv__collapse { left: auto; right: -22px; }
   .apgo-sv__open--m-label ~ .apgo-sv__hint { bottom: calc(100% + 24px); }
   .apgo-sv.is-collapsed .apgo-sv__open { width: 42px; min-height: 42px; }
 

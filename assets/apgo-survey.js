@@ -109,21 +109,35 @@
   function place() {
     var hub = document.querySelector('.apgo-widget-container');
     var bottom = 20;
-    var right = 20;
+    var right = '20px';
+    var left = 'auto';
+    var onLeft = false;
     if (hub) {
-      // Work from the hub's own bottom/right offsets, not window.innerHeight:
+      // Work from the hub's own bottom/left/right offsets, not window.innerHeight:
       // on phones innerHeight changes while the browser bar slides in and out
       // as the page scrolls, and measuring against it made the gift jump.
+      // The hub docks on either edge (is-left), so the gift lines up with
+      // whichever side it is on.
       var cs = getComputedStyle(hub);
       var hubBottom = parseFloat(cs.bottom);
       var hubRight = parseFloat(cs.right);
-      if (cs.position === 'fixed' && hub.offsetWidth && hub.offsetHeight && !isNaN(hubBottom) && !isNaN(hubRight)) {
+      var hubLeft = parseFloat(cs.left);
+      if (cs.position === 'fixed' && hub.offsetWidth && hub.offsetHeight && !isNaN(hubBottom)) {
+        var inset = (hub.offsetWidth - 56) / 2;
         bottom = Math.round(hubBottom + hub.offsetHeight + 14);
-        right = Math.max(12, Math.round(hubRight + (hub.offsetWidth - 56) / 2));
+        onLeft = hub.classList.contains('is-left');
+        if (onLeft && !isNaN(hubLeft)) {
+          left = Math.max(8, Math.round(hubLeft + inset)) + 'px';
+          right = 'auto';
+        } else if (!isNaN(hubRight)) {
+          right = Math.max(8, Math.round(hubRight + inset)) + 'px';
+        }
       }
     }
     root.style.setProperty('--sv-bottom', bottom + 'px');
-    root.style.setProperty('--sv-right', right + 'px');
+    root.style.setProperty('--sv-right', right);
+    root.style.setProperty('--sv-left', left);
+    root.classList.toggle('is-left', onLeft);
   }
 
   /* ---------- answers ---------- */
@@ -400,6 +414,8 @@
     if (!t || !root.contains(t)) return;
 
     if (t.hasAttribute('data-apgo-sv-open')) {
+      // A drag of the gift (which moves the hub) ends in a click; ignore it.
+      if (window.__apgoHubDraggedAt && Date.now() - window.__apgoHubDraggedAt < 500) return;
       if (root.classList.contains('is-collapsed')) root.classList.remove('is-collapsed');
       open(t.classList.contains('apgo-sv__hint-body') ? 'hint' : 'button');
     } else if (t.hasAttribute('data-apgo-sv-close')) {
@@ -462,6 +478,19 @@
   });
 
   window.addEventListener('resize', place);
+  // The hub announces every move (dragging and the slide to an edge).
+  window.addEventListener('apgo:hub-move', place);
+
+  // Dragging the gift drags the hub, and the gift follows it. A press
+  // without movement stays a normal click that opens the survey.
+  var launcher = root.querySelector('[data-apgo-sv-launcher]');
+  if (launcher) {
+    launcher.addEventListener('pointerdown', function (e) {
+      if (!window.apgoHub || typeof window.apgoHub.beginDrag !== 'function') return;
+      if (e.target.closest('[data-apgo-sv-collapse], [data-apgo-sv-hint]')) return;
+      window.apgoHub.beginDrag(e, null);
+    });
+  }
 
   /* ---------- start ---------- */
 

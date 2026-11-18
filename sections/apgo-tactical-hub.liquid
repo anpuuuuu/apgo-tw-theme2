@@ -76,11 +76,21 @@
   --font-mono: "SF Mono", "Menlo", "Courier New", monospace;
   
   position: fixed;
-  right: 20px;
+  right: 12px;
   bottom: var(--widget-bottom);
   z-index: 9999;
   font-family: var(--font-mono);
   touch-action: none;
+}
+
+/* Slides to the nearest edge after a drag (see the script below). */
+#apgo-hub-{{ section.id }}.is-snapping {
+  transition: left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), bottom 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+/* Docked on the left: open the menu toward the right. */
+#apgo-hub-{{ section.id }}.is-left .hub-panel {
+  right: auto;
+  left: 0;
 }
 
 /* 觸發按鈕 */
@@ -233,10 +243,16 @@
     const container = document.getElementById('apgo-hub-{{ section.id }}');
     const trigger = document.getElementById('apgo-trigger');
     const panel = document.getElementById('apgo-hub-panel');
-    
-    let isDragging = false;
-    let startX, startY, initialRight, initialBottom;
-    let dragThreshold = 5;
+    if (!container || !trigger || !panel) return;
+
+    // The button can be dragged anywhere; on release it slides to the nearest
+    // left or right edge and remembers that spot for the next page. The
+    // survey gift (apgo-survey) sits above it and follows every move through
+    // the 'apgo:hub-move' event, and can start a drag through window.apgoHub.
+    const EDGE = 12;          // gap to the screen edge after snapping
+    const TOP_GAP = 90;       // keep clear of the header
+    const STORE_KEY = 'apgo-hub-pos';
+    const THRESHOLD = 5;      // px of movement before a press counts as a drag
 
     window.toggleApgoHub = function() {
         const isVisible = panel.style.display === 'block';
@@ -255,44 +271,130 @@
         if (navigator.vibrate) navigator.vibrate(15);
     };
 
-    const startDrag = (e) => {
-        isDragging = false;
-        const event = e.type === 'touchstart' ? e.touches[0] : e;
-        startX = event.clientX;
-        startY = event.clientY;
-        const style = window.getComputedStyle(container);
-        initialRight = parseInt(style.right);
-        initialBottom = parseInt(style.bottom);
-
-        document.addEventListener(e.type === 'touchstart' ? 'touchmove' : 'mousemove', moveDrag, { passive: false });
-        document.addEventListener(e.type === 'touchstart' ? 'touchend' : 'mouseup', stopDrag);
-    };
-
-    const moveDrag = (e) => {
-        const event = e.type === 'touchmove' ? e.touches[0] : e;
-        const dx = startX - event.clientX;
-        const dy = startY - event.clientY;
-
-        if (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold) {
-            isDragging = true;
-            if (e.cancelable) e.preventDefault();
-            const newRight = initialRight + dx;
-            const newBottom = initialBottom + dy;
-            if (newRight > 0 && newRight < window.innerWidth - 60) container.style.right = newRight + 'px';
-            if (newBottom > 0 && newBottom < window.innerHeight - 60) container.style.bottom = newBottom + 'px';
+    function giftRoom() {
+        return document.querySelector('[data-apgo-sv-launcher]') ? 90 : 0;
+    }
+    function clampBottom(bottom) {
+        const max = Math.max(EDGE, window.innerHeight - container.offsetHeight - TOP_GAP - giftRoom());
+        return Math.min(Math.max(EDGE, bottom), max);
+    }
+    function emit(dragging) {
+        window.dispatchEvent(new CustomEvent('apgo:hub-move', { detail: { dragging: !!dragging } }));
+    }
+    function currentSide() {
+        return container.classList.contains('is-left') ? 'left' : 'right';
+    }
+    function pin(side, bottom) {
+        container.style.bottom = clampBottom(bottom) + 'px';
+        if (side === 'left') {
+            container.style.left = EDGE + 'px';
+            container.style.right = 'auto';
+        } else {
+            container.style.right = EDGE + 'px';
+            container.style.left = 'auto';
         }
-    };
+        container.classList.toggle('is-left', side === 'left');
+    }
+    function save(side, bottom) {
+        try { localStorage.setItem(STORE_KEY, JSON.stringify({ side: side, bottom: bottom })); } catch (e) {}
+    }
 
-    const stopDrag = (e) => {
-        document.removeEventListener('touchmove', moveDrag);
-        document.removeEventListener('mousemove', moveDrag);
-        document.removeEventListener('touchend', stopDrag);
-        document.removeEventListener('mouseup', stopDrag);
-        if (!isDragging) toggleApgoHub();
-    };
+    // Put the button back where the shopper left it.
+    (function restore() {
+        let saved = null;
+        try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) {}
+        const fallback = parseFloat(getComputedStyle(container).bottom) || 24;
+        const bottom = saved && typeof saved.bottom === 'number' ? saved.bottom : fallback;
+        pin(saved && saved.side === 'left' ? 'left' : 'right', bottom);
+        emit(false);
+    })();
 
-    trigger.addEventListener('mousedown', startDrag);
-    trigger.addEventListener('touchstart', startDrag, { passive: true });
+    let drag = null;
+
+    function beginDrag(e, onTap) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        drag = {
+            id: e.pointerId,
+            startX: e.clientX,
+            startY: e.clientY,
+            left: container.getBoundingClientRect().left,
+            bottom: parseFloat(getComputedStyle(container).bottom) || 0,
+            moved: false,
+            onTap: onTap
+        };
+        container.classList.remove('is-snapping');
+        window.addEventListener('pointermove', moveDrag, { passive: false });
+        window.addEventListener('pointerup', endDrag);
+        window.addEventListener('pointercancel', endDrag);
+    }
+
+    function moveDrag(e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        const dx = e.clientX - drag.startX;
+        const dy = e.clientY - drag.startY;
+        if (!drag.moved && Math.abs(dx) < THRESHOLD && Math.abs(dy) < THRESHOLD) return;
+        drag.moved = true;
+        if (e.cancelable) e.preventDefault();
+        const width = container.offsetWidth;
+        const left = Math.min(Math.max(EDGE, drag.left + dx), window.innerWidth - width - EDGE);
+        container.style.left = left + 'px';
+        container.style.right = 'auto';
+        container.style.bottom = clampBottom(drag.bottom - dy) + 'px';
+        container.classList.toggle('is-left', left + width / 2 < window.innerWidth / 2);
+        emit(true);
+    }
+
+    function endDrag(e) {
+        if (!drag || (e && e.pointerId !== undefined && e.pointerId !== drag.id)) return;
+        window.removeEventListener('pointermove', moveDrag);
+        window.removeEventListener('pointerup', endDrag);
+        window.removeEventListener('pointercancel', endDrag);
+        const done = drag;
+        drag = null;
+
+        if (!done.moved) {
+            if (done.onTap && e && e.type === 'pointerup') done.onTap();
+            return;
+        }
+
+        // Tell tap handlers to ignore the click that follows a drag.
+        window.__apgoHubDraggedAt = Date.now();
+
+        const width = container.offsetWidth;
+        const rect = container.getBoundingClientRect();
+        const side = rect.left + width / 2 < window.innerWidth / 2 ? 'left' : 'right';
+        const bottom = clampBottom(parseFloat(container.style.bottom) || 0);
+
+        // Slide to the edge, letting the gift follow frame by frame,
+        // then pin with left/right so a resize keeps it on that edge.
+        container.classList.add('is-snapping');
+        container.style.left = (side === 'left' ? EDGE : window.innerWidth - width - EDGE) + 'px';
+        const until = Date.now() + 320;
+        (function follow() {
+            emit(true);
+            if (Date.now() < until) requestAnimationFrame(follow);
+        })();
+        setTimeout(function () {
+            container.classList.remove('is-snapping');
+            pin(side, bottom);
+            save(side, bottom);
+            emit(false);
+        }, 320);
+    }
+
+    trigger.addEventListener('pointerdown', function (e) { beginDrag(e, window.toggleApgoHub); });
+    // Keyboard presses arrive as clicks with no pointer behind them.
+    trigger.addEventListener('click', function (e) {
+        if (e.detail === 0) window.toggleApgoHub();
+    });
+
+    window.addEventListener('resize', function () {
+        if (drag) return;
+        pin(currentSide(), parseFloat(container.style.bottom) || 0);
+        emit(false);
+    });
+
+    window.apgoHub = { beginDrag: beginDrag };
 
     document.addEventListener('click', function(e) {
         if (container && !container.contains(e.target)) {

@@ -90,6 +90,7 @@
           <button class="apgo-cc-newsletter__cta" type="submit" data-apgo-newsletter-submit>
             {{ section.settings.cta_label | escape }}
           </button>
+          {% render 'apgo-hcaptcha-note' %}
         {%- endform -%}
 
         <button class="apgo-cc-newsletter__dismiss" type="button" data-apgo-newsletter-dismiss>

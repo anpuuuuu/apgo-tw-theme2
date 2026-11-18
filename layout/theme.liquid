@@ -167,6 +167,16 @@
     {{ 'apgo-mobile-buybar.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'apgo-cc-buybar.js' | asset_url }}" defer></script>
   {%- endif -%}
+  {%- comment -%}
+    Shopify pins an hCaptcha badge to the bottom-right corner once a newsletter
+    or contact form is touched, on top of the floating buttons. It is hidden
+    here; the forms show hCaptcha's notice instead (snippets/apgo-hcaptcha-note).
+  {%- endcomment -%}
+  <style>
+    #shop-hcaptcha-badge-container { display: none !important; }
+    .apgo-hcaptcha-note { margin: 10px 0 0; font-size: 11px; line-height: 1.5; opacity: 0.6; text-align: center; }
+    .apgo-hcaptcha-note a { color: inherit; text-decoration: underline; }
+  </style>
 </head>
 
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}{% if template.suffix != blank %} template-suffix-{{ template.suffix }}{% endif %}{% if template.name == 'collection' or template.name == 'search' or template.suffix == 'apgo-v2' %} apgo-cc-skin{% endif %}{% if template.name == 'search' %} apgo-cc-search{% endif %}" data-shop-host="{{ shop.permanent_domain }}">
