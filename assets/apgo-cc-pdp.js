@@ -195,7 +195,11 @@
           ) || 0;
           var tabBar = $('.apgo-cc-pdp__tab-bar', tabsRoot);
           var tabBarHeight = tabBar ? tabBar.getBoundingClientRect().height : 60;
-          var threshold = headerHeight + tabBarHeight + 1;
+          // A clicked tab scrolls its panel to the panel's scroll-margin-top
+          // (header + 60px in apgo-carcare.css), a few px below the tab bar.
+          // Count that spot as reached, or the previous tab stays highlighted.
+          var landing = parseFloat(getComputedStyle(panels[0]).scrollMarginTop) || 0;
+          var threshold = Math.max(headerHeight + tabBarHeight, landing) + 2;
           var activeKey = panels[0].getAttribute('data-apgo-cc-panel');
           for (var i = 0; i < panels.length; i++) {
             var top = panels[i].getBoundingClientRect().top;
