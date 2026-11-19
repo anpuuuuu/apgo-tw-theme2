@@ -161,10 +161,31 @@
     // tab bar highlights the section the reader is currently on.
     var tabsRoot = $('[data-apgo-cc-tabs]', root);
     if (tabsRoot) {
+      var tabBarEl = $('.apgo-cc-pdp__tab-bar', tabsRoot);
+      var lastActiveKey = null;
       function setActiveTab(key) {
+        var activeTab = null;
         $$('[data-apgo-cc-tab]', tabsRoot).forEach(function (t) {
-          t.classList.toggle('is-active', t.getAttribute('data-apgo-cc-tab') === key);
+          var on = t.getAttribute('data-apgo-cc-tab') === key;
+          t.classList.toggle('is-active', on);
+          if (on) activeTab = t;
         });
+        // On phones the tab bar is wider than the screen, and the last tabs
+        // (常見FAQ, 汽車鍍膜怎麼選) start off to the right. Slide the bar so the
+        // highlighted tab stays in view as the reader scrolls down the page.
+        if (key !== lastActiveKey && activeTab && tabBarEl &&
+            tabBarEl.scrollWidth > tabBarEl.clientWidth) {
+          var barRect = tabBarEl.getBoundingClientRect();
+          var tabRect = activeTab.getBoundingClientRect();
+          if (tabRect.left < barRect.left || tabRect.right > barRect.right) {
+            var tabLeft = tabRect.left - barRect.left + tabBarEl.scrollLeft;
+            tabBarEl.scrollTo({
+              left: tabLeft - (tabBarEl.clientWidth - tabRect.width) / 2,
+              behavior: 'smooth'
+            });
+          }
+        }
+        lastActiveKey = key;
       }
 
       $$('[data-apgo-cc-tab]', tabsRoot).forEach(function (tab) {
