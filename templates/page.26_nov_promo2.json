@@ -569,6 +569,7 @@
         "product_grid_GPGTkE": {
           "type": "product_grid",
           "name": "G11測速器$1480",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "現省↘$1108",
             "section_title": "現省↘$1108",
@@ -591,6 +592,7 @@
         "product_grid_Nb3Jn3": {
           "type": "product_grid",
           "name": "新包裝-瓶裝超級洗衣精買3送3",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "人氣新品✨嚐鮮優惠價",
