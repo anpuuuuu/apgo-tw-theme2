@@ -702,6 +702,18 @@
         "padding_top": 12,
         "padding_bottom": 24
       }
+    },
+    "apgo_coating_guide": {
+      "type": "apgo-coating-guide",
+      "settings": {
+        "show_heading": true,
+        "max_width": 1400,
+        "background": "#050506",
+        "padding_top": 16,
+        "padding_bottom": 64,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 40
+      }
     }
   },
   "order": [
@@ -715,6 +727,7 @@
     "apgo_home_bestsellers_v2",
     "apgo_home_categories_v2",
     "apgo_home_new_v2",
-    "apgo_home_shelves_v2"
+    "apgo_home_shelves_v2",
+    "apgo_coating_guide"
   ]
 }

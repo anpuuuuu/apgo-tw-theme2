@@ -2395,5 +2395,88 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "APGO 鍍膜怎麼選",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "首頁的「APGO · 鍍膜怎麼選」區塊和鍍膜商品頁的「汽車鍍膜怎麼選」分頁都用這裡的內容，改一次兩邊一起更新。圖片留空時使用主題內建的 2026-11 版比較圖。"
+      },
+      {
+        "type": "header",
+        "content": "圖片"
+      },
+      {
+        "type": "image_picker",
+        "id": "coating_guide_image_desktop",
+        "label": "電腦版圖片（橫式）",
+        "info": "建議 1920×1080。螢幕寬 990px 以上顯示。換圖時電腦版和手機版要一起換，只換一張的話另一種裝置會繼續顯示舊圖。"
+      },
+      {
+        "type": "image_picker",
+        "id": "coating_guide_image_mobile",
+        "label": "手機版圖片（3:4 直式）",
+        "info": "建議 1086×1448 以上。手機和平板（螢幕寬 989px 以下）顯示。"
+      },
+      {
+        "type": "text",
+        "id": "coating_guide_alt",
+        "label": "圖片替代文字",
+        "info": "給看不到圖的人和搜尋引擎看的說明。",
+        "default": "APGO 鍍膜怎麼選：10 款鍍膜比較圖，依需求挑選最適合的保護方案"
+      },
+      {
+        "type": "header",
+        "content": "文字與按鈕"
+      },
+      {
+        "type": "text",
+        "id": "coating_guide_heading",
+        "label": "標題",
+        "default": "APGO汽車鍍膜怎麼選"
+      },
+      {
+        "type": "text",
+        "id": "coating_guide_heading_accent",
+        "label": "標題裡的橘色字",
+        "info": "標題中要變成橘色的那幾個字。留空則整個標題都是白色。",
+        "default": "APGO"
+      },
+      {
+        "type": "text",
+        "id": "coating_guide_subheading",
+        "label": "副標",
+        "default": "10款鍍膜快速看懂，依需求挑選最適合的保護方案"
+      },
+      {
+        "type": "text",
+        "id": "coating_guide_button_label",
+        "label": "按鈕文字",
+        "default": "立即前往挑選鍍膜"
+      },
+      {
+        "type": "url",
+        "id": "coating_guide_button_link",
+        "label": "按鈕連結",
+        "info": "留空則連到鍍膜全系列（/collections/coating-series）。"
+      },
+      {
+        "type": "header",
+        "content": "商品頁分頁"
+      },
+      {
+        "type": "text",
+        "id": "coating_guide_tab_label",
+        "label": "分頁名稱",
+        "default": "汽車鍍膜怎麼選"
+      },
+      {
+        "type": "collection",
+        "id": "coating_guide_collection",
+        "label": "顯示分頁的商品系列",
+        "info": "這個系列裡的商品，商品頁「常見FAQ」旁會多一個分頁，點了跳到比較圖。留空則用鍍膜全系列。"
+      }
+    ]
   }
 ]

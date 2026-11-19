@@ -1,0 +1,68 @@
+{%- comment -%}
+  APGO · 鍍膜怎麼選: the coating comparison guide near the bottom of the homepage.
+  The content (images, heading, button) lives in theme settings and is shared
+  with the 汽車鍍膜怎麼選 tab on coating product pages; see
+  snippets/apgo-coating-guide.liquid. This section only sets the layout.
+{%- endcomment -%}
+
+{%- liquid
+  assign cg_max = section.settings.max_width
+  assign cg_max_vw = cg_max | plus: 32
+  capture cg_sizes
+    echo '(min-width: ' | append: cg_max_vw | append: 'px) ' | append: cg_max | append: 'px, calc(100vw - 32px)'
+  endcapture
+-%}
+
+<div
+  class="apgo-cg-section"
+  id="coating-guide"
+  style="--apgo-cg-max: {{ cg_max }}px; --apgo-cg-bg: {{ section.settings.background }}; --apgo-cg-pt: {{ section.settings.padding_top }}px; --apgo-cg-pb: {{ section.settings.padding_bottom }}px; --apgo-cg-pt-m: {{ section.settings.padding_top_mobile }}px; --apgo-cg-pb-m: {{ section.settings.padding_bottom_mobile }}px;"
+>
+  <div class="apgo-cg-section__inner">
+    {% render 'apgo-coating-guide', show_heading: section.settings.show_heading, desktop_sizes: cg_sizes %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .apgo-cg-section {
+    background: var(--apgo-cg-bg, #050506);
+    padding: var(--apgo-cg-pt, 16px) 16px var(--apgo-cg-pb, 64px);
+    scroll-margin-top: calc(var(--header-height, 0px) + 12px);
+  }
+
+  .apgo-cg-section__inner {
+    width: min(100%, var(--apgo-cg-max, 1400px));
+    margin: 0 auto;
+  }
+
+  @media (max-width: 749px) {
+    .apgo-cg-section {
+      padding: var(--apgo-cg-pt-m, 12px) 12px var(--apgo-cg-pb-m, 40px);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "APGO · 鍍膜怎麼選",
+  "tag": "section",
+  "class": "apgo-cg-shopify-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "圖片、標題、副標和按鈕請到「主題設定 → APGO 鍍膜怎麼選」修改。鍍膜商品頁的「汽車鍍膜怎麼選」分頁用的是同一份內容，改一次兩邊一起更新。這裡只調整版面。"
+    },
+    { "type": "checkbox", "id": "show_heading", "label": "顯示標題和副標", "default": true },
+    { "type": "range", "id": "max_width", "label": "電腦版最大寬度", "min": 1000, "max": 1600, "step": 20, "unit": "px", "default": 1400 },
+    { "type": "color", "id": "background", "label": "背景色", "default": "#050506" },
+    { "type": "header", "content": "留白" },
+    { "type": "range", "id": "padding_top", "label": "上方留白（電腦）", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 16 },
+    { "type": "range", "id": "padding_bottom", "label": "下方留白（電腦）", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_top_mobile", "label": "上方留白（手機）", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "下方留白（手機）", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "presets": [
+    { "name": "APGO · 鍍膜怎麼選" }
+  ]
+}
+{% endschema %}

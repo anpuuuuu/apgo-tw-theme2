@@ -481,7 +481,23 @@
   {%- assign has_faq = false -%}
   {%- if mf_faqs != blank and mf_faqs.size > 0 -%}{%- assign has_faq = true -%}{%- endif -%}
 
-  {%- if has_desc or has_usage or has_spec or has_review or has_faq -%}
+  {%- comment -%}
+    汽車鍍膜怎麼選: the shared coating comparison guide (snippets/apgo-coating-guide),
+    only for products in the guide's collection (主題設定 → APGO 鍍膜怎麼選,
+    coating-series when left blank).
+  {%- endcomment -%}
+  {%- assign has_guide = false -%}
+  {%- if section.settings.show_coating_guide -%}
+    {%- assign guide_handle = settings.coating_guide_collection.handle | default: 'coating-series' -%}
+    {%- for c in product.collections -%}
+      {%- if c.handle == guide_handle -%}
+        {%- assign has_guide = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  {%- if has_desc or has_usage or has_spec or has_review or has_faq or has_guide -%}
   <div class="apgo-cc-pdp__tabs" data-apgo-cc-tabs>
     <div class="apgo-cc-pdp__tab-bar" role="tablist">
       {%- assign first_tab_set = false -%}
@@ -503,6 +519,10 @@
       {%- endif -%}
       {%- if has_faq -%}
         <button type="button" class="apgo-cc-pdp__tab{% unless first_tab_set %} is-active{% endunless %}" role="tab" data-apgo-cc-tab="faq">常見FAQ</button>
+        {%- assign first_tab_set = true -%}
+      {%- endif -%}
+      {%- if has_guide -%}
+        <button type="button" class="apgo-cc-pdp__tab apgo-cc-pdp__tab--guide{% unless first_tab_set %} is-active{% endunless %}" role="tab" data-apgo-cc-tab="guide">{{ settings.coating_guide_tab_label | default: '汽車鍍膜怎麼選' | escape }}</button>
         {%- assign first_tab_set = true -%}
       {%- endif -%}
     </div>
@@ -619,6 +639,17 @@
       </div>
       {%- assign first_panel_set = true -%}
     {%- endif -%}
+
+    {%- comment -%} 汽車鍍膜怎麼選 — shared guide, see has_guide above {%- endcomment -%}
+    {%- if has_guide -%}
+      <div class="apgo-cc-pdp__tab-panel apgo-cc-pdp__tab-panel--guide{% unless first_panel_set %} is-active{% endunless %}" data-apgo-cc-panel="guide" id="coating-guide">
+        {%- render 'apgo-coating-guide',
+          class: 'apgo-cg--pdp',
+          desktop_sizes: '(min-width: 1240px) 1160px, calc(100vw - 80px)'
+        -%}
+      </div>
+      {%- assign first_panel_set = true -%}
+    {%- endif -%}
   </div>
   {%- endif -%}
 
@@ -645,6 +676,7 @@
     { "type": "checkbox", "id": "show_rating",     "label": "顯示星等評分", "default": true },
     { "type": "checkbox", "id": "show_buy_now",    "label": "顯示「立即購買」按鈕", "default": true },
     { "type": "checkbox", "id": "show_thumbs",     "label": "手機顯示次圖縮圖列（關閉時手機改用主圖底部橘色點點。桌機永遠顯示縮圖）", "default": true },
+    { "type": "checkbox", "id": "show_coating_guide", "label": "鍍膜商品顯示「汽車鍍膜怎麼選」分頁", "info": "只在指定系列的商品顯示（主題設定 → APGO 鍍膜怎麼選，預設鍍膜全系列）。分頁內容和首頁的鍍膜怎麼選區塊共用。", "default": true },
 
     { "type": "header", "content": "標題與評分" },
     { "type": "text", "id": "kicker",       "label": "上方小字（kicker，留空則不顯示）" },

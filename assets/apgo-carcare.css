@@ -1730,6 +1730,11 @@ body.apgo-cc-skin .product-recommendations .product-grid__item .price {
   font-weight: 600;
   border-bottom-color: var(--cc-orange);
 }
+/* 汽車鍍膜怎麼選 is a shopping guide rather than product info, so its tab
+   is orange until it becomes the active one. */
+.apgo-cc-pdp__tab--guide { color: var(--cc-orange); }
+.apgo-cc-pdp__tab--guide:hover { color: var(--cc-orange); opacity: .85; }
+.apgo-cc-pdp__tab--guide.is-active { color: var(--cc-fg); opacity: 1; }
 
 /* ---- Sticky tab bar (simple) ----
    Keep the product tab bar below the global sticky header. The header
