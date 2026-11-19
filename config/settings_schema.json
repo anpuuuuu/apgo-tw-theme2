@@ -2432,16 +2432,16 @@
       },
       {
         "type": "text",
-        "id": "coating_guide_heading",
-        "label": "標題",
-        "default": "APGO汽車鍍膜怎麼選"
+        "id": "coating_guide_eyebrow",
+        "label": "標題上方英文小字",
+        "info": "和首頁其他區塊一樣的橘色小字（例：BEST SELLERS）。手機版首頁不顯示。留空則不顯示。",
+        "default": "COATING GUIDE"
       },
       {
         "type": "text",
-        "id": "coating_guide_heading_accent",
-        "label": "標題裡的橘色字",
-        "info": "標題中要變成橘色的那幾個字。留空則整個標題都是白色。",
-        "default": "APGO"
+        "id": "coating_guide_heading",
+        "label": "標題",
+        "default": "APGO汽車鍍膜怎麼選"
       },
       {
         "type": "text",

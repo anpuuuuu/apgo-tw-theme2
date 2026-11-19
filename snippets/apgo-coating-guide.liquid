@@ -1,33 +1,24 @@
 {%- doc -%}
-  APGO 鍍膜怎麼選: the coating comparison guide. It shows a heading, a
-  landscape image on computers, a 3:4 portrait image on phones and tablets,
-  and a button to the coating collection.
+  APGO 鍍膜怎麼選: the coating comparison image and the button under it. The
+  image is landscape on computers and 3:4 portrait on phones and tablets.
 
   Two places render it: the homepage section (sections/apgo-coating-guide.liquid)
   and the 汽車鍍膜怎麼選 tab on coating product pages
-  (sections/apgo-cc-product-detail.liquid). Both read the content from theme
-  settings (主題設定 → APGO 鍍膜怎麼選), so one change updates both places.
+  (sections/apgo-cc-product-detail.liquid). Each host renders the heading in
+  its own style. The content comes from theme settings
+  (主題設定 → APGO 鍍膜怎麼選), so one change updates both places.
 
   Until images are uploaded there, the theme's own webp set is used
   (assets/apgo-coating-guide-*.webp, made from the 2026-11 comparison images).
 
-  @param {string} [heading_tag] - h2 or h3. Defaults to h2.
-  @param {boolean} [show_heading] - false hides the heading and subheading.
   @param {string} [desktop_sizes] - The sizes attribute for the landscape image.
-  @param {string} [class] - Extra class on the wrapper, e.g. apgo-cg--pdp.
+  @param {string} [class] - Extra class on the wrapper.
 
   @example
-  {% render 'apgo-coating-guide', heading_tag: 'h3', desktop_sizes: '1160px' %}
+  {% render 'apgo-coating-guide', desktop_sizes: '(min-width: 1240px) 1160px, calc(100vw - 80px)' %}
 {%- enddoc -%}
 
 {%- liquid
-  assign cg_tag = heading_tag | default: 'h2'
-  assign cg_heading = settings.coating_guide_heading | escape
-  assign cg_accent = settings.coating_guide_heading_accent | escape
-  if cg_accent != blank and cg_heading contains cg_accent
-    assign cg_accent_html = '<span class="apgo-cg__accent">' | append: cg_accent | append: '</span>'
-    assign cg_heading = cg_heading | replace_first: cg_accent, cg_accent_html
-  endif
   assign cg_label = settings.coating_guide_button_label | default: '立即前往挑選鍍膜'
   assign cg_link = settings.coating_guide_button_link | default: '/collections/coating-series'
   assign cg_alt = settings.coating_guide_alt | default: settings.coating_guide_heading
@@ -38,15 +29,6 @@
 -%}
 
 <div class="apgo-cg{% if class != blank %} {{ class }}{% endif %}">
-  {%- if show_heading != false and cg_heading != blank -%}
-    <div class="apgo-cg__head">
-      <{{ cg_tag }} class="apgo-cg__heading">{{ cg_heading }}</{{ cg_tag }}>
-      {%- if settings.coating_guide_subheading != blank -%}
-        <p class="apgo-cg__sub">{{ settings.coating_guide_subheading | escape }}</p>
-      {%- endif -%}
-    </div>
-  {%- endif -%}
-
   <div class="apgo-cg__media">
     <picture class="apgo-cg__picture">
       {%- if cg_d != blank -%}
@@ -98,50 +80,19 @@
     <div class="apgo-cg__cta">
       <a class="apgo-cg__btn" href="{{ cg_link }}">
         {{- cg_label | escape -}}
-        <span class="apgo-cg__btn-arrow" aria-hidden="true">›</span>
+        <span class="apgo-cg__btn-arrow" aria-hidden="true">→</span>
       </a>
     </div>
   {%- endif -%}
 </div>
 
 {% stylesheet %}
-  .apgo-cg {
-    --apgo-cg-accent: #f58220;
-    --apgo-cg-accent-hover: #ff9a3d;
-    color: #fff;
-    text-align: center;
-  }
-
-  .apgo-cg__head {
-    margin: 0 0 18px;
-  }
-
-  .apgo-cg__heading {
-    margin: 0;
-    color: #fff;
-    font-size: clamp(1.45rem, 2.4vw, 2.1rem);
-    font-weight: 800;
-    line-height: 1.25;
-    letter-spacing: 0.01em;
-  }
-
-  .apgo-cg__accent {
-    color: var(--apgo-cg-accent);
-  }
-
-  .apgo-cg__sub {
-    margin: 8px 0 0;
-    color: #a6a7b0;
-    font-size: 0.95rem;
-    line-height: 1.5;
-  }
-
   /* Phones and tablets get the portrait image; on tablets it would be
      taller than the screen at full width, so it stops at 640px. */
   .apgo-cg__media {
     max-width: 640px;
     margin: 0 auto;
-    border-radius: 16px;
+    border-radius: 14px;
     overflow: hidden;
     background: #0d0d10;
   }
@@ -160,31 +111,33 @@
   }
 
   .apgo-cg__cta {
-    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    margin-top: 22px;
   }
 
+  /* Same outline style as the homepage 加入購物車 buttons. */
   .apgo-cg__btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    min-height: 46px;
-    padding: 0 30px;
-    border-radius: 999px;
-    background: var(--apgo-cg-accent);
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    gap: 8px;
+    min-width: 260px;
+    min-height: 44px;
+    padding: 0 28px;
+    border: 1px solid #f58220;
+    border-radius: 8px;
+    color: #f58220;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
     text-decoration: none;
-    box-shadow: 0 6px 18px rgb(245 130 32 / 0.28);
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   .apgo-cg__btn:hover {
-    background: var(--apgo-cg-accent-hover);
+    background: #f58220;
     color: #fff;
-    transform: translateY(-1px);
   }
 
   .apgo-cg__btn:focus-visible {
@@ -192,40 +145,17 @@
     outline-offset: 3px;
   }
 
-  .apgo-cg__btn-arrow {
-    font-size: 1.25em;
-    line-height: 1;
-  }
-
-  /* Inside the product page tab: a smaller heading. */
-  .apgo-cg--pdp .apgo-cg__heading {
-    font-size: 1.3rem;
-  }
-
-  .apgo-cg--pdp .apgo-cg__sub {
-    font-size: 0.85rem;
-  }
-
   @media (max-width: 749px) {
-    .apgo-cg__head {
-      margin-bottom: 14px;
-    }
-
-    .apgo-cg__sub {
-      font-size: 0.85rem;
-    }
-
     .apgo-cg__media {
-      border-radius: 12px;
+      border-radius: 10px;
     }
 
     .apgo-cg__cta {
-      margin-top: 16px;
+      margin-top: 18px;
     }
 
     .apgo-cg__btn {
       width: 100%;
-      max-width: 360px;
     }
   }
 {% endstylesheet %}

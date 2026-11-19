@@ -1786,6 +1786,13 @@ body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
   line-height: 1.3;
   letter-spacing: -.01em;
 }
+/* Subheading under a panel heading (汽車鍍膜怎麼選 tab). */
+.apgo-cc-pdp__panel-sub {
+  margin: -8px 0 18px;
+  color: var(--cc-fg-dim);
+  font-size: 13px;
+  line-height: 1.6;
+}
 .apgo-cc-pdp__rte p { margin: 0 0 14px; color: inherit; }
 .apgo-cc-pdp__rte img { max-width: 100%; height: auto; border-radius: var(--cc-r2); }
 .apgo-cc-pdp__placeholder {

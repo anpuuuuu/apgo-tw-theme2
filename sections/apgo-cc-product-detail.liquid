@@ -643,10 +643,16 @@
     {%- comment -%} 汽車鍍膜怎麼選 — shared guide, see has_guide above {%- endcomment -%}
     {%- if has_guide -%}
       <div class="apgo-cc-pdp__tab-panel apgo-cc-pdp__tab-panel--guide{% unless first_panel_set %} is-active{% endunless %}" data-apgo-cc-panel="guide" id="coating-guide">
-        {%- render 'apgo-coating-guide',
-          class: 'apgo-cg--pdp',
-          desktop_sizes: '(min-width: 1240px) 1160px, calc(100vw - 80px)'
-        -%}
+        {%- if settings.coating_guide_eyebrow != blank -%}
+          <div class="apgo-cc-pdp__panel-kicker">{{ settings.coating_guide_eyebrow | escape }}</div>
+        {%- endif -%}
+        {%- if settings.coating_guide_heading != blank -%}
+          <h2 class="apgo-cc-pdp__panel-heading">{{ settings.coating_guide_heading | escape }}</h2>
+        {%- endif -%}
+        {%- if settings.coating_guide_subheading != blank -%}
+          <p class="apgo-cc-pdp__panel-sub">{{ settings.coating_guide_subheading | escape }}</p>
+        {%- endif -%}
+        {%- render 'apgo-coating-guide', desktop_sizes: '(min-width: 1240px) 1160px, calc(100vw - 80px)' -%}
       </div>
       {%- assign first_panel_set = true -%}
     {%- endif -%}

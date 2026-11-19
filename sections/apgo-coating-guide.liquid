@@ -1,43 +1,69 @@
 {%- comment -%}
-  APGO · 鍍膜怎麼選: the coating comparison guide near the bottom of the homepage.
+  APGO · 鍍膜怎麼選: the coating comparison guide near the bottom of the homepage,
+  drawn as a homepage panel (apgo-home-v2.css) like the shelves above it.
   The content (images, heading, button) lives in theme settings and is shared
-  with the 汽車鍍膜怎麼選 tab on coating product pages; see
-  snippets/apgo-coating-guide.liquid. This section only sets the layout.
+  with the 汽車鍍膜怎麼選 tab on coating product pages; the image and button
+  come from snippets/apgo-coating-guide.liquid.
 {%- endcomment -%}
+
+{{ 'apgo-home-v2.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign cg_max = section.settings.max_width
+  assign cg_img_max = cg_max | minus: 58
   assign cg_max_vw = cg_max | plus: 32
   capture cg_sizes
-    echo '(min-width: ' | append: cg_max_vw | append: 'px) ' | append: cg_max | append: 'px, calc(100vw - 32px)'
+    echo '(min-width: ' | append: cg_max_vw | append: 'px) ' | append: cg_img_max | append: 'px, calc(100vw - 90px)'
   endcapture
 -%}
 
-<div
-  class="apgo-cg-section"
+<section
+  class="apgo-home-module apgo-cg-section"
   id="coating-guide"
-  style="--apgo-cg-max: {{ cg_max }}px; --apgo-cg-bg: {{ section.settings.background }}; --apgo-cg-pt: {{ section.settings.padding_top }}px; --apgo-cg-pb: {{ section.settings.padding_bottom }}px; --apgo-cg-pt-m: {{ section.settings.padding_top_mobile }}px; --apgo-cg-pb-m: {{ section.settings.padding_bottom_mobile }}px;"
+  style="--apgo-home-accent: #f58220; --apgo-home-max: {{ cg_max }}px; --apgo-home-padding-top: {{ section.settings.padding_top }}px; --apgo-home-padding-bottom: {{ section.settings.padding_bottom }}px; --apgo-home-padding-top-mobile: {{ section.settings.padding_top_mobile }}px; --apgo-home-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;"
+  {% if section.settings.show_heading and settings.coating_guide_heading != blank %}aria-labelledby="ApgoCoatingGuide-{{ section.id }}"{% endif %}
 >
-  <div class="apgo-cg-section__inner">
-    {% render 'apgo-coating-guide', show_heading: section.settings.show_heading, desktop_sizes: cg_sizes %}
+  <div class="apgo-home-v2__inner">
+    <div class="apgo-home-panel">
+      {%- if section.settings.show_heading and settings.coating_guide_heading != blank -%}
+        <header class="apgo-home-heading">
+          <div>
+            {%- if settings.coating_guide_eyebrow != blank -%}
+              <p class="apgo-home-heading__eyebrow">{{ settings.coating_guide_eyebrow | escape }}</p>
+            {%- endif -%}
+            <h2 id="ApgoCoatingGuide-{{ section.id }}">{{ settings.coating_guide_heading | escape }}</h2>
+            {%- if settings.coating_guide_subheading != blank -%}
+              <p class="apgo-cg-section__sub">{{ settings.coating_guide_subheading | escape }}</p>
+            {%- endif -%}
+          </div>
+        </header>
+      {%- endif -%}
+      {% render 'apgo-coating-guide', desktop_sizes: cg_sizes %}
+    </div>
   </div>
-</div>
+</section>
 
 {% stylesheet %}
   .apgo-cg-section {
-    background: var(--apgo-cg-bg, #050506);
-    padding: var(--apgo-cg-pt, 16px) 16px var(--apgo-cg-pb, 64px);
     scroll-margin-top: calc(var(--header-height, 0px) + 12px);
   }
 
-  .apgo-cg-section__inner {
-    width: min(100%, var(--apgo-cg-max, 1400px));
-    margin: 0 auto;
+  .apgo-cg-section__sub {
+    margin: 6px 0 0;
+    color: #9899a2;
+    font-size: 14px;
+    line-height: 1.5;
   }
 
+  /* The panel's side padding shrinks the image on phones; let it reach
+     8px further on each side so the small text in it stays readable. */
   @media (max-width: 749px) {
-    .apgo-cg-section {
-      padding: var(--apgo-cg-pt-m, 12px) 12px var(--apgo-cg-pb-m, 40px);
+    .apgo-cg-section__sub {
+      font-size: 12.5px;
+    }
+
+    .apgo-cg-section .apgo-cg__media {
+      margin: 0 -8px;
     }
   }
 {% endstylesheet %}
@@ -53,12 +79,11 @@
       "content": "圖片、標題、副標和按鈕請到「主題設定 → APGO 鍍膜怎麼選」修改。鍍膜商品頁的「汽車鍍膜怎麼選」分頁用的是同一份內容，改一次兩邊一起更新。這裡只調整版面。"
     },
     { "type": "checkbox", "id": "show_heading", "label": "顯示標題和副標", "default": true },
-    { "type": "range", "id": "max_width", "label": "電腦版最大寬度", "min": 1000, "max": 1600, "step": 20, "unit": "px", "default": 1400 },
-    { "type": "color", "id": "background", "label": "背景色", "default": "#050506" },
+    { "type": "range", "id": "max_width", "label": "內容最大寬度", "info": "和上方「分類商品列」同為 1440px 時，左右邊會對齊。", "min": 1000, "max": 1800, "step": 20, "unit": "px", "default": 1440 },
     { "type": "header", "content": "留白" },
-    { "type": "range", "id": "padding_top", "label": "上方留白（電腦）", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 16 },
-    { "type": "range", "id": "padding_bottom", "label": "下方留白（電腦）", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
-    { "type": "range", "id": "padding_top_mobile", "label": "上方留白（手機）", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding_top", "label": "上方留白（電腦）", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "下方留白（電腦）", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_top_mobile", "label": "上方留白（手機）", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
     { "type": "range", "id": "padding_bottom_mobile", "label": "下方留白（手機）", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
   ],
   "presets": [

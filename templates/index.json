@@ -707,11 +707,10 @@
       "type": "apgo-coating-guide",
       "settings": {
         "show_heading": true,
-        "max_width": 1400,
-        "background": "#050506",
-        "padding_top": 16,
-        "padding_bottom": 64,
-        "padding_top_mobile": 12,
+        "max_width": 1440,
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "padding_top_mobile": 0,
         "padding_bottom_mobile": 40
       }
     }
