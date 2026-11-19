@@ -230,26 +230,6 @@
             "alt": "百年好合．幸福集字卡．全館消費滿$1,000集贈送幸福集字卡1張"
           }
         },
-        "banner_4JmTtU": {
-          "type": "banner",
-          "name": "新包裝 瓶裝超級洗衣精 買3送3",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/11_-26_0.jpg",
-            "link": "shopify://collections/home-clean",
-            "alt": ""
-          }
-        },
-        "banner_rcwDi3": {
-          "type": "banner",
-          "name": "雙11神券-$111、$211、$311",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/1920_x_1080__3_up_4ebc35b9-5cd5-42bd-8efa-6a43a09a29b4.jpg",
-            "link": "shopify://pages/26_nov_prom2",
-            "alt": "雙11神券"
-          }
-        },
         "banner_CXPEDn": {
           "type": "banner",
           "name": "google&fb五星好評",
@@ -285,18 +265,27 @@
             "link": "https://sub.apgo.tw/",
             "alt": "洗衣精訂閱制活動"
           }
+        },
+        "banner_4JmTtU": {
+          "type": "banner",
+          "name": "新包裝 瓶裝超級洗衣精 買3送3",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/11_-26_0.jpg",
+            "link": "shopify://collections/home-clean",
+            "alt": ""
+          }
         }
       },
       "block_order": [
         "banner_fDyECz",
         "banner_cDcnCA",
         "banner_QcxFn3",
-        "banner_4JmTtU",
-        "banner_rcwDi3",
         "banner_CXPEDn",
         "banner_T8KwPX",
         "banner_Vy3Bhj",
-        "banner_jGTL4Q"
+        "banner_jGTL4Q",
+        "banner_4JmTtU"
       ],
       "settings": {
         "autoplay": true,
