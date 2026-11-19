@@ -212,15 +212,6 @@
             "alt": ""
           }
         },
-        "banner_hJFrbM": {
-          "type": "banner",
-          "name": "原子琉璃釉買一送2",
-          "settings": {
-            "image": "shopify://shop_images/APGO_11_2167ce02-8474-4711-a97b-5d2da22f5d3c.png",
-            "link": "shopify://products/apgo-atomic-colored-glaze",
-            "alt": "原子琉璃釉買一送2"
-          }
-        },
         "banner_QcxFn3": {
           "type": "banner",
           "name": "百年好合．幸福集字卡．全館消費滿$1,000集贈送幸福集字卡1張",
@@ -230,63 +221,10 @@
             "alt": "百年好合．幸福集字卡．全館消費滿$1,000集贈送幸福集字卡1張"
           }
         },
-        "banner_r6gpWn": {
-          "type": "banner",
-          "name": "［汽車煥新尊寵禮組］ 優惠價 3888元",
-          "settings": {
-            "image": "shopify://shop_images/02_e4bd042c-a7a9-4e19-b936-a34aca08ee4b.png",
-            "link": "shopify://products/20261111-3888",
-            "alt": "［汽車煥新尊寵禮組］ 優惠價 3888元"
-          }
-        },
-        "banner_8cPcnG": {
-          "type": "banner",
-          "name": "狂降↘25折［原子極光鍍膜］× 3罐  優惠價 1111 元",
-          "settings": {
-            "image": "shopify://shop_images/01-_3.png",
-            "link": "shopify://products/aurora-coating",
-            "alt": "狂降↘25折［原子極光鍍膜］× 3罐  優惠價 1111 元"
-          }
-        },
-        "banner_Bx33JH": {
-          "type": "banner",
-          "name": "測速器G11 優惠價1480元",
-          "settings": {
-            "image": "shopify://shop_images/11_G11plus.png",
-            "link": "shopify://products/apgo-g11-plus",
-            "alt": "測速器G11 優惠價1480元"
-          }
-        },
-        "banner_zxjP6a": {
-          "type": "banner",
-          "name": "【經典款．騎士寵車豪華禮組】 優惠價 1688元",
-          "settings": {
-            "image": "shopify://shop_images/03_35dfa362-adf1-4895-ba77-272286727f07.png",
-            "link": "shopify://products/11-4120261111moto",
-            "alt": "【經典款．騎士寵車豪華禮組】 優惠價 1688元"
-          }
-        },
-        "banner_x6UiQX": {
-          "type": "banner",
-          "name": "指定款清潔藥劑  超殺銅板價$33、$55、$77．限量搶購",
-          "settings": {
-            "image": "shopify://shop_images/04_83c9ee49-d840-41d1-9790-5317eb2c5009.png",
-            "link": "shopify://products/20261111-335577",
-            "alt": "指定款清潔藥劑  超殺銅板價$33、$55、$77．限量搶購"
-          }
-        },
-        "banner_AAW74k": {
-          "type": "banner",
-          "name": " 雙11 洗亮狂購節｜愛車煥新・居家囤好 滿額贈",
-          "settings": {
-            "image": "shopify://shop_images/06_d91d469a-97fe-48f5-b25f-c8fb95f1707e.png",
-            "link": "shopify://pages/26_nov_prom2",
-            "alt": "雙11全館滿額贈"
-          }
-        },
         "banner_4JmTtU": {
           "type": "banner",
           "name": "新包裝 瓶裝超級洗衣精 買3送3",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/11_-26_0.jpg",
             "link": "shopify://collections/home-clean",
@@ -315,7 +253,6 @@
         "banner_jGTL4Q": {
           "type": "banner",
           "name": "洗衣精訂閱制活動",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/BN-1920-3.png",
             "link": "https://sub.apgo.tw/",
@@ -325,7 +262,6 @@
         "banner_CXPEDn": {
           "type": "banner",
           "name": "google&fb五星好評",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/bf5e68b4-ef94-4a01-9a2e-d413dd6beeb3.png",
             "link": "shopify://pages/google-review",
@@ -335,7 +271,6 @@
         "banner_T8KwPX": {
           "type": "banner",
           "name": "APGO好評回饋$250",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/1920_0.jpg",
             "link": "shopify://pages/campaign20260803",
@@ -345,14 +280,7 @@
       },
       "block_order": [
         "banner_fDyECz",
-        "banner_hJFrbM",
         "banner_QcxFn3",
-        "banner_r6gpWn",
-        "banner_8cPcnG",
-        "banner_Bx33JH",
-        "banner_zxjP6a",
-        "banner_x6UiQX",
-        "banner_AAW74k",
         "banner_4JmTtU",
         "banner_Vy3Bhj",
         "banner_rcwDi3",
