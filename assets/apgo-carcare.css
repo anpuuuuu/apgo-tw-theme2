@@ -1786,6 +1786,18 @@ body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
   line-height: 1.3;
   letter-spacing: -.01em;
 }
+/* 汽車鍍膜怎麼選 tab: the default serif panel heading appears nowhere else on
+   the page (商品描述's heading is usually off), so use the sans of the
+   product title instead. */
+.apgo-cc-pdp__tab-panel--guide .apgo-cc-pdp__panel-heading {
+  font-family: var(--cc-font-body);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+@media (max-width: 749px) {
+  .apgo-cc-pdp__tab-panel--guide .apgo-cc-pdp__panel-heading { font-size: 18px; }
+}
 /* Subheading under a panel heading (汽車鍍膜怎麼選 tab). */
 .apgo-cc-pdp__panel-sub {
   margin: -8px 0 18px;

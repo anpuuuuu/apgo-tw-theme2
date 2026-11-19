@@ -243,7 +243,12 @@
         }, { passive: true });
         // Initial paint + after resize (panel heights can shift)
         updateActiveFromScroll();
-        window.addEventListener('resize', updateActiveFromScroll);
+        window.addEventListener('resize', function () {
+          // Re-center the highlighted tab too: the bar may have just started
+          // (or stopped) overflowing, e.g. when a phone is rotated.
+          lastActiveKey = null;
+          updateActiveFromScroll();
+        });
       }
     }
 
