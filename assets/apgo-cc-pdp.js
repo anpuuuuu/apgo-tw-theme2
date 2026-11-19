@@ -188,6 +188,28 @@
         lastActiveKey = key;
       }
 
+      // Keep the tab bar right under the site header. The CSS fallback is the
+      // theme's --header-height (kept by header.js), but in a shopper's
+      // desktop browser the bar sat about 30px under the header. Measuring
+      // the header's real bottom edge keeps them in line whatever that
+      // variable says, and gives 0 once a non-sticky header scrolls away.
+      var siteHeader = document.querySelector('header-component');
+      var headerBox = siteHeader && (siteHeader.closest('.shopify-section') || siteHeader);
+      var stickyTop = -1;
+      function updateStickyTop() {
+        if (!headerBox) return 0;
+        var bottom = Math.max(0, Math.round(headerBox.getBoundingClientRect().bottom));
+        if (bottom !== stickyTop) {
+          stickyTop = bottom;
+          tabsRoot.style.setProperty('--apgo-cc-sticky-top', bottom + 'px');
+        }
+        return bottom;
+      }
+      updateStickyTop();
+      if (headerBox && 'ResizeObserver' in window) {
+        new ResizeObserver(function () { updateStickyTop(); }).observe(headerBox);
+      }
+
       $$('[data-apgo-cc-tab]', tabsRoot).forEach(function (tab) {
         tab.addEventListener('click', function () {
           var key = tab.getAttribute('data-apgo-cc-tab');
@@ -209,11 +231,10 @@
       var panels = $$('[data-apgo-cc-panel]', tabsRoot);
       if (panels.length) {
         function updateActiveFromScroll() {
-          // Include the responsive sticky header and tab bar heights so
-          // scroll-spy changes at the same point where content is visible.
-          var headerHeight = parseFloat(
-            getComputedStyle(document.body).getPropertyValue('--header-height')
-          ) || 0;
+          // Include the sticky header and tab bar heights so scroll-spy
+          // changes at the same point where content is visible. This also
+          // keeps the bar's sticky offset current while scrolling.
+          var headerHeight = updateStickyTop();
           var tabBar = $('.apgo-cc-pdp__tab-bar', tabsRoot);
           var tabBarHeight = tabBar ? tabBar.getBoundingClientRect().height : 60;
           // A clicked tab scrolls its panel to the panel's scroll-margin-top

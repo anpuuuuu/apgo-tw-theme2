@@ -1745,7 +1745,9 @@ body.apgo-cc-skin .apgo-cc-pdp__tabs {
 }
 body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
   position: sticky;
-  top: calc(var(--header-height, 0px) - 1px); /* header sticks at -1px */
+  /* --apgo-cc-sticky-top is the header's measured bottom edge (apgo-cc-pdp.js);
+     the fallback is the theme's header height (header sticks at -1px). */
+  top: var(--apgo-cc-sticky-top, calc(var(--header-height, 0px) - 1px));
   z-index: var(--layer-heightened, 4); /* above page content, below the header (--layer-sticky: 8) */
   background: var(--cc-bg);
   border-bottom: 1px solid var(--cc-divider);
@@ -1765,7 +1767,7 @@ body.apgo-cc-skin .apgo-cc-pdp__tab-bar {
   color: var(--cc-fg-mid);
   font-size: 13px;
   line-height: 1.8;
-  scroll-margin-top: calc(var(--header-height, 0px) + 60px);
+  scroll-margin-top: calc(var(--apgo-cc-sticky-top, var(--header-height, 0px)) + 60px);
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 .apgo-cc-pdp__tab-panel:first-of-type { border-top: none; }
