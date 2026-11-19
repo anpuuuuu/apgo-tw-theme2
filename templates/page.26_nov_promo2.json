@@ -415,6 +415,7 @@
         "simple_banner_slot_DnW4gg": {
           "type": "simple_banner_slot",
           "name": "全館滿額折",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "滿額最高折$311",
@@ -618,6 +619,22 @@
             "vertical_cards_per_view": "2.5"
           }
         },
+        "simple_banner_slot_bky9zY": {
+          "type": "simple_banner_slot",
+          "name": "全館滿額贈",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "全館滿額贈",
+            "nav_label_override": "",
+            "section_icon": "fa-image",
+            "show_banner": true,
+            "banner_img": "shopify://shop_images/APGO_11.png",
+            "banner_spacing_top": true,
+            "banner_spacing_bottom": true,
+            "banner_link": "",
+            "banner_anchor_id": ""
+          }
+        },
         "product_grid_XMR9K3": {
           "type": "product_grid",
           "name": "超級洗衣精買3送3",
@@ -644,22 +661,6 @@
             "card_layout": "vertical",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
-          }
-        },
-        "simple_banner_slot_bky9zY": {
-          "type": "simple_banner_slot",
-          "name": "全館滿額贈",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "全館滿額贈",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/APGO_11.png",
-            "banner_spacing_top": true,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
           }
         },
         "simple_banner_slot_mFXA4r": {
@@ -1298,8 +1299,8 @@
         "product_grid_bY6hrM",
         "product_grid_GPGTkE",
         "product_grid_Nb3Jn3",
-        "product_grid_XMR9K3",
         "simple_banner_slot_bky9zY",
+        "product_grid_XMR9K3",
         "simple_banner_slot_mFXA4r",
         "simple_banner_slot_Dip9ED",
         "product_grid_3BCxpy",
