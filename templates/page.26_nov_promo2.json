@@ -415,7 +415,6 @@
         "simple_banner_slot_DnW4gg": {
           "type": "simple_banner_slot",
           "name": "全館滿額折",
-          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "滿額最高折$311",
@@ -622,6 +621,7 @@
         "simple_banner_slot_bky9zY": {
           "type": "simple_banner_slot",
           "name": "全館滿額贈",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "全館滿額贈",
