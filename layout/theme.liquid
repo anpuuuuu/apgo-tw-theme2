@@ -287,7 +287,7 @@
   const ATTR_KEYS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid','gclid','wbraid','gbraid','ttclid'];
   const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
   const TRACK_BATCH_INTERVAL_MS = 3000;
-  const DEBUG = true; // 灰度測試期 true,上線後改 false
+  const DEBUG = false; // 灰度測試期 true,上線後改 false（2026-11-20 已關閉）
 
   function log() { if (DEBUG) console.log.apply(console, ['[recovery]'].concat([].slice.call(arguments))); }
   function warn() { console.warn.apply(console, ['[recovery]'].concat([].slice.call(arguments))); }
