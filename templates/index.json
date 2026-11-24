@@ -308,8 +308,18 @@
     "apgo_home_quicknav": {
       "type": "apgo-home-quicknav",
       "blocks": {
+        "qn_promo": {
+          "type": "item",
+          "name": "顧客好評",
+          "settings": {
+            "label": "顧客好評",
+            "link": "shopify://pages/customer-reviews",
+            "builtin": "promo"
+          }
+        },
         "qn_coating": {
           "type": "item",
+          "name": "鍍膜系列",
           "settings": {
             "label": "鍍膜系列",
             "link": "shopify://collections/coating-series",
@@ -318,6 +328,7 @@
         },
         "qn_gift": {
           "type": "item",
+          "name": "超值禮組",
           "settings": {
             "label": "超值禮組",
             "link": "shopify://collections/bestselling-discount-gift-set",
@@ -326,6 +337,7 @@
         },
         "qn_home": {
           "type": "item",
+          "name": "居家清潔",
           "settings": {
             "label": "居家清潔",
             "link": "shopify://collections/homecleaning",
@@ -334,6 +346,7 @@
         },
         "qn_carcare": {
           "type": "item",
+          "name": "汽車清潔",
           "settings": {
             "label": "汽車清潔",
             "link": "/collections/%E6%B8%85%E6%BD%94%E8%97%A5%E5%8A%91%E5%85%A8%E7%B3%BB%E5%88%97",
@@ -342,6 +355,7 @@
         },
         "qn_repair": {
           "type": "item",
+          "name": "損傷修復",
           "settings": {
             "label": "損傷修復",
             "link": "/collections/%E6%90%8D%E5%82%B7%E4%BF%AE%E5%BE%A9",
@@ -350,6 +364,7 @@
         },
         "qn_tools": {
           "type": "item",
+          "name": "洗車工具",
           "settings": {
             "label": "洗車工具",
             "link": "shopify://collections/car-wash-supplies",
@@ -358,30 +373,23 @@
         },
         "qn_speed": {
           "type": "item",
+          "name": "測速器",
           "settings": {
             "label": "測速器",
             "link": "/collections/%E7%A7%91%E6%8A%80%E5%9F%B7%E6%B3%95%E6%B8%AC%E9%80%9F%E5%99%A8",
             "builtin": "speed"
           }
-        },
-        "qn_promo": {
-          "type": "item",
-          "settings": {
-            "label": "優惠活動",
-            "link": "shopify://pages/26_nov_prom2",
-            "builtin": "promo"
-          }
         }
       },
       "block_order": [
+        "qn_promo",
         "qn_coating",
         "qn_gift",
         "qn_home",
         "qn_carcare",
         "qn_repair",
         "qn_tools",
-        "qn_speed",
-        "qn_promo"
+        "qn_speed"
       ],
       "settings": {
         "overlap": 28,
