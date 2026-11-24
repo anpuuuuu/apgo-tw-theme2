@@ -309,7 +309,7 @@
           "static": true,
           "settings": {
             "menu": "main-menu-v2",
-            "accent_link_title": "洗衣精訂閱制",
+            "accent_link_title": "顧客好評推薦",
             "menu_style": "text",
             "featured_products_aspect_ratio": "1 / 1",
             "featured_collections_aspect_ratio": "adapt",
