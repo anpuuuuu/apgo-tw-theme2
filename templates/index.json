@@ -433,6 +433,12 @@
     "apgo_home_bestsellers_v2": {
       "type": "apgo-home-bestsellers-v2",
       "blocks": {
+        "product_QY77jd": {
+          "type": "product",
+          "settings": {
+            "product": "小老闆婚禮限定🎖️百年好合禮組-狂殺↘27折🎉"
+          }
+        },
         "product_LCTmWe": {
           "type": "product",
           "name": "極光鍍膜3建$1111",
@@ -497,12 +503,14 @@
         "product_dYmcmV": {
           "type": "product",
           "name": "鐵粉去除劑",
+          "disabled": true,
           "settings": {
             "product": "extreme-iron-remover"
           }
         }
       },
       "block_order": [
+        "product_QY77jd",
         "product_LCTmWe",
         "product_dfzhfF",
         "product_HAnc6c",
