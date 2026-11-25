@@ -203,6 +203,15 @@
     "apgo_cc_badge_carousel": {
       "type": "apgo-cc-badge-carousel",
       "blocks": {
+        "banner_AY8CwH": {
+          "type": "banner",
+          "name": "百年好合婚禮限定款",
+          "settings": {
+            "image": "shopify://shop_images/1_1e49f714-d21d-4935-bc6a-9ac3f68c31d8.png",
+            "link": "shopify://products/小老闆婚禮限定🎖️百年好合禮組-狂殺↘27折🎉",
+            "alt": "百年好合婚禮限定款"
+          }
+        },
         "banner_fDyECz": {
           "type": "banner",
           "name": "防詐騙宣導",
@@ -278,6 +287,7 @@
         }
       },
       "block_order": [
+        "banner_AY8CwH",
         "banner_fDyECz",
         "banner_cDcnCA",
         "banner_QcxFn3",
