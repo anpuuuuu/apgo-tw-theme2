@@ -449,6 +449,12 @@
             "product": "百年好合禮組"
           }
         },
+        "bestseller_03": {
+          "type": "product",
+          "settings": {
+            "product": "限時優惠-玻璃去油鍍膜組v2"
+          }
+        },
         "product_LCTmWe": {
           "type": "product",
           "name": "極光鍍膜3建$1111",
@@ -490,12 +496,6 @@
             "product": "apgo-superwash"
           }
         },
-        "bestseller_03": {
-          "type": "product",
-          "settings": {
-            "product": "glass-coating"
-          }
-        },
         "product_iEzaFp": {
           "type": "product",
           "name": "500ML噴頭",
@@ -509,28 +509,19 @@
           "settings": {
             "product": "apgo_coating_cloth"
           }
-        },
-        "product_dYmcmV": {
-          "type": "product",
-          "name": "鐵粉去除劑",
-          "disabled": true,
-          "settings": {
-            "product": "extreme-iron-remover"
-          }
         }
       },
       "block_order": [
         "product_QY77jd",
+        "bestseller_03",
         "product_LCTmWe",
         "product_dfzhfF",
         "product_HAnc6c",
         "product_z9bfRw",
         "product_pyUGAA",
         "product_jzaqEn",
-        "bestseller_03",
         "product_iEzaFp",
-        "product_LAkYiA",
-        "product_dYmcmV"
+        "product_LAkYiA"
       ],
       "name": "APGO · 熱銷商品 v2",
       "settings": {
