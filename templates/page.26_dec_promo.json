@@ -502,6 +502,33 @@
             "vertical_cards_per_view": "2.5"
           }
         },
+        "product_grid_XMR9K3": {
+          "type": "product_grid",
+          "name": "超級洗衣精(罐裝) 任選5罐 優惠價$1212",
+          "settings": {
+            "custom_anchor_id": "",
+            "section_title": "人氣夯品✨囤貨必搶",
+            "nav_label_override": "",
+            "section_icon": "fa-box",
+            "banner_img": "shopify://shop_images/1212__1920x1080_0.png",
+            "show_banner": true,
+            "banner_spacing_top": false,
+            "banner_spacing_bottom": true,
+            "product_list": [
+              "apgosilkenlily",
+              "apgoazuregarden",
+              "apgocashmerewoods",
+              "apgofloralallure",
+              "apgosunlitgrove",
+              "apgospringveil"
+            ],
+            "variant_ids": "",
+            "card_tag": "TAG",
+            "card_layout": "vertical",
+            "vertical_rows": "1",
+            "vertical_cards_per_view": "2.5"
+          }
+        },
         "product_grid_bY6hrM": {
           "type": "product_grid",
           "name": "銅板價$33/$55/$77",
@@ -592,34 +619,6 @@
             "banner_spacing_bottom": true,
             "banner_link": "",
             "banner_anchor_id": ""
-          }
-        },
-        "product_grid_XMR9K3": {
-          "type": "product_grid",
-          "name": "超級洗衣精買3送3",
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "人氣夯品✨囤貨必搶",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1280X600_4_2-_6_3.png",
-            "show_banner": true,
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "apgo-superwash",
-              "apgorose",
-              "apgoocean",
-              "apgocotton",
-              "apgowhitetea",
-              "apgofreesia",
-              "apgolavender"
-            ],
-            "variant_ids": "",
-            "card_tag": "TAG",
-            "card_layout": "vertical",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "2.5"
           }
         },
         "simple_banner_slot_mFXA4r": {
@@ -1256,11 +1255,11 @@
         "product_grid_T4apH3",
         "product_grid_ETYEmU",
         "product_grid_akMdDy",
+        "product_grid_XMR9K3",
         "product_grid_bY6hrM",
         "product_grid_GPGTkE",
         "product_grid_Nb3Jn3",
         "simple_banner_slot_bky9zY",
-        "product_grid_XMR9K3",
         "simple_banner_slot_mFXA4r",
         "simple_banner_slot_Dip9ED",
         "product_grid_3BCxpy",
