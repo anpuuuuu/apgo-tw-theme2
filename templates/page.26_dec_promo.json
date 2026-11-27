@@ -416,24 +416,23 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "product_grid_tBQz9N": {
+        "product_grid_KJwfcG": {
           "type": "product_grid",
-          "name": "【雙11限定-頂規款】原子琉璃釉買1送2",
-          "disabled": true,
+          "name": "葉式鍍膜買一送一",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "雙11必收買1送2",
+            "section_title": "葉式鍍膜終極旗艦禮組",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/apgo-1111-glaze-buy1get2-1999.png",
+            "banner_img": "shopify://shop_images/1080x1080._706ffedc-af0d-486f-a44a-46078d2a8af5.png",
             "show_banner": true,
             "banner_spacing_top": true,
             "banner_spacing_bottom": true,
             "product_list": [
-              "apgo-atomic-colored-glaze"
+              "婚禮限定-葉式鍍膜"
             ],
             "variant_ids": "",
-            "card_tag": "狂殺↘33折再贈鍍膜布$珊瑚絨毛巾",
+            "card_tag": "見證永恆承諾的頂級高階成膜防護",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
@@ -1258,7 +1257,7 @@
         "flash_sale_item_DLfea8",
         "simple_banner_slot_DnW4gg",
         "product_grid_n6jT6p",
-        "product_grid_tBQz9N",
+        "product_grid_KJwfcG",
         "product_grid_jNQtE7",
         "product_grid_T4apH3",
         "product_grid_acXNBR",
