@@ -396,20 +396,17 @@
         },
         "product_grid_n6jT6p": {
           "type": "product_grid",
-          "name": "［原子極光鍍膜］× 3罐  優惠價 1111 元",
-          "disabled": true,
+          "name": "葉式鍍膜終極旗艦禮組",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "雙11必囤3罐組",
+            "section_title": "葉式鍍膜終極旗艦禮組",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/03-_3_d77bda22-4d7a-4a27-bcd3-ed82469a611f.png",
+            "banner_img": "shopify://shop_images/1080x1080___0.png",
             "show_banner": true,
             "banner_spacing_top": true,
             "banner_spacing_bottom": true,
-            "product_list": [
-              "aurora-coating"
-            ],
+            "product_list": [],
             "variant_ids": "",
             "card_tag": "狂殺↘25折再贈鍍膜布$珊瑚絨毛巾",
             "card_layout": "horizontal",
