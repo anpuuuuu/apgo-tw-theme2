@@ -415,6 +415,7 @@
         "simple_banner_slot_DnW4gg": {
           "type": "simple_banner_slot",
           "name": "全館滿額折",
+          "disabled": true,
           "settings": {
             "custom_anchor_id": "",
             "section_title": "滿額最高折$311",
@@ -1138,6 +1139,7 @@
         "coupon_item_hH3EcG": {
           "type": "coupon_item",
           "name": "7.1 滿1999折111",
+          "disabled": true,
           "settings": {
             "condition": "滿$1999",
             "discount": "折$111",
@@ -1148,6 +1150,7 @@
         "coupon_item_r6aVaY": {
           "type": "coupon_item",
           "name": "7.2 滿2999折211",
+          "disabled": true,
           "settings": {
             "condition": "滿$2999",
             "discount": "折$211",
@@ -1158,6 +1161,7 @@
         "coupon_item_AaWikn": {
           "type": "coupon_item",
           "name": "7.3 滿3999折311",
+          "disabled": true,
           "settings": {
             "condition": "滿$3999",
             "discount": "折$311",
@@ -1343,7 +1347,6 @@
         "coupon_sec_title": "最高折$311",
         "coupon_nav_label": "最高折$311",
         "nav_mode": "auto",
-        "coupon_banner_img": "shopify://shop_images/2501X522__111_211_311.jpg",
         "coupon_banner_spacing_top": true,
         "coupon_banner_spacing_bottom": true
       }
