@@ -438,47 +438,23 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "product_grid_jNQtE7": {
-          "type": "product_grid",
-          "name": "［汽車煥新尊寵禮組］ 優惠價 3888元",
-          "disabled": true,
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "現賺$17,176",
-            "nav_label_override": "",
-            "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/3888_96b4847f-5544-482a-b05b-1229de319f18.png",
-            "show_banner": true,
-            "banner_spacing_top": true,
-            "banner_spacing_bottom": true,
-            "product_list": [
-              "20261111-3888"
-            ],
-            "variant_ids": "",
-            "card_tag": "狂殺↘18折",
-            "card_layout": "horizontal",
-            "vertical_rows": "1",
-            "vertical_cards_per_view": "1"
-          }
-        },
         "product_grid_T4apH3": {
           "type": "product_grid",
-          "name": "【經典款 騎士寵車豪華禮組】 優惠價 1688元",
-          "disabled": true,
+          "name": "鈦晶鍍膜二代升級版 買一送一 優惠價$1980",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "現省$2,377",
+            "section_title": "二代升級版．鈦晶鍍膜",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/11_-33_0_4841592e-b48f-41da-b086-635c0dcef2b7.jpg",
+            "banner_img": "shopify://shop_images/1080x1080_0_2c3731a2-5348-4eb4-8e26-712c3787a9a9.png",
             "show_banner": true,
             "banner_spacing_top": true,
             "banner_spacing_bottom": true,
             "product_list": [
-              "11-4120261111moto"
+              "二代升級版-鈦晶鍍膜"
             ],
             "variant_ids": "",
-            "card_tag": "狂殺↘41折",
+            "card_tag": "買一送一",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
@@ -1258,7 +1234,6 @@
         "simple_banner_slot_DnW4gg",
         "product_grid_n6jT6p",
         "product_grid_KJwfcG",
-        "product_grid_jNQtE7",
         "product_grid_T4apH3",
         "product_grid_acXNBR",
         "product_grid_bY6hrM",
