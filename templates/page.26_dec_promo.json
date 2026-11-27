@@ -378,54 +378,19 @@
             "success_button_text": "前往結帳，以保有優惠"
           }
         },
-        "simple_banner_slot_c4GqJF": {
-          "type": "simple_banner_slot",
-          "name": "人氣下單禮",
-          "disabled": true,
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "6/27-6/30下單禮",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/1280__LEAD.png",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
-        "simple_banner_slot_PkhXBx": {
-          "type": "simple_banner_slot",
-          "name": "滿599免運送到府",
-          "disabled": true,
-          "settings": {
-            "custom_anchor_id": "",
-            "section_title": "限時599免運",
-            "nav_label_override": "",
-            "section_icon": "fa-image",
-            "show_banner": true,
-            "banner_img": "shopify://shop_images/1920x1080_599.jpg",
-            "banner_spacing_top": false,
-            "banner_spacing_bottom": true,
-            "banner_link": "",
-            "banner_anchor_id": ""
-          }
-        },
         "simple_banner_slot_DnW4gg": {
           "type": "simple_banner_slot",
-          "name": "全館滿額折",
-          "disabled": true,
+          "name": "超殺銅板價",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "滿額最高折$311",
+            "section_title": "超殺銅板價",
             "nav_label_override": "",
             "section_icon": "fa-image",
             "show_banner": true,
-            "banner_img": "shopify://shop_images/1920_x_1080__3_up.jpg",
+            "banner_img": "shopify://shop_images/12__1280x600_0.png",
             "banner_spacing_top": true,
             "banner_spacing_bottom": true,
-            "banner_link": "",
+            "banner_link": "shopify://collections/清潔藥劑全系列",
             "banner_anchor_id": ""
           }
         },
@@ -1292,8 +1257,6 @@
         "flash_sale_item_MXr8TC",
         "flash_sale_item_Hn6Y3f",
         "flash_sale_item_DLfea8",
-        "simple_banner_slot_c4GqJF",
-        "simple_banner_slot_PkhXBx",
         "simple_banner_slot_DnW4gg",
         "product_grid_n6jT6p",
         "product_grid_tBQz9N",
@@ -1340,8 +1303,8 @@
       "settings": {
         "target_amount": 0,
         "target_reward": "",
-        "hero_image_pc": "shopify://shop_images/iPhone_Duo__banner.png",
-        "hero_image_mb": "shopify://shop_images/iPhone_Duo_74801f99-ea16-4c47-9a79-da255d6baadc.png",
+        "hero_image_pc": "shopify://shop_images/PC_Banner_1920x800_0.png",
+        "hero_image_mb": "shopify://shop_images/Mobile_Banner_3126x4584_0.png",
         "show_coupons": true,
         "coupon_sec_icon": "fa-ticket",
         "coupon_sec_title": "最高折$311",
