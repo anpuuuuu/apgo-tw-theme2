@@ -123,6 +123,7 @@
         },
         "reward_rjGwP6": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "order_discount",
             "icon_fallback": "🏷️",
@@ -155,6 +156,7 @@
         },
         "reward_jQyUwf": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "order_discount",
             "icon_fallback": "🏷️",
@@ -170,6 +172,7 @@
         },
         "reward_X7aJkf": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "gift",
             "icon_fallback": "🎁",
@@ -186,6 +189,7 @@
         },
         "reward_BB88cb": {
           "type": "reward",
+          "disabled": true,
           "settings": {
             "reward_type": "order_discount",
             "icon_fallback": "🏷️",
