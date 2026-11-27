@@ -406,9 +406,11 @@
             "show_banner": true,
             "banner_spacing_top": true,
             "banner_spacing_bottom": true,
-            "product_list": [],
+            "product_list": [
+              "雙12限定鉅獻🎖️-葉氏鍍膜-終極旗艦禮組"
+            ],
             "variant_ids": "",
-            "card_tag": "狂殺↘25折再贈鍍膜布$珊瑚絨毛巾",
+            "card_tag": "見證永恆承諾的頂級高階成膜防護",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
