@@ -460,24 +460,23 @@
             "vertical_cards_per_view": "2.5"
           }
         },
-        "product_grid_acXNBR": {
+        "product_grid_ETYEmU": {
           "type": "product_grid",
-          "name": "【消光款 騎士寵車豪華禮組】 優惠價 1688元",
-          "disabled": true,
+          "name": "雙12 誓約限定款鍍膜 買一送一  ",
           "settings": {
             "custom_anchor_id": "",
-            "section_title": "現省$2,667",
+            "section_title": "雙12誓約限定",
             "nav_label_override": "",
             "section_icon": "fa-box",
-            "banner_img": "shopify://shop_images/1080_b90f7ed8-390d-472d-a8eb-16b01f1df652.jpg",
+            "banner_img": "shopify://shop_images/12__2_1212__1080x1080_0_d04add05-88c6-4cb5-a7f2-cef5a1465686.png",
             "show_banner": true,
             "banner_spacing_top": true,
             "banner_spacing_bottom": true,
             "product_list": [
-              "11-4120261111moto"
+              "雙12-誓約限定鍍膜"
             ],
             "variant_ids": "",
-            "card_tag": "狂殺↘38折",
+            "card_tag": "買一送一",
             "card_layout": "horizontal",
             "vertical_rows": "1",
             "vertical_cards_per_view": "2.5"
@@ -1235,7 +1234,7 @@
         "product_grid_n6jT6p",
         "product_grid_KJwfcG",
         "product_grid_T4apH3",
-        "product_grid_acXNBR",
+        "product_grid_ETYEmU",
         "product_grid_bY6hrM",
         "product_grid_GPGTkE",
         "product_grid_Nb3Jn3",
